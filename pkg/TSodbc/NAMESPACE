@@ -1,0 +1,31 @@
+import(methods)  
+import(DBI)      
+import(TSdbi)
+import(RODBC) ## this should not all be needed, but parts for setClass "TSodbcConnection"
+# but RODBC has S3 classes
+##importClassesFrom("RODBC","ODBCConnection")
+
+## S4 Classes
+exportClasses(
+   "TSodbcConnection"
+   )
+
+## S4 methods
+exportMethods(
+   "dbListTables",
+   "dbExistsTable",
+   "dbGetQuery",
+   "dbDisconnect",
+   "dbUnloadDriver",
+   "TSconnect",
+   "TSget",
+   "TSput",
+   "TSdelete",
+   "TSdescription",
+   "TSdoc",
+   "TSlabel",
+   "TSdates"
+   )
+
+## S3 methods
+export("ODBC")
