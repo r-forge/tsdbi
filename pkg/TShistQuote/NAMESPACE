@@ -1,0 +1,28 @@
+import("methods")  
+import("DBI")      
+import("tframe")
+import("TSdbi")
+#importClassesFrom("DBI",..)
+
+export("histQuote")
+
+## S4 Classes
+exportClasses(
+   "histQuoteDriver",
+   "TShistQuoteConnection"
+   )
+
+## S4 generics
+## none
+
+## S4 methods
+exportMethods(
+   "TSconnect",
+   "TSdates",
+   "TSdescription",
+   "TSdoc",
+   "TSlabel",
+   "TSget",
+   "dbDisconnect"
+   )
+
