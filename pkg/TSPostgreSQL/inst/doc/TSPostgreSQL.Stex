@@ -1,0 +1,473 @@
+\documentclass[english]{article}
+\newcommand{\code}{\emph}
+\newcommand{\pkg}{\textsl}
+\title{Time Series Database Interface: R PostgreSQL (TSPostgreSQL)}
+\begin{document}
+\maketitle
+%\VignetteIndexEntry{TSPostgreSQL Guide}
+\SweaveOpts{eval=TRUE,echo=TRUE,results=hide,fig=FALSE}
+%\SweaveOpts{eval=TRUE,echo=TRUE,results=verbatim,fig=TRUE}
+\begin{Scode}{echo=FALSE,results=hide}
+ options(continue="  ")
+\end{Scode}
+
+\section{Introduction}
+The code from the vignette that generates this guide can 
+be loaded into an editor with \emph{edit(vignette("TSPostgreSQL"))}.
+This uses the default editor, which can be changed using \emph{options()}.
+It should be possible to view the pdf version of the guide for this 
+package with \emph{print(vignette("TSPostgreSQL"))}.
+
+
+WARNING: running these example will overwrite tables in the
+PostgreSQL ''test'' database on the server.
+
+
+The PostgreSQL  user, password, and hostname should be set in PostgreSQL information file
+(.pgpass) before starting R.
+Once R is started, the functions in this package are made available with
+
+\begin{Scode}
+library("TSPostgreSQL")  
+\end{Scode}
+This will also load required packages \pkg{TSdbi}, \pkg{DBI}, \pkg{RPostgreSQL}, 
+\pkg{methods}, and \pkg{tframe}. 
+Some examples below also require \pkg{zoo}, and \pkg{tseries}.
+
+The next small section of code is necessary to setup database tables that are
+used in the examples below. It
+needs to be done only once for a database and might typically be done by
+an administrator setting up the database, rather than by an end user. 
+
+\begin{Scode}{results=hide}
+m <- dbDriver("PostgreSQL")
+con <- dbConnect(m, dbname="test", 
+  host=if(!is.null(Sys.getenv("PGHOST"))) Sys.getenv("PGHOST") else "localhost") 
+source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
+dbDisconnect(con)
+\end{Scode}
+
+More detailed description of the
+instructions for building the database tables is given in the vignette 
+for the \pkg{TSdbi} package. Those instruction show how to build the database
+using database utilites rather than R, which might be the way a
+system administrator would build the database.
+
+\section{Using the Database - TSdbi Functions}
+
+This section gives several simple examples of putting series on and reading them
+from the database. (If a large number of series are to be loaded into a database,
+one would typically do this with a batch process using the database program's
+utilities for loading data.)
+The first thing to do is to establish a connection to the database:
+
+\begin{Scode}{results=hide}
+ m <- dbDriver("PostgreSQL")
+ con <- TSconnect(m, dbname="test") 
+\end{Scode}
+
+\code{TSconnect} uses \code{dbConnect} from the \pkg{DBI} package, but checks that the
+database has expected tables, and checks for additional features. (It cannot
+be used before the tables are created, as done in the previous section.)
+
+This puts a series called \code{vec}  on the database and then reads is back
+ 
+\begin{Scode}
+ z <- ts(rnorm(10), start=c(1990,1), frequency=1)
+ seriesNames(z) <- "vec"
+ if(TSexists("vec", con)) TSdelete("vec", con) 
+ TSput( z, con)
+ z <- TSget("vec", con)
+\end{Scode}
+If the series is printed it is seen to be a "ts" time series with some extra
+attributes.
+
+\code{TSput} fails if the series already exists on the \code{con}, 
+so the above example checks and deletes the series if it already exists. 
+\code{TSreplace} does not fail if the series does
+not yet exist, so examples below use it instead. Several plots below show
+original data and the data retrieved after it is written to the database. One is
+added to the original data so that both lines are visible.
+
+And now more examples:
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+ z <- ts(matrix(rnorm(20),10,2), start=c(1990,1), frequency=1)
+ seriesNames(z) <- c("matc1", "matc2")
+ TSreplace(z, con)
+ TSget("matc1", con)
+ TSget("matc2", con)
+ TSget(c("matc1","matc2"), con)
+ tfplot(z+1, TSget(c("matc1","matc2"), con), 
+          lty=c("solid", "dashed"), col=c("black", "red"))
+\end{Scode}
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+ z <- ts(matrix(rnorm(20),10,2), start=c(1990,1), frequency=4)
+  seriesNames(z) <- c("matc1", "matc2")
+ TSreplace(z, con)
+ TSget(c("matc1","matc2"), con)
+ tfplot(z+1, TSget(c("matc1","matc2"), con),
+          lty=c("solid", "dashed"), col=c("black", "red"))
+\end{Scode}
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+ z <- ts(matrix(rnorm(200),100,2), start=c(1995,1), frequency=12)
+  seriesNames(z) <- c("mat2c1", "mat2c2")
+ TSreplace(z, con)
+ tfplot(z+1, TSget(c("mat2c1","mat2c2"), con),
+           lty=c("solid", "dashed"), col=c("black", "red"))
+\end{Scode}
+ 
+The following extract information about the series from the database, although
+not much information has been added for these examples. 
+\begin{Scode}
+ TSmeta("mat2c1", con)
+ TSmeta("vec", con)
+ TSdates("vec", con)
+ TSdescription("vec", con)
+ TSdoc("vec", con)
+\end{Scode}
+
+Below are exampoles that make more use of \code{TSdescription} and code{TSdoc}.
+
+Often it is convenient to set the default connection:
+
+\begin{Scode}
+ options(TSconnection=con)
+\end{Scode}
+and then the \code{con} specification can be omitted from the function calls
+unless another connection is needed. The \code{con} can still be specified, and
+some examples below do specify it, just to illustrate the alternative syntax.
+
+\begin{Scode}{results=verbatim}
+ z <- TSget("mat2c1") 
+ TSmeta("mat2c1")
+\end{Scode}
+
+
+Data documentation can be in two forms, a description specified by 
+\code{TSdescription}
+or longer documentation specified by \code{TSdoc}. These can be added to the time
+series object, in which case they will be written to the database when
+\code{TSput} or \code{TSreplace} is used to put the series on the database. 
+Alternatively, they
+can be specified as arguments to \code{TSput} or \code{TSreplace}.
+The description or documentation will be retrieved as part of the series object
+with \code{TSget} only if this is specified with the logical arguments
+\code{TSdescription} and \code{TSdoc}. They can also be retrieved directly from the
+database with the functions \code{TSdescription} and \code{TSdoc}.
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+ z <- ts(matrix(rnorm(10),10,1), start=c(1990,1), frequency=1)
+ TSreplace(z, serIDs="Series1", con) 
+ zz <- TSget("Series1", con)
+ TSreplace(z, serIDs="Series1", con, 
+     TSdescription="short rnorm series", 
+     TSdoc="Series created as an example in the vignette.")
+ zz <- TSget("Series1", con, TSdescription=TRUE, TSdoc=TRUE)
+ start(zz)
+ end(zz)
+ TSdescription(zz)
+ TSdoc(zz)
+
+ TSdescription("Series1", con)
+ TSdoc("Series1", con)
+
+ z <- ts(rnorm(10), start=c(1990,1), frequency=1)
+ seriesNames(z) <- "vec"
+ TSreplace(z, con)
+ zz <- TSget("vec", con)
+
+ z <- ts(matrix(rnorm(20),10,2), start=c(1990,1), frequency=1)
+ seriesNames(z) <- c("matc1", "matc2")
+ TSreplace(z, con) 
+ tfplot(z+1, TSget(c("matc1","matc2"), con),
+           lty=c("solid", "dashed"), col=c("black", "red"))
+
+\end{Scode}
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+ z <- ts(matrix(rnorm(20),10,2), start=c(1990,1), frequency=4)
+ seriesNames(z) <- c("matc1", "matc2")
+ TSreplace(z, con)
+ tfplot(z+1, TSget(c("matc1","matc2"), con),
+           lty=c("solid", "dashed"), col=c("black", "red"))
+
+\end{Scode}
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+ z <- ts(matrix(rnorm(200),100,2), start=c(1995,1), frequency=12)
+ seriesNames(z) <- c("mat2c1", "mat2c2")
+ TSreplace(z, con) 
+ tfplot(z+1, TSget(c("mat2c1","mat2c2"), con),
+           lty=c("solid", "dashed"), col=c("black", "red"))
+\end{Scode}
+
+The following examples use dates and times which are not handled by \code{ts},
+so the \pkg{zoo} time representation is used.
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+require("zoo") 
+
+ z <- zoo(matrix(rnorm(200),100,2), as.Date("1990-01-01") + 0:99)
+  seriesNames(z) <- c("zooc1", "zooc2")
+ TSreplace(z, con, Table="D")
+ tfplot(z+1, TSget(c("zooc1","zooc2"), con),
+           lty=c("solid", "dashed"), col=c("black", "red"))
+  
+\end{Scode}
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+ z <- zoo(matrix(rnorm(200),100,2), as.Date("1990-01-01") + 0:99 * 7)
+  seriesNames(z) <- c("zooWc1", "zooWc2")
+ TSreplace(z, con, Table="W")
+ tfplot(z+1, TSget(c("zooWc1","zooWc2"), con), col=c("black", "red"),
+    lty=c("dashed", "solid"))  
+\end{Scode}
+
+\begin{Scode}{results=hide}
+ dbDisconnect(con)
+ #dbUnloadDriver(m)
+\end{Scode}
+
+\section{Examples Using Web Data}
+
+This section illustrates fetching data from a web server and loading it into the
+database. This would be a very slow way to load a database, but provides
+examples of different kinds of time series data. The fetching is done with 
+\pkg{TShistQuote} which provides a wrapper for \code{get.hist.quote} from 
+package \pkg{tseries} to give syntax consistent with the \pkg{TSdbi}.
+
+Fetching data may fail due to lack of an Interenet connection or delays. 
+
+First establish a connection to the database where data will be saved:
+\begin{Scode}
+con <- TSconnect("PostgreSQL", dbname="test")
+\end{Scode}
+
+Now connect to the web server and fetch data:
+
+\begin{Scode}{results=verbatim}
+  require("TShistQuote")
+  Yahoo <- TSconnect("histQuote", dbname="yahoo") 
+  x <- TSget("^gspc", quote = "Close", con=Yahoo)
+  plot(x)
+  tfplot(x)
+
+  TSrefperiod(x) 
+  TSdescription(x) 
+  TSdoc(x) 
+  TSlabel(x) 
+\end{Scode}
+
+Then write the data to the local server, specifying table B for business day 
+data (using TSreplace in case the series
+is already there from running this example previously):
+
+\begin{Scode}{results=verbatim}
+   TSreplace(x,  serIDs="gspc", Table="B", con=con)
+\end{Scode}
+
+and check the saved version:
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+  TSrefperiod(TSget(serIDs="gspc", con=con)) 
+  TSdescription("gspc", con=con) 
+  TSdoc("gspc", con=con)
+  TSlabel("gspc", con=con) # this is not yet supported on the db
+  tfplot(TSget(serIDs="gspc", con=con))
+\end{Scode}
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+   x <- TSget("ibm", quote = c("Close", "Vol"), con=Yahoo)
+   TSreplace(x, serIDs=c("ibm.Cl", "ibm.Vol"),  con=con, Table="B",
+              TSdescription.=c("IBM Close","IBM  Volume"),
+	      TSdoc.= paste(c(
+	         "IBM  Close   retrieved on ",
+		 "IBM  Volume retrieved  on "), Sys.Date()))
+
+   z <- TSget(serIDs=c("ibm.Cl", "ibm.Vol"), 
+             TSdescription=TRUE, TSdoc=TRUE, con=con)
+   TSdescription(z)
+   TSdoc(z)
+   tfplot(z, xlab = TSdoc(z), Title = TSdescription(z))
+   tfplot(z, Title="IBM", start="2007-01-01")
+\end{Scode}
+
+\begin{Scode}{results=verbatim}
+   Oanda <- TSconnect("histQuote", dbname="oanda") 
+   x <- TSget("EUR/USD", start="2004-01-01", con=Oanda)
+   TSreplace(x, serIDs="EUR/USD", Table="D", con=con)
+\end{Scode}
+
+and check the saved version:
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+   z <- TSget(serIDs="EUR/USD",TSlabel=TRUE, TSdescription=TRUE,  con=con)
+   tfplot(z, Title = TSdescription(z), ylab=TSlabel(z))
+   tfplot(z, Title = "EUR/USD", start="2007-01-01")
+   tfplot(z, Title = "EUR/USD", start="2007-03-01")
+   tfplot(z, Title = "EUR/USD", start=Sys.Date()-14, end=Sys.Date(),
+      xlab = format(Sys.Date(), "%Y"))
+\end{Scode}
+
+\begin{Scode}{results=hide}
+  dbDisconnect(con)
+  dbDisconnect(Yahoo)
+  dbDisconnect(Oanda)
+\end{Scode}
+
+
+\subsection{Examples  Using TSdbi with ets}
+
+These examples use a database called "ets" which is available at the Bank
+of Canada.
+This set of examples illustrates how the programs might be used if a larger
+database is available. Typically a large database would be installed using
+database scripts directly rather than from R with \code{TSput} or
+\code{TSreplace}. 
+
+The following are wrapped in \code{if (!inherits(conets, "try-error"))} so that
+the vignette will build even when the database is not available. This seems to
+require an explicit call to \code{print()}, but that is not usually needed to
+display results below. Another artifact of this is that results printed in the
+if block do not display until the end of the block.
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+  m <- dbDriver("PostgreSQL")
+  conets <- try(TSconnect(m, dbname="ets")) 
+  if (!inherits(conets, "try-error")) {
+  
+  options(TSconnection=conets)
+
+  print(TSmeta("M.SDR.CCUSMA02.ST"))
+
+  EXCH.IDs <- t(matrix(c(
+ 	"M.SDR.CCUSMA02.ST",	 "SDR/USD exchange rate",
+ 	"M.CAN.CCUSMA02.ST",	 "CAN/USD exchange rate",
+ 	"M.MEX.CCUSMA02.ST",	 "MEX/USD exchange rate",
+ 	"M.JPN.CCUSMA02.ST",	 "JPN/USD exchange rate",
+ 	"M.EMU.CCUSMA02.ST",	 "Euro/USD exchange rate",
+ 	"M.OTO.CCUSMA02.ST",	 "OECD /USD exchange rate",
+ 	"M.G7M.CCUSMA02.ST",	 "G7   /USD exchange rate",
+ 	"M.E15.CCUSMA02.ST",	 "Euro 15. /USD exchange rate"
+	), 2, 8))
+
+  print(TSdates(EXCH.IDs[,1]))
+  z <- TSdates(EXCH.IDs[,1])
+  print(start(z))
+  print(end(z))
+   
+  tfplot(TSget(serIDs="V122646", conets))
+  }
+\end{Scode}
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+if (!inherits(conets, "try-error")) {
+  print(TSdescription(TSget("V122646", TSdescription=TRUE)))
+  print(TSdescription("V122646"))
+
+  print(TSdoc(TSget("V122646", TSdoc=TRUE)))
+  print(TSdoc("V122646"))
+
+  tfplot(TSget("V122646", names="V122646", conets))
+  }
+\end{Scode}
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+if (!inherits(conets, "try-error")) {
+  z <- TSget("V122646", TSdescription=TRUE)
+  tfplot(z, Title=strsplit(TSdescription(z), ","))
+  }
+\end{Scode}
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+if (!inherits(conets, "try-error")) {
+  z <- TSget("SDSP500", TSdescription=TRUE)
+  tfplot(z, Title=TSdescription(z))
+  plot(z)
+  }
+\end{Scode}
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+if (!inherits(conets, "try-error")) {
+  z <- TSget(c("DSP500","SDSP500"), TSdescription=TRUE)
+  tfplot(z, xlab=TSdescription(z))
+  }
+\end{Scode}
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+if (!inherits(conets, "try-error")) {
+  plot(z)
+  }
+\end{Scode}
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+if (!inherits(conets, "try-error")) {
+  ETSgdp    <- annualizedGrowth(aggregate(TSget("V1992067"),
+                   nfrequency=4,FUN=mean), lag=4, names="GDP Y/Y Growth")
+  tfplot(ETSgdp)
+  }  # end if !try-error
+\end{Scode}
+  
+\begin{Scode}{results=hide}
+  if (!inherits(conets, "try-error")) {
+  #dbDisconnect(conets)
+  dbDisconnect(options()$TSconnection)
+  options(TSconnection=NULL)
+  }  # end if !try-error
+\end{Scode}
+
+\section{Examples Using DBI and direct SQL Queries}
+
+The following examples are queries using the underlying "DBI" functions.
+They should not often be needed to access time series, but may be useful
+to get at more detailed information, or formulate special queries.
+
+\begin{Scode}{results=hide}
+ m <- dbDriver("PostgreSQL")
+ con <- TSconnect(m, dbname="test") 
+ options(TSconnection=con)
+\end{Scode}
+
+
+\begin{Scode}{results=verbatim}
+dbListTables(con)
+\end{Scode}
+
+
+If schema queries  are supported then table information can be found in a
+generic SQL way, but on some systems this will fail because users
+do not have read priveleges on the INFORMATION\_SCHEMA table,
+so the following are wrapped in \code{try()}.
+(SQLite does not seem to support this at all.)
+
+\begin{Scode}{results=verbatim}
+  try( dbGetQuery(con, paste(
+       "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.Columns ",
+       " WHERE TABLE_SCHEMA='test' AND table_name='A' ;"))  )
+
+  try( dbGetQuery(con, paste(
+       "SELECT COLUMN_NAME, COLUMN_DEFAULT, COLLATION_NAME, DATA_TYPE,",
+       "CHARACTER_SET_NAME, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION",
+ "FROM INFORMATION_SCHEMA.Columns WHERE TABLE_SCHEMA='test' AND table_name='A' ;"))  )
+
+  try( dbGetQuery(con, paste(
+   "SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION",
+ "FROM INFORMATION_SCHEMA.Columns WHERE TABLE_SCHEMA='test' AND table_name='M';"))  )
+
+\end{Scode}
+
+Finally, to disconnect gracefully, one should
+
+\begin{Scode}{results=hide}
+
+dbDisconnect(con)
+
+dbDisconnect(options()$TSconnection)
+options(TSconnection=NULL)
+#dbUnloadDriver(m)
+\end{Scode}
+
+\end{document}

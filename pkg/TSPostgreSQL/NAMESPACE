@@ -1,0 +1,23 @@
+import(methods)  
+import(DBI)      
+import(TSdbi)
+import(RPostgreSQL) ## this should not all be needed, but parts for setClass "TSPostgreSQLConnection"
+##importClassesFrom("RPostgreSQL","PostgreSQLConnection")
+
+## S4 Classes
+exportClasses(
+   "TSPostgreSQLConnection"
+   )
+
+## S4 methods
+exportMethods(
+   ##"print",
+   "TSconnect",
+   "TSget",
+   "TSput",
+   "TSdelete",
+   "TSdescription",
+   "TSdoc",
+   "TSlabel",
+   "TSdates"
+   )
