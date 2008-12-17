@@ -1,0 +1,89 @@
+\documentclass[english]{article}
+\newcommand{\code}{\emph}
+\newcommand{\pkg}{\textsl}
+\title{Time Series Database Interface: TShistQuote to get.hist.quote}
+\begin{document}
+\maketitle
+%\VignetteIndexEntry{TShistQuote Guide}
+\SweaveOpts{eval=TRUE,echo=TRUE,results=hide,fig=FALSE}
+%\SweaveOpts{eval=TRUE,echo=TRUE,results=verbatim,fig=TRUE}
+\begin{Scode}{echo=FALSE,results=hide}
+ options(continue="  ")
+\end{Scode}
+
+\section{Introduction}
+The code from the vignette that generates this guide can 
+be loaded into an editor with \emph{edit(vignette("TShistQuote"))}.
+This uses the default editor, which can be changed using \emph{options()}.
+It should be possible to view the pdf version of the guide for this 
+package with \emph{print(vignette("TShistQuote"))}.
+
+Once R is started, the functions in this package are made available with
+
+\begin{Scode}
+library("TShistQuote")  
+\end{Scode}
+This will also load required packages \pkg{TSdbi}, \pkg{DBI}, 
+\pkg{methods}, \pkg{tframePlus}, \pkg{zoo}, and \pkg{tseries}.
+
+\pkg{TShistQuote} is just a wrapper to \code{get.hist.quote}. It does not provide
+extra functionality, only an interface that is consistent with \pkg{TSdbi}.
+\pkg{TShistQuote} does not support writing data to the source URL.
+
+\subsection{Examples  Using TSdbi with ets}
+
+\begin{Scode}{results=verbatim}
+  con <- TSconnect("histQuote", dbname="yahoo") 
+  x <- TSget("^gdax", con)
+  plot(x)
+  tfplot(x)
+  TSrefperiod(x) 
+  TSdescription(x) 
+\end{Scode}
+
+It is also possible to specify a connection to be used as the default:
+
+\begin{Scode}{results=verbatim}
+  options(TSconnection=con)
+  tfplot(TSget(serIDs="^gdax"))
+\end{Scode}
+
+\begin{Scode}{results=verbatim}
+  x2 <- TSget("^gspc", con)
+  tfplot(x2)
+  plot(x2)
+  TSdescription(x2) 
+\end{Scode}
+
+\begin{Scode}{results=verbatim}
+  x <- TSget(c("^gdax","^gspc"), con)
+  plot(x)
+  tfplot(x)
+  TSdescription(x) 
+\end{Scode}
+
+\begin{Scode}{results=verbatim}
+  x <- TSget("ibm", con, quote = c("Close", "Vol"))
+  tfplot(x)
+  tfplot(x, xlab = TSdescription(x))
+  tfplot(x, Title="IBM", start="2007-01-01")
+  tfplot(x, Title=TSdoc(x), xlab = TSlabel(x), start="2007-01-01")
+\end{Scode}
+
+\begin{Scode}{results=verbatim}
+  conO <- TSconnect("histQuote", dbname="oanda") 
+  z <- TSget("EUR/USD", conO, start="2004-01-01")
+  tfplot(z)
+  tfplot(z, Title = "EUR/USD")
+  tfplot(z, Title = "EUR/USD", start="2007-01-01")
+  tfplot(z, Title = "EUR/USD", start="2007-03-01")
+  tfplot(z, Title = "EUR/USD", start=Sys.Date()-14, end=Sys.Date(),
+     xlab = format(Sys.Date(), "%Y"))
+\end{Scode}
+
+\begin{Scode}{results=verbatim}
+  TSdates(c("^gdax","^gspc", "ibm"), con) # note default start
+\end{Scode}
+
+See the \pkg{TSdbi} vignette for additional details.
+\end{document}
