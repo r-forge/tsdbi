@@ -1,0 +1,39 @@
+import(methods)  
+import(DBI)      
+import(TSdbi)
+#import(fame) 
+
+export("fame")
+
+## S4 Classes
+exportClasses(
+   "TSfameConnection"
+   )
+
+## S4 methods
+exportMethods(
+   "TSconnect",
+   "TSget",
+   "TSput",
+   "TSdelete",
+   "TSdescription",
+   "TSdoc",
+   "TSlabel",
+   "TSdates",
+   "TSexists",
+   "dbDisconnect",
+   "dbUnloadDriver"
+   )
+
+
+import("tframe")
+S3method("tfstart","tis")
+S3method("tfstart","tistframe")
+S3method("tfend","tis")
+S3method("tfend","tistframe")
+S3method("tfperiods","tistframe")
+S3method("periods","tistframe")
+S3method("tframe","tis")
+S3method("tfSet","tistframe")
+S3method("tfwindow","tis")
+S3method("tbind","tis")
