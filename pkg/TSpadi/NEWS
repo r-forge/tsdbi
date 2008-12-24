@@ -1,0 +1,31 @@
+(See also NEWS in the TSdbi package.)
+
+KNOWN BUGS
+
+    o None for the moment.
+
+CHANGES IN TSpadi VERSION 2008.5-1
+
+    o only changes to keep in sync with TSdbi.
+
+
+CHANGES IN TSpadi VERSION 2007.10-1
+
+    o This is an beta version.
+
+    o This package supercedes padi and dsepadi which were previously in the 
+      dseplus bundle in the devel area of CRAN. (As of R-2.5.0 the CRAN devel 
+      area was removed. 
+
+    o To the (very small) extent that there is any older news on 
+      this package, it will have been included in the NEWS for the main dse 
+      bundle on CRAN.
+
+    o some old function calls to padi.server.process and padi.cleanup.script
+      were fixed to call PADIserverProcess and PADIcleanupScript. (The function
+      names were changed some time ago.)
+
+
+Changes Affecting Development
+ 
+    o package separated from the dseplus bundle. 

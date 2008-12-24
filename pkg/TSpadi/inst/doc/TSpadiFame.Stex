@@ -1,0 +1,123 @@
+\documentclass[english]{article}
+\newcommand{\code}{\emph}
+\newcommand{\pkg}{\textsl}
+\title{Time Series Database Interface: R Padi to Fame (TSpadi)}
+\begin{document}
+\maketitle
+%\VignetteIndexEntry{TSpadi Guide}
+\SweaveOpts{eval=TRUE,echo=TRUE,results=hide,fig=FALSE}
+%\SweaveOpts{eval=TRUE,echo=TRUE,results=verbatim,fig=TRUE}
+\begin{Scode}{echo=FALSE,results=hide}
+ options(continue="  ")
+\end{Scode}
+
+\section{Introduction}
+The code from the vignette that generates this guide can 
+be loaded into an editor with \emph{edit(vignette("TSpadi"))}.
+This uses the default editor, which can be changed using \emph{options()}.
+It should be possible to view the pdf version of the guide for this 
+package with \emph{print(vignette("TSpadi"))}.
+
+Once R is started, the functions in this package are made available with
+
+\begin{Scode}
+library("TSpadi")  
+\end{Scode}
+This will also load required packages \pkg{TSdbi}, \pkg{DBI}, 
+\pkg{methods}, and \pkg{tframe}. 
+Some examples below also require \pkg{zoo}, and \pkg{tseries}.
+
+The main application of TSpadi is to set up an interface to a server which 
+extracts data from a database and supplies it to R programs. In these examples,
+Fame is the backend database. 
+
+\pkg{TSpadi} does not support writing data to a database, so examples below are
+restricted to an already available database. It should be possible to write a
+TSdbi package directly on top of the R package \pkg{fame}, to standardize the
+API and use more complete Fame functionality, but that has not yet been done.
+
+\subsection{Examples  Using TSdbi with ets}
+
+These examples use a database called "ets" which is available at the Bank
+of Canada.
+This set of examples illustrates how the programs might be used if a larger
+database is available. Typically a large database would be installed using
+database scripts directly rather than from R with \code{TSput} or
+\code{TSreplace}. 
+
+The following are wrapped in \code{if (!inherits(conets, "try-error"))} so that
+the vignette will build even when the database is not available. This seems to
+require an explicit call to \code{print()}, but that is not usually needed to
+display results below. Another artifact of this is that results printed in the
+if block do not display until the end of the block. Also, graphics are not
+displayed in the vignette because, when they are not generated, the missing 
+file causes an error building the vignette.
+
+\begin{Scode}{results=verbatim}
+  m <- dbDriver("padi")
+  conets <- try(TSconnect(m, dbname="ets")) 
+  if (!inherits(conets, "try-error")) {
+  
+  options(TSconnection=conets)
+
+  # TSdoc("M.SDR.CCUSMA02.ST") not supported for TSpadi
+  print(TSmeta("M.SDR.CCUSMA02.ST"))
+  
+  z <- TSget("M.SDR.CCUSMA02.ST")
+
+  EXCH.IDs <- t(matrix(c(
+ 	"M.SDR.CCUSMA02.ST",	 "SDR/USD exchange rate",
+ 	"M.CAN.CCUSMA02.ST",	 "CAN/USD exchange rate",
+ 	"M.MEX.CCUSMA02.ST",	 "MEX/USD exchange rate",
+ 	"M.JPN.CCUSMA02.ST",	 "JPN/USD exchange rate",
+ 	"M.EMU.CCUSMA02.ST",	 "Euro/USD exchange rate",
+ 	"M.OTO.CCUSMA02.ST",	 "OECD /USD exchange rate",
+ 	"M.G7M.CCUSMA02.ST",	 "G7   /USD exchange rate",
+ 	"M.E15.CCUSMA02.ST",	 "Euro 15. /USD exchange rate"
+	), 2, 8))
+
+  print(TSdates(EXCH.IDs[,1]))
+  z <- TSdates(EXCH.IDs[,1])
+  print(start(z))
+  print(end(z))
+   
+  tfplot(TSget(serIDs="V122646", conets))
+  }
+\end{Scode}
+
+\begin{Scode}{results=verbatim}
+if (!inherits(conets, "try-error")) {
+  print(TSdescription(TSget("V122646", TSdescription=TRUE)))
+  print(TSdoc(TSget("V122646", TSdoc=TRUE)))
+  tfplot(TSget("V122646", names="V122646", conets))
+  }
+\end{Scode}
+
+\begin{Scode}{results=verbatim}
+if (!inherits(conets, "try-error")) {
+  z <- TSget("V122646", TSdescription=TRUE)
+  tfplot(z, Title=strsplit(TSdescription(z), ","))
+  }
+\end{Scode}
+
+\begin{Scode}{results=verbatim}
+if (!inherits(conets, "try-error")) {
+  ETSgdp    <- annualizedGrowth(aggregate(TSget("V1992067"),
+                   nfrequency=4,FUN=mean), lag=4, names="GDP Y/Y Growth")
+  tfplot(ETSgdp)
+  }  # end if !try-error
+\end{Scode}
+
+\section{TS PADI Server}
+
+Building a padi server will require some programming effort. 
+The padi interface is getting to be fairly old and, although it still works,
+some of the underlying code should probably be replaced with a newer approach,
+perhaps based on something like SOAP.
+
+Code and a description of a prototype of a standard for a Time Series
+Protocol for Application - Database Interface (TS PADI) is still available
+at http://www.bank-banque-canada.ca/pgilbert. The code includes a
+working interface to a Fame database. 
+
+\end{document}

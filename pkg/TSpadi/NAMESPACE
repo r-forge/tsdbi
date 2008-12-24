@@ -1,0 +1,47 @@
+useDynLib("padi")
+import("methods")  
+import("DBI")      
+import("tframe")
+import("TSdbi")
+#importClassesFrom("DBI",..)
+
+##  may not need to export these if connection is handled differently
+export("checkPADIserver") # should not be needed (TSconnect should verify)
+##export("load.padi")
+export("PADIserver")
+export("PADIserverProcess")
+export("PADIcleanupScript")
+export("startPADIserver")
+export("cleanupPADIserver")
+export("killPADIserver")
+
+
+## should not need to export (except for tests and old code)
+ export("getpadi")
+ S3method("getpadi", "default")
+ export("putpadi")
+ S3method("putpadi", "default")
+
+
+export("padi")
+
+## S4 Classes
+exportClasses(
+   "padiDriver",
+   "TSpadiConnection"
+   )
+
+## S4 generics
+## none
+
+## S4 methods
+exportMethods(
+   "TSconnect",
+   "TSdates",
+   "TSdescription",
+   "TSdoc",
+   "TSlabel",
+   "TSget",
+   "TSput"
+   )
+
