@@ -1,0 +1,24 @@
+import(methods)  
+import(DBI)      
+import(TSdbi)
+##import(RSQLite)
+import(RSQLite) ## this should not all be needed, but parts for setClass "TSSQLiteConnection"
+##importClassesFrom("RSQLite","SQLiteConnection")
+
+## S4 Classes
+exportClasses(
+   "TSSQLiteConnection"
+   )
+
+## S4 methods
+exportMethods(
+   "print",
+   "TSconnect",
+   "TSget",
+   "TSput",
+   "TSdelete",
+   "TSdescription",
+   "TSdoc",
+   "TSlabel",
+   "TSdates"
+   )
