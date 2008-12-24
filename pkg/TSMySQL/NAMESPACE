@@ -1,0 +1,23 @@
+import(methods)  
+import(DBI)      
+import(TSdbi)
+import(RMySQL) ## this should not all be needed, but parts for setClass "TSMySQLConnection"
+##importClassesFrom("RMySQL","MySQLConnection")
+
+## S4 Classes
+exportClasses(
+   "TSMySQLConnection"
+   )
+
+## S4 methods
+exportMethods(
+   ##"print",
+   "TSconnect",
+   "TSget",
+   "TSput",
+   "TSdelete",
+   "TSdescription",
+   "TSdoc",
+   "TSlabel",
+   "TSdates"
+   )
