@@ -4,6 +4,8 @@
 VPATH=../exec
 
 CC=gcc
+CFLAGS= -fPIC
+
 # consider using rpcgen -N
 RPCGEN= rpcgen -C
 
