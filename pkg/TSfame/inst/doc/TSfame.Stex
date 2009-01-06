@@ -303,7 +303,10 @@ require an explicit call to \code{print()}, but that is not usually needed to
 display results below. Another artifact of this is that results printed in the
 if block do not display until the end of the block.
 
-\begin{Scode}{results=verbatim,fig=TRUE}
+THESE EXAMPLES ARE TEMPORARLY DISABLED BECAUSE OF A BUG (NOT YET SUPPORTED 
+FEATURE)  TO ACCES REMOTE FAME SERVERS.
+
+\begin{Scode}{results=verbatim,fig=TRUE,eval=FALSE}
   m <- dbDriver("fame")
   conets <- try(TSconnect(m, dbname="ets /home/ets/db/etsintoecd.db",
                   accessMode="read")) 
@@ -340,7 +343,7 @@ fameDbClose(id)
   }
 \end{Scode}
 
-\begin{Scode}{results=verbatim,fig=TRUE}
+\begin{Scode}{results=verbatim,fig=TRUE,eval=FALSE}
 if (!inherits(conets, "try-error")) {
   print(TSdescription(TSget("V122646", TSdescription=TRUE)))
   print(TSdescription("V122646"))
@@ -352,14 +355,14 @@ if (!inherits(conets, "try-error")) {
   }
 \end{Scode}
 
-\begin{Scode}{results=verbatim,fig=TRUE}
+\begin{Scode}{results=verbatim,fig=TRUE,eval=FALSE}
 if (!inherits(conets, "try-error")) {
   z <- TSget("V122646", TSdescription=TRUE)
   tfplot(z, Title=strsplit(TSdescription(z), ","))
   }
 \end{Scode}
 
-\begin{Scode}{results=verbatim,fig=TRUE}
+\begin{Scode}{results=verbatim,fig=TRUE,eval=FALSE}
 if (!inherits(conets, "try-error")) {
   z <- TSget("SDSP500", TSdescription=TRUE)
   tfplot(z, Title=TSdescription(z))
@@ -367,20 +370,20 @@ if (!inherits(conets, "try-error")) {
   }
 \end{Scode}
 
-\begin{Scode}{results=verbatim,fig=TRUE}
+\begin{Scode}{results=verbatim,fig=TRUE,eval=FALSE}
 if (!inherits(conets, "try-error")) {
   z <- TSget(c("DSP500","SDSP500"), TSdescription=TRUE)
   tfplot(z, xlab=TSdescription(z))
   }
 \end{Scode}
 
-\begin{Scode}{results=verbatim,fig=TRUE}
+\begin{Scode}{results=verbatim,fig=TRUE,eval=FALSE}
 if (!inherits(conets, "try-error")) {
   plot(z)
   }
 \end{Scode}
 
-\begin{Scode}{results=verbatim,fig=TRUE}
+\begin{Scode}{results=verbatim,fig=TRUE,eval=FALSE}
 if (!inherits(conets, "try-error")) {
   ETSgdp    <- annualizedGrowth(aggregate(TSget("V1992067"),
                    nfrequency=4,FUN=mean), lag=4, names="GDP Y/Y Growth")
@@ -388,7 +391,7 @@ if (!inherits(conets, "try-error")) {
   }  # end if !try-error
 \end{Scode}
   
-\begin{Scode}{results=hide}
+\begin{Scode}{results=hide,eval=FALSE}
   if (!inherits(conets, "try-error")) {
   options(TSconnection=NULL)
   }  # end if try-error
