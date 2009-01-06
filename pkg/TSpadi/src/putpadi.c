@@ -138,7 +138,7 @@ int   *timeout;		/* max time to wait for reply (seconds) */
    if(digitCount((int) *syear) !=  4)
 	*syear = *smon = *sday = 0L;
 
-    sprintf(option_start, "%4ld%2ld%2ld", *syear, *smon, *sday);
+    sprintf(option_start, "%4d%2d%2d", *syear, *smon, *sday);
     new_series.series.range.start = option_start;
     new_series.series.range.end = Padi_EMPTY_STR;
     new_series.series.range.format = "SimpleSeries";

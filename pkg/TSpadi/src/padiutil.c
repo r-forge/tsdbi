@@ -51,7 +51,7 @@ retyear( char *date)
     char buffer[5];
     int len;
 
-    if(!date || *date == NULL || (strlen(date) < 4) )
+    if(!date || date == NULL || (strlen(date) < 4) )
 	return 0;
      strncpy(buffer,date,4);
        buffer[4] = '\0';
