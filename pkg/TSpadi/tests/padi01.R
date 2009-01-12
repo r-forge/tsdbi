@@ -1,3 +1,4 @@
+if(identical(as.logical(Sys.getenv("_R_CHECK_HAVE_PADI_")), TRUE)) {
  require("TSpadi") 
 
  Sys.info()
@@ -140,3 +141,5 @@ padi.function.tests.simple <- function( verbose=TRUE, synopsis=TRUE, fuzz=1e-6,
 
    Sys.sleep(5)
    padi.function.tests.simple(verbose=TRUE)     # all ok
+
+} else  cat("PADI not available. Skipping tests.")

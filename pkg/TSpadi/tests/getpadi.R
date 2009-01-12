@@ -1,6 +1,8 @@
 #  This is really a test of the getpadi standalone command, not the R
 #   interface, but this is a convenient way to test. 
 
+if(identical(as.logical(Sys.getenv("_R_CHECK_HAVE_PADI_")), TRUE)) {
+
   require("TSpadi") 
 
   Sys.info()
@@ -58,3 +60,5 @@ if (checkPADIserver("ets"))
   z <- system(paste("getpadi ets B2001"), intern = TRUE)
   cat("      getpadi ets B2001 system return message: ", z, "\n")  
  }
+
+} else  cat("PADI not available. Skipping tests.")
