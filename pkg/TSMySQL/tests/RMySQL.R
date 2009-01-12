@@ -1,8 +1,9 @@
 # Before starting R you need to set user/passwd/host in ~/.my.cnf
 
+if(identical(as.logical(Sys.getenv("_R_CHECK_HAVE_MYSQL_")), TRUE)) {
+
 require("TSMySQL")
 
-if(require("RMySQL") ) {
 cat("************** RMySQL  Examples ******************************\n")
 cat("**************************************************************\n")
 cat("* WARNING: THIS OVERWRITES TABLES IN TEST DATABASE ON SERVER**\n")
@@ -32,4 +33,4 @@ cat("**************        disconnecting test\n")
 dbDisconnect(con)
 dbUnloadDriver(m)
 
-} else  warning("RMySQL not available. Skipping tests.")
+} else  cat("MYSQL not available. Skipping tests.")
