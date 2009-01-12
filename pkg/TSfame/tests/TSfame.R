@@ -2,8 +2,7 @@
 # export R_LIBS=/home/mfa/gilp/serveR.myBase/gcc-3.4.6/R-2.7.1 
 # export FAME=/apps/fame92r2
 
-if(require("fame") ) {
-
+if(identical(as.logical(Sys.getenv("_R_CHECK_HAVE_FAME_")), TRUE)) {
 
 require("TSfame")
 
@@ -155,4 +154,4 @@ cat("**************        disconnecting test\n")
 #dbDisconnect(con)
 #dbUnloadDriver(m)
 
-} else  warning("fame not available. Skipping tests.")
+} else  cat("FAME not available. Skipping tests.")
