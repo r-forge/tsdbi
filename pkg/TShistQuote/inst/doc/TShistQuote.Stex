@@ -70,9 +70,12 @@ It is also possible to specify a connection to be used as the default:
   tfplot(x, Title=TSdoc(x), xlab = TSlabel(x), start="2007-01-01")
 \end{Scode}
 
+Oanda has maximum of 500 days, so the start date is specified here so as to
+not exceed that.
+
 \begin{Scode}{results=verbatim}
   conO <- TSconnect("histQuote", dbname="oanda") 
-  z <- TSget("EUR/USD", conO, start="2004-01-01")
+  z <- TSget("EUR/USD", conO, start=Sys.Date() - 495)
   tfplot(z)
   tfplot(z, Title = "EUR/USD")
   tfplot(z, Title = "EUR/USD", start="2007-01-01")

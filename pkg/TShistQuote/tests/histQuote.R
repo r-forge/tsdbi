@@ -34,7 +34,8 @@ tfplot(x, Title="IBM", start="2007-01-01")
 
 conO <- TSconnect("histQuote", dbname="oanda") 
 
-z <- TSget("EUR/USD", conO, start="2004-01-01")
+# oanda has max 500 data points
+z <- TSget("EUR/USD", conO, start=Sys.Date() - 495)
 plot(z)
 tfplot(z)
 if ("Close" != TSrefperiod(z)) stop("TSrefperiod error, test 5.") 
