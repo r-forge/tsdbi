@@ -296,20 +296,23 @@ and check the saved version:
    tfplot(z, Title="IBM", start="2007-01-01")
 \end{Scode}
 
+Oanda has maximum of 500 days, so the start date is specified here so as to
+not exceed that.
+
 \begin{Scode}{results=verbatim}
    Oanda <- TSconnect("histQuote", dbname="oanda") 
-   x <- TSget("EUR/USD", start="2004-01-01", con=Oanda)
+   x <- TSget("EUR/USD", start=Sys.Date() - 495, con=Oanda)
    TSreplace(x, serIDs="EUR/USD", Table="D", con=con)
 \end{Scode}
 
-and check the saved version:
+Then check the saved version:
 
 \begin{Scode}{results=verbatim,fig=TRUE}
    z <- TSget(serIDs="EUR/USD",TSlabel=TRUE, TSdescription=TRUE,  con=con)
    tfplot(z, Title = TSdescription(z), ylab=TSlabel(z))
-   tfplot(z, Title = "EUR/USD", start="2007-01-01")
-   tfplot(z, Title = "EUR/USD", start="2007-03-01")
-   tfplot(z, Title = "EUR/USD", start=Sys.Date()-14, end=Sys.Date(),
+   tfplot(z, Title = "EUR/USD", start=Sys.Date() - 495)
+   tfplot(z, Title = "EUR/USD", start=Sys.Date() - 100)
+   tfplot(z, Title = "EUR/USD", start=Sys.Date()  -14, end=Sys.Date(),
       xlab = format(Sys.Date(), "%Y"))
 \end{Scode}
 
@@ -337,7 +340,7 @@ if block do not display until the end of the block.
 
 \begin{Scode}{results=verbatim,fig=TRUE}
   m <- dbDriver("ODBC")
-  conets <- try(TSconnect(m, dbname="ets")) 
+  conets <- tryCatch(TSconnect(m, dbname="ets")) 
   if (!inherits(conets, "try-error")) {
   
   options(TSconnection=conets)
@@ -443,20 +446,20 @@ dbListTables(con)
 If schema queries  are supported then table information can be obtained in a
 generic SQL way, but on some systems this will fail because users
 do not have read priveleges on the INFORMATION\_SCHEMA table,
-so the following are wrapped in \code{try()}.
+so the following are wrapped in \code{tryCatch()}.
 (SQLite does not seem to support this at all.)
 
 \begin{Scode}{results=verbatim}
-  try( dbGetQuery(con, paste(
+  tryCatch( dbGetQuery(con, paste(
        "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.Columns ",
        " WHERE TABLE_SCHEMA='test' AND table_name='A' ;"))  )
 
-  try( dbGetQuery(con, paste(
+  tryCatch( dbGetQuery(con, paste(
        "SELECT COLUMN_NAME, COLUMN_DEFAULT, COLLATION_NAME, DATA_TYPE,",
        "CHARACTER_SET_NAME, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION",
  "FROM INFORMATION_SCHEMA.Columns WHERE TABLE_SCHEMA='test' AND table_name='A' ;"))  )
 
-  try( dbGetQuery(con, paste(
+  tryCatch( dbGetQuery(con, paste(
    "SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION",
  "FROM INFORMATION_SCHEMA.Columns WHERE TABLE_SCHEMA='test' AND table_name='M';"))  )
 

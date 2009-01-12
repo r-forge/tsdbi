@@ -1,9 +1,9 @@
-# Before starting R you need to set user/passwd/host in ~/.my.cnf
+# Before starting R you need to set user/passwd/host etc  in ~/.odbc.ini
+if(identical(as.logical(Sys.getenv("_R_CHECK_HAVE_ODBC_")), TRUE)) {
 
 require("TSodbc")
-
-if(require("RODBC") ) {
-  library("tframe")
+require("RODBC") 
+require("tframe")
 
 cat("************** RODBC  Examples ******************************\n")
 cat("**************************************************************\n")
@@ -17,7 +17,7 @@ m <- dbDriver("ODBC")
   # with a message like:  [RODBC] ERROR: state IM002, code 0, 
   # message [unixODBC][Driver Manager]Data source name not found, 
   # and no default driver specified
- con <- odbcConnect("test") # pass user/ passwd / host in .obc.ini
+ con <- odbcConnect("test") # pass user/ passwd / host in .odbc.ini
 ##################################################################
 
 #dbListTables(con) 
@@ -26,7 +26,7 @@ source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
 #dbDisconnect(con)
 
 #con <- TSconnect("ODBC", dbname="test") 
-con <- TSconnect("ODBC", dbname="test") # pass user/passwd/host in ~/.obc.ini
+con <- tryCatch(TSconnect("ODBC", dbname="test"))
 if(inherits(con, "try-error")) stop("CreateTables did not work.")
 
 source(system.file("TSsql/Populate.TSsql", package = "TSdbi"))
@@ -38,4 +38,4 @@ cat("**************        disconnecting test\n")
 dbDisconnect(con)
 dbUnloadDriver(m)
 
-} else  warning("RODBC not available. Skipping tests.")
+} else  cat( "ODBC not available. Skipping tests.")
