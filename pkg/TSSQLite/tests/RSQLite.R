@@ -1,6 +1,7 @@
+if(identical(as.logical(Sys.getenv("_R_CHECK_HAVE_SQLLITE_")), TRUE)) {
+
 require("TSSQLite")
 
-if(require("RSQLite") ) {
 cat("************** RSQLite  Examples ******************************\n")
 cat("**************************************************************\n")
 cat("* WARNING: THIS OVERWRITES TABLES IN TEST DATABASE ON SERVER**\n")
@@ -27,4 +28,4 @@ cat("**************        disconnecting test\n")
 dbDisconnect(con)
 #  dbUnloadDriver(m) complains about open connections.
 
-} else  warning("RSQLite not available. Skipping tests.")
+} else  cat("SQLLITE not available. Skipping tests.")
