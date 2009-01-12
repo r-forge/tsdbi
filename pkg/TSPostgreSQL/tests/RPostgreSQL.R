@@ -1,8 +1,8 @@
 # Before starting R you need to set user/passwd/host in ~/.pgpass
+if(identical(as.logical(Sys.getenv("_R_CHECK_HAVE_POSTGRES_")), TRUE)) {
 
 require("TSPostgreSQL")
 
-if(require("RPostgreSQL") ) {
 cat("************** RPostgreSQL  Examples ******************************\n")
 cat("**************************************************************\n")
 cat("* WARNING: THIS OVERWRITES TABLES IN TEST DATABASE ON SERVER**\n")
@@ -35,4 +35,4 @@ cat("**************        disconnecting test\n")
 dbDisconnect(con)
 dbUnloadDriver(m)
 
-} else  warning("RPostgreSQL not available. Skipping tests.")
+} else  cat("POSTGRES not available. Skipping tests.")
