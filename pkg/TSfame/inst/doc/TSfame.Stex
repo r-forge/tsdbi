@@ -264,9 +264,12 @@ and check the saved version:
    tfplot(z, Title="IBM", start="2007-01-01")
 \end{Scode}
 
+Oanda has maximum of 500 days, so the start date is specified here so as to
+not exceed that.
+
 \begin{Scode}{results=verbatim}
    Oanda <- TSconnect("histQuote", dbname="oanda") 
-   x <- TSget("EUR/USD", start="2004-01-01", con=Oanda)
+   x <- TSget("EUR/USD", start=Sys.Date() - 495, con=Oanda)
    TSreplace(x, serIDs="EURUSD", con=con)
 \end{Scode}
 
