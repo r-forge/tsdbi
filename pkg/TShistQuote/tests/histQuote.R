@@ -6,6 +6,11 @@ con <- TSconnect("histQuote", dbname="yahoo")
 x <- TSget("^gdax", con)
 plot(x)
 tfplot(x)
+
+# debugging info
+str(x)
+TSrefperiod(x)
+
 if ("Close" != TSrefperiod(x)) stop("TSrefperiod error, test 1.") 
 TSdescription(x) 
 
