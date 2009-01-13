@@ -5,5 +5,12 @@ KNOWN BUGS
     o None for the moment.
 
 CHANGES IN TShistQuote VERSION 2008.11-1
+    o changed test retrieval from Oanda to respect max 500 days.
+
+    o minor documentation fixes found by new R-devel parsing. 
+
+    o minor changes to keep in sync with TSdbi.
+
+CHANGES IN TShistQuote VERSION 2008.11-1
 
     o first release
