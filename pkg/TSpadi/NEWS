@@ -4,6 +4,11 @@ KNOWN BUGS
 
     o None for the moment.
 
+CHANGES IN TSpadi VERSION 2009.1-1
+
+    o only changes to keep in sync with TSdbi.
+
+
 CHANGES IN TSpadi VERSION 2008.5-1
 
     o only changes to keep in sync with TSdbi.

@@ -4,7 +4,7 @@ Date:2009-1-12
 Title: Time Series Database Interface extensions for MySQL
 Description: TSMySQL provides a MySQL interface for TSdbi.
 Depends: R (>= 2.8.0), methods, tframePlus, TSdbi, RMySQL
-Imports: methods, TSdbi, DBI, RMySQL (>= 0.6-0) 
+Imports: methods, TSdbi (>= 2009.1-1), DBI, RMySQL (>= 0.6-0) 
 Suggests: zoo, tseries, TShistQuote
 Enhances: TSdbi
 License: GPL-2
