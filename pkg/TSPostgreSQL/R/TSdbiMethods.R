@@ -1,8 +1,8 @@
-.onLoad <- function(library, section) {
-   require("methods")
-   require("TSdbi")
-   require("RPostgreSQL")
-   }
+#.onLoad <- function(library, section) {
+#   require("methods")
+#   require("TSdbi")
+#   require("RPostgreSQL")
+#   }
 
 setClass("TSPostgreSQLConnection", contains=c("PostgreSQLConnection", "TSdb")) 
 

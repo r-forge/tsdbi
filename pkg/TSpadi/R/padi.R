@@ -1,7 +1,7 @@
 .onLoad  <- function(library, section) {
-  require("methods")
-  require("DBI") # this seems to be needed for dbConnect (not just namespace)
-  require("TSdbi")
+  #require("methods")
+  #require("DBI") # this seems to be needed for dbConnect (not just namespace)
+  #require("TSdbi")
    # next require is necessary for bundle check to run examples,  
    # but does not seem to be necessary when packages are not bundled
    if(!require("tframe", warn.conflicts=TRUE))

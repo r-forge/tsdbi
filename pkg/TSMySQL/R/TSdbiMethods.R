@@ -1,8 +1,8 @@
-.onLoad <- function(library, section) {
-   require("methods")
-   require("TSdbi")
-   require("RMySQL")
-   }
+#.onLoad <- function(library, section) {
+#   require("methods")
+#   require("TSdbi")
+#   require("RMySQL")
+#   }
 
 # This can be 
 #setClass("TSMySQLConnection", contains="MySQLConnection",

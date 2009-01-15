@@ -1,9 +1,9 @@
-.onLoad <- function(library, section) {
-   require("methods")
-   require("DBI")
-   require("TSdbi")
-   require("RODBC")
-   }
+#.onLoad <- function(library, section) {
+#   require("methods")
+#   require("DBI")
+#   require("TSdbi")
+#   require("RODBC")
+#   }
 
 
 #RODBC is non-neg numeric value (or -1 for failure) with S3 class and attributes
