@@ -1,4 +1,4 @@
-.onLoad <- function(library, section) {require("methods")}
+#.onLoad <- function(library, section) {require("methods")}
 
 #setClassUnion("OptionalPOSIXct",   c("POSIXct",   "NULL"))
 # bug work around

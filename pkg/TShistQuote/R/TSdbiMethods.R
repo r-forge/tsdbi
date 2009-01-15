@@ -1,11 +1,11 @@
-.onLoad  <- function(library, section) {
-  ok <- require("methods")
-  ok <- ok & require("DBI") # this seems to be needed for dbConnect (not just namespace)
-  ok <- ok & require("TSdbi")
-  ok <- ok & require("tseries")
-  ok <- ok & require("tframePlus")
-  invisible(ok)
-  }
+#.onLoad  <- function(library, section) {
+#  ok <- require("methods")
+#  ok <- ok & require("DBI") # this seems to be needed for dbConnect (not just namespace)
+#  ok <- ok & require("TSdbi")
+#  ok <- ok & require("tseries")
+#  ok <- ok & require("tframePlus")
+#  invisible(ok)
+#  }
 
 setClass("histQuoteDriver", representation("DBIDriver", Id = "character")) 
 

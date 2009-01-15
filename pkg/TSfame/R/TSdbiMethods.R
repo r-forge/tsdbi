@@ -1,11 +1,11 @@
-.onLoad <- function(library, section) {
-   ok <- require("methods")
-   ok <- ok & require("DBI")
-   ok <- ok & require("TSdbi")
-   ok <- ok & require("fame")
-   ok <- ok & require("zoo")
-   invisible(ok)
-   }
+#.onLoad <- function(library, section) {
+#   ok <- require("methods")
+#   ok <- ok & require("DBI")
+#   ok <- ok & require("TSdbi")
+#   ok <- ok & require("fame")
+#   ok <- ok & require("zoo")
+#   invisible(ok)
+#   }
 
 setClass("fameDriver", representation("DBIDriver", Id = "character")) 
 
