@@ -35,8 +35,10 @@ dbDisconnect(con)
 ##################################################################
 
 con <- if ("" != user)  
-          TSconnect(m, dbname=dbname, username=user, password=passwd, host=host)  
-    else  TSconnect(m, dbname=dbname) # pass user/passwd/host in ~/.my.cnf
+          tryCatch(TSconnect(m, dbname=dbname, username=user, password=passwd, host=host)) 
+    else  tryCatch(TSconnect(m, dbname=dbname)) # pass user/passwd/host in ~/.my.cnf
+
+if(inherits(con, "try-error")) stop("CreateTables did not work.")
 
 source(system.file("TSsql/Populate.TSsql", package = "TSdbi"))
 source(system.file("TSsql/TSdbi.TSsql", package = "TSdbi"))
