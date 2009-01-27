@@ -9,7 +9,7 @@ if(identical(as.logical(service), TRUE)) {
    m <- dbDriver("MySQL")
 
    dbname   <- Sys.getenv("MYSQL_DATABASE")
-   if ("" == dbname)   dbname <- NULL
+   if ("" == dbname)   dbname <-  NULL 
 
    user    <- Sys.getenv("MYSQL_USER")
    if ("" != user) {
@@ -21,8 +21,10 @@ if(identical(as.logical(service), TRUE)) {
        #  See  ?"dbConnect-methods"
        con <- dbConnect(m,
           username=user, password=passwd, host=host, dbname=dbname)  
-      }else  con <- 
-       dbConnect(m, dbname=dbname) # pass user/passwd/host in ~/.my.cnf
+      }else {
+        if (is.null(dbname))   dbname <- "test"  # NULL dbname causes segfault
+	con <- dbConnect(m, dbname=dbname) # pass user/passwd/host in ~/.my.cnf
+	}
    # dbListTables(con) needs a non-null dbname
    dbDisconnect(con)
  }else {
