@@ -1,5 +1,6 @@
-# Before starting R you need to set user/passwd/host in ~/.pgpass
-if(identical(as.logical(Sys.getenv("_R_CHECK_HAVE_POSTGRES_")), TRUE)) {
+service <- Sys.getenv("_R_CHECK_HAVE_POSTGRES_")
+
+if(identical(as.logical(service), TRUE)) {
 
 require("TSPostgreSQL")
 
@@ -11,20 +12,35 @@ cat("**************************************************************\n")
 m <- dbDriver("PostgreSQL")
 
 ###### This is to set up tables. Otherwise use TSconnect#########
-# pass user/passwd in ~/.pgpass (but host seems to be a problem).
-con <- dbConnect(m, dbname="test", 
-  host=if(!is.null(Sys.getenv("PGHOST"))) Sys.getenv("PGHOST") else "localhost")
-##################################################################
+
+   dbname   <- Sys.getenv("POSTGRES_DATABASE")
+   if ("" == dbname)   dbname <- "test"
+
+   user    <- Sys.getenv("POSTGRES_USER")
+   if ("" != user) {
+       host    <- Sys.getenv("POSTGRES_HOST")
+       if ("" == host)     host <- "localhost"  #Sys.info()["nodename"] 
+       if ("" == passwd)   passwd <- NULL
+       passwd  <- Sys.getenv("POSTGRES_PASSWD")
+       #  See  ?"dbConnect-methods"
+       con <- dbConnect(m,
+          username=user, password=passwd, host=host, dbname=dbname)  
+     }else  con <- 
+       dbConnect(m, dbname=dbname) # pass user/passwd/host in ~/.pgpass
 
 dbListTables(con) 
 source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
 dbListTables(con) 
 dbDisconnect(con)
+##################################################################
 
 # pass user/passwd in ~/.pgpass (but host defaults to PGHOST or localhost).
-con <- TSconnect("PostgreSQL", dbname="test")
- 
-#if(inherits(con, "try-error")) stop("CreateTables did not work.")
+
+con <- if ("" != user)  
+          tryCatch(TSconnect(m, dbname=dbname, username=user, password=passwd, host=host)) 
+    else  tryCatch(TSconnect(m, dbname=dbname)) 
+    
+if(inherits(con, "try-error")) stop("CreateTables did not work.")
 
 source(system.file("TSsql/Populate.TSsql", package = "TSdbi"))
 source(system.file("TSsql/TSdbi.TSsql", package = "TSdbi"))
@@ -35,4 +51,7 @@ cat("**************        disconnecting test\n")
 dbDisconnect(con)
 dbUnloadDriver(m)
 
-} else  cat("POSTGRES not available. Skipping tests.")
+} else  {
+   cat("POSTGRES not available. Skipping tests.\n")
+   cat("_R_CHECK_HAVE_POSTGRES_ setting ", service, "\n")
+   }
