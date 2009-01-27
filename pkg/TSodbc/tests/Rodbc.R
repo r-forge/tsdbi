@@ -25,15 +25,14 @@ cat("**************************************************************\n")
        if ("" == passwd)   passwd <- NULL
        passwd  <- Sys.getenv("ODBC_PASSWD")
        #  See  ?odbcConnect   ?odbcDriverConnect
-       con <- odbcConnect(dsn=dbname, uid="user, pwd=passwd, connection=host))  
-     }else  con <- 
-       odbcConnect(dsn=dbname) # pass user/passwd/host in ~/.odbc.ini
-   dbDisconnect(con)
+       con <- odbcConnect(dsn=dbname, uid=user, pwd=passwd, connection=host) 
+     }else  
+       con <- odbcConnect(dsn=dbname) # pass user/passwd/host in ~/.odbc.ini
 
 #dbListTables(con) 
 source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
 #dbListTables(con) 
-#dbDisconnect(con)
+dbDisconnect(con)
 ##################################################################
 
 con <- if ("" != user)  
@@ -49,6 +48,8 @@ source(system.file("TSsql/HistQuote.TSsql", package = "TSdbi"))
 
 cat("**************        disconnecting test\n")
 dbDisconnect(con)
-dbUnloadDriver(m)
 
-} else  cat( "ODBC not available. Skipping tests.")
+} else {
+   cat("ODBC not available. Skipping tests.\n")
+   cat("_R_CHECK_HAVE_ODBC_ setting ", service, "\n")
+   }
