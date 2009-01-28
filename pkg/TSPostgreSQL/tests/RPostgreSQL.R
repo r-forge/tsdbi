@@ -9,7 +9,7 @@ cat("**************************************************************\n")
 cat("* WARNING: THIS OVERWRITES TABLES IN TEST DATABASE ON SERVER**\n")
 cat("**************************************************************\n")
 
-m <- dbDriver("PostgreSQL")
+m <- dbDriver("PostgreSQL") # note that this is needed in sourced files.
 
 ###### This is to set up tables. Otherwise use TSconnect#########
 

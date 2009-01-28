@@ -9,6 +9,8 @@ cat("**************************************************************\n")
 cat("* WARNING: THIS OVERWRITES TABLES IN TEST DATABASE ON SERVER**\n")
 cat("**************************************************************\n")
 
+m <- dbDriver("ODBC") # note that this is needed in sourced files.
+
 ###### This is to set up tables. Otherwise use TSconnect#########
   # This will fail if ODBC support is not installed or set up on the system 
   # with a message like:  [RODBC] ERROR: state IM002, code 0, 
@@ -39,16 +41,19 @@ con <- if ("" != user)
           tryCatch(TSconnect("ODBC", dbname=dbname, username=user, password=passwd, host=host)) 
     else  tryCatch(TSconnect("ODBC", dbname=dbname)) # pass user/passwd/host in ~/.my.cnf
 
-if(inherits(con, "try-error")) stop("CreateTables did not work.")
+if(inherits(con, "try-error")) cat("CreateTables did not work.\n")
+ else {
+   source(system.file("TSsql/Populate.TSsql", package = "TSdbi"))
+   cat("**********1\n")
+   source(system.file("TSsql/TSdbi.TSsql", package = "TSdbi"))
+   cat("**********2\n")
+   source(system.file("TSsql/dbGetQuery.TSsql", package = "TSdbi"))
+   cat("*********3\n")
+   source(system.file("TSsql/HistQuote.TSsql", package = "TSdbi"))
 
-source(system.file("TSsql/Populate.TSsql", package = "TSdbi"))
-source(system.file("TSsql/TSdbi.TSsql", package = "TSdbi"))
-source(system.file("TSsql/dbGetQuery.TSsql", package = "TSdbi"))
-source(system.file("TSsql/HistQuote.TSsql", package = "TSdbi"))
-
-cat("**************        disconnecting test\n")
-dbDisconnect(con)
-
+   cat("**************        disconnecting test\n")
+   dbDisconnect(con)
+   }
 } else {
    cat("ODBC not available. Skipping tests.\n")
    cat("_R_CHECK_HAVE_ODBC_ setting ", service, "\n")
