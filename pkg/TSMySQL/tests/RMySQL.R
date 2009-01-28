@@ -9,7 +9,7 @@ cat("**************************************************************\n")
 cat("* WARNING: THIS OVERWRITES TABLES IN TEST DATABASE ON SERVER**\n")
 cat("**************************************************************\n")
 
-m <- dbDriver("MySQL")
+m <- dbDriver("MySQL") # note that this is needed in sourced files.
 
 ###### This is to set up tables. Otherwise use TSconnect#########
    dbname   <- Sys.getenv("MYSQL_DATABASE")
