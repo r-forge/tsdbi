@@ -61,4 +61,7 @@ if (checkPADIserver("ets"))
   z <- system(paste("x11arima ets B2001"), intern = TRUE)
   z  
  }
-} else  cat("PADI not available. Skipping tests.")
+} else {
+   cat("PADI not available. Skipping tests.\n")
+   cat("_R_CHECK_HAVE_PADI_ setting ", service, "\n")
+   }

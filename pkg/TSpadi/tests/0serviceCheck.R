@@ -9,7 +9,7 @@ if(identical(as.logical(service), TRUE)) {
    m <- dbDriver("padi")
 
    dbname   <- Sys.getenv("PADI_DATABASE")
-   if (is.null(dbname))   dbname <- "test"  
+   if ("" == dbname)   dbname <- "test"  
 
    user    <- Sys.getenv("PADI_USER")
    if ("" != user) {
