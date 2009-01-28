@@ -61,4 +61,7 @@ if (checkPADIserver("ets"))
   cat("      getpadi ets B2001 system return message: ", z, "\n")  
  }
 
-} else  cat("PADI not available. Skipping tests.")
+} else {
+   cat("PADI not available. Skipping tests.\n")
+   cat("_R_CHECK_HAVE_PADI_ setting ", service, "\n")
+   }

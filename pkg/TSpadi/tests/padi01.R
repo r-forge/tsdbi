@@ -142,4 +142,7 @@ padi.function.tests.simple <- function( verbose=TRUE, synopsis=TRUE, fuzz=1e-6,
    Sys.sleep(5)
    padi.function.tests.simple(verbose=TRUE)     # all ok
 
-} else  cat("PADI not available. Skipping tests.")
+} else {
+   cat("PADI not available. Skipping tests.\n")
+   cat("_R_CHECK_HAVE_PADI_ setting ", service, "\n")
+   }
