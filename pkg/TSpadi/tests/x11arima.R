@@ -1,7 +1,8 @@
 #  This is really a test of the getpadi standalone command, not the R
 #   interface, but this is a convenient way to test. 
+service <- Sys.getenv("_R_CHECK_HAVE_PADI_")
 
-if(identical(as.logical(Sys.getenv("_R_CHECK_HAVE_PADI_")), TRUE)) {
+if(identical(as.logical(service), TRUE)) {
 
   require("TSpadi") # only to write data
   Sys.info()
