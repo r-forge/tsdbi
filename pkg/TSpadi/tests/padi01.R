@@ -1,4 +1,6 @@
-if(identical(as.logical(Sys.getenv("_R_CHECK_HAVE_PADI_")), TRUE)) {
+service <- Sys.getenv("_R_CHECK_HAVE_PADI_")
+
+if(identical(as.logical(service), TRUE)) {
  require("TSpadi") 
 
  Sys.info()
