@@ -25,8 +25,16 @@ m <- dbDriver("PostgreSQL") # note that this is needed in sourced files.
        #  See  ?"dbConnect-methods"
        con <- dbConnect(m,
           username=user, password=passwd, host=host, dbname=dbname)  
-     }else  con <- 
-       dbConnect(m, dbname=dbname) # pass user/passwd/host in ~/.pgpass
+     }else  {
+	#( the postgres driver may also use PGDATABASE, PGHOST, PGPORT, PGUSER )
+       # The Postgress documentation seems to suggest that it should be
+       #   possible to get the host from the .pgpass file too, but I cannot.
+       host <- Sys.getenv("POSTGRES_HOST")
+       if ("" == host) host  <- Sys.getenv("PGHOST")
+       if ("" == host) host  <- "localhost"  #Sys.info()["nodename"] 
+       #get user/passwd/dbase in ~/.pgpass
+       con <- dbConnect(m, dbname=dbname, host=host) 
+       }
 
 dbListTables(con) 
 source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
