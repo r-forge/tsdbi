@@ -6,12 +6,13 @@ if(identical(as.logical(service), TRUE)) {
    
    m <- dbDriver("padi")
    dbname   <- Sys.getenv("PADI_DATABASE")
-   if (is.null(dbname))   dbname <- "ets"  
+   if ("" == dbname)   dbname <- "ets"  
    user    <- Sys.getenv("PADI_USER")
     
-   conets <- if ("" != user)  
-         tryCatch(TSconnect(m, dbname=dbname, username=user, password=passwd, host=host)) 
-    else tryCatch(TSconnect(m, dbname=dbname)) # pass user/passwd/host in ~/.padi.cfg
+    if ("" != user) conets <- 
+         try(TSconnect(m, dbname=dbname, username=user, password=passwd, host=host)) 
+    else  conets <-
+         try(TSconnect(m, dbname=dbname)) # pass user/passwd/host in ~/.padi.cfg
 
    if (!inherits(conets, "try-error")) {
       cat("getpadi  test ets ... ")
