@@ -93,7 +93,7 @@ see the vignette distributed with this package for more complete examples.
 \code{\link[RODBC]{sqlQuery}}
 }
 \examples{
-    con <- tryCatch(TSconnect(dbDriver("ODBC"), dbname="test"))
+    con <- try(TSconnect(dbDriver("ODBC"), dbname="test"))
     if(! inherits(con, "try-error")) {
       z <- ts(rnorm(100), start=c(1975,1), frequency=12)
       seriesNames(z) <- "random1"
@@ -121,7 +121,7 @@ see the vignette distributed with this package for more complete examples.
       TSdelete("random2")
       dbDisconnect(con)
       }
-    con <- tryCatch(TSconnect(dbDriver("ODBC"), dbname="ets"))
+    con <- try(TSconnect(dbDriver("ODBC"), dbname="ets"))
     if(! inherits(con, "try-error")) {
       TSmeta("B103", con)
       z1 <- TSget("B103", con)
