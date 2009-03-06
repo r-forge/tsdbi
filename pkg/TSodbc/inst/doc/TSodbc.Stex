@@ -25,7 +25,11 @@ ODBC ''test'' database on the server.
 
 
 The ODBC  user, password, hostname, etc, should be set in ODBC information file
-(.odbc.ini) before starting R.
+(.odbc.ini) before starting R. Alternately, this information can be set with
+environment variables  ODBC\_USER, ODBC\_PASSWD and ODBC\_HOST.
+(An environment variable ODBC\_DATABASE can also be set, but ''test'' is
+specified below.) 
+
 Once R is started, the functions in this package are made available with
 
 \begin{Scode}
