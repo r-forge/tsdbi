@@ -24,7 +24,10 @@ MySQL ''test'' database on the server.
 
 
 The MySQL  user, password, and hostname should be set in MySQL information file
-(.my.cnf) before starting R.
+(.my.cnf) before starting R. Alternately, this information can be set with
+environment variables  MYSQL\_USER, MYSQL\_PASSWD and MYSQL\_HOST.
+(An environment variable MYSQL\_DATABASE can also be set, but ''test'' is
+specified below.) 
 Once R is started, the functions in this package are made available with
 
 \begin{Scode}
