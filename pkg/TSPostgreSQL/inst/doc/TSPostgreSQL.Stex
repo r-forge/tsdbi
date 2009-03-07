@@ -24,7 +24,11 @@ PostgreSQL ''test'' database on the server.
 
 
 The PostgreSQL  user, password, and hostname should be set in PostgreSQL information file
-(.pgpass) before starting R.
+(.pgpass) before starting R. Alternately, this information can be set with
+environment variables  POSTGRES\_USER, POSTGRES\_PASSWD and POSTGRES\_HOST.
+(An environment variable POSTGRES\_DATABASE can also be set, but ''test'' is
+specified below.) 
+
 Once R is started, the functions in this package are made available with
 
 \begin{Scode}
