@@ -1,0 +1,26 @@
+#  configure uses Makefile.in to generate Makefile.
+
+include Makevars
+
+# The default is to do individual testing using the $(RCODELIBS), 
+#    but not install in the production Rlib indicated  by PREFIX. 
+# To install to PREFIX use     " make install"
+# To install to PREFIX-SITE use "make install-site"
+
+all: $(PACKAGES) #warnings install install-site
+
+TSPACS=$(filter-out $(SKIPPAC), $(shell  ls -d  TS* ))
+
+ts TS:   $(TSPACS)
+
+include Makepac.Depends
+
+install install-site issues errors warnings notes: 
+	@for f in $(PACKAGES)  ; do $(MAKE) -C $${f} $@ || exit 1; done
+
+clean reallyclean:	  
+	@$(RM) $(TARBALLS).old $(RCODELIBS).old $(RLIBS).old
+	@test -d $(RCODELIBS) && mv $(RCODELIBS) $(RCODELIBS).old  ; exit 0
+	@test -d $(RLIBS)     && mv $(RLIBS)     $(RLIBS).old  ; exit 0
+	@test -d $(TARBALLS)  && mv $(TARBALLS)  $(TARBALLS).old ; exit 0
+	@for f in $(PACKAGES)  ; do $(MAKE) -C $${f} $@ || exit 1; done

@@ -1,4 +1,4 @@
-PREREQ_PACS=tframePlus TSdbi
+PREREQ_PACS=TSdbi
 
 include ../Makevars
 
