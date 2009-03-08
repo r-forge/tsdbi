@@ -1,7 +1,6 @@
-PREREQ_PACS=tframePlus TSdbi TShistQuote
+PREREQ_PACS=TSdbi TShistQuote
 
 include ../Makevars
-#override ./Makevars to not copy Licence
 CODE_PREREQS=$(CODE) DESCRIPTION NAMESPACE #INDEX LICENSE
 
 default:	$(DEFAULT)

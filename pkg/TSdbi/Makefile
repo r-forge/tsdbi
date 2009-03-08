@@ -1,7 +1,7 @@
-PREREQ_PACS=tframe tframePlus
+# These are required, but  the system installed versions should usually work.
+#PREREQ_PACS=tframe tframePlus
 
 include ../Makevars
-#override ./Makevars to not copy Licence
 CODE_PREREQS=$(CODE) DESCRIPTION NAMESPACE #INDEX LICENSE
 
 # The idea is that TSdbi tests should work with or without specific interfaces,

@@ -1,0 +1,448 @@
+#  configure uses this file to generate Makerules which is included
+#     in the Makefile in each package testing directory.
+
+# The Makefile in individual package directories should define the 
+# default - usually using $(DEFAULT)
+
+# As of ~ R-2.5.0 (or before) it is necessary to set both R_LIBS  *and*
+# R_LIBS_SITE=$(RSITE) or RHOME/site-library gets picked up in .libPaths()
+ifndef RSITE
+        RSITE=$(RCODELIBS)
+endif
+
+ONWARNING=exit 1
+#ONWARNING=echo WARNING Ignored.
+
+# $(TESTLIB) needs a macro (defined in Makevars). This is because it is used 
+#  in each package directory, since each package has different prereqs. 
+# Note that it is normal for install during $(TESTLIB) to complain 
+#   about missing documentation.
+
+# These are just shortcuts for the make command. They shouldn't be prereqs.
+# doc and vign should depend on codetestFLAG, not the reverse
+codetest:   codetestFLAG  
+code:       codetestFLAG  
+doc:        $(DOC)
+vignettes:  $(VIGNETTES)
+demos:	    $(DEMOS:%=$(FLAGS)/demo/%)
+
+
+# Next is how one package knows how to make another required one. It is
+# important to have ../ rather than $(QC), both here [and in the Makefile in
+# each package directory,?] so that this target is distinguished from 
+# the $(TESTLIB) target in the subdirectory. This also depends on the
+# variable $(PREREQ_PACS) being set in each subdirectory Makefile.
+# It also seems necessary that $(PREREQ_PACS) have a complete list of package
+# prereqs, not just the top level (e.g. dse1 & tframe, not just dse1 which 
+# implicitly means tframe), otherwise install goes into an infinit recursion.
+
+FORCE:
+
+# this prevents parallel jobs at the package level from clobbering one another
+.NOTPARALLEL: $(PREREQ_PACS:%=../%/FLAGS/codetestFLAG)
+
+$(PREREQ_PACS:%=../%/FLAGS/codetestFLAG): FORCE
+	@$(MAKE) -C $(subst /FLAGS/codetestFLAG,,$@)  codetestFLAG
+
+define toolsMacro	
+	@echo $(ECHOLINE) $(TIMELINE)
+	@$(MKDIR) $(FLAGS)
+	@echo "library(tools); z <- $@(dir='$(CURDIR)') ; \
+	  if (0 == length(capture.output(z))) q('no', status=0) else \
+	   {print(z); q('no', status=1)} "  | R --vanilla --slave >$(FLAGS)/$@.tmp
+	@mv  $(FLAGS)/$@.tmp $(FLAGS)/$@
+	@touch $(FLAGS)/$@
+	@$(TIMELINE2)
+endef
+
+# The  $(TESTLIB) prereq and mkdir in the next are for when there are no tests.
+#  (Typically these would be done by the tests.)
+codetestFLAG: $(TESTS:%=FLAGS/tests/%) $(TESTLIB)
+	@$(MKDIR) $(FLAGS) 
+	@touch $(FLAGS)/$@
+
+# PRETESTLIB is set in the Makefile in each package directory. Typically
+# the prereqs will be different for each package,.
+
+$(TESTLIB): $(PRETESTLIB) $(PREREQ_PACS:%=../%/FLAGS/codetestFLAG)
+	@echo $(ECHOLINE)  $(TIMELINE)
+	@echo "Using R=$(R_HOME)"
+	@echo -n "        VERSION and date-stamp:"
+	@sed -n '/^version="/s///p' $(R_HOME)/bin/R
+	@echo "R_LIBS=$(RCODELIBS)  R_LIBS_SITE=$(RSITE)"
+	@# target should NOT be .Rcheck as that dir is used in other targets
+	@$(RM) $@ $(FLAGS)/$(notdir $@) 
+	@$(MKDIR) $(RCODELIBS) 
+	@$(MKDIR) $(FLAGS) 
+	@#  --with-package-versions seems to cause a problem
+	@#R CMD INSTALL --library=$(FLAGS) --no-docs  --with-package-versions 
+	@#   $(CURDIR) > $(FLAGS)/install.log.tmp
+	@#  R_LIBS needs to be set in R-2.2.0 to find NAMESPACE
+	@R_LIBS=$(RCODELIBS) R_LIBS_SITE=$(RSITE) R CMD INSTALL  \
+	   --library=$(FLAGS) --no-docs $(CURDIR) > $(FLAGS)/install.log.tmp
+	@(grep -i warning $(FLAGS)/install.log.tmp ;  touch /dev/null )
+	@(grep "couldn't" $(FLAGS)/install.log.tmp ;  touch /dev/null )
+	@mv $(FLAGS)/install.log.tmp $(FLAGS)/install.log #not target but for convenience
+	@mv $(FLAGS)/$(PAC) $@
+	@# touch here is important because mv leaves date stamp older than prereq
+	@touch $@
+	@$(TIMELINE2)
+
+$(TESTS:%=$(FLAGS)/tests/%):$(FLAGS)/tests/%: tests/% $(TESTLIB)  
+	@echo $(ECHOLINE)  $(TIMELINE)
+	@echo "Using R=$(R_HOME)"
+	@#echo -n "        VERSION and date-stamp:"
+	@#sed -n '/^version="/s///p' $(R_HOME)/bin/R
+	@$(RM) $@.tmp 
+	@$(MKDIR) $(RCODELIBS) 
+	@$(MKDIR) $(FLAGS)/tests
+	@R_LIBS=$(RCODELIBS) R_LIBS_SITE=$(RSITE)  $(RENV)  \
+	    R CMD BATCH  --vanilla tests/$(notdir $@)  $@.tmp
+	@mv  $@.tmp  $@
+	@$(TIMELINE2)
+
+
+checkDocArgs checkDocFiles checkDocStyle \
+codocClasses codocData:  man $(CODE) ; ${toolsMacro}
+
+# previously used ${toolsMacro} for codoc, but it needs extra arg use.values = TRUE
+codoc:  man $(CODE)
+	@echo $(ECHOLINE) $(TIMELINE)
+	@$(MKDIR) $(FLAGS)
+	@echo "library(tools); z <- $@(dir='$(CURDIR)', use.values = TRUE) ; \
+	  if (0 == length(capture.output(z))) q('no', status=0) else \
+	   {print(z); q('no', status=1)} "  | R --vanilla --slave >$(FLAGS)/$@.tmp
+	@mv  $(FLAGS)/$@.tmp $(FLAGS)/$@
+	@touch $(FLAGS)/$@
+	@$(TIMELINE2)
+
+#consider replace all checks with this (pre-req to TAR)
+# there is some chance this confilicts with examples: eg rm $(FLAGS)/$(PAC).Rcheck
+# this will catch S4 code/doc mismatches if set _R_CHECK_CODOC_S4_METHODS_=true 
+#  but give false positives
+Rcheck:  man $(CODE)
+	@echo $(ECHOLINE) $(TIMELINE)
+	@$(MKDIR) $(FLAGS)
+	@$(RM) $(CURDIR)/src/*.o $(CURDIR)/src/*.so 
+	@#  This may cause problem in parallel make
+	@if [ -e $(CURDIR)/src/Makefile ]; then \
+	     cd $(CURDIR)/src  && $(MAKE) distclean; fi
+	@$(RM) $(FLAGS)/$(PAC).Rcheck
+	@R_LIBS=$(RCODELIBS) R_LIBS_SITE=$(RSITE)  $(RENV) \
+	     _R_CHECK_CODOC_S4_METHODS_=true R CMD check --no-tests \
+	          --outdir=$(TMP)  $(CURDIR) >$(FLAGS)/$@.tmp
+	@test -z "`grep 'Error' $(FLAGS)/$@.tmp`" || \
+	          (grep -v "OK" $(FLAGS)/$@.tmp; exit 1 )
+	@test -z "`grep 'WARNING' $(FLAGS)/$@.tmp`" || \
+	          (grep -v "OK"  $(FLAGS)/$@.tmp; $(ONWARNING))
+	@test -z "`grep 'NOTE' $(FLAGS)/$@.tmp`" || \
+	          (grep -v "OK" $(FLAGS)/$@.tmp; $(ONWARNING))
+	@test -z "`grep 'Error' $(TMP)/$(PAC).Rcheck/00check.log`" || \
+	          (grep -v "OK" $(TMP)/$(PAC).Rcheck/00check.log; exit 1 )
+	@test -z "`grep 'WARNING' $(TMP)/$(PAC).Rcheck/00check.log`" || \
+	          (grep -v "OK"  $(TMP)/$(PAC).Rcheck/00check.log; $(ONWARNING))
+	@test -z "`grep 'NOTE' $(TMP)/$(PAC).Rcheck/00check.log`" || \
+	          (grep -v "OK" $(TMP)/$(PAC).Rcheck/00check.log; $(ONWARNING))
+	@$(RM) $(TMP)/$(PAC).Rcheck
+	@mv  $(FLAGS)/$@.tmp $(FLAGS)/$@
+	@touch $(FLAGS)/$@
+	@$(TIMELINE2)
+
+# DESCRIPTION is only a prereq in next because undoc checks for its presence 
+# in order to determine if source or an installed package is being tested, and
+#  uses that to determine finding data.
+
+#  This works for a single thread but may cause problem in parallel make
+#undoc :  man  $(CODE)
+#	@if [ ! -f DESCRIPTION ]; then  \
+#	    (touch DESCRIPTION ; touch DESCRIPTION.rm ); fi
+#	${toolsMacro}
+#	@if [ -f DESCRIPTION.rm ]; then \
+#	    ( $(RM) DESCRIPTION DESCRIPTION.rm ); fi
+
+undoc :  man  $(CODE) DESCRIPTION ; ${toolsMacro}
+
+checkFF  checkReplaceFuns checkS3methods: $(CODE) DESCRIPTION ; ${toolsMacro}
+
+help:	man
+	@echo $(ECHOLINE) $(TIMELINE)
+	@R_LIBS=$(RCODELIBS) R_LIBS_SITE=$(RSITE) \
+	  $(RENV) R CMD perl "$(R_HOME)/share/perl/build-help.pl" \
+	    --txt --html --latex --example "../$(PAC)"  "$(FLAGS)" >$(FLAGS)/$@.tmp
+	@test -z "`grep 'missing link' $(FLAGS)/$@.tmp`" || \
+	          (grep "missing link" $(FLAGS)/$@.tmp; exit 1 )
+	@mv $(FLAGS)/$@.tmp  $(FLAGS)/$@  
+	@# touch here is important because mv leaves date stamp older than prereq
+	@touch $(FLAGS)/$@
+	@$(TIMELINE2)
+
+
+examples:	codoc codetestFLAG INDEX pdfVignettes DESCRIPTION
+	@echo $(ECHOLINE) $(TIMELINE)
+	@#echo $+
+	@# this re-installs, better would be to use version already in tmp
+	@# previously had --no-perms too
+	@$(RM) $(FLAGS)/$(PAC).Rcheck
+	@$(RM) $(CURDIR)/src/*.o $(CURDIR)/src/*.so 
+	@# install does extra things in the next, but --no-install seems to
+	@#   prevent examples from being run (perhaps Rd files are missing?) 
+	@R_LIBS=$(RCODELIBS) R_LIBS_SITE=$(RSITE)  $(RENV) \
+	     R CMD check --outdir=$(FLAGS) --no-clean  --no-tests --no-latex \
+	     --no-vignettes  --no-codoc $(CURDIR) >$(FLAGS)/$@.tmp
+	@test -z "`grep 'Error' $(FLAGS)/$@.tmp`" || \
+	          (grep "Error" $(FLAGS)/$@.tmp; exit 1 )
+	@test -z "`grep 'WARNING' $(FLAGS)/$@.tmp`" || \
+	          (grep -A 1 "WARNING" $(FLAGS)/$@.tmp; $(ONWARNING))
+	@test -z "`grep 'NOTE' $(FLAGS)/$@.tmp`" || \
+	          (grep -A 5 "NOTE" $(FLAGS)/$@.tmp; $(ONWARNING))
+	@mv  $(FLAGS)/$@.tmp $(FLAGS)/$@
+	@$(TIMELINE2)
+
+# TESTLIB should depend on inst/CITATION, but then that file is needed
+#   and just using the R default (generated from DESCRIPTION) is not adequate.
+citation:	$(TESTLIB)
+	@echo $(ECHOLINE) $(TIMELINE)
+#	this fails if R has an exit error
+	@echo "z <- $@('$(notdir $(CURDIR))')" | \
+	    R_LIBS=$(RCODELIBS) R_LIBS_SITE=$(RSITE) \
+	    R --vanilla --slave >$(FLAGS)/$@.tmp
+	@mv $(FLAGS)/$@.tmp $(FLAGS)/$@
+	@$(TIMELINE2)
+
+man.pdf:	$(CURDIR)/$(FLAGS)/man.pdf
+
+$(CURDIR)/$(FLAGS)/man.pdf:	codoc 
+	@echo $(ECHOLINE) $(TIMELINE)
+	@#*.pdf are needed to build guide
+	@$(RM) $(PAC)-manual.pdf
+	@# not sure why this started throwing an error, thus needing (; echo)
+	@(R CMD Rd2dvi --no-preview --pdf --output=$(PAC)-manual.pdf $(CURDIR)  \
+	             >$@.log 2>&1 ; echo ignore >/dev/null)
+	@test -z  "`grep 'Emergency stop' $@.log`"  || \
+		   (grep 'Emergency stop' $@.log ; exit 1 )
+	@test -z  "`grep 'Undefined control' $@.log`"  || \
+		   (grep -A 2 'Undefined control' $@.log ; exit 1 )
+	@test -z "`grep 'Note:' $@.log`" || \
+	          (grep "Note:" $@.log; exit 1 )
+	@mv  $@.log  $@  
+	@$(TIMELINE2)
+
+
+$(DEMOS:%=$(FLAGS)/demo/%):$(FLAGS)/demo/%:	 demo/%    codetestFLAG
+	@echo $(ECHOLINE) $(TIMELINE)
+	@$(MKDIR) $(FLAGS)/demo
+	@R_LIBS=$(RCODELIBS)  R_LIBS_SITE=$(RSITE) $(RENV) \
+	   R CMD BATCH --vanilla -q $(CURDIR)/demo/$(notdir $@) $@.tmp
+	@mv  $@.tmp  $@
+	@$(TIMELINE2)
+
+# setting pseudo.cube here seems necessary on compute servers that may not
+# already be running an x11 device. (It is ignored if one is running.")
+# For some reason the default (true) does not work.
+checkVignettes:	$(VIGNSTEX:%=inst/doc/%)  codetestFLAG  
+	@echo $(ECHOLINE) $(TIMELINE)
+	@$(RM) $(FLAGS)/Vignettes  
+	@$(MKDIR) $(FLAGS)/Vignettes
+#       Using capture.output() causes a buffer overflow here
+#	In checkVignettes call, if workdir=$(FLAGS)/Vignettes then it is removed, so cd ...
+	@export R_LIBS=$(RCODELIBS) R_LIBS_SITE=$(RSITE) $(RENV) ; \
+	  cd $(FLAGS)/Vignettes && echo "library(tools);  \
+	  options(X11colortype='pseudo.cube');  \
+	  z <- checkVignettes(dir='$(CURDIR)', workdir='cur', keepfiles=TRUE); \
+	  if (0 == length(capture.output(z))) q('no', status=0) else {print(z); q('no', status=1)} "  | R --vanilla --slave 
+	@touch $(FLAGS)/$@
+	@$(TIMELINE2)
+
+
+pdfVignettes:	checkVignettes
+	@echo $(ECHOLINE) $(TIMELINE)
+	@$(RM) $(FLAGS)/Vignettes/$@.tmp
+	@for f in $(subst .Stex,,$(VIGNSTEX)); do \
+	     echo "#######"  pdflatex $$f >>$(FLAGS)/Vignettes/$@.tmp ;\
+	     (cd $(FLAGS)/Vignettes && pdflatex $$f.tex >>$@.tmp 2>&1  ) ;\
+	     test -z "`grep 'Emergency stop' $(FLAGS)/Vignettes/$$f.log`" || \
+	     	      (grep 'Emergency stop' $(FLAGS)/Vignettes/$$f.log || \
+	     	      echo see [$(FLAGS)/Vignettes/$$f.log] for more details;\
+	     	      exit 1) ;\
+	     done
+	@test -z "`grep 'Error' $(FLAGS)/Vignettes/$@.tmp`" ||  \
+	   (cat $(FLAGS)/Vignettes/$@.tmp; exit 1)
+	@test -z "`grep 'Fatal error' $(FLAGS)/Vignettes/$@.tmp`" ||   \
+	   (cat $(FLAGS)/Vignettes/$@.tmp; exit 1)
+	@for f in $(basename $(VIGNSTEX)) ; \
+	         do cp $(FLAGS)/Vignettes/$$f.pdf  inst/doc ; done
+	@mv $(FLAGS)/Vignettes/$@.tmp $(FLAGS)/$@  
+	@$(TIMELINE2)
+
+#in place of pdf2ps consider /apps/acroread701/bin/acroread -toPostScript $$f.pdf
+# lpr may not work correctly on linux servers
+printVignettes:	pdfVignettes
+	@echo $(ECHOLINE) $(TIMELINE)
+	for f in $(basename $(VIGNSTEX)) ; do \
+	         pdf2ps inst/doc/$$f.pdf $(FLAGS)/$$f.ps ; \
+	         lpr -Pps3w3dx $(FLAGS)/$$f.ps ; done
+	@$(TIMELINE2)
+
+Rprof: codetestFLAG 
+	@echo $(ECHOLINE) $(TIMELINE)
+	@$(RM) $(FLAGS)/$@ $(FLAGS)/Rprof.in $(FLAGS)/Rprof.out
+	@if [ -n "$(DEMOS)" ] ; then  for f in $(DEMOS)""; do  \
+	   (@echo "Rprof(filename = 'Rprof.out', append = TRUE)" >$(FLAGS)/Rprof.in ;\
+	    @echo "source('$$f')" >>$(FLAGS)/Rprof.in ;\
+	    $@cd $(FLAGS) &&  R_LIBS=$(RCODELIBS) R_LIBS_SITE=$(RSITE)  $(RENV) \
+	          R CMD BATCH --vanilla -q Rprof.in ) ; done ; fi
+	@# previously had export R_LIBS above (but that does not seem right)
+	R CMD Rprof Rprof.out
+	@$(TIMELINE2)
+
+PREFIX?=/home/mfa/gilp/serveR.site-library/gcc-3.4.6/R-2.6.2
+
+install:	$(TARBALLS)/$(PAC).tar.gz 
+	@echo "making $@, changed prereqs $? ..."
+	@if [ -n "$(PREREQ_PACS)" ] ; then \
+	   for f in $(PREREQ_PACS)"" ; do  $(MAKE) -C ../$$f  install ; done ; fi
+	@if [ -d $(PREFIX)/$(PAC) ]; then \
+	    R CMD REMOVE -l $(PREFIX) $(PAC); fi
+	@$(MKDIR) $(PREFIX)
+	@#  --with-package-versions seems to cause a problem
+	@# for parallel install of a single package (with large src/ ?)
+	@# MAKE="make -j8" R CMD INSTALL works beautifully.
+	cd $(TARBALLS) && \
+	    R CMD INSTALL -l $(PREFIX)  $(PAC)_*.tar.gz
+#	    R CMD INSTALL -l $(PREFIX)  --with-package-versions $(PAC)_*.tar.gz
+#               --save prevents lazy loading as of R 2.0.0
+#	    R CMD INSTALL --save -l $(PREFIX) $(PAC)_*.tar.gz
+	@touch $(FLAGS)/$@
+	@$(TIMELINE2)
+
+PREFIX_SITE?=/home/mfa/gilp/serveR.site-library/gcc-3.4.6/R-2.6.2
+
+install-site:	$(TARBALLS)/$(PAC).tar.gz 
+	@echo "making $@, changed prereqs $? ..."
+	@if [ -n "$(PREREQ_PACS)" ] ; then \
+	   for f in $(PREREQ_PACS)"" ; do  $(MAKE) -C ../$$f install-site; done; fi
+	@if [ -d $(PREFIX_SITE)/$(PAC) ]; then \
+	    R CMD REMOVE -l $(PREFIX_SITE) $(PAC); fi
+	@$(MKDIR) $(PREFIX_SITE)
+	@#  --with-package-versions seems to cause a problem
+	cd $(TARBALLS) && \
+	  R CMD INSTALL -l $(PREFIX_SITE)  $(PAC)_*.tar.gz
+#	  R CMD INSTALL -l $(PREFIX_SITE)  --with-package-versions $(PAC).tar.gz
+#               --save prevents lazy loading as of R 2.0.0
+#	cd $(TARBALLS) && R CMD INSTALL --save -l $(PREFIX_SITE) $(PAC).tar.gz
+	@touch $(FLAGS)/$@
+
+clean:	
+	@if [ -f src/Makefile ]; then  (cd src; $(MAKE) clean); fi
+	@$(RM) INDEX $(FLAGS) inst/doc/*.pdf  *-manual.pdf  $(PACCLEAN) 
+	@$(RM) core src/*.o src/*.so src-c/*.o src-c/*.so
+	@if [ -d mansrc ]; then  $(RM) $(LOCAL-CLEAN) ; fi
+
+reallyclean:	clean 
+	@$(RM) tmp*   FLAGS*
+
+
+# Rbuildignore requires a version of tar newer than 1.13, which is available at
+#http://alpha.gnu.org/pub/gnu/tar/
+
+# tar package (not bundle)
+tar:	$(TAR) 
+
+$(TAR): .Rbuildignore DESCRIPTION codetestFLAG $(DOC)  $(VIGNETTES) citation Rcheck
+	@echo $(ECHOLINE) $(TIMELINE)
+	@$(MKDIR) $(TARBALLS)/tstbuild
+	@$(RM) $(TARBALLS)/tstbuild/$(PAC)
+	@$(CP)  ../$(PAC) $(TARBALLS)/tstbuild
+#  Beware dereference in CP above is needed or source CVS gets clobbered below !!
+# Note older tar version 1.13 (as in Solaris) do not recognize Rbuildignore
+#  file exclusion does not work correctly  but does work with 
+#  later versions (e.g., version 1.13.17).
+#   Well, no. Still having trouble with CVS, ???
+	@$(RM) $(TARBALLS)/tstbuild/$(PAC)/CVS     $(TARBALLS)/tstbuild/$(PAC)/.svn
+	@$(RM) $(TARBALLS)/tstbuild/$(PAC)/*/CVS   $(TARBALLS)/tstbuild/$(PAC)/*/.svn
+	@$(RM) $(TARBALLS)/tstbuild/$(PAC)/*/*/CVS $(TARBALLS)/tstbuild/$(PAC)/*/*/.svn
+	@cd $(TARBALLS)/tstbuild &&  LC_ALL=C   R_LIBS=$(RCODELIBS) \
+	  R_LIBS_SITE=$(RSITE)  $(RENV) R CMD build --no-vignettes $(PAC)
+# 	Print the table of contents
+#	@gzip -c -d  $(TARBALLS)/tstbuild/${notdir $@} | tar tf - 
+	@$(RM) $(TARBALLS)/$(PAC)_*.tar.gz $@
+	@mv    $(TARBALLS)/tstbuild/$(PAC)_*.tar.gz $(TARBALLS)
+	@ln -s $(TARBALLS)/$(PAC)_*.tar.gz $@
+	@$(TIMELINE2)
+
+
+################################################################################
+#
+#  targets to generate R package structure  
+#
+################################################################################
+
+
+# prevent these from being deleted when they are intermediate targets
+.SECONDARY:	INDEX  man LICENSE DESCRIPTION .Rbuildignore
+
+
+INDEX:	man 
+	@echo $(ECHOLINE) $(TIMELINE)
+	@$(MKDIR) $(FLAGS)
+	@cd $(FLAGS) && echo "library(tools);  if (0 == length(\
+	  capture.output(Rdindex('$(CURDIR)/man', outFile = 'INDEX.tmp')))) \
+	   q('no', status=0) else q('no', status=1)" | R --vanilla --slave 
+	@mv $(FLAGS)/INDEX.tmp  INDEX
+
+#	@cd $(FLAGS) &&  R --vanilla -q <R.in >>Rdindex.out
+#	@(grep -i 'warning' $(FLAGS)/Rdindex.out ; touch /dev/null)
+#	@test -z "`grep -i 'Error' $(FLAGS)/Rdindex.out`" || (cat $(FLAGS)/Rdindex.out; exit 1)
+	@$(TIMELINE2)
+
+
+
+########################################################
+#
+#  special targets for debugging
+#
+########################################################
+
+
+allWarnings:
+	@(grep -i WARN $(FLAGS)/* $(FLAGS)/*/*log | grep -v warn.conflicts; \
+	      touch /dev/null)
+#	@(grep -i WARN $(TARBALLS)/*/*log; touch /dev/null)
+
+issues: notes warnings errors
+
+notes:
+	@#(grep -i NOTE $(FLAGS)/*.Rcheck/00* ;  touch /dev/null)
+	@(grep -i NOTE $(FLAGS)/Rcheck ;  touch /dev/null)
+
+warnings:
+	@#(grep -i WARN $(FLAGS)/*.Rcheck/00* ;  touch /dev/null)
+	@(grep -i WARN $(FLAGS)/Rcheck ;  touch /dev/null)
+
+errors:
+	@#(grep -i ERROR $(FLAGS)/*.Rcheck/00* \
+	 #   | grep -v "syntax errors ... OK" \
+	 #   | grep -v "sumSqerror" \
+	 #  ; touch /dev/null)
+	@(grep -i ERROR $(FLAGS)/Rcheck \
+	    | grep -v "syntax errors ... OK" \
+	    | grep -v "sumSqerror" \
+	   ; touch /dev/null)
+
+debug:
+	@echo  starting R with Makefile environment
+	R_LIBS=$(RCODELIBS) R_LIBS_SITE=$(RSITE)  $(RENV) R --vanilla 
+
+debug-vign:
+	@echo  starting R with Makefile environment. Copy and paste
+	@cat $(FLAGS)/Vignette/R.in
+	@cd $(FLAGS)/Vignette && R_LIBS=$(RCODELIBS)  R_LIBS_SITE=$(RSITE) \
+	          $(RENV)  R --vanilla    
+
+gdb:
+	@echo  starting R -d gdb  type >run then after segfault bt
+	R_LIBS=$(FLAGS):$(RCODELIBS) R_LIBS_SITE=$(RSITE)  $(RENV) R -d gdb 
+
+test:
+	echo $(SHELL)
+
