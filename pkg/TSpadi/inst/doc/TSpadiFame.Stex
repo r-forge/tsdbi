@@ -27,16 +27,30 @@ This will also load required packages \pkg{TSdbi}, \pkg{DBI},
 \pkg{methods}, and \pkg{tframe}. 
 Some examples below also require \pkg{zoo}, and \pkg{tseries}.
 
-The main application of TSpadi is to set up an interface to a server which 
-extracts data from a database and supplies it to R programs. In these examples,
-Fame is the backend database. 
+TSpadi is a \pkg{TSdbi} style interface to a server which 
+extracts data from a backend database. In these examples,
+Fame is the backend database engine. The R client communicates with the 
+server using
+an RPC based protocol which has been called ''padi'', so only the server 
+requires the Fame programs and licences. 
 
 \pkg{TSpadi} does not support writing data to a database, so examples below are
-restricted to an already available database. It should be possible to write a
-TSdbi package directly on top of the R package \pkg{fame}, to standardize the
-API and use more complete Fame functionality, but that has not yet been done.
+restricted to an already available database. Alternate approaches for interfacing
+to Fame are the R packages \pkg{fame} and \pkg{TSfame}. The later is just a 
+wrapper for the former, to give it a \pkg{TSdbi} style interface. Both allow
+writing to the Fame database, but both also require the Fame HLI programs and
+licences for the client R machine.
 
-\subsection{Examples  Using TSdbi with ets}
+While \pkg{TSpadi} does not require Fame on the R clients, there is 
+additional work to 
+set up the padi server and configure it to load databases. Please check 
+additional comments in the last section ''TS PADI Server'' before deciding
+about using the \pkg{TSpadi} interface (and you may want to contact me, 
+Paul Gilbert). I do actively use this interface, but one of the main purposes 
+of \pkg{TSpadi} is to standardize on the \pkg{TSdbi} API so that it is easier
+to move among different database engines.
+
+\subsection{Examples Using TSdbi with ets}
 
 These examples use a database called "ets" which is available at the Bank
 of Canada.
