@@ -1,6 +1,6 @@
 Package: TSpadi
-Version: 2009.1-1
-Date:2009-1-12
+Version: 2009.3-1
+Date:2009-3-16
 Title:  Time Series Database Interface extensions for PADI Time Series Server
 Description: Provides methods for generics in the TSdbi package to 
 	connect through a protocol for application database interface (PADI)
