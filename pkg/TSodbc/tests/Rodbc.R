@@ -24,10 +24,10 @@ m <- dbDriver("ODBC") # note that this is needed in sourced files.
    if ("" != user) {
        host    <- Sys.getenv("ODBC_HOST")
        if ("" == host)     host <- Sys.info()["nodename"] 
-       if ("" == passwd)   passwd <- NULL
        passwd  <- Sys.getenv("ODBC_PASSWD")
+       if ("" == passwd)   passwd <- NULL
        #  See  ?odbcConnect   ?odbcDriverConnect
-       con <- odbcConnect(dsn=dbname, uid=user, pwd=passwd, connection=host) 
+       con <- odbcConnect(dsn=dbname, uid=user, pwd=passwd) #, connection=host) 
      }else  
        con <- odbcConnect(dsn=dbname) # pass user/passwd/host in ~/.odbc.ini
 

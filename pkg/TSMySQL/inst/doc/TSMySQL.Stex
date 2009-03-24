@@ -18,16 +18,9 @@ This uses the default editor, which can be changed using \emph{options()}.
 It should be possible to view the pdf version of the guide for this 
 package with \emph{print(vignette("TSMySQL"))}.
 
-
 WARNING: running these example will overwrite tables in the
 MySQL ''test'' database on the server.
 
-
-The MySQL  user, password, and hostname should be set in MySQL information file
-(.my.cnf) before starting R. Alternately, this information can be set with
-environment variables  MYSQL\_USER, MYSQL\_PASSWD and MYSQL\_HOST.
-(An environment variable MYSQL\_DATABASE can also be set, but ''test'' is
-specified below.) 
 Once R is started, the functions in this package are made available with
 
 \begin{Scode}
@@ -37,6 +30,25 @@ This will also load required packages \pkg{TSdbi}, \pkg{DBI}, \pkg{RMySQL},
 \pkg{methods}, and \pkg{tframe}. 
 Some examples below also require \pkg{zoo}, and \pkg{tseries}.
 
+The MySQL  user, password, and hostname should be set in MySQL client
+configuration file
+(.my.cnf) before starting R. Alternatively, this information can be set with
+environment variables  MYSQL\_USER, MYSQL\_PASSWD and MYSQL\_HOST.
+(An environment variable MYSQL\_DATABASE can also be set, but ''test'' is
+specified below.) Below, the environment variable  MYSQL\_USER is used to
+determine which of these methods is being used. If this environment variable is
+empty then it is assumed the configuration file will be used.
+
+\begin{Scode}
+   user    <- Sys.getenv("MYSQL_USER")
+   if ("" != user) {
+       host    <- Sys.getenv("MYSQL_HOST")
+       if ("" == host)     host <- Sys.info()["nodename"] 
+       passwd  <- Sys.getenv("MYSQL_PASSWD")
+       if ("" == passwd)   passwd <- NULL
+      }
+\end{Scode}
+
 The next small section of code is necessary to setup database tables that are
 used in the examples below. It
 needs to be done only once for a database and might typically be done by
@@ -44,7 +56,9 @@ an administrator setting up the database, rather than by an end user.
 
 \begin{Scode}{results=hide}
 m <- dbDriver("MySQL")
-con <- dbConnect(m, dbname="test") 
+con <-  if ("" == user) dbConnect(m, dbname="test") else
+    dbConnect(m, dbname="test", username=user, password=passwd, host=host)
+
 source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
 dbDisconnect(con)
 \end{Scode}
@@ -64,7 +78,8 @@ utilities for loading data.)
 The first thing to do is to establish a connection to the database:
 
 \begin{Scode}{results=hide}
- con <- TSconnect("MySQL", dbname="test") 
+con <-  if ("" == user) TSconnect("MySQL", dbname="test") else
+    TSconnect("MySQL", dbname="test", username=user, password=passwd, host=host)
 \end{Scode}
 
 \code{TSconnect} uses \code{dbConnect} from the \pkg{DBI} package, but checks that the
@@ -243,7 +258,8 @@ Fetching data may fail due to lack of an Interenet connection or delays.
 
 First establish a connection to the database where data will be saved:
 \begin{Scode}
-con <- TSconnect("MySQL", dbname="test")
+con <-  if ("" == user) TSconnect("MySQL", dbname="test") else
+    TSconnect("MySQL", dbname="test", username=user, password=passwd, host=host)
 \end{Scode}
 
 Now connect to the web server and fetch data:
@@ -339,7 +355,8 @@ if block do not display until the end of the block.
 
 \begin{Scode}{results=verbatim,fig=TRUE}
   m <- dbDriver("MySQL")
-  conets <- try(TSconnect(m, dbname="ets")) 
+  conets <-  try(if ("" == user) TSconnect(m, dbname="ets") else
+    TSconnect(m, dbname="ets", username=user, password=passwd, host=host))
   if (!inherits(conets, "try-error")) {
   
   options(TSconnection=conets)
@@ -430,7 +447,8 @@ to get at more detailed information, or formulate special queries.
 
 \begin{Scode}{results=hide}
  m <- dbDriver("MySQL")
- con <- TSconnect(m, dbname="test") 
+ con <-  if ("" == user) TSconnect(m, dbname="test") else
+    TSconnect(m, dbname="test", username=user, password=passwd, host=host)
  options(TSconnection=con)
 \end{Scode}
 

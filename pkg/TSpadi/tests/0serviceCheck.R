@@ -19,8 +19,8 @@ if(identical(as.logical(service), TRUE)) {
         cat("Using environment variables for PADI connection info.\n")
         host	<- Sys.getenv("PADI_HOST")
         if ("" == host)     host <- Sys.info()["nodename"] 
-        if ("" == passwd)   passwd <- NULL
         passwd  <- Sys.getenv("PADI_PASSWD")
+        if ("" == passwd)   passwd <- NULL
         cat("TSconnect skipped in this test. The server is started in other tests.\n")
         #con <- TSconnect(m,
         #   username=user, password=passwd, host=host, dbname=dbname)  

@@ -20,11 +20,11 @@ m <- dbDriver("PostgreSQL") # note that this is needed in sourced files.
    if ("" != user) {
        host    <- Sys.getenv("POSTGRES_HOST")
        if ("" == host)     host <- "localhost"  #Sys.info()["nodename"] 
-       if ("" == passwd)   passwd <- NULL
        passwd  <- Sys.getenv("POSTGRES_PASSWD")
+       if ("" == passwd)   passwd <- NULL
        #  See  ?"dbConnect-methods"
        con <- dbConnect(m,
-          username=user, password=passwd, host=host, dbname=dbname)  
+          user=user, password=passwd, host=host, dbname=dbname)  
      }else  {
 	#( the postgres driver may also use PGDATABASE, PGHOST, PGPORT, PGUSER )
        # The Postgress documentation seems to suggest that it should be
@@ -45,7 +45,7 @@ dbDisconnect(con)
 # pass user/passwd in ~/.pgpass (but host defaults to PGHOST or localhost).
 
 con <- if ("" != user)  
-          tryCatch(TSconnect(m, dbname=dbname, username=user, password=passwd, host=host)) 
+          tryCatch(TSconnect(m, dbname=dbname, user=user, password=passwd, host=host)) 
     else  tryCatch(TSconnect(m, dbname=dbname)) 
     
 if(inherits(con, "try-error")) stop("CreateTables did not work.")

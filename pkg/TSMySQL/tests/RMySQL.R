@@ -20,8 +20,8 @@ m <- dbDriver("MySQL") # note that this is needed in sourced files.
        # specifying host as NULL or "localhost" results in a socket connection
        host    <- Sys.getenv("MYSQL_HOST")
        if ("" == host)     host <- Sys.info()["nodename"] 
-       if ("" == passwd)   passwd <- NULL
        passwd  <- Sys.getenv("MYSQL_PASSWD")
+       if ("" == passwd)   passwd <- NULL
        #  See  ?"dbConnect-methods"
        con <- dbConnect("MySQL",
           username=user, password=passwd, host=host, dbname=dbname)  
