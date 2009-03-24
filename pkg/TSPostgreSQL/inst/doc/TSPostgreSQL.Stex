@@ -30,19 +30,28 @@ Some examples below also require \pkg{zoo}, and \pkg{tseries}.
 WARNING: running these example will overwrite tables in the
 PostgreSQL ''test'' database on the server.
 
-The PostgreSQL  user, password, and hostname should be set in PostgreSQL information file
-(.pgpass) before starting R. Alternatively, this information can be set with
-environment variables  POSTGRES\_USER, POSTGRES\_PASSWD and POSTGRES\_HOST.
+The PostgreSQL  user, and password, should be set in PostgreSQL 
+configuration file (.pgpass) before starting R. 
+The Postgress documentation suggests that it should be
+possible to get the host from the .pgpass file too, but I have not been able
+to make that work. The PostgreSQL alternative to the configuration file
+is to use environment variables PGDATABASE, PGHOST, PGPORT, and PGUSER.
+This package (and CRAN) support another alternatively to set this information 
+with environment variables  POSTGRES\_USER, POSTGRES\_PASSWD 
+and POSTGRES\_HOST.
 (An environment variable POSTGRES\_DATABASE can also be set, but ''test'' is
 specified below.)  Below, the environment variable  POSTGRES\_USER is used to
-determine which of these methods is being used. If this environment variable is
-empty then it is assumed the configuration file will be used.
+determine how the user and password are set. If this environment variable is
+empty then it is assumed the PostgreSQL mechanism will be used (i.e. the driver
+consults the PG* variables or the configuration file). However, the host is
+determined by the following logic:
 
 \begin{Scode}
    user    <- Sys.getenv("POSTGRES_USER")
+   host    <- Sys.getenv("POSTGRES_HOST")
+   if ("" == host) host  <- Sys.getenv("PGHOST")
+   if ("" == host) host  <- "localhost"  #Sys.info()["nodename"] 
    if ("" != user) {
-       host    <- Sys.getenv("POSTGRES_HOST")
-       if ("" == host)     host <- Sys.info()["nodename"] 
        passwd  <- Sys.getenv("POSTGRES_PASSWD")
        if ("" == passwd)   passwd <- NULL
       }
@@ -56,7 +65,7 @@ an administrator setting up the database, rather than by an end user.
 
 \begin{Scode}{results=hide}
 m <- dbDriver("PostgreSQL")
-con <-  if ("" == user) dbConnect(m, dbname="test") else
+con <-  if ("" == user) dbConnect(m, dbname="test", host=host) else
     dbConnect(m, dbname="test", user=user, password=passwd, host=host)
 
 source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
@@ -79,7 +88,7 @@ The first thing to do is to establish a connection to the database:
 
 \begin{Scode}{results=hide}
  m <- dbDriver("PostgreSQL")
- con <-  if ("" == user) TSconnect(m, dbname="test") else
+ con <-  if ("" == user) TSconnect(m, dbname="test", host=host) else
     TSconnect(m, dbname="test", user=user, password=passwd, host=host)
 \end{Scode}
 
@@ -260,7 +269,7 @@ Fetching data may fail due to lack of an Interenet connection or delays.
 
 First establish a connection to the database where data will be saved:
 \begin{Scode}
-con <-  if ("" == user) TSconnect("PostgreSQL", dbname="test") else
+con <-  if ("" == user) TSconnect("PostgreSQL", dbname="test", host=host) else
     TSconnect("PostgreSQL", dbname="test", user=user, password=passwd, host=host)
 \end{Scode}
 
@@ -357,7 +366,7 @@ if block do not display until the end of the block.
 
 \begin{Scode}{results=verbatim,fig=TRUE}
   m <- dbDriver("PostgreSQL")
-  conets <-  try(if ("" == user) TSconnect(m, dbname="ets") else
+  conets <-  try(if ("" == user) TSconnect(m, dbname="ets", host=host) else
     TSconnect(m, dbname="ets", user=user, password=passwd, host=host))
   if (!inherits(conets, "try-error")) {
   
@@ -449,7 +458,7 @@ to get at more detailed information, or formulate special queries.
 
 \begin{Scode}{results=hide}
  m <- dbDriver("PostgreSQL")
- con <-  if ("" == user) TSconnect(m, dbname="test") else
+ con <-  if ("" == user) TSconnect(m, dbname="test", host=host) else
     TSconnect(m, dbname="test", user=user, password=passwd, host=host)
  options(TSconnection=con)
 \end{Scode}

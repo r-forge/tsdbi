@@ -17,22 +17,20 @@ m <- dbDriver("PostgreSQL") # note that this is needed in sourced files.
    if ("" == dbname)   dbname <- "test"
 
    user    <- Sys.getenv("POSTGRES_USER")
+   host <- Sys.getenv("POSTGRES_HOST")
+   if ("" == host) host  <- Sys.getenv("PGHOST")
+   if ("" == host) host  <- "localhost"  #Sys.info()["nodename"] 
    if ("" != user) {
-       host    <- Sys.getenv("POSTGRES_HOST")
-       if ("" == host)     host <- "localhost"  #Sys.info()["nodename"] 
        passwd  <- Sys.getenv("POSTGRES_PASSWD")
        if ("" == passwd)   passwd <- NULL
        #  See  ?"dbConnect-methods"
-       con <- dbConnect(m,
-          user=user, password=passwd, host=host, dbname=dbname)  
+       con <- dbConnect(m, dbname=dbname,
+          user=user, password=passwd, host=host)  
      }else  {
 	#( the postgres driver may also use PGDATABASE, PGHOST, PGPORT, PGUSER )
        # The Postgress documentation seems to suggest that it should be
        #   possible to get the host from the .pgpass file too, but I cannot.
-       host <- Sys.getenv("POSTGRES_HOST")
-       if ("" == host) host  <- Sys.getenv("PGHOST")
-       if ("" == host) host  <- "localhost"  #Sys.info()["nodename"] 
-       #get user/passwd/dbase in ~/.pgpass
+       #get user/passwd in ~/.pgpass
        con <- dbConnect(m, dbname=dbname, host=host) 
        }
 
