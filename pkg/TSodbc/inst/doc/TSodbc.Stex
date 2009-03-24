@@ -19,16 +19,8 @@ This uses the default editor, which can be changed using \emph{options()}.
 It should be possible to view the pdf version of the guide for this 
 package with \emph{print(vignette("TSodbc"))}.
 
-
 WARNING: running these example will overwrite tables in the
 ODBC ''test'' database on the server.
-
-
-The ODBC  user, password, hostname, etc, should be set in ODBC information file
-(.odbc.ini) before starting R. Alternately, this information can be set with
-environment variables  ODBC\_USER, ODBC\_PASSWD and ODBC\_HOST.
-(An environment variable ODBC\_DATABASE can also be set, but ''test'' is
-specified below.) 
 
 Once R is started, the functions in this package are made available with
 
@@ -39,6 +31,28 @@ This will also load required packages \pkg{TSdbi}, \pkg{DBI}, \pkg{RODBC},
 \pkg{methods}, and \pkg{tframe}. 
 Some examples below also require \pkg{zoo}, and \pkg{tseries}.
 
+The ODBC  user, password, hostname, etc, should be set in ODBC client
+configuration file (~/.odbc.ini on Linux/Unix systems) before starting R. 
+An example of this file is provided in the final section of this vignette.
+Alternatively, this information can be set with
+environment variables  ODBC\_USER and ODBC\_PASSWD. The variable ODBC\_HOST
+does not seem to work for passing the ODBC connection, so a properly setup
+ODBC configuration file is also needed, but the 
+environment variables will override the  user and passwd setting in that file.
+(An environment variable ODBC\_DATABASE can also be set, but ''test'' is
+specified below.) Below, the environment variable  ODBC\_USER is used to
+determine which of these methods is being used. If this environment variable is
+empty then it is assumed the configuration file will be used.
+
+\begin{Scode}
+   user    <- Sys.getenv("ODBC_USER")
+   if ("" != user) {
+       passwd  <- Sys.getenv("ODBC_PASSWD")
+       if ("" == passwd)   passwd <- NULL
+      }
+\end{Scode}
+
+
 The next small section of code is necessary to setup database tables that are
 used in the examples below. It
 needs to be done only once for a database and might typically be done by
@@ -46,7 +60,8 @@ an administrator setting up the database, rather than by an end user.
 
 \begin{Scode}{results=hide}
 m <- dbDriver("ODBC")
-con <- odbcConnect(dsn="test") 
+con <-  if ("" == user) odbcConnect(dsn="test") else
+    odbcConnect(dsn="test", uid=user, pwd=passwd)
 if(con == -1) stop("error establishing ODBC connection.") 
 source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
 odbcClose(channel=con)
@@ -68,10 +83,11 @@ The first thing to do is to establish a connection to the database:
 
 \begin{Scode}{results=hide}
  m <- dbDriver("ODBC")
- con <- TSconnect(m, dbname="test") 
+ con <-  if ("" == user) TSconnect(m, dbname="test") else
+    TSconnect(m, dbname="test", uid=user, pwd=passwd)
 \end{Scode}
 
-\code{TSconnect} uses \code{dbConnect} from the \pkg{DBI} package, but checks that the
+\code{TSconnect} uses \code{odbcConnect} from the \pkg{RODBC} package, but checks that the
 database has expected tables, and checks for additional features. (It cannot
 be used before the tables are created, as done in the previous section.)
 
@@ -248,7 +264,8 @@ Fetching data may fail due to lack of an Interenet connection or delays.
 
 First establish a connection to the database where data will be saved:
 \begin{Scode}
-con <- TSconnect("ODBC", dbname="test")
+  con <-  if ("" == user) TSconnect("ODBC", dbname="test") else
+    TSconnect("ODBC", dbname="test", uid=user, pwd=passwd)
 \end{Scode}
 
 Now connect to the web server and fetch data:
@@ -344,7 +361,8 @@ if block do not display until the end of the block.
 
 \begin{Scode}{results=verbatim,fig=TRUE}
   m <- dbDriver("ODBC")
-  conets <- tryCatch(TSconnect(m, dbname="ets")) 
+  conets <-  tryCatch(if ("" == user) TSconnect(m, dbname="ets") else
+    TSconnect(m, dbname="ets", uid=user, pwd=passwd))
   if (!inherits(conets, "try-error")) {
   
   options(TSconnection=conets)
@@ -437,7 +455,8 @@ following try to use generic SQL.
 
 \begin{Scode}{results=hide}
  m <- dbDriver("ODBC")
- con <- TSconnect(m, dbname="test") 
+ con <-  if ("" == user) TSconnect(m, dbname="test") else
+    TSconnect(m, dbname="test", uid=user, pwd=passwd)
  options(TSconnection=con)
 \end{Scode}
 
@@ -472,11 +491,58 @@ so the following are wrapped in \code{tryCatch()}.
 Finally, to disconnect gracefully, one should
 
 \begin{Scode}{results=hide}
-
-dbDisconnect(con)
-#dbDisconnect(options()$TSconnection)
-options(TSconnection=NULL)
-odbcCloseAll()
-dbUnloadDriver(m)
+  dbDisconnect(con)
+  #dbDisconnect(options()$TSconnection)
+  options(TSconnection=NULL)
+  odbcCloseAll()
+  dbUnloadDriver(m)
 \end{Scode}
+
+\section{Example  ODBC configuration file}
+
+Following is an example ODBC configuration file I use in Linux (so the file is
+in my home directory and called  ''.odbc.ini'') to connect to a remote
+PostgreSQL server:
+
+\begin{verbatim}
+[test]
+
+Description             = test DB (Postgresql)
+Driver                  = Postgresql
+Trace                   = No
+TraceFile               = /tmp/test_odbc.log
+Database                = test
+Servername              = some.host
+UserName                = paul
+Password                = mySecret
+Port                    = 5432
+Protocol                = 6.4
+ReadOnly                = No
+RowVersioning           = No
+ShowSystemTables        = No
+ShowOidColumn           = No
+FakeOidIndex            = No
+ConnSettings            =
+
+
+[ets]
+
+Description             = ets DB (Postgresql)
+Driver                  = Postgresql
+Trace                   = No
+TraceFile               = /tmp/test_odbc.log
+Database                = ets
+Servername              = some.host
+UserName                = paul
+Password                = mySecret
+Port                    = 5432
+Protocol                = 6.4
+ReadOnly                = No
+RowVersioning           = No
+ShowSystemTables        = No
+ShowOidColumn           = No
+FakeOidIndex            = No
+ConnSettings            =
+\end{verbatim}
+
 \end{document}

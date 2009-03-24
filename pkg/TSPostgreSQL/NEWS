@@ -1,5 +1,11 @@
       (See also NEWS in the TSdbi package.)
 
+  CHANGES IN TSPostgreSQL VERSION 2009.3-2
+
+    o fixed syntax of tests and vignette to use environment variables 
+      if specified. 
+
+
   CHANGES IN TSPostgreSQL VERSION 2009.3-1
 
     o only changes to keep in sync with TSdbi.
