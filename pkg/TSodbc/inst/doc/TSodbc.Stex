@@ -361,7 +361,7 @@ if block do not display until the end of the block.
 
 \begin{Scode}{results=verbatim,fig=TRUE}
   m <- dbDriver("ODBC")
-  conets <-  tryCatch(if ("" == user) TSconnect(m, dbname="ets") else
+  conets <-  try(if ("" == user) TSconnect(m, dbname="ets") else
     TSconnect(m, dbname="ets", uid=user, pwd=passwd))
   if (!inherits(conets, "try-error")) {
   
