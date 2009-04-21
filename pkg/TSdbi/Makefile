@@ -1,5 +1,6 @@
 # These are required, but  the system installed versions should usually work.
-#PREREQ_PACS=tframe tframePlus
+# (As long as the installed version is not hidden during testing.)
+PREREQ_PACS=tframe tframePlus
 
 include ../Makevars
 CODE_PREREQS=$(CODE) DESCRIPTION NAMESPACE #INDEX LICENSE
