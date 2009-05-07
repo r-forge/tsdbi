@@ -11,6 +11,12 @@ KNOWN BUGS
     o See also TO DO below.
 
 
+CHANGES IN TSdbi VERSION 2009.5-1
+
+    o  Added class conType which is inherited by connections for specific
+         drivers, so that some methods (in progress) can abstract from the 
+	 specific driver. 
+
 CHANGES IN TSdbi VERSION 2009.1-1
 
     o  Added checks in several TS* packages to verify if a service is 

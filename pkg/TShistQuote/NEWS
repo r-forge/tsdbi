@@ -4,6 +4,12 @@ KNOWN BUGS
 
     o None for the moment.
 
+
+CHANGES IN TShistQuote VERSION 2009.5-1
+
+    o Connection now inherits from class conType. 
+
+
 CHANGES IN TShistQuote VERSION 2009.1-2
 
     o fixed NEWS file to indicate previous release as 2009.1-1 (not 2008.11-1).

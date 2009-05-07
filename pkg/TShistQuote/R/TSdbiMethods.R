@@ -16,7 +16,7 @@ histQuote <- function() {
   }
 
 # require("DBI") for this
-setClass("TShistQuoteConnection", contains=c("DBIConnection","TSdb"),
+setClass("TShistQuoteConnection", contains=c("DBIConnection", "conType","TSdb"),
    representation(user="character", password="character", host="character") )
 
 ####### some kludges to make this look like DBI. ######
@@ -44,7 +44,7 @@ setMethod("TSconnect",   signature(drv="histQuoteDriver", dbname="character"),
    else 
       warning(dbname, "not recognized. Connection assumed working, but not tested.")
    
-   new("TShistQuoteConnection", dbname=dbname, hasVintages=FALSE, hasPanels=FALSE,
+   new("TShistQuoteConnection", drv="histQuote", dbname=dbname, hasVintages=FALSE, hasPanels=FALSE,
     	  user = user, password = password, host = host ) 
    } )
 

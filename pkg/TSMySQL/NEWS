@@ -1,5 +1,9 @@
       (See also NEWS in the TSdbi package.)
 
+  CHANGES IN TSMySQL VERSION 2009.5-1
+
+    o Connection now inherits from class conType. 
+
   CHANGES IN TSMySQL VERSION 2009.3-2
 
     o fixed syntax of tests and vignette to use environment variables 
