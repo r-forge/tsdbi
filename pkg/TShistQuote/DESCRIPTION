@@ -1,11 +1,11 @@
 Package: TShistQuote
-Version: 2009.1-1
-Date:2009-1-12
+Version: 2009.5-1
+Date:2009-5-06
 Title:  Time Series Database Interface extensions for  get.hist.quote
 Description: Provides methods for generics in the TSdbi package to 
 	retrieve data from historical quote URLs.
 Depends: R (>= 2.8.0), methods, DBI, TSdbi (>= 2009.1-1), tseries, tframe, tframePlus, zoo
-Imports: DBI, methods
+Imports: methods, DBI, TSdbi (>= 2009.5-1)
 Enhances: TSdbi
 License: GPL-2
 Author: Paul Gilbert <pgilbert@bank-banque-canada.ca>

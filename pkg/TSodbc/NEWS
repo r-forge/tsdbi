@@ -5,6 +5,10 @@
     o host (connection) setting cannot be passed with an environment variable, 
       so it is necessary to have a properly defined ~/.odbc.ini  file.
 
+  CHANGES IN TSodbc VERSION 2009.5-1
+
+    o Connection now inherits from class conType. 
+
   CHANGES IN TSodbc VERSION 2009.3-3
 
     o fixed a minor problem with the vignette, using tryCatch incorrectly in

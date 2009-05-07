@@ -13,10 +13,10 @@
 #  	       hasPanels  =dbExistsTable(con, "panels"))) 
 
 # or 
-setClass("TSMySQLConnection", contains=c("MySQLConnection", "TSdb"))
+setClass("TSMySQLConnection", contains=c("MySQLConnection", "conType", "TSdb"))
 
 # in which case we need 
-#new("TSMySQLConnection" , con, dbname=dbname, 
+#new("TSMySQLConnection" , con, drv="MySQL", dbname=dbname, 
 #  	       hasVintages=dbExistsTable(con, "vintages"), 
 #  	       hasPanels  =dbExistsTable(con, "panels")) 
 
@@ -35,7 +35,7 @@ setMethod("TSconnect",   signature(drv="MySQLDriver", dbname="character"),
 	  dbDisconnect(con)
           stop("Database ",dbname," does not appear to be a TS database.")
 	  }
-	new("TSMySQLConnection" , con, dbname=dbname, 
+	new("TSMySQLConnection" , con, drv="MySQL", dbname=dbname, 
   	       hasVintages=dbExistsTable(con, "vintages"), 
   	       hasPanels  =dbExistsTable(con, "panels")) 
 	})

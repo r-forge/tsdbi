@@ -4,7 +4,7 @@
 #   require("RSQLite")
 #   }
 
-setClass("TSSQLiteConnection", contains=c("SQLiteConnection","TSdb")) 
+setClass("TSSQLiteConnection", contains=c("SQLiteConnection","conType", "TSdb")) 
 
 setMethod("print", "TSSQLiteConnection", function(x, ...) {
     print(x@TSdb)
@@ -15,7 +15,7 @@ setMethod("TSconnect",   signature(drv="SQLiteDriver", dbname="character"),
         con <- dbConnect(drv, dbname=dbname, ...)
 	if(!dbExistsTable(con, "Meta"))
 	  stop("The database does not appear to be a TS database,")
-	new("TSSQLiteConnection" , con, dbname=dbname, 
+	new("TSSQLiteConnection" , con, drv="SQLite", dbname=dbname, 
 	       hasVintages=dbExistsTable(con, "vintages"), 
 	       hasPanels  =dbExistsTable(con, "panels"))
 	})

@@ -4,7 +4,8 @@
 #   require("RPostgreSQL")
 #   }
 
-setClass("TSPostgreSQLConnection", contains=c("PostgreSQLConnection", "TSdb")) 
+setClass("TSPostgreSQLConnection", 
+   contains=c("PostgreSQLConnection", "conType", "TSdb")) 
 
 #setMethod("print", "TSPostgreSQLConnection", function(x, ...) {
 #   print(x@TSdb)
@@ -22,7 +23,7 @@ setMethod("TSconnect",   signature(drv="PostgreSQLDriver", dbname="character"),
 	  dbDisconnect(con)
           stop("Database ",dbname," does not appear to be a TS database.")
 	  }
-  	new("TSPostgreSQLConnection" , con, dbname=dbname, 
+  	new("TSPostgreSQLConnection" , con, drv="PostgreSQL", dbname=dbname, 
  	       hasVintages=dbExistsTable(con, "vintages"), 
  	       hasPanels  =dbExistsTable(con, "panels")) 
 	})

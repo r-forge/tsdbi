@@ -5,12 +5,16 @@
     o remote servers are not working (and the vignette is truncated to skip 
        this feature).
 
-                 CHANGES IN TSfame VERSION 2009.3-1
+  CHANGES IN TSfame VERSION 2009.5-1
+
+    o Connection now inherits from class conType. 
+
+  CHANGES IN TSfame VERSION 2009.3-1
 
     o changes to keep in sync with TSdbi.
 
 
-                        TSfame VERSION 2008.11-1
+             TSfame VERSION 2008.11-1
 
     o tis methods for tframe are included. (These could be in package tframe or 
         tframePlus, but then tis is needed to build those packages.

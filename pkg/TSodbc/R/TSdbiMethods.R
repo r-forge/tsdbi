@@ -28,7 +28,7 @@ setOldClass("RODBC",  prototype=structure(integer(1),
 ##setClass("TSodbcConnection", contains=c("DBIConnection","TSdb"),
 ##    representation(Id="RODBC"))
 
-setClass("TSodbcConnection", contains=c("DBIConnection","TSdb","RODBC"))
+setClass("TSodbcConnection", contains=c("DBIConnection","conType","TSdb","RODBC"))
 
 ####### some kludges to make this look like DBI. ######
 setMethod("dbListTables", signature(conn="RODBC"), definition=function(conn,...)
@@ -98,7 +98,7 @@ setMethod("TSconnect",   signature(drv="ODBCDriver", dbname="character"),
 	  odbcClose(con)
           stop("Database ",dbname," does not appear to be a TS database.")
 	  }
-	new("TSodbcConnection" , con, dbname=dbname, 
+	new("TSodbcConnection" , con, drv="ODBC", dbname=dbname, 
   	       hasVintages=dbExistsTable(con, "vintages"), 
   	       hasPanels  =dbExistsTable(con, "panels")) 
 	})

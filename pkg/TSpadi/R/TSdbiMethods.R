@@ -7,7 +7,7 @@ padi <- function() {
   }
 
 # require("DBI") for this
-setClass("TSpadiConnection", contains=c("DBIConnection", "TSdb"),
+setClass("TSpadiConnection", contains=c("DBIConnection", "conType", "TSdb"),
   representation(
    user = "character",
    password = "character",
@@ -43,7 +43,8 @@ setMethod("TSconnect",   signature(drv="padiDriver", dbname="character"),
    if (is.null(password)) password <-r$password
    if (is.null(host)) host <- r$host
    if(checkPADIserver(server=host, user=user, timeout=timeout) )   
-     new("TSpadiConnection", dbname=dbname, hasVintages=FALSE, hasPanels=FALSE,
+     new("TSpadiConnection", drv="padi", dbname=dbname,
+             hasVintages=FALSE, hasPanels=FALSE,
     	  user = user,
     	  password = password,
     	  host = host,

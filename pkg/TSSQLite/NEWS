@@ -1,5 +1,9 @@
       (See also NEWS in the TSdbi package.)
 
+  CHANGES IN TSSQLite VERSION 2009.5-1
+
+    o Connection now inherits from class conType. 
+
   CHANGES IN TSSQLite VERSION 2009.3-1
 
     o only changes to keep in sync with TSdbi.

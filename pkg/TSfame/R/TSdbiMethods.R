@@ -16,7 +16,7 @@ fame <- function() {
   }
 
 # require("DBI") for this
-setClass("TSfameConnection", contains=c("DBIConnection", "TSdb"))
+setClass("TSfameConnection", contains=c("DBIConnection", "conType", "TSdb"))
    #user / password / host  for future consideration
    # different for read or write accessMode = "character"
    
@@ -41,7 +41,7 @@ setMethod("TSconnect",   signature(drv="fameDriver", dbname="character"),
    Id <- try(fameDbOpen(dbname, accessMode = accessMode))
    if(inherits(Id, "try-error") ) stop("Could not establish TSfameConnection to ", dbname)
    fameDbClose(Id) # this Id is not saved
-   new("TSfameConnection", 
+   new("TSfameConnection", drv="fame".
           dbname=dbname, hasVintages=FALSE, hasPanels=FALSE) 
    } )
 
