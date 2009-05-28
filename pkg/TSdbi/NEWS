@@ -11,6 +11,13 @@ KNOWN BUGS
     o See also TO DO below.
 
 
+CHANGES IN TSdbi VERSION 2009.5-2
+
+    o  Added optional names argument to TSquery, to give series names to 
+       returned series. 
+
+    o  TSquery was extended to allow generating daily series. 
+
 CHANGES IN TSdbi VERSION 2009.5-1
 
     o  Added class conType which is inherited by connections for specific
