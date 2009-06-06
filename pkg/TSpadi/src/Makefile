@@ -1,5 +1,3 @@
-#
-# dse/src/pac/padi/src/Makefile
 
 VPATH=../exec
 
@@ -11,21 +9,12 @@ RPCGEN= rpcgen -C
 
 PKGNAME = padi
 
-#VPATH = @srcdir@
-#srcdir = @srcdir@
-#top_srcdir = @top_srcdir@
-
-#top_builddir = ../../../..
-#subdir = src/library/$(pkg)/src
 #R_HOME = $(top_builddir)
 R_HOME = $(R)
 
-PRGS = getpadi putpadi objectinfo
-FAMEPRGS = compare.pc object.pc target.pc sys.pc
-
 LIBSRC = padi.c padiutil.c channel.c rpcx_xdr.c gmalloc.c
 SRC = getpadi.c  putpadi.c  $(LIBSRC)
-#SRC = padi.c  channel.c  getpadi.c  gmalloc.c  padiutil.c  putpadi.c  rpcx_xdr.c  
+
 OBJS = $(SRC:.c=.o) 
 
 OTHERSRC = rpcx_clnt.c  rpcx_svc.c  objectinfo.c simple_svc.c
@@ -36,6 +25,7 @@ PKG_CFLAGS = -ansi -pedantic -I$(PADI_HOME)/include
 PKG_CPPFLAGS = -DGMALLOC -trigraphs
 #PKG_CPPFLAGS = -DGMALLOC 
 
+# this is not portable but may need configure to do
 ifeq (${shell uname}, SunOS)
   LD_LIBS=-lm -lc -lnsl
 else
@@ -43,7 +33,8 @@ else
 endif
 
 all: rpcx.h padi.so ../exec/padi_simple_svc ../exec/getpwuid  ../exec/x11arima \
-       $(PRGS:%=../exec/%)
+        ../exec/getpadi ../exec/putpadi ../exec/objectinfo
+
 
 
 $(PKGNAME).so: $(OBJS) rpcx.h
@@ -60,44 +51,50 @@ $(PKGNAME).so: $(OBJS) rpcx.h
 fame_svc:	fame_svc.c plus fame hli
 	echo not yet
 
-$(PRGS:%=../exec/%):../exec/%: %.c $(LIBSRC)
-	$(RM) $(notdir $@)
-	$(CC) -Wall -DMAIN $(LD_LIBS) $(notdir $@).c $(LIBSRC) -o $(notdir $@)
-	mv $(notdir $@) ../exec
+
+../exec/getpadi: getpadi.c $(LIBSRC)
+	$(CC) -Wall -DMAIN $(LD_LIBS) $< $(LIBSRC) -o $@
+
+../exec/putpadi: putpadi.c $(LIBSRC)
+	$(CC) -Wall -DMAIN $(LD_LIBS) $< $(LIBSRC) -o $@
+
+../exec/objectinfo: objectinfo.c $(LIBSRC)
+	$(CC) -Wall -DMAIN $(LD_LIBS) $< $(LIBSRC) -o $@
+
+../exec/getpwuid: getpwuid.c
+	$(CC) -Wall -DMAIN $(LD_LIBS)  $< gmalloc.c -o $@
 
 ../exec/x11arima: getpadi.c $(LIBSRC)
-	$(RM) $(notdir $@)
-	$(CC) -Wall -DMAIN -DX11ARIMA $(LD_LIBS) getpadi.c $(LIBSRC) -o $(notdir $@)
-	mv $(notdir $@) ../exec
+	$(CC) -Wall -DMAIN -DX11ARIMA $(LD_LIBS) $< $(LIBSRC) -o $@
 
-../exec/getpwuid:	getpwuid.c
-	$(RM) $(notdir $@)
-	$(CC) -Wall -DMAIN $(LD_LIBS) getpwuid.c gmalloc.c -o getpwuid
-	mv $(notdir $@) ../exec
 	
 rpcx_clnt.c  rpcx_svc.c  rpcx_xdr.c:	rpcx.h
 
-#rpcx.h: rpcx.x
-%.h: %.x
+rpcx.h: rpcx.x
 	$(RPCGEN) $<
 
-../exec/$(FAMEPRGS):%.pc: %.pro
+../exec/compare.pc: compare.pro
 	fameCompile $<
-	mv $(notdir $@) ../exec
+	mv compare.pc ../exec
+
+../exec/object.pc: object.pro
+	fameCompile $<
+	mv object.pc ../exec
+
+../exec/target.pc: target.pro
+	fameCompile $<
+	mv target.pc ../exec
+
+../exec/sys.pc:sys.pro
+	fameCompile $<
+	mv sys.pc ../exec
 
 clean:
-	@$(RM) $(PRGS) getpwuid padi_simple_svc x11arima
+	@$(RM) getpadi putpadi objectinfo getpwuid padi_simple_svc x11arima
 	@$(RM) *.so *.o 
 	@$(RM) rpcx_clnt.c  rpcx.h  rpcx_svc.c  rpcx_xdr.c
 
-cvsclean:	clean
-	@$(RM) $(PRGS:%=../exec/%)
+distclean:	clean
+	@$(RM) ../exec/getpadi ../exec/putpadi ../exec/objectinfo ../exec/getpwuid
 	@$(RM) ../exec/getpwuid ../exec/padi_simple_svc ../exec/x11arima
 	@$(RM) ../exec/*.pro ../exec/*server.log.*
-
-distclean: cvsclean
-#	@-rm -f Makefile
-
-maintainer-clean: distclean
-
-## Automagically generated dependencies:
