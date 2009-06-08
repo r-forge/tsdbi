@@ -2,11 +2,17 @@
 
 KNOWN BUGS
 
-    o None for the moment.
+    o Probably does not build on Windows or Mac.
+
+  CHANGES IN TSpadi VERSION 2009.6-1
+
+    o Minor changes in src/Makefile to get closer to portable across OSes. 
+
 
   CHANGES IN TSpadi VERSION 2009.5-1
 
     o Connection now inherits from class conType. 
+
 
   CHANGES IN TSpadi VERSION 2009.3-1
 
