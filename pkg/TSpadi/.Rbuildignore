@@ -12,6 +12,7 @@ mansrc$
 guidesrc$
 zot$
 run$
+Rplots.pdf$
 inst/doc/(^|.*)\.tex$
 inst/doc/(^|.*)\.R$
 inst/doc/(^|.*)\.log$
