@@ -4,6 +4,11 @@ KNOWN BUGS
 
     o Probably does not build on Windows or Mac.
 
+  CHANGES IN TSpadi VERSION 2009.x-x
+
+    o Added configure script to get closer to portable across OSes. 
+
+
   CHANGES IN TSpadi VERSION 2009.6-1
 
     o Minor changes in src/Makefile to get closer to portable across OSes. 
