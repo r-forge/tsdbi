@@ -19,7 +19,7 @@
     \S4method{TSget}{character,TShistQuoteConnection}(serIDs, con,
         TSrepresentation = options()$TSrepresentation, 
 	tf = NULL, start = tfstart(tf), end = tfend(tf), names=serIDs, 
-	quote = "Close", quiet = TRUE, ...)
+	quote = "Close", quiet = TRUE, repeat.try=3, ...)
 ##    \S4method{TSput}{ANY,character,TShistQuoteConnection}(x, serIDs=seriesNames(data), con, ...)   
     \S4method{TSconnect}{histQuoteDriver,character}(drv, dbname, 
                user="", password = "", host="", ...)
@@ -47,6 +47,8 @@
           (See \code{TSget} in package \pkg{TSdbi}.)}
     \item{quote}{reference time (e.g. ''Close'') passed to \code{get.hist.quote}.}
     \item{quiet}{logical to suppress progress report, passed to \code{get.hist.quote}.}
+    \item{repeat.try}{integer number of times to attempt retrieval before giving
+          up.}
     \item{user}{(unused) a character string indicating a user id.}
     \item{password}{(unused) a character string indicating a password.}
     \item{host}{(unused) a character string indicating a host computer.}
