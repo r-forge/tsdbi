@@ -5,6 +5,13 @@ KNOWN BUGS
     o None for the moment.
 
 
+CHANGES IN TShistQuote VERSION 2009.7-1
+
+    o Added argument repeat.try to TSget with, default 3, indicating the 
+      number of retrieval attmpts before giving up. (The internet web sites 
+      do not always respond.) 
+
+
 CHANGES IN TShistQuote VERSION 2009.5-1
 
     o Connection now inherits from class conType. 
