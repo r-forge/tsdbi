@@ -14,7 +14,7 @@ if(identical(as.logical(service), TRUE)) {
    if ("" != user) {
        host    <- Sys.getenv("ODBC_HOST")
        if ("" != host) warning(
-	 "host name is note used. The connection is taken from the .odbc.ini file")
+	 "host name is not used. The connection is taken from the .odbc.ini file")
        passwd  <- Sys.getenv("ODBC_PASSWD")
        if ("" == passwd)   passwd <- NULL
        #  See  ?odbcConnect   ?odbcDriverConnect
