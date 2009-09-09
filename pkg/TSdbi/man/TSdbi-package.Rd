@@ -15,7 +15,7 @@ protoocol for now, but directly should be possible with some work).
 \details{
 \tabular{ll}{
 Package: \tab TSdbi\cr
-Depends: \tab R (>= 2.5.0), methods, tframe (>= 2008.5-1)
+Depends: \tab R (>= 2.5.0), methods, tframe (>= 2008.5-1)\cr
 Imports: \tab methods, DBI\cr
 Suggests:\tab zoo, tseries\cr
 License: \tab GPL Version 2.\cr
