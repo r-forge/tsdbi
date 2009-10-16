@@ -2,52 +2,51 @@
 
 KNOWN BUGS
 
-    o Probably does not build on Windows or Mac.
+   o	Probably does not build on Windows or Mac.
 
-  CHANGES IN TSpadi VERSION 2009.10-1
+Changes in TSpadi version 2009.10-1
 
-    o Fixed a few documentation problems found by R-2.10.0 (beta) quality checks.
+   o	Standardized NEWS format for new function news().
 
-    o Added configure script to get closer to portable across OSes. 
+   o	Fixed a few documentation problems found by R-2.10.0 (beta) quality checks.
 
-
-  CHANGES IN TSpadi VERSION 2009.6-1
-
-    o Minor changes in src/Makefile to get closer to portable across OSes. 
+   o	Added configure script to get closer to portable across OSes. 
 
 
-  CHANGES IN TSpadi VERSION 2009.5-1
+Changes in TSpadi version 2009.6-1
 
-    o Connection now inherits from class conType. 
-
-
-  CHANGES IN TSpadi VERSION 2009.3-1
-
-    o only changes to keep in sync with TSdbi.
+   o	Minor changes in src/Makefile to get closer to portable across OSes. 
 
 
-  CHANGES IN TSpadi VERSION 2008.5-1
+Changes in TSpadi version 2009.5-1
 
-    o only changes to keep in sync with TSdbi.
-
-
-  CHANGES IN TSpadi VERSION 2007.10-1
-
-    o This is an beta version.
-
-    o This package supercedes padi and dsepadi which were previously in the 
-      dseplus bundle in the devel area of CRAN. (As of R-2.5.0 the CRAN devel 
-      area was removed. 
-
-    o To the (very small) extent that there is any older news on 
-      this package, it will have been included in the NEWS for the main dse 
-      bundle on CRAN.
-
-    o some old function calls to padi.server.process and padi.cleanup.script
-      were fixed to call PADIserverProcess and PADIcleanupScript. (The function
-      names were changed some time ago.)
+   o	Connection now inherits from class conType. 
 
 
-  Changes Affecting Development
- 
-    o package separated from the dseplus bundle. 
+Changes in TSpadi version 2009.3-1
+
+   o	only changes to keep in sync with TSdbi.
+
+
+Changes in TSpadi version 2008.5-1
+
+   o	only changes to keep in sync with TSdbi.
+
+
+Changes in TSpadi version 2007.10-1
+
+   o	This is an beta version.
+
+   o	This package supercedes padi and dsepadi which were previously in the 
+	dseplus bundle in the devel area of CRAN. (As of R-2.5.0 the CRAN devel 
+	area was removed. 
+
+   o	To the (very small) extent that there is any older news on 
+	this package, it will have been included in the NEWS for the main dse 
+	bundle on CRAN.
+
+   o	some old function calls to padi.server.process and padi.cleanup.script
+	were fixed to call PADIserverProcess and PADIcleanupScript. (The 
+	function names were changed some time ago.)
+
+   o	package separated from the dseplus bundle. 
