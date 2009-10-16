@@ -69,7 +69,8 @@ see the vignette distributed with this package for more complete examples.
 \seealso{ 
 \code{\link[TSdbi]{TSdbi-package}},
 \code{\link[DBI]{dbConnect}},
-\code{\link[TSdbi]{TSdbiPut}}
+\code{\link[TSdbi]{TSput}},
+\code{\link[TSdbi]{TSget}}
 }
 \examples{
     con <- try(TSconnect(dbDriver("SQLite"), dbname="test"))

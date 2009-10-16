@@ -1,6 +1,6 @@
 Package: TSSQLite
-Version: 2009.5-1
-Date:2009-5-06
+Version: 2009.10-1
+Date:2009-10-14
 Title: Time Series Database Interface extentions for SQLite
 Description: TSSQLite provides a SQLite interface for TSdbi.
 Depends: R (>= 2.8.0), methods, tframePlus, TSdbi, RSQLite

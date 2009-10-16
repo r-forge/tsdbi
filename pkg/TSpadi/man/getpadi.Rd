@@ -164,10 +164,8 @@ startd and endd can be omitted.
  timeout is the period to wait (in seconds) before generating an error.
 }
 \seealso{
-   \code{\link{checkPADIserver}}
-   \code{\link{putpadi.default}}
-   \code{\link[dsepadi]{getpadi}}
-   \code{\link[dsepadi]{putpadi}}
+   \code{\link{checkPADIserver}},
+   \code{\link{putpadi}}
 }
 \examples{
 if(require("padi") && checkPADIserver("ets")){

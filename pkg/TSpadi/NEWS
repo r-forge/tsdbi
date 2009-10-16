@@ -4,7 +4,9 @@ KNOWN BUGS
 
     o Probably does not build on Windows or Mac.
 
-  CHANGES IN TSpadi VERSION 2009.x-x
+  CHANGES IN TSpadi VERSION 2009.10-1
+
+    o Fixed a few documentation problems found by R-2.10.0 (beta) quality checks.
 
     o Added configure script to get closer to portable across OSes. 
 
