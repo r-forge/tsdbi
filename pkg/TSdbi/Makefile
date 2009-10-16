@@ -3,7 +3,6 @@
 PREREQ_PACS=tframe tframePlus
 
 include ../Makevars
-CODE_PREREQS=$(CODE) DESCRIPTION NAMESPACE #INDEX LICENSE
 
 # The idea is that TSdbi tests should work with or without specific interfaces,
 # since some class and method definitions in TSdbi are needed, but in general,

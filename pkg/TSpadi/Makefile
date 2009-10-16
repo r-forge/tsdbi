@@ -1,10 +1,9 @@
 PREREQ_PACS=TSdbi
+OPTIONAL_PREREQ=src/*.[chx]
 
 include ../Makevars
 
 default:	$(DEFAULT)
-
-PRETESTLIB=$(CODE_PREREQS) $(CODESCAN) src/*.[chx] 
 
 PACCLEAN= simple.server.log.* zot*.db  src/Makevars
 
