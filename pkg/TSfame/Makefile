@@ -2,10 +2,6 @@ PREREQ_PACS=TSdbi
 
 include ../Makevars
 
-CODE_PREREQS=$(CODE) DESCRIPTION NAMESPACE #INDEX LICENSE
-
 default:	$(DEFAULT)
-
-PRETESTLIB=$(CODE_PREREQS) $(CODESCAN)
 
 include ../Makerules
