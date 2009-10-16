@@ -1,10 +1,19 @@
-      (See also NEWS in the TSdbi package.)
+See also NEWS in the TSdbi package.
 
-  CHANGES IN TSSQLite VERSION 2009.5-1
+Changes in TSSQLite version 2009.10-1
 
-    o Connection now inherits from class conType. 
+   o	Standardized NEWS format for new function news().
 
-  CHANGES IN TSSQLite VERSION 2009.3-1
+   o	Fixed a few documentation problems found by R-2.10.0 (beta) 
+	quality checks.
 
-    o only changes to keep in sync with TSdbi.
+
+Changes in TSSQLite version 2009.5-1
+
+   o	Connection now inherits from class conType. 
+
+
+Changes in TSSQLite version 2009.3-1
+
+   o	Only changes to keep in sync with TSdbi.
 
