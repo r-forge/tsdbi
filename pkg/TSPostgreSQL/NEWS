@@ -1,16 +1,25 @@
-      (See also NEWS in the TSdbi package.)
+See also
 
-  CHANGES IN TSPostgreSQL VERSION 2009.5-1
-
-    o Connection now inherits from class conType. 
-
-  CHANGES IN TSPostgreSQL VERSION 2009.3-2
-
-    o fixed syntax of tests and vignette to use environment variables 
-      if specified. 
+   o	See also NEWS in the TSdbi package.
 
 
-  CHANGES IN TSPostgreSQL VERSION 2009.3-1
+Changes in TSPostgreSQL version 2009.5-2
 
-    o only changes to keep in sync with TSdbi.
+   o	Standardized NEWS format for new function news().
+
+
+Changes in TSPostgreSQL version 2009.5-1
+
+   o	Connection now inherits from class conType. 
+
+
+Changes in TSPostgreSQL version 2009.3-2
+
+   o	fixed syntax of tests and vignette to use environment variables 
+	if specified. 
+
+
+Changes in TSPostgreSQL version 2009.3-1
+
+   o	only changes to keep in sync with TSdbi.
 
