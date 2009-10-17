@@ -1,36 +1,43 @@
-(See also NEWS in the TSdbi package.)
+See also
 
-KNOWN BUGS
+   o	See also NEWS in the TSdbi package.
 
-    o None for the moment.
+Known BUGS
 
-
-CHANGES IN TShistQuote VERSION 2009.7-1
-
-    o Added argument repeat.try to TSget with, default 3, indicating the 
-      number of retrieval attmpts before giving up. (The internet web sites 
-      do not always respond.) 
+   o	None for the moment.
 
 
-CHANGES IN TShistQuote VERSION 2009.5-1
+Changes in TShistQuote version 2009.7-2
 
-    o Connection now inherits from class conType. 
-
-
-CHANGES IN TShistQuote VERSION 2009.1-2
-
-    o fixed NEWS file to indicate previous release as 2009.1-1 (not 2008.11-1).
+   o	Standardized NEWS format for new function news().
 
 
-CHANGES IN TShistQuote VERSION 2009.1-1
+Changes in TShistQuote version 2009.7-1
 
-    o changed test retrieval from Oanda to respect max 500 days.
-
-    o minor documentation fixes found by new R-devel parsing. 
-
-    o minor changes to keep in sync with TSdbi.
+   o	Added argument repeat.try to TSget with, default 3, indicating the 
+	number of retrieval attmpts before giving up. (The internet web sites 
+	do not always respond.) 
 
 
-CHANGES IN TShistQuote VERSION 2008.11-1
+Changes in TShistQuote version 2009.5-1
 
-    o first release
+   o	Connection now inherits from class conType. 
+
+
+Changes in TShistQuote version 2009.1-2
+
+   o	fixed NEWS file to indicate previous release as 2009.1-1 (not 2008.11-1).
+
+
+Changes in TShistQuote version 2009.1-1
+
+   o	changed test retrieval from Oanda to respect max 500 days.
+
+   o	minor documentation fixes found by new R-devel parsing. 
+
+   o	minor changes to keep in sync with TSdbi.
+
+
+Changes in TShistQuote version 2008.11-1
+
+   o	first release
