@@ -1,25 +1,37 @@
-      (See also NEWS in the TSdbi package.)
+See also
 
-        Known Bugs
+   o	See also NEWS in the TSdbi package.
 
-    o host (connection) setting cannot be passed with an environment variable, 
-      so it is necessary to have a properly defined ~/.odbc.ini  file.
 
-  CHANGES IN TSodbc VERSION 2009.5-1
+Known BUGS
 
-    o Connection now inherits from class conType. 
+   o	host (connection) setting cannot be passed with an environment variable,
+	so it is necessary to have a properly defined ~/.odbc.ini  file.
 
-  CHANGES IN TSodbc VERSION 2009.3-3
 
-    o fixed a minor problem with the vignette, using tryCatch incorrectly in
-    place of try(). 
+Changes in TSodbc version 2009.5-2
 
-  CHANGES IN TSodbc VERSION 2009.3-2
+   o	Standardized NEWS format for new function news().
 
-    o fixed syntax of tests and vignette to use environment variables 
-      if specified. This does not seem to work for the HOST variable, which 
-      may be an odbc limitation.
 
-  CHANGES IN TSodbc VERSION 2009.3-1
+Changes in TSodbc version 2009.5-1
 
-    o only changes to keep in sync with TSdbi.
+   o	Connection now inherits from class conType. 
+
+
+Changes in TSodbc version 2009.3-3
+
+   o	fixed a minor problem with the vignette, using tryCatch incorrectly in
+	place of try(). 
+
+
+Changes in TSodbc version 2009.3-2
+
+   o	fixed syntax of tests and vignette to use environment variables 
+	if specified. This does not seem to work for the HOST variable, which 
+	may be an odbc limitation.
+
+
+Changes in TSodbc version 2009.3-1
+
+   o	only changes to keep in sync with TSdbi.
