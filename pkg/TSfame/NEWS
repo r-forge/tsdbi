@@ -1,22 +1,30 @@
-(See also NEWS in the TSdbi package.)
+See also
 
-                           KNOWN BUGS
+   o	See also NEWS in the TSdbi package.
 
-    o remote servers are not working (and the vignette is truncated to skip 
-       this feature).
+Known BUGS
 
-  CHANGES IN TSfame VERSION 2009.5-1
+   o	remote servers are not working (and the vignette is truncated to skip 
+	this feature).
 
-    o Connection now inherits from class conType. 
+Changes in TSfame version 2009.5-2
 
-  CHANGES IN TSfame VERSION 2009.3-1
-
-    o changes to keep in sync with TSdbi.
+   o	Standardized NEWS format for new function news().
 
 
-             TSfame VERSION 2008.11-1
+Changes in TSfame version 2009.5-1
 
-    o tis methods for tframe are included. (These could be in package tframe or 
-        tframePlus, but then tis is needed to build those packages.
+   o	Connection now inherits from class conType. 
 
-    o first (post beta) release.
+
+Changes in TSfame version 2009.3-1
+
+   o	changes to keep in sync with TSdbi.
+
+
+Changes in TSfame version 2008.11-1
+
+   o	tis methods for tframe are included. (These could be in package tframe 
+	or tframePlus, but then tis is needed to build those packages.
+
+   o	first (post beta) release.
