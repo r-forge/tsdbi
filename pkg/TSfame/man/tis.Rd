@@ -38,10 +38,9 @@
 
 \seealso{
     \code{\link[tframe]{tframe}}, 
-    \code{\link[tframe]{tfwindow}}
+    \code{\link[tframe]{tfwindow}},
     \code{\link[tframe]{tfstart}}, 
-    \code{\link[tframe]{tfend}}
-    \code{\link[tframe]{time}}
+    \code{\link[tframe]{tfend}},
     \code{\link[tis]{tis}}
 }
 \keyword{internal}

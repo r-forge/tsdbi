@@ -83,7 +83,6 @@ and see the vignette distributed with this package for more complete examples.
 \code{\link[TSdbi]{TSdbi-package}},
 \code{\link[DBI]{dbConnect}},
 \code{\link[TSdbi]{TSput}}
-\code{\link[fame]{sqlQuery}}
 }
 \examples{
     con <- try(TSconnect(dbDriver("fame"), dbname="test.db"))
