@@ -1,6 +1,8 @@
-(See also NEWS in the TSdbi package.)
+See also
 
-KNOWN BUGS
+   o	See also NEWS in the TSdbi package.
+
+Known BUGS
 
    o	Probably does not build on Windows or Mac.
 
