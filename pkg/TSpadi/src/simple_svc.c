@@ -110,7 +110,7 @@ export PadiSeriesResult_tp getlocal_1
 PARAM2(PadiRangeArg_tp, local, CLIENT *, rqstp)
 {
     PadiString_t user = local->user;
-    PadiString_t password = local->password;
+    /* PadiString_t password = local->password; */
     PadiRange_tp in_range = &(local->range);
     PadiString_t object_name = local->object_name;
     PadiString_t db_name = local->db_name;
@@ -133,9 +133,7 @@ PARAM2(PadiRangeArg_tp, local, CLIENT *, rqstp)
             nobs,
             numobs;
     int     in_syear,
-            in_sprd,
-            in_eyear,
-            in_eprd;
+            in_eyear;
     size_t  struct_len,
             data_len,
             buf_len;
@@ -435,7 +433,7 @@ export PadiResult_tp putlocal_1
 PARAM2(PadiNewSeries_tp, new, CLIENT *, rqstp)
 {
     PadiString_t user = new->user;
-    PadiString_t password = new->password;
+    /* PadiString_t password = new->password; */
     PadiSeries_tp series = &(new->series);
     PadiString_t dbname = new->dbname;
     PadiInfo_tp info = &(series->info);

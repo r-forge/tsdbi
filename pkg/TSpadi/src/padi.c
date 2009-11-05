@@ -113,17 +113,6 @@ private struct signal_tab_t {
   {0        , Padi_FATAL, NULL}
 };
 
-private int SignalSeverity PARAM1(int, sig)
-{
-  struct signal_tab_t *p;
-
-  for (p = signal_tab; p->message; p++)
-    if (p->signal == sig)
-      return p->severity;
-
-  return Padi_FATAL;
-}
-
 private char * SignalMessage PARAM1(int, sig)
 {
   struct signal_tab_t *p;
@@ -1218,6 +1207,17 @@ private void Help PARAM2(FILE *, stream, char *, name)
 
 export FILE *logfp;
 
+private int SignalSeverity PARAM1(int, sig)
+{
+  struct signal_tab_t *p;
+
+  for (p = signal_tab; p->message; p++)
+    if (p->signal == sig)
+      return p->severity;
+
+  return Padi_FATAL;
+}
+
 private void sighandler PARAM1(int, sig) 
 {
   char buf[128];
@@ -1689,7 +1689,7 @@ export void padiprog_1 PARAM2(struct svc_req *, rqstp, SVCXPRT *, transp)
   }
 
   if (unix_cred) 
-    sprintf(log_buf, "%ld.%ld@%s: %s(%.256s)", unix_cred->aup_uid, 
+    sprintf(log_buf, "%d.%d@%s: %s(%.256s)", unix_cred->aup_uid, 
                                          unix_cred->aup_gid, 
                                          unix_cred->aup_machname, 
                                          proc_name, object_name);
@@ -1743,7 +1743,7 @@ export int main PARAM2(int, argc, char **, argv)
   PadiTermArg_t termobject;
   mainopt_t option;
   PadiServer_t server;
-  SVCXPRT *transp;
+  /* SVCXPRT *transp; */
   char log_buf[128];
   int i;
   char    *svcuser;
