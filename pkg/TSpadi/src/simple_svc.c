@@ -3,7 +3,7 @@
 **
 ** Simple Server Functions
 **
-** Copyright 1995, 1996  Bank of Canada.
+** Copyright 1995, 1996, 2009  Bank of Canada.
 **
 ** The user of this software has the right to use, reproduce and distribute it.
 ** Bank of Canada makes no warranties with respect to the software or its 
@@ -11,6 +11,8 @@
 ** of Canada solely on an "as is" basis. By using the software, user agrees to 
 ** accept the entire risk of using this software.
 **
+**
+** cleanup of some warnings P.Gilbert 2009
 */
 
 #include <stdio.h>
@@ -138,6 +140,9 @@ PARAM2(PadiRangeArg_tp, local, CLIENT *, rqstp)
             data_len,
             buf_len;
     char   *s;
+    extern int strncasecmp();
+    extern int digitCount();
+
     PadiString_t *strp;
     PadiPrecision_t *vector;
     PadiSeriesResult_tp result;
@@ -445,6 +450,7 @@ PARAM2(PadiNewSeries_tp, new, CLIENT *, rqstp)
     DIR    *dir;
     FILE   *fp;
     int     i;
+    extern int digitCount();
 
 
     struct_len = sizeof(*result);
