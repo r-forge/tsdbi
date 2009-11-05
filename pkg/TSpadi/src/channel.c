@@ -153,8 +153,9 @@ export PadiResult_tp PadiClntCall PARAM6(PadiServer_tp, server, u_long, procnum,
 
 export PadiStatus_t PadiServe PARAM2(PadiServer_tp, server, dispatch_t, dispatch)
 {
-  import FILE * logfp;
+  /* import FILE * logfp; */
   SVCXPRT *transp;
+  extern void pmap_unset();
 
   PadiSetServer(server);
  
