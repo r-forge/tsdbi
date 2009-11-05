@@ -211,7 +211,7 @@ int   *timeout;		/* max time to wait for reply (seconds) */
 #define DATLEN 16		/* max. number of char in date literal */
 
 /*UF    main function */
-main(argc, argv)
+int main(argc, argv)
 int     argc;
 char   *argv[];
 
@@ -255,9 +255,9 @@ char   *argv[];
     char   *user = NULL;	/* user name */
     char   *password = NULL;	/* password (not implemented) */
     char    userbuf[L_cuserid+1];
-    char resolved_name[MAXPATHLEN + 1];
-    char *result_name;
 
+    extern char *cuserid();
+    extern char *gfree();
 
     /* Validate command-line arguments */
 

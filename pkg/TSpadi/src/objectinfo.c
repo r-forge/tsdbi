@@ -3,6 +3,7 @@
  * File:   getinfo.c
  * Author: Hope Pioro
  * Date  : Feb 96
+ * cleanup of some warnings P.Gilbert 2009
  *
  * Get PADI time series
  *
@@ -79,7 +80,6 @@ long   *bufsize;		/* maxsize of buffer, 0 returned on success */
 */
 
 {
-    PadiSize_t j;
     PadiServer_t server;
     PadiString_t database_name;
     PadiString_t user_name;
@@ -163,7 +163,7 @@ long   *bufsize;		/* maxsize of buffer, 0 returned on success */
 
 #ifdef MAIN
 /*UF    main function */
-main(argc, argv)
+int main(argc, argv)
 int     argc;
 char   *argv[];
 
@@ -217,7 +217,7 @@ char   *argv[];
         database = gstrdup("(nil)");
     }
 
-
+    extern char *cuserid();
     user = (char *) cuserid(userbuf);
 
     password = gstrdup("(nil)");

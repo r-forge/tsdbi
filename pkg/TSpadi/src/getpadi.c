@@ -308,7 +308,9 @@ char   *argv[];
     int     i;
     int    timeout =  TMOUTDEFAULT;   /* time to wait for reply */
     char    userbuf[L_cuserid+1];
-    int     j, year;
+
+    extern char *cuserid();
+    extern char *gfree();
 
     /* Validate command-line arguments */
 
@@ -406,6 +408,7 @@ char   *argv[];
 #endif				/* not X11ARIMA */
 #ifdef X11ARIMA
      /* this is a format used as input to X11ARIMA at STC for Monthly data!! */
+        int     j, year;
         year = syear;
 	printf("%-8s%4d", objnam, year);
 	j = smon - 1;
