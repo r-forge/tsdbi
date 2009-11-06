@@ -1,3 +1,6 @@
+# WALL is good for testing, but rpcgen puts some unused variables in
+#   the code it generates, and those cause lots of warning messages.
+#WALL=-Wall
 
 VPATH=../exec
 
@@ -43,7 +46,7 @@ $(PKGNAME).so: $(OBJS) rpcx.h
 
 ../exec/padi_simple_svc:  simple_svc.c $(LIBSRC)  
 	$(RM) $(notdir $@)
-	$(CC) -Wall $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DFS_SVC \
+	$(CC) $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DFS_SVC \
 	    simple_svc.c $(LIBSRC)  $(LD_LIBS) -o padi_simple_svc
 	mv padi_simple_svc ../exec
 
@@ -51,21 +54,20 @@ $(PKGNAME).so: $(OBJS) rpcx.h
 fame_svc:	fame_svc.c plus fame hli
 	echo not yet
 
-
 ../exec/getpadi: getpadi.c $(LIBSRC)
-	$(CC) -Wall -DMAIN $(LD_LIBS) $< $(LIBSRC) -o $@
+	$(CC) $(WALL) -DMAIN $(LD_LIBS) $< $(LIBSRC) -o $@
 
 ../exec/putpadi: putpadi.c $(LIBSRC)
-	$(CC) -Wall -DMAIN $(LD_LIBS) $< $(LIBSRC) -o $@
+	$(CC) $(WALL) -DMAIN $(LD_LIBS) $< $(LIBSRC) -o $@
 
 ../exec/objectinfo: objectinfo.c $(LIBSRC)
-	$(CC) -Wall -DMAIN $(LD_LIBS) $< $(LIBSRC) -o $@
+	$(CC) $(WALL) -DMAIN $(LD_LIBS) $< $(LIBSRC) -o $@
 
 ../exec/getpwuid: getpwuid.c
-	$(CC) -Wall -DMAIN $(LD_LIBS)  $< gmalloc.c -o $@
+	$(CC) $(WALL) -DMAIN $(LD_LIBS)  $< gmalloc.c -o $@
 
 ../exec/x11arima: getpadi.c $(LIBSRC)
-	$(CC) -Wall -DMAIN -DX11ARIMA $(LD_LIBS) $< $(LIBSRC) -o $@
+	$(CC) $(WALL) -DMAIN -DX11ARIMA $(LD_LIBS) $< $(LIBSRC) -o $@
 
 	
 rpcx_clnt.c  rpcx_svc.c  rpcx_xdr.c:	rpcx.h
