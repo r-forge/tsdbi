@@ -1658,7 +1658,7 @@ export void padiprog_1 PARAM2(struct svc_req *, rqstp, SVCXPRT *, transp)
   }
 
   bzero((char *)&argument, sizeof(argument));
-  if (!svc_getargs(transp, xdr_argument, (caddr_t)(&argument))) {
+  if (!svc_getargs(transp, (xdrproc_t) xdr_argument, (caddr_t)(&argument))) {
     svcerr_decode(transp);
     return;
 
@@ -1709,7 +1709,7 @@ export void padiprog_1 PARAM2(struct svc_req *, rqstp, SVCXPRT *, transp)
   if (!svc_sendreply(transp, (xdrproc_t) xdr_result, (caddr_t)result))
     svcerr_systemerr(transp);
 
-  if (!svc_freeargs(transp, xdr_argument, (caddr_t)(&argument))) {
+  if (!svc_freeargs(transp, (xdrproc_t) xdr_argument, (caddr_t)(&argument))) {
     PadiError(logfp, proc_name, Padi_FREE_ARG, Padi_FATAL);
 
   }

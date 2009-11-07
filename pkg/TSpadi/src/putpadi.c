@@ -23,6 +23,7 @@
 */
 
 /*IN*/
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
@@ -256,8 +257,6 @@ char   *argv[];
     char   *password = NULL;	/* password (not implemented) */
     char    userbuf[L_cuserid+1];
 
-    extern char *cuserid();
-    extern char *gfree();
 
     /* Validate command-line arguments */
 

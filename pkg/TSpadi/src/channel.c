@@ -14,6 +14,8 @@
 #define PADI_CLIENT
 #endif
  
+#include <rpc/rpc.h>
+
 #include "padi.h"
 
 #include "sys/types.h"
@@ -155,7 +157,6 @@ export PadiStatus_t PadiServe PARAM2(PadiServer_tp, server, dispatch_t, dispatch
 {
   /* import FILE * logfp; */
   SVCXPRT *transp;
-  extern void pmap_unset();
 
   PadiSetServer(server);
  

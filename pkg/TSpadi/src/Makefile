@@ -1,6 +1,6 @@
 # WALL is good for testing, but rpcgen puts some unused variables in
 #   the code it generates, and those cause lots of warning messages.
-#WALL=-Wall
+# WALL=-Wall
 
 VPATH=../exec
 
@@ -55,19 +55,19 @@ fame_svc:	fame_svc.c plus fame hli
 	echo not yet
 
 ../exec/getpadi: getpadi.c $(LIBSRC)
-	$(CC) $(WALL) -DMAIN $(LD_LIBS) $< $(LIBSRC) -o $@
+	$(CC) $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DMAIN $(LD_LIBS) $< $(LIBSRC) -o $@
 
 ../exec/putpadi: putpadi.c $(LIBSRC)
-	$(CC) $(WALL) -DMAIN $(LD_LIBS) $< $(LIBSRC) -o $@
+	$(CC) $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DMAIN $(LD_LIBS) $< $(LIBSRC) -o $@
 
 ../exec/objectinfo: objectinfo.c $(LIBSRC)
-	$(CC) $(WALL) -DMAIN $(LD_LIBS) $< $(LIBSRC) -o $@
+	$(CC) $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DMAIN $(LD_LIBS) $< $(LIBSRC) -o $@
 
 ../exec/getpwuid: getpwuid.c
-	$(CC) $(WALL) -DMAIN $(LD_LIBS)  $< gmalloc.c -o $@
+	$(CC) $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DMAIN $(LD_LIBS)  $< gmalloc.c -o $@
 
 ../exec/x11arima: getpadi.c $(LIBSRC)
-	$(CC) $(WALL) -DMAIN -DX11ARIMA $(LD_LIBS) $< $(LIBSRC) -o $@
+	$(CC) $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DMAIN -DX11ARIMA $(LD_LIBS) $< $(LIBSRC) -o $@
 
 	
 rpcx_clnt.c  rpcx_svc.c  rpcx_xdr.c:	rpcx.h

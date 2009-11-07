@@ -16,6 +16,7 @@
 */
 
 #include <stdio.h>
+#include <string.h>
 #include <dirent.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -138,8 +139,6 @@ PARAM2(PadiRangeArg_tp, local, CLIENT *, rqstp)
             data_len,
             buf_len;
     char   *s;
-    extern int strncasecmp();
-    extern int digitCount();
 
     PadiString_t *strp;
     PadiPrecision_t *vector;
