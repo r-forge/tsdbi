@@ -24,6 +24,7 @@
 */
 
 /*IN*/
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
@@ -309,8 +310,6 @@ char   *argv[];
     int    timeout =  TMOUTDEFAULT;   /* time to wait for reply */
     char    userbuf[L_cuserid+1];
 
-    extern char *cuserid();
-    extern char *gfree();
 
     /* Validate command-line arguments */
 

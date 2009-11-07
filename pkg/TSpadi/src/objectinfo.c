@@ -25,6 +25,7 @@
 */
 
 /*IN*/
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
@@ -217,7 +218,6 @@ char   *argv[];
         database = gstrdup("(nil)");
     }
 
-    extern char *cuserid();
     user = (char *) cuserid(userbuf);
 
     password = gstrdup("(nil)");
