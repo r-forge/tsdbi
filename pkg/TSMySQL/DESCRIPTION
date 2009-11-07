@@ -1,6 +1,6 @@
 Package: TSMySQL
-Version: 2009.5-1
-Date:2009-3-23
+Version: 2009.10-1
+Date:2009-11-07
 Title: Time Series Database Interface extensions for MySQL
 Description: TSMySQL provides a MySQL interface for TSdbi.
 Depends: R (>= 2.8.0), methods, tframePlus, TSdbi, RMySQL
