@@ -6,7 +6,9 @@ Known BUGS
 
    o	Probably does not build on Windows or Mac.
 
-Changes in TSpadi version 2009.10-1
+Changes in TSpadi version 2009.11-1
+
+   o	fixed src/ code to remove warnings.
 
    o	Standardized NEWS format for new function news().
 
