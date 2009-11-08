@@ -3,7 +3,7 @@ Version: 2009.10-1
 Date:2009-10-14
 Title: Time Series Database Interface extentions for SQLite
 Description: TSSQLite provides a SQLite interface for TSdbi.
-Depends: R (>= 2.8.0), methods, tframePlus, TSdbi, RSQLite
+Depends: R (>= 2.8.0), methods, tframe, tframePlus, TSdbi, RSQLite
 Imports: methods, DBI, TSdbi (>= 2009.5-1), RSQLite 
 Suggests: zoo, tseries,  TShistQuote
 Enhances: TSdbi
