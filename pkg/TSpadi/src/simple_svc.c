@@ -15,6 +15,7 @@
 ** cleanup of some warnings P.Gilbert 2009
 */
 
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <string.h>
 #include <dirent.h>
@@ -23,6 +24,7 @@
 #include <unistd.h>
 #include <pwd.h>
 #include "padi.h"
+#include "padiutil.h"
 
 /* data types */
 typedef int booln_t;
@@ -447,7 +449,6 @@ PARAM2(PadiNewSeries_tp, new, CLIENT *, rqstp)
     DIR    *dir;
     FILE   *fp;
     int     i;
-    extern int digitCount();
 
 
     struct_len = sizeof(*result);
