@@ -2,9 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "padi.h"
+#include "padiutil.h"
 
-
-int digitCount(int value);
 
 char *
 freqstr( int f)

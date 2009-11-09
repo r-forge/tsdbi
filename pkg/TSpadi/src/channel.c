@@ -1,13 +1,15 @@
 /*  
 ** Portmapper Server Protocol Channel
 **				
-** Copyright 1995, 1996  Bank of Canada.
+** Copyright 1995, 1996, 2009  Bank of Canada.
 **
 ** The user of this software has the right to use, reproduce and distribute it.
 ** Bank of Canada makes no warranties with respect to the software or its
 ** fitness for any particular purpose. The software is distributed by the Bank
 ** of Canada solely on an "as is" basis. By using the software, user agrees to
 ** accept the entire risk of using this software.
+
+*  Minor changes to remove compiler warnings. P. Gilbert, Nov 2009.
 */
 
 #if !defined(FAME_SVC) && !defined(FS_SVC)
@@ -15,6 +17,7 @@
 #endif
  
 #include <rpc/rpc.h>
+#include <rpc/pmap_clnt.h>
 
 #include "padi.h"
 

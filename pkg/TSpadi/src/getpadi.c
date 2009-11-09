@@ -3,6 +3,7 @@
  * File:   getpadi.c
  * Author: Hope Pioro
  * Date  : Sept 95
+ *  Minor changes to remove compiler warnings. P. Gilbert, Nov 2009.
  *
  * Get PADI time series
  *

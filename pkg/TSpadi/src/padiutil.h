@@ -4,7 +4,7 @@ int    retyear( char *date) ;
 int    retmonth( char *date) ;
 int    retday( char *date) ;
 
-extern int digitCount(int value);
+int digitCount(int value);
 
 char * gstrdup(char *s) ;
 
