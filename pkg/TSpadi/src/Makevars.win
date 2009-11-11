@@ -1,1 +1,7 @@
-MSDOS="MSDOS"
+LIBSRC = padi.c padiutil.c channel.c rpcx_xdr.c gmalloc.c
+SRC = $(LIBSRC) getpadi.c  putpadi.c 
+
+OBJS = $(SRC:.c=.o) 
+
+padi.dll: $(OBJS) dosrpcx.h rpcx.h
+	MAKEFLAGS="DMSDOS" R CMD SHLIB  $(OBJS)
