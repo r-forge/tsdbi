@@ -1,0 +1,17 @@
+CC=gcc
+CFLAGS= -fPIC
+
+#LD_LIBS=@LD_LIBS@
+# this is not portable but may need configure to do
+ifeq (${shell uname}, SunOS)
+  LD_LIBS=-lm -lc -lnsl
+else
+  LD_LIBS= -L/usr/local/lib 
+endif
+
+#PKG_CFLAGS = -ansi -pedantic -I$(PADI_HOME)/include 
+
+#PKG_CPPFLAGS = -DGMALLOC -trigraphs -undef
+PKG_CPPFLAGS = -DGMALLOC -trigraphs
+#PKG_CPPFLAGS = -DGMALLOC 
+
