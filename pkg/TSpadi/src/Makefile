@@ -1,48 +1,35 @@
+# R CMD SHLIB padi.c getpadi.c putpadi.c padiutil.c channel.c rpcx_xdr.c gmalloc.c
 # WALL is good for testing, but rpcgen puts some unused variables in
 #   the code it generates, and those cause lots of warning messages.
 # WALL=-Wall
 
-VPATH=../exec
+#VPATH=../exec
 
-CC=gcc
-CFLAGS= -fPIC
+include  Makevars
 
 # consider using rpcgen -N
 RPCGEN= rpcgen -C
 
 PKGNAME = padi
 
-#R_HOME = $(top_builddir)
-R_HOME = $(R)
-
 LIBSRC = padi.c padiutil.c channel.c rpcx_xdr.c gmalloc.c
-SRC = getpadi.c  putpadi.c  $(LIBSRC)
+SRC = $(LIBSRC) getpadi.c  putpadi.c 
 
 OBJS = $(SRC:.c=.o) 
 
 OTHERSRC = rpcx_clnt.c  rpcx_svc.c  objectinfo.c simple_svc.c
 OTHEROBJECTS = $(OTHERSRC:.c=.o) 
-
-PKG_CFLAGS = -ansi -pedantic -I$(PADI_HOME)/include 
-#PKG_CPPFLAGS = -DGMALLOC -trigraphs -undef
-PKG_CPPFLAGS = -DGMALLOC -trigraphs
-#PKG_CPPFLAGS = -DGMALLOC 
-
-# this is not portable but may need configure to do
-ifeq (${shell uname}, SunOS)
-  LD_LIBS=-lm -lc -lnsl
-else
-  LD_LIBS= -L/usr/local/lib 
-endif
-
+     
 all: rpcx.h padi.so ../exec/padi_simple_svc ../exec/getpwuid  ../exec/x11arima \
         ../exec/getpadi ../exec/putpadi ../exec/objectinfo
 
 
-
 $(PKGNAME).so: $(OBJS) rpcx.h
-	$(CC) -shared $(LD_LIBS) -o $(PKGNAME).so $(OBJS)
-#	$(R_HOME)/bin/R CMD SHLIB -o $(PKGNAME).so $(OBJS)
+	R CMD SHLIB  $(OBJS)
+
+#$(PKGNAME).so: $(OBJS) rpcx.h
+#	$(CC) -shared $(LD_LIBS) -o $(PKGNAME).so $(OBJS)
+
 
 ../exec/padi_simple_svc:  simple_svc.c $(LIBSRC)  
 	$(RM) $(notdir $@)
@@ -51,22 +38,22 @@ $(PKGNAME).so: $(OBJS) rpcx.h
 	mv padi_simple_svc ../exec
 
 #needs work
-fame_svc:	fame_svc.c plus fame hli
-	echo not yet
+#fame_svc:	fame_svc.c plus fame hli
+#	echo not yet
 
-../exec/getpadi: getpadi.c $(LIBSRC)
+../exec/getpadi: getpadi.c $(LIBSRC) rpcx.h
 	$(CC) $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DMAIN $(LD_LIBS) $< $(LIBSRC) -o $@
 
-../exec/putpadi: putpadi.c $(LIBSRC)
+../exec/putpadi: putpadi.c $(LIBSRC) rpcx.h
 	$(CC) $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DMAIN $(LD_LIBS) $< $(LIBSRC) -o $@
 
-../exec/objectinfo: objectinfo.c $(LIBSRC)
+../exec/objectinfo: objectinfo.c $(LIBSRC) rpcx.h
 	$(CC) $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DMAIN $(LD_LIBS) $< $(LIBSRC) -o $@
 
 ../exec/getpwuid: getpwuid.c
 	$(CC) $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DMAIN $(LD_LIBS)  $< gmalloc.c -o $@
 
-../exec/x11arima: getpadi.c $(LIBSRC)
+../exec/x11arima: getpadi.c $(LIBSRC) rpcx.h
 	$(CC) $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DMAIN -DX11ARIMA $(LD_LIBS) $< $(LIBSRC) -o $@
 
 	
