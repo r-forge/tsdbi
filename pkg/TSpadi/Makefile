@@ -5,6 +5,6 @@ include ../Makevars
 
 default:	$(DEFAULT)
 
-PACCLEAN= simple.server.log.* zot*.db  src/Makevars
+PACCLEAN= simple.server.log.* zot*.db 
 
 include ../Makerules
