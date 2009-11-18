@@ -6,13 +6,14 @@ See also
    
 Known BUGS
 
-   o	Warning messages about "show" are diplayed when some of the plugin
-	packages are attached. 
-
    o	There is a warning message about ambiguous slot choice in the integer 
 	coercion of the connection con. (This is a bug in DBI packages.)
 
-   o	See also TO DO below.
+Changes in TSdbi version 2009.11-1
+
+   o	Removed namespace export of "show", which seemed to be the cause of the
+   	warning messages about "replacing previous import: show" when other
+	packages require TSdbi.
 
 
 Changes in TSdbi version 2009.5-2
