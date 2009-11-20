@@ -6,7 +6,7 @@
 #ifndef _RPCX_H_RPCGEN
 #define	_RPCX_H_RPCGEN
 
-#include <rpc/rpc.h>
+#include <rpc.h>
 
 typedef char *PadiString_t;
 

@@ -3,5 +3,7 @@ SRC = $(LIBSRC) getpadi.c  putpadi.c
 
 OBJS = $(SRC:.c=.o) 
 
-padi.dll: $(OBJS) dosrpcx.h rpcx.h
-	MAKEFLAGS="DMSDOS" R CMD SHLIB  $(OBJS)
+all:    $(SHLIB) padi.dll
+
+padi.dll: $(SRC) dosrpcx.h rpcx.h
+	MAKEFLAGS="CPPFLAGS=-DMSDOS" Rcmd SHLIB  $(SRC)
