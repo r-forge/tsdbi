@@ -16,8 +16,13 @@
 #define PADI_CLIENT
 #endif
  
+#ifdef MSDOS
+#include <rpc.h>
+#include <pmap_clnt.h>
+#else
 #include <rpc/rpc.h>
 #include <rpc/pmap_clnt.h>
+#endif
 
 #include "padi.h"
 
