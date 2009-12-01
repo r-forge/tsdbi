@@ -1,8 +1,8 @@
-tests
 ^Makefile$
 (^|.*/)core$
 (^|.*/)run$
 (^|.*/)zot$
+(^|.*/)zotTestFame.db$
 CVS
 (^|.*/)/CVS$
 (^|.*/)/(^|.*/)/CVS$

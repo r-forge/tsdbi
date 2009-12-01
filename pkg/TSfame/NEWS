@@ -7,6 +7,11 @@ Known BUGS
    o	remote servers are not working (and the vignette is truncated to skip 
 	this feature).
 
+Changes in TSfame version 2009.12-1
+
+   o	Added some simple tests of underlying fame package.
+
+
 Changes in TSfame version 2009.10-1
 
    o	Standardized NEWS format for new function news().
