@@ -23,11 +23,10 @@ typedef unsigned bool_t;
 typedef unsigned u_int;
 #define _RPC_TYPES_H "msdos_kludge"
 #include <rpc.h>
-#include <types.h>
 #else
 #include <rpc/rpc.h>
-#include <rpc/types.h>
 #endif
+#include <sys/types.h>
 
 #include "rpcx.h"
 #include "define.h"
