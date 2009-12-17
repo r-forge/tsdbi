@@ -3,7 +3,7 @@ cat("************** TShistQuote  Examples ******************************\n")
 
 con <- TSconnect("histQuote", dbname="yahoo") 
 
-x <- TSget("^gdax", con)
+x <- TSget("^ftse", con)  #"^gdax" previously but causing problems
 plot(x)
 tfplot(x)
 
@@ -22,7 +22,7 @@ TSdescription(x2)
 
 options(TSconnection=con)
 
-x <- TSget(c("^gdax","^gspc"))
+x <- TSget(c("^ftse","^gspc"))
 plot(x)
 tfplot(x)
 if (! all(TSrefperiod(x) %in% "Close")) stop("TSrefperiod error, test 3.")
@@ -52,4 +52,4 @@ tfplot(z, Title = "EUR/USD", start=Sys.Date()-14, end=Sys.Date(),
    xlab = format(Sys.Date(), "%Y"))
 
 
-TSdates(c("^gdax","^gspc", "ibm"), con) # note default start
+TSdates(c("^ftse","^gspc", "ibm"), con) # note default start

@@ -34,7 +34,7 @@ extra functionality, only an interface that is consistent with \pkg{TSdbi}.
 
 \begin{Scode}{results=verbatim}
   con <- TSconnect("histQuote", dbname="yahoo") 
-  x <- TSget("^gdax", con)
+  x <- TSget("^ftse", con)
   plot(x)
   tfplot(x)
   TSrefperiod(x) 
@@ -45,7 +45,7 @@ It is also possible to specify a connection to be used as the default:
 
 \begin{Scode}{results=verbatim}
   options(TSconnection=con)
-  tfplot(TSget(serIDs="^gdax"))
+  tfplot(TSget(serIDs="^ftse"))
 \end{Scode}
 
 \begin{Scode}{results=verbatim}
@@ -56,7 +56,7 @@ It is also possible to specify a connection to be used as the default:
 \end{Scode}
 
 \begin{Scode}{results=verbatim}
-  x <- TSget(c("^gdax","^gspc"), con)
+  x <- TSget(c("^ftse","^gspc"), con)
   plot(x)
   tfplot(x)
   TSdescription(x) 
@@ -85,7 +85,7 @@ not exceed that.
 \end{Scode}
 
 \begin{Scode}{results=verbatim}
-  TSdates(c("^gdax","^gspc", "ibm"), con) # note default start
+  TSdates(c("^ftse","^gspc", "ibm"), con) # note default start
 \end{Scode}
 
 See the \pkg{TSdbi} vignette for additional details.
