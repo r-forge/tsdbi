@@ -18,7 +18,7 @@
     \S4method{TSget}{character,TSpadiConnection}(serIDs, con, names=serIDs, ...)
     \S4method{TSput}{ANY,character,TSpadiConnection}(x, serIDs=seriesNames(data), con, ...)   
     \S4method{TSconnect}{padiDriver,character}(drv, dbname, 
-               user=NULL, password = NULL, host="", timeout=60, ...)
+               user=NULL, password=NULL, host=NULL, timeout=60, ...)
     \S4method{TSdates}{character,TSpadiConnection}(serIDs, con, ... )  
     \S4method{TSdescription}{character,TSpadiConnection}(x, con, ... )  
     \S4method{TSdoc}{character,TSpadiConnection}(x, con, ... )  
@@ -35,7 +35,7 @@
     \item{dbname}{a character string indicating the name of a database.}
     \item{user}{a character string indicating a user id.}
     \item{password}{a character string indicating a password.}
-    \item{host}{a character string indicating a host computer.}
+    \item{host}{a character string indicating a padi server computer.}
     \item{timeout}{time in seconds to wait for host to respond.}
     \item{...}{Arguments passed to getpadi or putpadi.}
 }
@@ -44,7 +44,11 @@
 These functions interface with a Fame database using the padi protocol. 
 It is usually better to pass host/user/password information using a
 configuration file rather than as arguments. \code{TSconnect} will look
-for a file \code{.padi.cfg} in the user's home directory.
+for a configuration file \code{.padi.cfg} in the user's home directory. If the
+file is not found, and arguments are not provided, the userid, an empty
+password, and the local computer name (nodename) will be used. This will result
+in an error "Could not establish TSpadiConnection to \dots" if a padi server is
+not running on the local host."
 
 The classes \code{padiDriver} and \code{TSpadiConnection} extend classes
 \code{DBIDriver} and  \code{DBIConnection} in the DBI package.

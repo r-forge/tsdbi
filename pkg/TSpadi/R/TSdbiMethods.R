@@ -56,7 +56,8 @@ setMethod("TSconnect",   signature(drv="padiDriver", dbname="character"),
     	  warn = TRUE,
     	  timeout = timeout ) 
      else 
-       stop("Could not establish TSpadiConnection to ", dbname, " on ", host)
+       stop("Could not establish TSpadiConnection to ", dbname, " on ", host,
+             ". See the help for padi (?padi) for hints.")
    } )
 
 
