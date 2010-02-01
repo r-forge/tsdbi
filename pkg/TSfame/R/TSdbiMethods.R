@@ -86,6 +86,8 @@ setMethod("TSget",     signature(serIDs="character", con="TSfameConnection"),
   for (i in seq(length(serIDs))) {
     r <- getfame(serIDs[i], con@dbname, save = FALSE, envir = parent.frame(),
              start = NULL, end = NULL, getDoc = FALSE)
+    if(0==length(r))
+       stop("Fame retrieval failed. Series may not exist on ",con@dbname,".")
     # r is class tis
 #    r <-  if((TSrepresentation=="default" | TSrepresentation=="ts")
 #             && frequency(r) %in% c(1,4,12,2)) as.ts(r[[1]]) else as.zoo(r[[1]])
