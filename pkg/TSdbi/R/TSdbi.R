@@ -665,13 +665,15 @@ TSdatesSQL <- function(serIDs, con,
                     setWhere(con, serIDs[i],  
 		        realVintage(con, vintage),
 		        realPanel(con,panel)), ";", sep=""))
-    if(0==length(q)) {
+    if(nrow(q) == 0) {
         av <- c(av, FALSE)
 	st <- append(st, list(NA))
 	en <- append(en, list(NA))
 	tb <- rbind(tb, NA)
 	rP <- rbind(rP, NA)
 	}
+    else if(nrow(q) > 1)
+      warning("More than one series with the same identifier. Possible database corruption.")
     else  {
       q2 <-  TSget(serIDs=serIDs[i], con, ...)
       av <- c(av, TRUE)

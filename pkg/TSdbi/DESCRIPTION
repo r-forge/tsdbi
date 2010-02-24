@@ -1,6 +1,6 @@
 Package: TSdbi
-Version: 2009.11-1
-Date: 2009-11-17
+Version: 2010.2-1
+Date: 2010-2-24
 Title: Time Series Database Interface
 Description: TSdbi provides a common interface to time series databases. The
 	objective is to define a standard interface so users can retrieve time 
