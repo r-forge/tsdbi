@@ -665,7 +665,7 @@ TSdatesSQL <- function(serIDs, con,
                     setWhere(con, serIDs[i],  
 		        realVintage(con, vintage),
 		        realPanel(con,panel)), ";", sep=""))
-    if(nrow(q) == 0) {
+    if(is.null(q) || nrow(q) == 0) {
         av <- c(av, FALSE)
 	st <- append(st, list(NA))
 	en <- append(en, list(NA))
