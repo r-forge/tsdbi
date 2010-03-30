@@ -3,6 +3,11 @@ See also
    o	See also NEWS in the TSdbi package.
 
 
+Changes in TSPostgreSQL version 2010.3-1
+
+   o	Fixed bug in passing of series names to generic (always used serIDs).
+
+
 Changes in TSPostgreSQL version 2009.5-2
 
    o	Standardized NEWS format for new function news().

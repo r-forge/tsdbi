@@ -17,7 +17,7 @@
     \S4method{TSget}{character,MySQLConnection}(serIDs, con, 
        TSrepresentation=options()$TSrepresentation,
        tf=NULL, start=tfstart(tf), end=tfend(tf),
-       names=serIDs, TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE,
+       names=NULL, TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE,
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"),   ...)
     \S4method{TSput}{ANY,character,MySQLConnection}(x, serIDs, con, Table=NULL, 
        TSdescription.=TSdescription(x), TSdoc.=TSdoc(x), TSlabel.=TSlabel(x),  

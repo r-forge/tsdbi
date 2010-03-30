@@ -3,6 +3,11 @@ See also
    o	See also NEWS in the TSdbi package.
 
 
+Changes in TSMySQL version 2010.3-1
+
+   o	Fixed bug in passing of series names to generic (always used serIDs).
+
+
 Changes in TSMySQL version 2009.10-1
 
    o	Standardized NEWS format for new function news().
