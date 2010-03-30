@@ -115,7 +115,7 @@ setMethod("TSget",   signature(serIDs="character", con="TSodbcConnection"),
    definition= function(serIDs, con=getOption("TSconnection"), 
        TSrepresentation=getOption("TSrepresentation"),
        tf=NULL, start=tfstart(tf), end=tfend(tf),
-       names=serIDs, TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE,
+       names=NULL, TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE,
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
    TSdbi:::TSgetSQL(serIDs, con, TSrepresentation=TSrepresentation,
        tf=tf, start=start, end=end,
