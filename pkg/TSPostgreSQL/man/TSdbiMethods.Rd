@@ -15,10 +15,11 @@
 \usage{
     \S4method{TSconnect}{PostgreSQLDriver,character}(drv, dbname, host = 
        if(!is.null(Sys.getenv("PGHOST"))) Sys.getenv("PGHOST") else "localhost", ...)
-    \S4method{TSget}{character,PostgreSQLConnection}(serIDs, con, 
+    \S4method{TSget}{character,PostgreSQLConnection}(serIDs, 
+       con=getOption("TSconnection"), 
        TSrepresentation=getOption("TSrepresentation"),
        tf=NULL, start=tfstart(tf), end=tfend(tf),
-       names=serIDs, TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE,
+       names=NULL, TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE,
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
     \S4method{TSput}{ANY,character,PostgreSQLConnection}(x, serIDs, con, Table=NULL, 
        TSdescription.=TSdescription(x), TSdoc.=TSdoc(x), TSlabel.=TSlabel(x),  
