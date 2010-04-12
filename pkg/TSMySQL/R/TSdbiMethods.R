@@ -62,7 +62,7 @@ setMethod("TSget",   signature(serIDs="character", con="MySQLConnection"),
 setMethod("TSdates",    signature(serIDs="character", con="MySQLConnection"),
    definition= function(serIDs, con=getOption("TSconnection"),  
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
-     TSdbi:::TSdatesSQL(serIDs, con, vintage=vintage, panel=panel, ...) )
+     TSdbi:::TSdatesSQL(serIDs, con, vintage=vintage, panel=panel) )
 
 
 setMethod("TSdescription",   signature(x="character", con="MySQLConnection"),
