@@ -24,7 +24,7 @@ setMethod("TSconnect",   signature(drv="PostgreSQLDriver", dbname="character"),
           stop("Database ",dbname," does not appear to be a TS database.")
 	  }
   	new("TSPostgreSQLConnection" , con, drv="PostgreSQL", dbname=dbname, 
- 	       hasVintages=dbExistsTable(con, "vintages"), 
+ 	       hasVintages=dbExistsTable(con, "vintageAlias"), 
  	       hasPanels  =dbExistsTable(con, "panels")) 
 	})
 

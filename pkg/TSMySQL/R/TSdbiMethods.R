@@ -36,7 +36,7 @@ setMethod("TSconnect",   signature(drv="MySQLDriver", dbname="character"),
           stop("Database ",dbname," does not appear to be a TS database.")
 	  }
 	new("TSMySQLConnection" , con, drv="MySQL", dbname=dbname, 
-  	       hasVintages=dbExistsTable(con, "vintages"), 
+  	       hasVintages=dbExistsTable(con, "vintageAlias"), 
   	       hasPanels  =dbExistsTable(con, "panels")) 
 	})
 

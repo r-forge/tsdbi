@@ -3,6 +3,19 @@ See also
    o	See also NEWS in the TSdbi package.
 
 
+Changes in TSPostgreSQL version 2010.5-1
+
+   o	Modified vintage aliases to work for each series rather than globally. 
+	(So "current" might refer to different vintages for different series.)
+	The main changes are in the TSdbi package, but the vintageAlias and
+	vintages table structures also need to have an id field added.
+
+   o	Modified indication of whether a database supports vintages and panels
+	to use vintageAlias and panelAlias tables, since these are more
+	fundamental than vintages and panels tables (which are only used for
+	documentation of the vintages and panels).
+
+
 Changes in TSPostgreSQL version 2010.3-1
 
    o	Fixed bug in passing of series names to generic (always used serIDs).
