@@ -16,7 +16,7 @@ setMethod("TSconnect",   signature(drv="SQLiteDriver", dbname="character"),
 	if(!dbExistsTable(con, "Meta"))
 	  stop("The database does not appear to be a TS database,")
 	new("TSSQLiteConnection" , con, drv="SQLite", dbname=dbname, 
-	       hasVintages=dbExistsTable(con, "vintages"), 
+	       hasVintages=dbExistsTable(con, "vintageAlias"), 
 	       hasPanels  =dbExistsTable(con, "panels"))
 	})
 

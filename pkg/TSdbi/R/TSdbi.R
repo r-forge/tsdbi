@@ -132,17 +132,17 @@ setMethod("TSdescription",   signature(x="missing", con="missing"),
 
 # internal utilities to construct WHERE
 
-realVintage <- function(con, vintage) {
+realVintage <- function(con, vintage, x) {
    # replace alias with canonical name if necessary
    if(!con@hasVintages) return(vintage) #usually NULL in this case 
-   if(is.null(vintage)) q <- 
-     "SELECT vintage  FROM vintageAlias WHERE alias='current';" 
-   else q <- paste(
-     "SELECT vintage  FROM vintageAlias WHERE alias='",vintage,"';", sep="") 
-
+   if(is.null(vintage)) vintage <- "current"
+   if(1 < length(vintage)) stop("vintage must be a scalar string.")
+   id <- paste(paste("'", x ,"'",sep=""),collapse=",")
+   q <- paste("SELECT vintage  FROM vintageAlias WHERE alias='",
+              vintage,"' AND id IN (",id,");", sep="") 
    realVintage <- dbGetQuery(con,q )$vintage
    # if alias result is empty assume vintage is already the real one.
-   if (0== NROW(realVintage)) vintage else realVintage
+   if (0== NROW(realVintage)) rep(vintage, length(x)) else realVintage
    }
 
 realPanel <- function(con, panel) {
@@ -170,7 +170,7 @@ TSdescriptionSQL <-  function(x=NULL, con=getOption("TSconnection"),
        lang=getOption("TSlang"), ...) {	    
             r <- dbGetQuery(con, paste("SELECT description", lang, 
 	            "  FROM Meta ", setWhere(con, x, 
-		        realVintage(con, vintage),
+		        realVintage(con, vintage, x),
 		        realPanel(con,panel)), ";", sep=""))[[1]]
 	    # r should already be char, but odbc converts NA to logical
 	    if(is.null(r))  as(NA, "character") else as(r, "character")
@@ -222,7 +222,7 @@ TSdocSQL <-  function(x=NULL, con=getOption("TSconnection"),
             if(1 < length(x)) stop("One series only for TSdoc")
             r <- dbGetQuery(con, paste("SELECT documentation", lang, 
 	            "  FROM Meta ", setWhere(con, x, 
-		        realVintage(con, vintage),
+		        realVintage(con, vintage, x),
 		        realPanel(con,panel)), ";", sep=""))[[1]]
 	    # r should already be char, but odbc converts NA to logical
 	    if(is.null(r))  as(NA, "character") else as(r, "character")
@@ -275,7 +275,7 @@ TSlabelSQL <-  function(x=NULL, con=getOption("TSconnection"),
 	    #  NOT YET
             #r <- dbGetQuery(con, paste("SELECT label", lang, 
 	    #        "  FROM Meta ", setWhere(con, x, 
-	    #            realVintage(con, vintage),
+	    #            realVintage(con, vintage, x),
 	    #	         realPanel(con,panel)), ";", sep=""))[[1]]
 	    ## r should already be char, but odbc converts NA to logical
 	    #if(is.null(r)) as(NA, "character") else as(r, "character")
@@ -349,7 +349,7 @@ TSputSQL <- function(x, serIDs=seriesNames(x), con, Table=NULL,
   #  (reversing order of M and P would mean data can change and 
   #    then meta fail, which seems worse.)
   panel <- realPanel(con,panel)
-  vintage <- realVintage(con,vintage) 
+  # vintage <- realVintage(con,vintage, x) No. To put, vintage must already be real.
   # M does the write to Meta, P writes values to data table.
 
   # Column order could be specified after Meta, but this assumes  order
@@ -503,7 +503,7 @@ TSdeleteSQL <- function(serIDs, con=getOption("TSconnection"),
    vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...) {
      for (i in seq(length(serIDs))) {
      	where <-  setWhere(con, serIDs[i],  
-		        realVintage(con, vintage),
+		        realVintage(con, vintage, i),
 		        realPanel(con,panel))
      	q <- dbGetQuery(con, paste("SELECT tbl  FROM Meta ",where, ";"))
      	 if(0 != length(q)) {
@@ -541,11 +541,16 @@ TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation")
   # so far I think this is generic to all SQL.
   if(is.null(TSrepresentation)) TSrepresentation <- "default"
 
-  panel <- realPanel(con,panel)
-  vintage <- realVintage(con,vintage) 
-
   if ( 1 < sum(c(length(serIDs), length(panel), length(vintage)) > 1))
    stop("Only one of serIDs, panel, or vintage can have length greater than 1.")
+
+  if(is.null(names)) names <- 
+         if ( length(panel)   > 1 )  panel   else
+         if ( length(vintage) > 1 ) vintage  else  serIDs 
+
+  panel <- realPanel(con,panel)
+  # next returns a vector of length equal serIDs
+  vintage <- realVintage(con,vintage, serIDs) 
 
   Q <- function(q) {# local function
       res <- dbGetQuery(con, q)
@@ -556,7 +561,7 @@ TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation")
   mat <- desc <- doc <- label <- rp <- NULL
   # if series are in "A", "Q", "M","S" use  ts otherwise zoo.
   for (i in seq(length(serIDs))) {
-    where <-  setWhere(con, serIDs[i], vintage, panel)
+    where <-  setWhere(con, serIDs[i], vintage[i], panel)
     for (j in seq(length(where))) {
     q <- dbGetQuery(con, paste("SELECT tbl, refperiod  FROM Meta ",where[j], ";"))
     if(0 == NROW(q$tbl)) stop("Meta lookup for series ",
@@ -637,9 +642,7 @@ TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation")
   if (! TSrepresentation  %in% c( "zoo", "default"))
       mat <- do.call(TSrepresentation, list(mat))   
 
-  seriesNames(mat) <- if(!is.null(names)) names   else
-    if ( length(panel)   > 1 )            panel   else
-    if ( length(vintage) > 1 )           vintage  else  serIDs 
+  seriesNames(mat) <- names
 
   TSmeta(mat) <- new("TSmeta", serIDs=serIDs, dbname=con@dbname, 
       conType=class(con), hasVintages=con@hasVintages, hasPanels=con@hasPanels, 
@@ -669,11 +672,11 @@ TSdatesSQL <- function(serIDs, con,
   # so far I think this is generic to all SQL, but untested.
   r  <- av <- tb <- rP <- NULL
   st <- en <- list()
+  vintage <- realVintage(con, vintage, serIDs)
+  panel   <- realPanel(con,panel)
   for (i in seq(length(serIDs))) {
     q <- dbGetQuery(con, paste("SELECT id, tbl, refperiod  FROM Meta ", 
-                    setWhere(con, serIDs[i],  
-		        realVintage(con, vintage),
-		        realPanel(con,panel)), ";", sep=""))
+                    setWhere(con, serIDs[i], vintage[i], panel), ";", sep=""))
     if(is.null(q) || nrow(q) == 0) {
         av <- c(av, FALSE)
 	st <- append(st, list(NA))
