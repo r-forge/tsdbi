@@ -6,9 +6,16 @@ Known BUGS
 
    o	Probably does not build on Windows or Mac.
 
-Changes in TSpadi version 2009.11-1
+
+Changes in TSpadi version 2010.4-2
+
+   o	Fixed src/Makefile to use R_HOME.
+
+
+Changes in TSpadi version 2010.4-1
 
    o	Added SystemRequirements to DESCRIPTION.
+
 
 Changes in TSpadi version 2009.11-1
 
