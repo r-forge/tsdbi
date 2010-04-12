@@ -17,7 +17,7 @@
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
 
     TSdatesSQL(serIDs, con, 
-       vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
+       vintage=getOption("TSvintage"), panel=getOption("TSpanel"))
     TSdeleteSQL(serIDs, con=getOption("TSconnection"), 
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...) 
     TSdescriptionSQL(x=NULL, con=getOption("TSconnection"), 

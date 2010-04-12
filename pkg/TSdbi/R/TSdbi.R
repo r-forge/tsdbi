@@ -564,8 +564,9 @@ TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation")
     where <-  setWhere(con, serIDs[i], vintage[i], panel)
     for (j in seq(length(where))) {
     q <- dbGetQuery(con, paste("SELECT tbl, refperiod  FROM Meta ",where[j], ";"))
-    if(0 == NROW(q$tbl)) stop("Meta lookup for series ",
-           serIDs[i], " table result empty. Series does not exist on database.")
+    if(0 == NROW(q$tbl))
+       stop("Meta lookup for series ", serIDs[i], " failed. (Query ",
+	     where[j], " result empty.) Series does not exist on database.")
 
     if  (i == 1) {
        tbl <- q$tbl
@@ -654,21 +655,28 @@ TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation")
   }
 
 
-setGeneric("TSdates", def= function(serIDs, con=getOption("TSconnection"), ...)
-           standardGeneric("TSdates") )
+setGeneric("TSdates", def=
+   function(serIDs, con=getOption("TSconnection"), 
+           vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
+   standardGeneric("TSdates") )
 
-setMethod("TSdates",   signature(serIDs="character", con="missing"),
-   definition= function(serIDs, con=getOption("TSconnection"), ...) 
-       TSdates(serIDs, con=getOption("TSconnection"), ...) )
+setMethod("TSdates",
+   signature(serIDs="character", con="missing", vintage="ANY", panel="ANY"),
+   definition= function(serIDs, con=getOption("TSconnection"), 
+           vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...) 
+       TSdates(serIDs, con=getOption("TSconnection"), 
+           vintage=vintage, panel=panel, ...) )
 
 #  next is for case where there is no method for con  
-setMethod("TSdates",   signature(serIDs="character", con="ANY"),
-   definition= function(serIDs, con=getOption("TSconnection"), ...) {
+setMethod("TSdates",
+   signature(serIDs="character", con="ANY", vintage="ANY", panel="ANY"),
+   definition= function(serIDs, con=getOption("TSconnection"), 
+           vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...) {
        if(is.null(con)) stop("NULL con is not allowed. See ?TSdates.")
        else stop("con class ", class(con), " is not supported.")} )
 
 TSdatesSQL <- function(serIDs, con,  
-       vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...) {
+       vintage=getOption("TSvintage"), panel=getOption("TSpanel")) {
   # so far I think this is generic to all SQL, but untested.
   r  <- av <- tb <- rP <- NULL
   st <- en <- list()
@@ -687,7 +695,7 @@ TSdatesSQL <- function(serIDs, con,
     else if(nrow(q) > 1)
       warning("More than one series with the same identifier. Possible database corruption.")
     else  {
-      q2 <-  TSget(serIDs=serIDs[i], con, ...)
+      q2 <-  TSget(serIDs=serIDs[i], con, vintage=vintage, panel=panel)
       av <- c(av, TRUE)
       # paste(start(q2), collapse="-")
       st <- append(st, list(start(q2)))
@@ -735,7 +743,7 @@ setGeneric("TSexists", valueClass="logicalId",
  def= function(serIDs, con=getOption("TSconnection"), ...)
  	    standardGeneric("TSexists"),
  useAsDefault= function(serIDs, con, ...){
-    new("logicalId", ! any(is.na(attr(TSdates(serIDs, con), "tbl"))), 
+    new("logicalId", ! any(is.na(attr(TSdates(serIDs, con, ...), "tbl"))), 
        TSid=new("TSid", serIDs=serIDs, dbname=con@dbname, 
               conType=class(con), hasVintages=con@hasVintages, hasPanels=con@hasPanels,
 	      DateStamp=NA))})

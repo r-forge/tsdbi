@@ -11,6 +11,10 @@ Known BUGS
 
 Changes in TSdbi version 2010.5-1
 
+   o	Fixed bug passing vintage and panel to TSdates() and TSexists.
+
+   o	Improved error message for Meta lookup failure with panels and vintages.
+
    o	Modified vintage aliases to work for each series rather than globally. 
 	(So "current" might refer to different vintages for different series.)
 

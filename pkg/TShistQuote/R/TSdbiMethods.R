@@ -49,8 +49,9 @@ setMethod("TSconnect",   signature(drv="histQuoteDriver", dbname="character"),
    } )
 
 
-setMethod("TSdates",  signature(serIDs="character", con="TShistQuoteConnection"),
-   definition= function(serIDs, con, ... )  
+setMethod("TSdates",
+  signature(serIDs="character", con="TShistQuoteConnection", vintage="ANY", panel="ANY"),
+   definition= function(serIDs, con, vintage=NULL, panel=NULL, ... )  
 {  # Indicate  dates for which data is available.
    # This requires retrieving series individually so they are not truncated.
    r <- av <- st <- en <- tb <- NULL

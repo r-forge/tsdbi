@@ -16,14 +16,16 @@
 \description{Get a time series (matrix) from stock quote URL}
 \usage{
      histQuote() 
-    \S4method{TSget}{character,TShistQuoteConnection}(serIDs, con,
-        TSrepresentation = options()$TSrepresentation, 
+    \S4method{TSget}{character,TShistQuoteConnection}(
+	serIDs, con, TSrepresentation = options()$TSrepresentation, 
 	tf = NULL, start = tfstart(tf), end = tfend(tf), names=serIDs, 
 	quote = "Close", quiet = TRUE, repeat.try=3, ...)
-##    \S4method{TSput}{ANY,character,TShistQuoteConnection}(x, serIDs=seriesNames(data), con, ...)   
-    \S4method{TSconnect}{histQuoteDriver,character}(drv, dbname, 
-               user="", password = "", host="", ...)
-    \S4method{TSdates}{character,TShistQuoteConnection}(serIDs, con, ... )  
+##  \S4method{TSput}{ANY,character,TShistQuoteConnection}(
+##	x, serIDs=seriesNames(data), con, ...)   
+    \S4method{TSconnect}{histQuoteDriver,character}(
+	drv, dbname, user="", password = "", host="", ...)
+    \S4method{TSdates}{character,TShistQuoteConnection}(
+	serIDs, con, vintage=NULL, panel=NULL, ... )  
     \S4method{TSdescription}{character,TShistQuoteConnection}(x, con, ... )  
     \S4method{TSdoc}{character,TShistQuoteConnection}(x, con, ... )  
     \S4method{TSlabel}{character,TShistQuoteConnection}(x, con, ... )  
@@ -34,6 +36,10 @@
     \item{con}{a database connection object.}
     \item{conn}{a database connection object.}
     \item{serIDs}{identifiers for series on the database.}
+    \item{vintage}{character string indicating vintage of the series on the 
+        database (not supported by this database).}
+    \item{panel}{character string indicating panel of the series on the 
+        database (not supported by this database).}
     \item{x}{time series data(TSput), or 
       identifiers for series on the database (TSdoc and TSdescription).}
     \item{names}{optional character vector to use for series names in the R
