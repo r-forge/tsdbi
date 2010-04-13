@@ -167,7 +167,7 @@ setWhere <- function(con, x, realVintage, realPanel) {
 
 TSdescriptionSQL <-  function(x=NULL, con=getOption("TSconnection"), 
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), 
-       lang=getOption("TSlang"), ...) {	    
+       lang=getOption("TSlang")) {	    
             r <- dbGetQuery(con, paste("SELECT description", lang, 
 	            "  FROM Meta ", setWhere(con, x, 
 		        realVintage(con, vintage, x),
@@ -218,7 +218,7 @@ setMethod("TSdoc",   signature(x="missing", con="missing"),
 
 TSdocSQL <-  function(x=NULL, con=getOption("TSconnection"), 
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), 
-       lang=getOption("TSlang"), ...) {
+       lang=getOption("TSlang")) {
             if(1 < length(x)) stop("One series only for TSdoc")
             r <- dbGetQuery(con, paste("SELECT documentation", lang, 
 	            "  FROM Meta ", setWhere(con, x, 
@@ -270,7 +270,7 @@ setMethod("TSlabel",   signature(x="missing", con="missing"),
 
 TSlabelSQL <-  function(x=NULL, con=getOption("TSconnection"), 
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), 
-       lang=getOption("TSlang"), ...) {
+       lang=getOption("TSlang")) {
             if(1 < length(x)) stop("One series only for TSlabel")
 	    #  NOT YET
             #r <- dbGetQuery(con, paste("SELECT label", lang, 
@@ -342,7 +342,7 @@ setMethod("TSput",   signature(x="ANY", serIDs="character", con="ANY"),
 
 TSputSQL <- function(x, serIDs=seriesNames(x), con, Table=NULL,
        TSdescription.=TSdescription(x), TSdoc.=TSdoc(x),  TSlabel.=TSlabel(x), 
-       vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...) {
+       vintage=getOption("TSvintage"), panel=getOption("TSpanel")) {
 
   # so far I think this is generic to all SQL, but not extensively tested.
   # should rollback meta when data put fails
@@ -500,7 +500,7 @@ setMethod("TSdelete",   signature(serIDs="character", con="ANY"),
 
    
 TSdeleteSQL <- function(serIDs, con=getOption("TSconnection"),  
-   vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...) {
+   vintage=getOption("TSvintage"), panel=getOption("TSpanel")) {
      for (i in seq(length(serIDs))) {
      	where <-  setWhere(con, serIDs[i],  
 		        realVintage(con, vintage, i),
@@ -537,7 +537,7 @@ setMethod("TSget",   signature(serIDs="character", con="ANY"),
 TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation"),
        tf=NULL, start=tfstart(tf), end=tfend(tf),
        names=NULL, TSdescription=FALSE, TSdoc=FALSE,  TSlabel=FALSE,
-       vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...) {
+       vintage=getOption("TSvintage"), panel=getOption("TSpanel")) {
   # so far I think this is generic to all SQL.
   if(is.null(TSrepresentation)) TSrepresentation <- "default"
 
@@ -740,10 +740,13 @@ print.TSdates   <- function(x, ...) {
    
 
 setGeneric("TSexists", valueClass="logicalId",
- def= function(serIDs, con=getOption("TSconnection"), ...)
+ def= function(serIDs, con=getOption("TSconnection"), 
+           vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
  	    standardGeneric("TSexists"),
- useAsDefault= function(serIDs, con, ...){
-    new("logicalId", ! any(is.na(attr(TSdates(serIDs, con, ...), "tbl"))), 
+ useAsDefault= function(serIDs, con=getOption("TSconnection"), 
+           vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...){
+    new("logicalId", ! any(is.na(attr(
+       TSdates(serIDs, con, vintage=vintage, panel=panel, ...), "tbl"))), 
        TSid=new("TSid", serIDs=serIDs, dbname=con@dbname, 
               conType=class(con), hasVintages=con@hasVintages, hasPanels=con@hasPanels,
 	      DateStamp=NA))})

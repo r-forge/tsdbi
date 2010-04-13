@@ -11,6 +11,11 @@ Known BUGS
 
 Changes in TSodbc version 2010.5-1
 
+   o	Removed ... argument from TSdbi:::standardSQL function calls.
+
+   o	Added arguments vintage and panel to TSdates() to correspond
+	to TSdbi changes.
+
    o	Modified vintage aliases to work for each series rather than globally. 
 	(So "current" might refer to different vintages for different series.)
 	The main changes are in the TSdbi package, but the vintageAlias and

@@ -41,8 +41,11 @@
 \title{Specific Methods for Documenting Data}
 \description{See the generic function description.}
 \usage{
-    TSexists(serIDs, con=getOption("TSconnection"), ...)
-    \S4method{TSexists}{default}(serIDs, con=getOption("TSconnection"), ...)
+    TSexists(serIDs, con=getOption("TSconnection"),
+	vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
+    \S4method{TSexists}{default}(
+	serIDs, con=getOption("TSconnection"),
+	vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
 
     TSmeta(x, con, ...) 
     \S4method{TSmeta}{character,missing}(x, con=getOption("TSconnection"), ...)
@@ -82,6 +85,10 @@
 \arguments{
     \item{con}{A database connection.}
     \item{serIDs}{identifiers for series on the database.}
+    \item{vintage}{character string indicating vintage of the series on the 
+        database (if supported by the database).}
+    \item{panel}{character string indicating panel of the series on the 
+        database (if supported by the database).}
     \item{x}{a time series data object or an identifier for a series on the database.}
     \item{value}{a character string (or vector of character strings).}
     \item{...}{arguments passed to other methods.}
