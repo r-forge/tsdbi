@@ -1,10 +1,10 @@
 Package: TSfame
-Version: 2009.12-1
-Date: 2009-12-1
+Version: 2010.5-1
+Date: 2010-05-01
 Title: Time Series Database Interface extensions for fame
 Description: TSfame provides a fame interface for TSdbi.
-Depends: R (>= 2.8.0), methods, tframe, tframePlus, TSdbi, DBI, fame, tis, zoo
-Imports: methods, DBI, TSdbi (>= 2009.5-1), tframe
+Depends: R (>= 2.8.0), methods, tframe, tframePlus, TSdbi (>= 2010.5-1), DBI, fame, tis, zoo
+Imports: methods, DBI, TSdbi (>= 2010.5-1), tframe
 Suggests: tseries, TShistQuote
 Enhances: TSdbi
 License: GPL-2

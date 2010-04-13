@@ -7,6 +7,14 @@ Known BUGS
    o	remote servers are not working (and the vignette is truncated to skip 
 	this feature).
 
+
+
+Changes in TSfame version 2010.5-1
+
+   o	Added arguments vintage and panel to TSdates() and TSexists() to 
+	correspond to TSdbi changes.
+
+
 Changes in TSfame version 2009.12-1
 
    o	Added some simple tests of underlying fame package.

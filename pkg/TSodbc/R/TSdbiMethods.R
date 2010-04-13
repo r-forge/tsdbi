@@ -109,7 +109,7 @@ setMethod("TSput",   signature(x="ANY", serIDs="character", con="TSodbcConnectio
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
  TSdbi:::TSputSQL(x, serIDs, con, Table=Table, 
    TSdescription.=TSdescription., TSdoc.=TSdoc., TSlabel.=TSlabel., 
-   vintage=vintage, panel=panel,...) )
+   vintage=vintage, panel=panel) )
 
 setMethod("TSget",   signature(serIDs="character", con="TSodbcConnection"),
    definition= function(serIDs, con=getOption("TSconnection"), 
@@ -120,27 +120,27 @@ setMethod("TSget",   signature(serIDs="character", con="TSodbcConnection"),
    TSdbi:::TSgetSQL(serIDs, con, TSrepresentation=TSrepresentation,
        tf=tf, start=start, end=end,
        names=names, TSdescription=TSdescription, TSdoc=TSdoc, TSlabel=TSlabel,
-       vintage=vintage, panel=panel, ...) )
+       vintage=vintage, panel=panel) )
 
 setMethod("TSdates",    signature(serIDs="character", con="TSodbcConnection"),
    definition= function(serIDs, con=getOption("TSconnection"),  
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
-      TSdbi:::TSdatesSQL(serIDs, con, vintage=vintage, panel=panel, ...) )
+      TSdbi:::TSdatesSQL(serIDs, con, vintage=vintage, panel=panel) )
 
 
 setMethod("TSdescription",   signature(x="character", con="TSodbcConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
-        TSdbi:::TSdescriptionSQL(x=x, con=con, ...) )
+        TSdbi:::TSdescriptionSQL(x=x, con=con) )
 
 setMethod("TSdoc",   signature(x="character", con="TSodbcConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
-        TSdbi:::TSdocSQL(x=x, con=con, ...) )
+        TSdbi:::TSdocSQL(x=x, con=con) )
 
 setMethod("TSlabel",   signature(x="character", con="TSodbcConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
-        TSdbi:::TSlabelSQL(x=x, con=con, ...) )
+        TSdbi:::TSlabelSQL(x=x, con=con) )
 
 setMethod("TSdelete", signature(serIDs="character", con="TSodbcConnection"),
      definition= function(serIDs, con=getOption("TSconnection"),  
      vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
-   TSdbi:::TSdeleteSQL(serIDs=serIDs, con=con, vintage=vintage, panel=panel, ...) )
+   TSdbi:::TSdeleteSQL(serIDs=serIDs, con=con, vintage=vintage, panel=panel) )

@@ -22,17 +22,21 @@
 \title{TSdbi fame Methods}
 \description{Methods for TSdbi fame time series dtabase connection.}
 \usage{
-    \S4method{TSconnect}{fameDriver,character}(drv, dbname, accessMode = if (file.exists(dbname))
-                 "shared" else "create", ...)
-    \S4method{TSget}{character,TSfameConnection}(serIDs, con, TSrepresentation =
-                 getOption("TSrepresentation"), tf = NULL, start =
-                 tfstart(tf), end = tfend(tf), names = serIDs,
-                 TSdescription = FALSE, TSdoc = FALSE, TSlabel=FALSE,   ...)
-    \S4method{TSput}{ANY,character,TSfameConnection}(x, serIDs=seriesNames(x),
-        con, TSdescription.=TSdescription(x), TSdoc.=TSdoc(x), TSlabel.=NULL,
-	warn = TRUE, ...)
-    \S4method{TSdates}{character,TSfameConnection}(serIDs, con, ...)
-    \S4method{TSexists}{character,TSfameConnection}(serIDs, con, ...)
+    \S4method{TSconnect}{fameDriver,character}(
+	drv, dbname, 
+	accessMode = if (file.exists(dbname)) "shared" else "create", ...)
+    \S4method{TSget}{character,TSfameConnection}(
+	serIDs, con, 
+	TSrepresentation = getOption("TSrepresentation"), 
+	tf = NULL, start = tfstart(tf), end = tfend(tf), names = serIDs,
+	TSdescription = FALSE, TSdoc = FALSE, TSlabel=FALSE,   ...)
+    \S4method{TSput}{ANY,character,TSfameConnection}(
+	x, serIDs=seriesNames(x), con, TSdescription.=TSdescription(x),
+	TSdoc.=TSdoc(x), TSlabel.=NULL, warn = TRUE, ...)
+    \S4method{TSdates}{character,TSfameConnection}(
+	serIDs, con, vintage=NULL, panel=NULL, ...)
+    \S4method{TSexists}{character,TSfameConnection}(
+	serIDs, con, vintage=NULL, panel=NULL, ...)
     \S4method{TSdelete}{character,TSfameConnection}(serIDs, con, ...)
     \S4method{TSdescription}{character,TSfameConnection}(x, con, ...)
     \S4method{TSdoc}{character,TSfameConnection}(x, con, ...)
@@ -49,6 +53,10 @@
     \item{con}{A database connection.}
     \item{conn}{A database connection.}
     \item{serIDs}{identifiers for series to extract.}
+    \item{vintage}{character string indicating vintage of the series on the 
+        database (not supported by this database).}
+    \item{panel}{character string indicating panel of the series on the 
+        database (not supported by this database).}
     \item{x}{data series to put on the database, or a series identifier for
        TSdescription and TSdoc or, for print, 
        a database connection as returned by TSconnect.}

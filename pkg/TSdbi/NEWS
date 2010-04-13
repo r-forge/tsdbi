@@ -11,7 +11,11 @@ Known BUGS
 
 Changes in TSdbi version 2010.5-1
 
-   o	Fixed bug passing vintage and panel to TSdates() and TSexists.
+   o	Removed ... argument from standardSQL functions as these do not use the
+	argument, are not generics (and are not even exported).
+
+   o	Added arguments vintage and panel to TSdates() and TSexists() because of
+	bug caused by passing these in ... .
 
    o	Improved error message for Meta lookup failure with panels and vintages.
 

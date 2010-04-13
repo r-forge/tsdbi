@@ -46,8 +46,9 @@ setMethod("TSconnect",   signature(drv="fameDriver", dbname="character"),
    } )
 
 
-setMethod("TSdates",  signature(serIDs="character", con="TSfameConnection"),
-   definition= function(serIDs, con, ... )  
+setMethod("TSdates",  
+   signature(serIDs="character", con="TSfameConnection", vintage="ANY", panel="ANY"),
+   definition= function(serIDs, con, vintage=NULL, panel=NULL, ... )  
 {  # Indicate  dates for which data is available.
    # This requires retrieving series individually so they are not truncated.
    r <- av <- st <- en <- tb <- NULL
@@ -191,8 +192,10 @@ setMethod("TSdelete", signature(serIDs="character", con="TSfameConnection"),
    })
 
 
-setMethod("TSexists", signature(serIDs="character", con="TSfameConnection"),
- definition= function(serIDs, con=getOption("TSconnection"), ...){
+setMethod("TSexists", 
+ signature(serIDs="character", con="TSfameConnection", vintage="ANY", panel="ANY"),
+ definition= function(serIDs, con=getOption("TSconnection"), 
+                      vintage=NULL, panel=NULL, ...){
    op <- options(warn=-1)
    on.exit(options(op))
    ok <- fameWhats(con@dbname, serIDs, getDoc = FALSE)
