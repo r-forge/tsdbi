@@ -473,28 +473,36 @@ TSputSQL <- function(x, serIDs=seriesNames(x), con, Table=NULL,
 
 
 setGeneric("TSreplace",  valueClass="logicalId",
-   def= function(x, serIDs=seriesNames(x), con=getOption("TSconnection"), ...)
-           standardGeneric("TSreplace"),
-   useAsDefault= function(x,serIDs=seriesNames(x),
-                          con=getOption("TSconnection"),  ...) {
+   def= function(x, serIDs=seriesNames(x), con=getOption("TSconnection"), 
+           vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
+              standardGeneric("TSreplace"),
+   useAsDefault= function(x,serIDs=seriesNames(x), con=getOption("TSconnection"), 
+           vintage=getOption("TSvintage"), panel=getOption("TSpanel"),  ...) {
       if(missing(con) & (!missing(serIDs)) && is(serIDs, "DBIConnection")) 
-	     return(TSreplace(x, serIDs=seriesNames(x), con=serIDs, ...))
-      if(TSexists(serIDs=serIDs, con=con, ...))
-               TSdelete(serIDs=serIDs, con=con, ...)
-      TSput(x, serIDs=serIDs, con=con, ...) 
+	     return(TSreplace(x, serIDs=seriesNames(x), con=serIDs,
+	             vintage=vintage, panel=panel, ...))
+      if(TSexists(serIDs=serIDs, con=con, vintage=vintage, panel=panel,...))
+         TSdelete(serIDs=serIDs, con=con, vintage=vintage, panel=panel, ...)
+         TSput(x, serIDs=serIDs, con=con, vintage=vintage, panel=panel, ...) 
    })
 
-setGeneric("TSdelete",  valueClass="logicalId",
-   def= function(serIDs, con=getOption("TSconnection"), ...)
-           standardGeneric("TSdelete") )
 
-setMethod("TSdelete",   signature(serIDs="character", con="missing"),
-   definition= function(serIDs, con=getOption("TSconnection"), ...) 
-       TSdelete(serIDs, con=getOption("TSconnection"), ...) )
+setGeneric("TSdelete",  valueClass="logicalId",
+   def= function(serIDs, con=getOption("TSconnection"), 
+           vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
+              standardGeneric("TSdelete") )
+
+setMethod("TSdelete",   
+   signature(serIDs="character", con="missing", vintage="ANY", panel="ANY"),
+   definition= function(serIDs, con=getOption("TSconnection"), 
+           vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...) 
+       TSdelete(serIDs, con=con, vintage=vintage, panel=panel, ...) )
 
 #  next is for case where there is no method for con  
-setMethod("TSdelete",   signature(serIDs="character", con="ANY"),
-   definition= function(serIDs, con=getOption("TSconnection"), ...) {
+setMethod("TSdelete",   
+   signature(serIDs="character", con="ANY", vintage="ANY", panel="ANY"),
+   definition= function(serIDs, con=getOption("TSconnection"),
+        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...) {
        if(is.null(con)) stop("NULL con is not allowed. See ?TSdelete.")
        else stop("con class ", class(con), " is not supported.")} )
 
@@ -525,7 +533,7 @@ setGeneric("TSget",
 
 setMethod("TSget",   signature(serIDs="character", con="missing"),
    definition= function(serIDs, con=getOption("TSconnection"), ...) 
-       TSget(serIDs, con=getOption("TSconnection"), ...) )
+       TSget(serIDs, con=con, ...) )
 
 #  next is for case where there is no method for con  
 setMethod("TSget",   signature(serIDs="character", con="ANY"),
@@ -664,8 +672,7 @@ setMethod("TSdates",
    signature(serIDs="character", con="missing", vintage="ANY", panel="ANY"),
    definition= function(serIDs, con=getOption("TSconnection"), 
            vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...) 
-       TSdates(serIDs, con=getOption("TSconnection"), 
-           vintage=vintage, panel=panel, ...) )
+       TSdates(serIDs, con=con, vintage=vintage, panel=panel, ...) )
 
 #  next is for case where there is no method for con  
 setMethod("TSdates",
