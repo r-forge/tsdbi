@@ -7,6 +7,13 @@ Known BUGS
    o	None for the moment.
 
 
+
+Changes in TShistQuote version 2010.5-1
+
+   o	Added arguments vintage and panel to TSdates() to 
+	correspond to TSdbi changes.
+
+
 Changes in TShistQuote version 2009.12-1
 
    o	Changed test and vignette using yahoo gdax to ftse because of retrieval
