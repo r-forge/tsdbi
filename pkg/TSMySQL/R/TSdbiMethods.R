@@ -77,7 +77,8 @@ setMethod("TSlabel",   signature(x="character", con="MySQLConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
         TSdbi:::TSlabelSQL(x=x, con=con) )
 
-setMethod("TSdelete", signature(serIDs="character", con="MySQLConnection"),
+setMethod("TSdelete", 
+   signature(serIDs="character", con="MySQLConnection", vintage="ANY", panel="ANY"),
    definition= function(serIDs, con=getOption("TSconnection"),  
    vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
   TSdbi:::TSdeleteSQL(serIDs=serIDs, con=con, vintage=vintage, panel=panel) )
