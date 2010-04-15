@@ -25,7 +25,7 @@ all: rpcx.h padi.so ../exec/padi_simple_svc ../exec/getpwuid  ../exec/x11arima \
 
 
 $(PKGNAME).so: $(OBJS) rpcx.h
-	R CMD SHLIB  $(OBJS)
+	$(R_HOME)/bin/R CMD SHLIB  $(OBJS)
 
 #$(PKGNAME).so: $(OBJS) rpcx.h
 #	$(CC) -shared $(LD_LIBS) -o $(PKGNAME).so $(OBJS)
