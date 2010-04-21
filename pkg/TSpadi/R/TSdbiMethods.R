@@ -61,8 +61,9 @@ setMethod("TSconnect",   signature(drv="padiDriver", dbname="character"),
    } )
 
 
-setMethod("TSdates",  signature(serIDs="character", con="TSpadiConnection"),
-   definition= function(serIDs, con, ... )  
+setMethod("TSdates",  
+   signature(serIDs="character", con="TSpadiConnection", vintage="ANY", panel="ANY"),
+   definition= function(serIDs, con, vintage=NULL, panel=NULL, ... )  
 {  # Indicate  dates for which data is available.
    # This requires retrieving series individually so they are not truncated.
 

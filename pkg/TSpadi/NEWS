@@ -7,6 +7,12 @@ Known BUGS
    o	Probably does not build on Windows or Mac.
 
 
+Changes in TSpadi version 2010.5-1
+
+   o	Added arguments vintage and panel to TSdates() and TSexists() to 
+	correspond to TSdbi changes.
+
+
 Changes in TSpadi version 2010.4-3
 
    o	Fixed src/Makefile to use R_HOME.
