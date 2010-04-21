@@ -15,11 +15,14 @@
 \description{Get a time series matrix structure from a database}
 \usage{
      padi() 
-    \S4method{TSget}{character,TSpadiConnection}(serIDs, con, names=serIDs, ...)
-    \S4method{TSput}{ANY,character,TSpadiConnection}(x, serIDs=seriesNames(data), con, ...)   
-    \S4method{TSconnect}{padiDriver,character}(drv, dbname, 
-               user=NULL, password=NULL, host=NULL, timeout=60, ...)
-    \S4method{TSdates}{character,TSpadiConnection}(serIDs, con, ... )  
+    \S4method{TSget}{character,TSpadiConnection}(
+	serIDs, con, names=serIDs, ...)
+    \S4method{TSput}{ANY,character,TSpadiConnection}(
+	x, serIDs=seriesNames(data), con, ...)   
+    \S4method{TSconnect}{padiDriver,character}(
+	drv, dbname, user=NULL, password=NULL, host=NULL, timeout=60, ...)
+    \S4method{TSdates}{character,TSpadiConnection}(
+	serIDs, con, vintage=NULL, panel=NULL, ... )  
     \S4method{TSdescription}{character,TSpadiConnection}(x, con, ... )  
     \S4method{TSdoc}{character,TSpadiConnection}(x, con, ... )  
     \S4method{TSlabel}{character,TSpadiConnection}(x, con, ... )  
@@ -27,6 +30,10 @@
 \arguments{
     \item{con}{a database connection object.}
     \item{serIDs}{identifiers for series on the database.}
+    \item{vintage}{character string indicating vintage of the series on the 
+        database (not supported by this database).}
+    \item{panel}{character string indicating panel of the series on the 
+        database (not supported by this database).}
     \item{x}{time series data(TSput), or 
       identifiers for series on the database (TSdoc and TSdescription).}
     \item{names}{optional character vector to use for series names in the R
