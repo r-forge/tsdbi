@@ -37,7 +37,8 @@
 	serIDs, con, vintage=NULL, panel=NULL, ...)
     \S4method{TSexists}{character,TSfameConnection}(
 	serIDs, con, vintage=NULL, panel=NULL, ...)
-    \S4method{TSdelete}{character,TSfameConnection}(serIDs, con, ...)
+    \S4method{TSdelete}{character,TSfameConnection}(serIDs, con,  
+            vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
     \S4method{TSdescription}{character,TSfameConnection}(x, con, ...)
     \S4method{TSdoc}{character,TSfameConnection}(x, con, ...)
     \S4method{TSlabel}{character,TSfameConnection}(x, con, ...)

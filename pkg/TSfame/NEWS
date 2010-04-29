@@ -11,8 +11,8 @@ Known BUGS
 
 Changes in TSfame version 2010.5-1
 
-   o	Added arguments vintage and panel to TSdates() and TSexists() to 
-	correspond to TSdbi changes.
+   o	Added arguments vintage and panel to TSdates() and TSexists() and 
+	TSdelete() correspond to TSdbi changes.
 
 
 Changes in TSfame version 2009.12-1
