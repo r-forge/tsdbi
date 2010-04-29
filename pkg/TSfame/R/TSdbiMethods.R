@@ -180,8 +180,10 @@ setMethod("TSlabel",   signature(x="character", con="TSfameConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
      as(NA, "character") )
 
-setMethod("TSdelete", signature(serIDs="character", con="TSfameConnection"),
- definition= function(serIDs, con=getOption("TSconnection"), ...){
+setMethod("TSdelete",
+   signature(serIDs="character", con="TSfameConnection", vintage="ANY", panel="ANY"),
+   definition= function(serIDs, con=getOption("TSconnection"),  
+            vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...){
     ok <- TRUE
     for (i in seq(length(serIDs))) 
       ok <- ok & 0 == fameDeleteObject(con@dbname, serIDs[i]) 
