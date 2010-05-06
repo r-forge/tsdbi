@@ -13,6 +13,7 @@
 \alias{dbUnloadDriver,fameDriver-method}
 
 \alias{fame}
+\alias{fameLocalPath}
 
 \alias{TSfameConnection-class}
 \alias{dbObjectId-class}
@@ -47,10 +48,12 @@
     \S4method{dbUnloadDriver}{fameDriver}(drv, ...)
 
     \method{fame}{default}()
+    fameLocalPath(string)
 }
 \arguments{
     \item{drv}{A fameDriver.}
-    \item{dbname}{A character string indicating a database name.}
+    \item{dbname}{A character string indicating a [server and] database name.}
+    \item{string}{A character string indicating a [server and] database name.}
     \item{con}{A database connection.}
     \item{conn}{A database connection.}
     \item{serIDs}{identifiers for series to extract.}
