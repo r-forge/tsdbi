@@ -4,6 +4,7 @@ import(TSdbi)
 #import(fame) 
 
 export("fame")
+export("fameLocalPath")
 
 ## S4 Classes
 exportClasses(

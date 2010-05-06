@@ -77,6 +77,12 @@ setMethod("TSdates",
 } )
 
 
+#  remove this if the fix gets into fame package
+  # fameLocalPath is a bug work around suggested by Jeff H. so that space
+  #  in a dbname that includes a server (for fame server) does not get 
+  #  parsed out by getFamePath in getfame call.
+fameLocalPath <- function(string) gsub(" ", "  ", string)
+
 setMethod("TSget",     signature(serIDs="character", con="TSfameConnection"),
    definition= function(serIDs, con, TSrepresentation=getOption("TSrepresentation"),
        tf=NULL, start=tfstart(tf), end=tfend(tf),
