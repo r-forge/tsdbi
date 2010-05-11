@@ -140,9 +140,15 @@ realVintage <- function(con, vintage, x) {
    id <- paste(paste("'", x ,"'",sep=""),collapse=",")
    q <- paste("SELECT vintage  FROM vintageAlias WHERE alias='",
               vintage,"' AND id IN (",id,");", sep="") 
-   realVintage <- dbGetQuery(con,q )$vintage
-   # if alias result is empty assume vintage is already the real one.
-   if (0== NROW(realVintage)) rep(vintage, length(x)) else realVintage
+   rV <- dbGetQuery(con,q )$vintage
+   # if alias result is empty check null id which applies to all series.
+   if (0== NROW(rV)) {
+      q <- paste(
+        "SELECT vintage  FROM vintageAlias WHERE alias='", vintage,"' ;", sep="")
+      rV <- dbGetQuery(con,q )$vintage
+      }
+   # if alias result is still empty assume vintage is already the real one.
+   if (0== NROW(rV)) rep(vintage, length(x)) else rV
    }
 
 realPanel <- function(con, panel) {
@@ -151,9 +157,9 @@ realPanel <- function(con, panel) {
    if(is.null(panel)) stop("panel must be specified")
    q <- paste("SELECT panel  FROM panelAlias WHERE alias='",panel,"';", sep="") 
 
-   realPanel <- dbGetQuery(con,q )$panel
+   rP <- dbGetQuery(con,q )$panel
    # if alias result is empty assume panel is already the real one.
-   if (0== NROW(realPanel)) panel else realPanel
+   if (0== NROW(rP)) panel else rP
    }
 
 setWhere <- function(con, x, realVintage, realPanel) {
