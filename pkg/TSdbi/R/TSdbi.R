@@ -29,7 +29,8 @@ setClass("TSmeta", contains="TSid",
 setClass("logicalId", contains="logical",
             representation=representation(TSid="TSid")) 
 
-setGeneric("TSmeta", def= function(x, con, ...) standardGeneric("TSmeta"))
+setGeneric("TSmeta", def= function(x, con=getOption("TSconnection"), ...)
+    standardGeneric("TSmeta"))
 
 setMethod("show", "logicalId", function(object) show(object@.Data))
 
@@ -99,15 +100,15 @@ setGeneric("TSdescription<-",
     TSmeta(x) <- m
     x})
 
-setGeneric("TSdescription", 
-   def= function(x, con, ...) standardGeneric("TSdescription"))
+setGeneric("TSdescription", def= function(x, con=getOption("TSconnection"), ...)
+    standardGeneric("TSdescription"))
 
 setMethod("TSdescription",   signature(x="character", con="missing"),
    definition= function(x, con=getOption("TSconnection"), ...) 
        TSdescription(x, con=getOption("TSconnection"), ...) )
 
 setMethod("TSdescription",   signature(x="ANY", con="missing"),
-   definition=  function(x, con, ...) TSmeta(x)@TSdescription)
+   definition=  function(x, con, ...)TSmeta(x)@TSdescription)
 
 #  next is for case where there is no method for con  
 setMethod("TSdescription",   signature(x="character", con="ANY"),
@@ -192,11 +193,13 @@ setGeneric("TSdoc<-",
 
 
 setGeneric("TSdoc", 
-   def= function(x, con, ...) standardGeneric("TSdoc"))
+   def= function(x, con=getOption("TSconnection"), ...) standardGeneric("TSdoc"))
 
 setMethod("TSdoc",   signature(x="character", con="missing"),
-   definition= function(x, con=getOption("TSconnection"), ...) 
-       TSdoc(x, con=getOption("TSconnection"), ...) )
+   definition= function(x, con=getOption("TSconnection"), ...){ 
+       if(is.null(con)) 
+	  stop("con should be specified or set with options(TSconnection=con). See ?TSdoc.") 
+       TSdoc(x, con=con, ...)} )
 
 setMethod("TSdoc",   signature(x="ANY", con="missing"),
    definition=  function(x, con, ...) TSmeta(x)@TSdoc)
@@ -244,11 +247,13 @@ setGeneric("TSlabel<-",
 
 
 setGeneric("TSlabel", 
-   def= function(x, con, ...) standardGeneric("TSlabel"))
+   def= function(x, con=getOption("TSconnection"), ...) standardGeneric("TSlabel"))
 
 setMethod("TSlabel",   signature(x="character", con="missing"),
-   definition= function(x, con=getOption("TSconnection"), ...) 
-       TSlabel(x, con=getOption("TSconnection"), ...) )
+   definition= function(x, con=getOption("TSconnection"), ...){ 
+       if(is.null(con)) 
+          stop("con should be specified or set with options(TSconnection=con). See ?TSlabel.") 
+       TSlabel(x, con=con, ...)} )
 
 setMethod("TSlabel",   signature(x="ANY", con="missing"),
    definition=  function(x, con, ...) TSmeta(x)@TSlabel)
@@ -327,16 +332,20 @@ setGeneric("TSput", valueClass="logicalId",
              standardGeneric("TSput")) 
 
 setMethod("TSput",   signature(x="ANY", serIDs="character", con="missing"),
-   definition= function(x, serIDs, con=getOption("TSconnection"), ...) 
-       TSput(x, serIDs=serIDs, con=getOption("TSconnection"), ...))
+   definition= function(x, serIDs, con=getOption("TSconnection"), ...){ 
+       if(is.null(con)) 
+          stop("con should be specified or set with options(TSconnection=con). See ?TSput.") 
+       TSput(x, serIDs=serIDs, con=con, ...)})
 
 setMethod("TSput",   signature(x="ANY", serIDs="missing", con="missing"),
-   definition= function(x, serIDs, con=getOption("TSconnection"), ...) 
-       TSput(x, serIDs=seriesNames(x), con=getOption("TSconnection"), ...))
+   definition= function(x, serIDs, con=getOption("TSconnection"), ...){ 
+       if(is.null(con)) 
+          stop("con should be specified or set with options(TSconnection=con). See ?TSput.")  
+       TSput(x, serIDs=seriesNames(x), con=con, ...)})
 
 setMethod("TSput",   signature(x="ANY", serIDs="DBIConnection", con="missing"),
-   definition= function(x, serIDs, con, ...) 
-       TSput(x, serIDs=seriesNames(x), con=serIDs, ...))
+   definition= function(x, serIDs, con, ...)
+          TSput(x, serIDs=seriesNames(x), con=serIDs, ...))
 
 #  next is for case where there is no method for con  
 setMethod("TSput",   signature(x="ANY", serIDs="character", con="ANY"),
@@ -501,8 +510,10 @@ setGeneric("TSdelete",  valueClass="logicalId",
 setMethod("TSdelete",   
    signature(serIDs="character", con="missing", vintage="ANY", panel="ANY"),
    definition= function(serIDs, con=getOption("TSconnection"), 
-           vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...) 
-       TSdelete(serIDs, con=con, vintage=vintage, panel=panel, ...) )
+           vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...){ 
+       if(is.null(con)) 
+          stop("con should be specified or set with options(TSconnection=con). See ?TSdelete.") 
+       TSdelete(serIDs, con=con, vintage=vintage, panel=panel, ...)} )
 
 #  next is for case where there is no method for con  
 setMethod("TSdelete",   
@@ -538,12 +549,14 @@ setGeneric("TSget",
            standardGeneric("TSget") )
 
 setMethod("TSget",   signature(serIDs="character", con="missing"),
-   definition= function(serIDs, con=getOption("TSconnection"), ...) 
-       TSget(serIDs, con=con, ...) )
+   definition= function(serIDs, con=getOption("TSconnection"), ...){ 
+       if(is.null(con)) 
+          stop("con should be specified or set with options(TSconnection=con). See ?TSget.")
+       TSget(serIDs, con=con, ...)} )
 
 #  next is for case where there is no method for con  
 setMethod("TSget",   signature(serIDs="character", con="ANY"),
-   definition= function(serIDs, con=getOption("TSconnection"), ...) {
+   definition= function(serIDs, con=getOption("TSconnection"), ...){
        if(is.null(con)) stop("NULL con is not allowed. See ?TSget.")
        else stop("con class ", class(con), " is not supported.")} )
 
@@ -677,8 +690,10 @@ setGeneric("TSdates", def=
 setMethod("TSdates",
    signature(serIDs="character", con="missing", vintage="ANY", panel="ANY"),
    definition= function(serIDs, con=getOption("TSconnection"), 
-           vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...) 
-       TSdates(serIDs, con=con, vintage=vintage, panel=panel, ...) )
+           vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...){ 
+       if(is.null(con)) 
+          stop("con should be specified or set with options(TSconnection=con). See ?TSdates.") 
+       TSdates(serIDs, con=con, vintage=vintage, panel=panel, ...)} )
 
 #  next is for case where there is no method for con  
 setMethod("TSdates",
