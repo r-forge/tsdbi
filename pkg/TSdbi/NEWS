@@ -17,7 +17,12 @@ Changes in TSdbi version 2010.5-1
    o	Added arguments vintage and panel to TSdates() and TSexists() because of
 	bug caused by passing these in ... .
 
+   o	Fixed passing default con from generic to some methods.
+
    o	Improved error message for Meta lookup failure with panels and vintages.
+
+   o	Improved error message in the case where con is not specified and the
+	default has not been set.
 
    o	Modified vintage aliases to work for each series rather than globally. 
 	(So "current" might refer to different vintages for different series.)
