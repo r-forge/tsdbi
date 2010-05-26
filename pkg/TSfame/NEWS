@@ -4,14 +4,16 @@ See also
 
 Known BUGS
 
-   o	remote servers are not working (and the vignette is truncated to skip 
-	this feature).
+   o	remote servers require fame (> 2.9) but recent Windows version of fame
+	are not working, so the requirement is not yet specified.
 
+   o	Warning messages about "may be a Fame Server path" coming from the fame
+	package in the case of a remote servers cannot be suppressed.
 
 
 Changes in TSfame version 2010.5-1
 
-   o	Added workaround (fameLocalPath() )for fame bug using remote server.
+   o	Re-introduced vignette examples that use fame remote server.
 
    o	Added arguments vintage and panel to TSdates() and TSexists() and 
 	TSdelete() correspond to TSdbi changes.

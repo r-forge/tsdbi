@@ -306,10 +306,7 @@ require an explicit call to \code{print()}, but that is not usually needed to
 display results below. Another artifact of this is that results printed in the
 if block do not display until the end of the block.
 
-THESE EXAMPLES ARE TEMPORARLY DISABLED BECAUSE OF A BUG (NOT YET SUPPORTED 
-FEATURE)  TO ACCES REMOTE FAME SERVERS.
-
-\begin{Scode}{results=verbatim,fig=TRUE,eval=FALSE}
+\begin{Scode}{results=verbatim,fig=TRUE}
   m <- dbDriver("fame")
   conets <- try(TSconnect(m, dbname="ets /home/ets/db/etsintoecd.db",
                   accessMode="read")) 
@@ -319,8 +316,8 @@ FEATURE)  TO ACCES REMOTE FAME SERVERS.
 
   print(TSmeta("M.SDR.CCUSMA02.ST"))
 
-z <- getfame("M.SDR.CCUSMA02.ST", "ets /home/ets/db/etsintoecd.db", 
- save = FALSE, envir = parent.frame(),start = NULL, end = NULL, getDoc = FALSE)
+#z <- getfame("M.SDR.CCUSMA02.ST", "ets /home/ets/db/etsintoecd.db", 
+# save = FALSE, envir = parent.frame(),start = NULL, end = NULL, getDoc = FALSE)
 
 id <- fameDbOpen("ets /home/ets/db/etsintoecd.db", "read")
 fameWhat(id, "M.SDR.CCUSMA02.ST")
@@ -342,59 +339,37 @@ fameDbClose(id)
   print(start(z))
   print(end(z))
    
-  tfplot(TSget(serIDs="V122646", conets))
+  tfplot(TSget(serIDs="M.CAN.CCUSMA02.ST", conets), ylab="CDN dollors per US dollar",
+      Title="Canada - U.S. Exchange Rate")
   }
 \end{Scode}
 
-\begin{Scode}{results=verbatim,fig=TRUE,eval=FALSE}
+\begin{Scode}{results=verbatim,fig=TRUE}
 if (!inherits(conets, "try-error")) {
-  print(TSdescription(TSget("V122646", TSdescription=TRUE)))
-  print(TSdescription("V122646"))
+  print(TSdescription(TSget("M.CAN.CCUSMA02.ST", TSdescription=TRUE)))
+  print(TSdescription("M.CAN.CCUSMA02.ST"))
 
-  print(TSdoc(TSget("V122646", TSdoc=TRUE)))
-  print(TSdoc("V122646"))
+  print(TSdoc(TSget("M.CAN.CCUSMA02.ST", TSdoc=TRUE)))
+  print(TSdoc("M.CAN.CCUSMA02.ST"))
 
-  tfplot(TSget("V122646", names="V122646", conets))
+  tfplot(TSget("M.CAN.CCUSMA02.ST", names="M.CAN.CCUSMA02.ST", conets))
   }
 \end{Scode}
 
-\begin{Scode}{results=verbatim,fig=TRUE,eval=FALSE}
+\begin{Scode}{results=verbatim,fig=TRUE}
 if (!inherits(conets, "try-error")) {
-  z <- TSget("V122646", TSdescription=TRUE)
-  tfplot(z, Title=strsplit(TSdescription(z), ","))
+  z <- TSget("M.CAN.CCUSMA02.ST", TSdescription=TRUE)
+  tfplot(z, Title=strsplit(TSdescription(z), "//")[[1]][1:2])
   }
 \end{Scode}
 
-\begin{Scode}{results=verbatim,fig=TRUE,eval=FALSE}
-if (!inherits(conets, "try-error")) {
-  z <- TSget("SDSP500", TSdescription=TRUE)
-  tfplot(z, Title=TSdescription(z))
-  plot(z)
-  }
-\end{Scode}
-
-\begin{Scode}{results=verbatim,fig=TRUE,eval=FALSE}
-if (!inherits(conets, "try-error")) {
-  z <- TSget(c("DSP500","SDSP500"), TSdescription=TRUE)
-  tfplot(z, xlab=TSdescription(z))
-  }
-\end{Scode}
-
-\begin{Scode}{results=verbatim,fig=TRUE,eval=FALSE}
+\begin{Scode}{results=verbatim,fig=TRUE}
 if (!inherits(conets, "try-error")) {
   plot(z)
   }
-\end{Scode}
-
-\begin{Scode}{results=verbatim,fig=TRUE,eval=FALSE}
-if (!inherits(conets, "try-error")) {
-  ETSgdp    <- annualizedGrowth(aggregate(TSget("V1992067"),
-                   nfrequency=4,FUN=mean), lag=4, names="GDP Y/Y Growth")
-  tfplot(ETSgdp)
-  }  # end if !try-error
 \end{Scode}
   
-\begin{Scode}{results=hide,eval=FALSE}
+\begin{Scode}{results=hide}
   if (!inherits(conets, "try-error")) {
   options(TSconnection=NULL)
   }  # end if try-error
