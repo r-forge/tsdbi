@@ -53,7 +53,7 @@ setMethod("TSdates",
    # This requires retrieving series individually so they are not truncated.
    r <- av <- st <- en <- tb <- NULL
    for (i in 1:length(serIDs))
-     {r <- try(TSget( serIDs[i], con=con)) 
+     {r <- try(TSget( serIDs[i], con=con), silent=TRUE) 
       if(inherits(r, "try-error") ) {
         av <- c(av, FALSE)
 	st <- append(st, list(NA))
@@ -76,12 +76,6 @@ setMethod("TSdates",
   r
 } )
 
-
-#  remove this if the fix gets into fame package
-  # fameLocalPath is a bug work around suggested by Jeff H. so that space
-  #  in a dbname that includes a server (for fame server) does not get 
-  #  parsed out by getFamePath in getfame call.
-fameLocalPath <- function(string) gsub(" ", "  ", string)
 
 setMethod("TSget",     signature(serIDs="character", con="TSfameConnection"),
    definition= function(serIDs, con, TSrepresentation=getOption("TSrepresentation"),
