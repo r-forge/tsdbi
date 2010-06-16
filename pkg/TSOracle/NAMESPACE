@@ -1,12 +1,12 @@
 import(methods)  
 import(DBI)      
 import(TSdbi)
-import(ROracle) ## this should not all be needed, but parts for setClass "TSOracleConnection"
+#import(ROracle) ## does not have a namespace
 ##importClassesFrom("ROracle","OracleConnection")
 
 ## S4 Classes
 exportClasses(
-   "TSOracleConnection"
+   "TSOraConnection"
    )
 
 ## S4 methods
