@@ -9,6 +9,11 @@ Known BUGS
    o	There is a warning message about ambiguous slot choice in the integer 
 	coercion of the connection con. (This is a bug in DBI packages.)
 
+Changes in TSdbi version 2010.7-1
+
+   o	Improved error message about query when a series is not found.
+
+
 Changes in TSdbi version 2010.5-1
 
    o	Removed ... argument from standardSQL functions as these do not use the
