@@ -8,6 +8,7 @@ if(!identical(as.logical(service1), TRUE) |
    cat("_R_CHECK_HAVE_PADI_ setting ", service2, "\n")
 } else  {
 
+   require("TScompare")
    require("TSMySQL")
    require("TSpadi")
 
