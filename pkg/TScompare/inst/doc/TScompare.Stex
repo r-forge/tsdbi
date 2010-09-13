@@ -1,0 +1,38 @@
+\documentclass[english]{article}
+\newcommand{\code}{\emph}
+\newcommand{\pkg}{\textsl}
+\title{Utilities to Compare Time Series on Different Databases (for equality)}
+\begin{document}
+\maketitle
+%\VignetteIndexEntry{TScompare Guide}
+\SweaveOpts{eval=TRUE,echo=TRUE,results=hide,fig=FALSE}
+%\SweaveOpts{eval=TRUE,echo=TRUE,results=verbatim,fig=TRUE}
+\begin{Scode}{echo=FALSE,results=hide}
+ options(continue="  ")
+\end{Scode}
+
+\section{Introduction}
+The code from the vignette that generates this guide can 
+be loaded into an editor with \emph{edit(vignette("TScompare"))}.
+This uses the default editor, which can be changed using \emph{options()}.
+It should be possible to view the pdf version of the guide for this 
+package with \emph{print(vignette("TScompare"))}.
+
+Once R is started, the functions in this package are made available with
+
+\begin{Scode}
+library("TScompare")  
+\end{Scode}
+This will also load required packages \pkg{TSdbi}, \pkg{DBI}, 
+\pkg{methods}, \pkg{tframePlus}, \pkg{zoo}, and \pkg{tseries}.
+
+\pkg{TScompare} establishes connections to two databases and then extracts pairs of series, one from each database, and compares them. The pairs to compare are indicated by a matrix of strings with two columns. The connections are established using other TSdbi packages such as TSMySQL, TSpadi, etc.
+
+\subsection{Examples checking ets}
+
+\begin{Scode}{results=verbatim}
+  con1 <- TSconnect("MySQL", dbname="ets") 
+  con2 <- TSconnect("padi", dbname="ets") 
+\end{Scode}
+
+\end{document}
