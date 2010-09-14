@@ -64,5 +64,5 @@ AllPanels <- function(con){
 
 AllVintages <- function(con){
 	if(con@hasVintages)
-	     dbGetQuery(con, "select distinct vintages from Meta;")$panel
+	     dbGetQuery(con, "select distinct vintage from Meta;")$vintage
 	else NULL }
