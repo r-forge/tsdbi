@@ -1,5 +1,5 @@
 
-testEqual <- function(ids, con1, con2, na.rm=FALSE, fuzz=1e-14) {
+TScompare <- function(ids, con1, con2, na.rm=FALSE, fuzz=1e-14) {
 	if(2 != NCOL(ids)) stop("ids must have 2 columns.")
 	rw <- rv <- rep(NA, NROW(ids))
 	na1 <- na2 <- NULL
@@ -28,11 +28,11 @@ testEqual <- function(ids, con1, con2, na.rm=FALSE, fuzz=1e-14) {
 	      }
 	   }
 	r <- list(window=rw, value=rv, ids=ids, na1=na1, na2=na2,con1=con1, con2=con2)
-	class(r) <- "TScomparison"
+	class(r) <- "TScompare"
 	r
 	}
 
-summary.TScomparison  <- function(x){
+summary.TScompare  <- function(x){
 	n <- length(x$window)
 	cat(length(x$na1), " of ", n, "are not available on con1.\n")
 	cat(length(x$na2), " of ", n, "are not available on con2.\n")
@@ -41,7 +41,7 @@ summary.TScomparison  <- function(x){
 	invisible(x)
 	}
 
-tfplot.TScomparison  <- function(x, diff=FALSE){
+tfplot.TScompare  <- function(x, diff=FALSE){
 	v <- x$value
 	v[is.na(v)] <- FALSE
 	ids <- x$ids[!(v & x$window),]

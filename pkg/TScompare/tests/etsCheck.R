@@ -37,9 +37,9 @@ if(!identical(as.logical(service1), TRUE) |
       if(!is.null(AllPanels(con1)))   stop("Bad result. ets does not have panels.")
       if(!is.null(AllVintages(con1))) stop("Bad result. ets does not have vintages.")
       ids <- cbind(ids, ids)
-      eq   <- testEqual(ids, con1, con2, na.rm=FALSE)
+      eq   <- TScompare(ids, con1, con2, na.rm=FALSE)
       summary(eq)
-      eqrm <- testEqual(ids, con1, con2, na.rm=TRUE)
+      eqrm <- TScompare(ids, con1, con2, na.rm=TRUE)
       summary(eqrm)
   
       cat("**************        disconnecting ets\n")
