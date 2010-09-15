@@ -38,9 +38,11 @@ if(!identical(as.logical(service1), TRUE) |
       if(!is.null(AllVintages(con1))) stop("Bad result. ets does not have vintages.")
       ids <- cbind(ids, ids)
       eq   <- TScompare(ids, con1, con2, na.rm=FALSE)
-      summary(eq)
+save.image("etsCheck1.RData")
+      print(summary(eq))
       eqrm <- TScompare(ids, con1, con2, na.rm=TRUE)
-      summary(eqrm)
+save.image("etsCheck2.RData")
+      print(summary(eqrm))
   
       cat("**************        disconnecting ets\n")
       dbDisconnect(con1)

@@ -4,8 +4,8 @@ TScompare <- function(ids, con1, con2, na.rm=FALSE, fuzz=1e-14) {
 	rw <- rv <- rep(NA, NROW(ids))
 	na1 <- na2 <- NULL
 	for (i in 1:NROW(ids)){
-	   s1 <- try(TSget(ids[i,1], con1))
-	   s2 <- try(TSget(ids[i,2], con2))
+	   s1 <- try(TSget(ids[i,1], con1), silent=TRUE)
+	   s2 <- try(TSget(ids[i,2], con2), silent=TRUE)
 	   if (inherits(s1, "try-error")) {
 	      na1 <- c(na1, ids[i,1])
 	      rw[i] <- rv[i] <- NA
@@ -32,12 +32,22 @@ TScompare <- function(ids, con1, con2, na.rm=FALSE, fuzz=1e-14) {
 	r
 	}
 
-summary.TScompare  <- function(x){
-	n <- length(x$window)
-	cat(length(x$na1), " of ", n, "are not available on con1.\n")
-	cat(length(x$na2), " of ", n, "are not available on con2.\n")
-	cat(sum(x$window, na.rm=TRUE), " of ", n, "have the same window.\n")
-	cat(sum(x$value, na.rm=TRUE),  " of ", n, "have the same values.\n")
+summary.TScompare  <- function(obj, ...){
+	x <- list(n=length(obj$window),
+		  na1=length(obj$na1),
+		  na2=length(obj$na2),
+		  na =sum(is.na(obj$window)),
+		  window=sum(obj$window, na.rm=TRUE),
+		  value=sum(obj$value, na.rm=TRUE))
+	class(x) <- "summary.TScompare"
+	invisible(x)
+	}
+
+print.summary.TScompare  <- function(x, digits=getOption("digits"), ...){
+	cat(x$n - x$na1, " of ", x$n, "are available on con1.\n")
+	cat(x$n - x$na2, " of ", x$n, "are available on con2.\n")
+	cat(x$window, " of ", x$n - x$na, "remaining have the same window.\n")
+	cat(x$value,  " of ", x$n - x$na, "remaining have the same window and values.\n")
 	invisible(x)
 	}
 

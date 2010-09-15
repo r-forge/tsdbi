@@ -7,6 +7,9 @@ export(
    "AllVintages",
    "tfplot")
 
+S3method("summary", "TScompare")
+S3method("print", "summary.TScompare")
+
 ## S4 Classes
 ## none
 
