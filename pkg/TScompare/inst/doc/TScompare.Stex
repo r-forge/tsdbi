@@ -23,10 +23,19 @@ Once R is started, the functions in this package are made available with
 \begin{Scode}
 library("TScompare")  
 \end{Scode}
-This will also load required packages \pkg{TSdbi}, \pkg{DBI}, 
+will also load required packages \pkg{TSdbi}, \pkg{DBI}, 
 \pkg{methods}, \pkg{tframePlus}, \pkg{zoo}, and \pkg{tseries}.
 
-\pkg{TScompare} establishes connections to two databases and then extracts pairs of series, one from each database, and compares them. The pairs to compare are indicated by a matrix of strings with two columns. The connections are established using other TSdbi packages such as TSMySQL, TSpadi, etc.
+The main purpose of this package is to compare pairs of series on two database.
+These sereis might have the same name, but for generality the main function, \code{TScompare}, is set up to use name pairs. The pairs to compare are indicated by a matrix of strings with two columns. Alternately, it would be possible to compare pairs on the same database but, other than for testing or demonstration purposes, this would not make sense unless the names are different. 
+
+The connections are established using other TSdbi packages such as TSMySQL, TSpadi, etc. It will be necessary to establish two database connections, so it will also be necessary to load the database specific packages. In this vignette, examples will use \pkg{TSMySQL}  and \pkg{TSpadi}. 
+
+\begin{Scode}
+library("TSMySQL")  
+library("TSpadi")  
+\end{Scode}
+
 
 \subsection{Examples checking ets}
 
