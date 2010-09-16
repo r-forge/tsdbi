@@ -29,19 +29,52 @@ will also load required packages \pkg{TSdbi}, \pkg{DBI},
 The main purpose of this package is to compare pairs of series on two database.
 These sereis might have the same name, but for generality the main function, \code{TScompare}, is set up to use name pairs. The pairs to compare are indicated by a matrix of strings with two columns. Alternately, it would be possible to compare pairs on the same database but, other than for testing or demonstration purposes, this would not make sense unless the names are different. 
 
-The connections are established using other TSdbi packages such as TSMySQL, TSpadi, etc. It will be necessary to establish two database connections, so it will also be necessary to load the database specific packages. In this vignette, examples will use \pkg{TSMySQL}  and \pkg{TSpadi}. 
+The connections are established using other TSdbi packages such as TSMySQL, TSpadi, etc. It will be necessary to establish two database connections, so it will also be necessary to load the database specific packages. In this vignette, examples will use \pkg{TShistQuote}  \pkg{TSMySQL} and \pkg{TSpadi}. 
 
 \begin{Scode}
+library("TShistQuote")  
 library("TSMySQL")  
 library("TSpadi")  
 \end{Scode}
 
 
-\subsection{Examples checking ets}
+\subsection{Examples using constructed database}
+
+To provide some simple examples, \pkg{TShistQuote} is used to extract somes series from the web and save them on a local database. First a local test database is created. The next small section of code does this. See the vignette for \pkg{TSMySQL} for more details.  
+
+\begin{Scode}{results=hide}
+con <-  if ("" == user) dbConnect("MySQL", dbname="test") else
+    dbConnect(m, dbname="test", username=user, password=passwd, host=host)
+
+source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
+dbDisconnect(con)
+\end{Scode}
+
+Now a TS connection to the database is established.
+
+\begin{Scode}{results=hide}
+test <-  if ("" == user) TSconnect("MySQL", dbname="test") else
+    TSconnect("MySQL", dbname="test", username=user, password=passwd, host=host)
+\end{Scode}
+
+Next a connection to yahoo is used to get some series and write them to the local test database. (See the vignette for \pkg{TShistQuote} for more examples of reading series from the web.) \code{TSreplace} used because \code{TSput} will fail if the series already exisits.
 
 \begin{Scode}{results=verbatim}
-  con1 <- TSconnect("MySQL", dbname="ets") 
-  con2 <- TSconnect("padi", dbname="ets") 
+  yahoo <- TSconnect("histQuote", dbname="yahoo") 
+  x <- TSget("^ftse", yahoo)
+  seriesNames(x) <- "ftse"
+  TSreplace(x, test)
+
+  TSreplace(TSget("^gspc", yahoo, name="gspc"), test)
+
+  x <- TSget("ibm", yahoo, quote = c("Close", "Vol"))
+  seriesNames(x) <- c("ibmClose", "ibmVol")
+  TSreplace(x, test)
+\end{Scode}
+
+Now to do a comparison
+
+\begin{Scode}{results=verbatim}
 \end{Scode}
 
 \end{document}
