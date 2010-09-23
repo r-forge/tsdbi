@@ -22,17 +22,23 @@ if(!identical(as.logical(service1), TRUE) |
      }
 
    con1 <- if ("" != user1)  
-            tryCatch(TSconnect("MySQL", dbname="wfs", username=user1, password=passwd1, host=host)) 
-      else  tryCatch(TSconnect("MySQL", dbname="wfs")) # pass user/passwd/host in ~/.my.cnf
+            try(TSconnect("MySQL", dbname="wfs", 
+	        username=user1, password=passwd1, host=host), silent=TRUE) 
+      else  try(TSconnect("MySQL", dbname="wfs"), silent=TRUE) # pass user/passwd/host in ~/.my.cnf
 
 
    user2    <- Sys.getenv("PADI_USER")
     
    con2 <-  if ("" != user2) 
-            try(TSconnect("padi", dbname="ets", username=user, password=passwd, host=host)) 
-       else try(TSconnect("padi", dbname="ets")) # pass user/passwd/host in ~/.padi.cfg
+            try(TSconnect("padi", dbname="ets",
+	         username=user, password=passwd, host=host), silent=TRUE) 
+       else try(TSconnect("padi", dbname="ets"), silent=TRUE) # pass user/passwd/host in ~/.padi.cfg
 
-   if (!inherits(con1, "try-error") & !inherits(con2, "try-error")) {
+   if      (inherits(con1, "try-error"))
+           cat("wfs connection not available. Skipping 0wfsCheck tests.")
+   else if (inherits(con2, "try-error"))
+           cat("ets connection not available. Skipping 0wfsCheck tests.")
+   else {
       ids <- AllIds(con1)
       if(!is.null(AllPanels(con1)))   stop("Bad result. wfs does not have panels.")
       if( is.null(AllVintages(con1))) stop("Bad result. wfs has vintages.")
