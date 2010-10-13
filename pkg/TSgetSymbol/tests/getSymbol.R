@@ -3,18 +3,17 @@ cat("************** TSgetSymbol  Examples ******************************\n")
 
 con <- TSconnect("getSymbol", dbname="FRED") 
 
+#monthly
 x <- TSget("CPIAUCNS", con) 
 plot(x)
 tfplot(x)
-
-# debugging info
-str(x)
 
 TSdescription(x) 
 
 options(TSconnection=con)
 
-x2 <- TSget("M2")
+#quarterly
+x2 <- TSget("CDSP")
 tfplot(x2)
 plot(x2)
 TSdescription(x2) 

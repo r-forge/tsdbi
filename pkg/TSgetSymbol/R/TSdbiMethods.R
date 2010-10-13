@@ -37,7 +37,7 @@ setMethod("TSconnect",   signature(drv="getSymbolDriver", dbname="character"),
       #close(con)
       }
    else if (dbname == "yahoo") {
-      con <- try(quantmod:::getSymbols(c('QQQQ',src='yahoo')), silent = TRUE)
+      con <- try(quantmod:::getSymbols('QQQQ',src='yahoo'), silent = TRUE)
       if(inherits(con, "try-error")) 
          stop("Could not establish TSgetSymbolConnection to ",  dbname)
       #close(con)
@@ -84,9 +84,7 @@ setMethod("TSdates",
 #trace("TSget", browser, exit=browser, signature = c(serIDs="character", #con="TSgetSymbolConnection"))
 
 setMethod("TSget",     signature(serIDs="character", con="TSgetSymbolConnection"),
-   definition=
-
-TSget <-function(serIDs, con, TSrepresentation=options()$TSrepresentation,
+   definition=function(serIDs, con, TSrepresentation=options()$TSrepresentation,
        tf=NULL, start=tfstart(tf), end=tfend(tf),
        names=serIDs, quiet=TRUE, repeat.try=3, ...){ 
     if (is.null(TSrepresentation)) TSrepresentation <- "ts"
@@ -100,7 +98,9 @@ TSget <-function(serIDs, con, TSrepresentation=options()$TSrepresentation,
        #     serIDs <- rep(serIDs, length.out=length(quote))
        # }
     
-    args <- list(src = con@dbname, return.class=TSrepresentation,
+    #getSymbols BUG workaround. Set this as zoo otherwise periodicity is wrong
+    #   (and frequency does not work either). Then convert below
+    args <- list(src = con@dbname, return.class="zoo",
                  auto.assign=FALSE)
     
     #args <- if (is.null(start) & is.null(end)) append(args, list(...))
@@ -114,18 +114,23 @@ TSget <-function(serIDs, con, TSrepresentation=options()$TSrepresentation,
            r <- try(do.call("getSymbols", argsi), silent=quiet)
 	   if (!inherits(r , "try-error")) break
 	   }
-       if (inherits(r , "try-error")) stop(r)
-       if (is.character(r)) stop(r)
+       if (inherits(r , "try-error")) stop("series not retrieved:", r)
+       if (is.character(r)) stop("series not retrieved:", r)
        #TSrefperiod(r) <- quote[i]
        mat <- tbind(mat, r)
        desc <- c(desc, paste(serIDs[i], collapse=" "))
        }
     if (NCOL(mat) != length(serIDs)) stop("Error retrieving series", serIDs) 
-    if ((TSrepresentation  == "default")&&
-        (tffrequency(mat) %in% c( 1,4,12,2))) mat <- as.ts(mat)
+    # getSymbols BUG workaround
+    st <- start(mat) #POSIXlt as return for zoo
+    if (TSrepresentation  %in% c( "ts", "default")) {
+        if(periodicity(mat)$scale == "monthly")  mat <- as.ts(mat, frequency=12,start=c(1900+st$year, 1+st$mon))
+        if(periodicity(mat)$scale == "quarterly")mat <- as.ts(mat, frequency=4, start=c(1900+st$year, 1+(st$mon-1)/3))
+        if(periodicity(mat)$scale == "yearly")   mat <- as.ts(mat, frequency=1, start=c(1900+st$year, 1))
+	}
     mat <- tfwindow(mat, tf=tf, start=start, end=end)
-    if (! TSrepresentation  %in% c( "zoo", "default"))
- 	 mat <- do.call(TSrepresentation, list(mat))   
+    #if (! TSrepresentation  %in% c( "zoo", "default"))
+    #	 mat <- do.call(TSrepresentation, list(mat))   
     seriesNames(mat) <- names
     TSmeta(mat) <- new("TSmeta", serIDs=serIDs,  dbname=con@dbname, 
         hasVintages=con@hasVintages, hasPanels=con@hasPanels,
