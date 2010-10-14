@@ -40,7 +40,7 @@ summary.TScompare  <- function(obj, ...){
 		  window=sum(obj$window, na.rm=TRUE),
 		  value=sum(obj$value, na.rm=TRUE))
 	class(x) <- "summary.TScompare"
-	invisible(x)
+	x
 	}
 
 print.summary.TScompare  <- function(x, digits=getOption("digits"), ...){
