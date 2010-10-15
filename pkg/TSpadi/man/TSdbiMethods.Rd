@@ -69,9 +69,6 @@ The classes \code{padiDriver} and \code{TSpadiConnection} extend classes
 \code{\link[TSdbi]{TSput}}
 }
 \examples{
-  if (require("padi")){
-    library()  # debugging to see where padi is found if this fails
-    #m <- dbDriver("padi")
     m <- padi()
     con <- try(TSconnect(m, dbname="ets"))
     if(! inherits(con, "try-error")) {
@@ -80,6 +77,5 @@ The classes \code{padiDriver} and \code{TSpadiConnection} extend classes
       z1 <- TSget(c("B1630", "B1642"), con)
       TSmeta(z1)
       }
-    }
   }
 \keyword{ts}
