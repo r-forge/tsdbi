@@ -1,3 +1,11 @@
+testequaltf <- function(s1, s2) {
+    r <- try(all( c(earliestEnd(s1) == earliestEnd(s2), 
+	   latestStart(s1) == latestStart(s2))), silent=TRUE)
+    if (inherits(r, "try-error")) r <- FALSE # so includes failed as well as unequal
+    # failure may be because of different tf representations, 
+    #     eg. zoo from sql vs ts from padi for weekly.
+    r
+    }
 
 TScompare <- function(ids, con1, con2, na.rm=FALSE, fuzz=1e-14) {
 	if(2 != NCOL(ids)) stop("ids must have 2 columns.")
@@ -19,10 +27,9 @@ TScompare <- function(ids, con1, con2, na.rm=FALSE, fuzz=1e-14) {
 		   s1 <- trimNA(s1)
 		   s2 <- trimNA(s2)
 		   }
-	      ii <- ! is.na(s1)
-	      rw[i] <- all( c(earliestEnd(s1) == earliestEnd(s2), 
-	                  latestStart(s1) == latestStart(s2)))
+	      rw[i] <- testequaltf(s1, s2)
 	   
+	      ii <- ! is.na(s1)
 	      if(rw[i]) rv[i] <- all( c(ii == !is.na(s2)) && 
 		                 max(abs(c(s1)[ii] - c(s2)[ii])) < fuzz)
 	      }
