@@ -165,10 +165,11 @@ startd and endd can be omitted.
 }
 \seealso{
    \code{\link{checkPADIserver}},
+   \code{\link[TSdbi]{TSget}},
    \code{\link{putpadi}}
 }
 \examples{
-if(require("padi") && checkPADIserver("ets")){
+if(checkPADIserver("ets")){
   cpi <-getpadi("P100000", server= "ets")# June 1992=100
   cpi <-getpadi("P100000", starty=1988, startm=1,endy=1990, endm=12, server= "ets")
   cpi <-getpadi( "P100000",starty=1988, startm=1,nobs=8, server= "ets")
