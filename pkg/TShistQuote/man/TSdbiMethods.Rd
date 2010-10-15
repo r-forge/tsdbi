@@ -75,7 +75,6 @@ set to ''Close'' by default, but can be specified.
 argument \code{TSrepresentation}. (See \code{TSget} in \pkg{TSdbi} for
 more details on how this works.)
 
-
 \pkg{TShistQuote} does not support writing data to the source URL.
 
 The classes \code{histQuoteDriver} and \code{TShistQuoteConnection} extend classes
@@ -91,12 +90,9 @@ See the package vignette for additional examples.
 \code{\link[tframe]{tfwindow}},
 }
 \examples{
-  if (require("tseries")){
-    con <- try(TSconnect("histQuote", dbname="ets"))
-    if(! inherits(con, "try-error")) {
-        x <- TSget("^gdax", con)
-        tfplot(x)
-       }
-    }
-  }
+    require("tseries")
+    con <- TSconnect("histQuote", dbname="yahoo") 
+    x <- TSget("^ftse", con)
+    tfplot(x)
+}
 \keyword{ts}
