@@ -1,6 +1,6 @@
 Package: TShistQuote
-Version: 2010.5-1
-Date:2010-05-01
+Version: 2010.10-1
+Date:2010-10-15
 Title:  Time Series Database Interface extensions for  get.hist.quote
 Description: Provides methods for generics in the TSdbi package to 
 	retrieve data from historical quote URLs.
