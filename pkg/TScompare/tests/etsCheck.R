@@ -39,44 +39,29 @@ if(!identical(as.logical(service1), TRUE) |
       if(!is.null(AllPanels(con1)))   stop("Bad result. ets does not have panels.")
       if(!is.null(AllVintages(con1))) stop("Bad result. ets does not have vintages.")
       ids <- cbind(ids, ids)
-save.image("etsCheck0a.RData")
-      ids1 <- ids[1:100000,]
-      ids11 <- ids[1:10000,]
-      ids12 <- ids[10001:20000,]
-      ids13 <- ids[20001:30000,]
-      ids14 <- ids[30001:40000,]
-      ids15 <- ids[40001:50000,]
-      ids16 <- ids[50001:60000,]
-      ids17 <- ids[60001:70000,]
-      ids18 <- ids[70001:80000,]
-      ids19 <- ids[80001:90000,]
-      ids110 <- ids[90001:100000,]
-      ids12 <- ids[10001:20000,]
-      ids2 <- ids[100001:200000,]
-      ids3 <- ids[200001:300000,]
-      ids4 <- ids[300001:400000,]
-      ids5 <- ids[400001:500000,]
-      ids6 <- ids[500001:631960,]
+      if (FALSE) {
+        ids13 <- ids[20001:30000,]
+        ids15 <- ids[40001:50000,]
 
- save.image("etsCheck0b.RData")
-     eq1   <- TScompare(ids11, con1, con2, na.rm=FALSE)
-     eq2   <- TScompare(ids12, con1, con2, na.rm=FALSE)
-     eq3x   <- TScompare(ids13, con1, con2, na.rm=FALSE) # error
-     eq4   <- TScompare(ids14, con1, con2, na.rm=FALSE)
-     eq5   <- TScompare(ids15, con1, con2, na.rm=FALSE) #warnings to check
-     eq6   <- TScompare(ids16, con1, con2, na.rm=FALSE)
-     eq7   <- TScompare(ids17, con1, con2, na.rm=FALSE)
-     eq8   <- TScompare(ids18, con1, con2, na.rm=FALSE)
-     eq9   <- TScompare(ids19, con1, con2, na.rm=FALSE)
-     eq10   <- TScompare(ids110, con1, con2, na.rm=FALSE)
+        save.image("etsCheck0b.RData")
+        # This had errors because zoo tf returned by sql causes failure when 
+	#  compare with ts tf returned by padi for weekly data: 
+	#    Error in if (tf[3] != fr) stop("frequencies must be that same.") :
+	#  These are now 
+	#  returned as FALSE in tfwindow comparison.
+	eq3x   <- TScompare(ids13, con1, con2, na.rm=FALSE) # errors
+        print(summary(eq3x))
+        eq5   <- TScompare(ids15, con1, con2, na.rm=FALSE) #warnings to check
+        print(summary(eq5))
 
- save.image("etsCheck0c.RData")
+        save.image("etsCheck0c.RData")
+	}
 
+      ids <- ids[1:10000,] # nice to do all, but too slow for regular build
+     
       eq   <- TScompare(ids, con1, con2, na.rm=FALSE)
-save.image("etsCheck1.RData")
       print(summary(eq))
       eqrm <- TScompare(ids, con1, con2, na.rm=TRUE)
-save.image("etsCheck2.RData")
       print(summary(eqrm))
   
       cat("**************        disconnecting ets\n")
