@@ -91,7 +91,7 @@ See the package vignette for additional examples.
 \code{\link[tframe]{tfwindow}},
 }
 \examples{
-  if (require("histQuote")){
+  if (require("tseries")){
     con <- try(TSconnect("histQuote", dbname="ets"))
     if(! inherits(con, "try-error")) {
         x <- TSget("^gdax", con)
