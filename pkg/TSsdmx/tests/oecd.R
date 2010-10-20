@@ -1,31 +1,86 @@
+I found this wiki about SDMX that has some examples that might help. It looks 
+like this is a query format for ISTAT SDMX.
+  http://sdmx.wikispaces.com/Example4 
+
+I also found this: 
+ http://stats.oecd.org/OECDSTATWS_SDMXNEW/QueryPage.aspx?Type=MDDimensionMember 
+It looks like you can plug in the SDMX export query here.
+
+So yes, there is some sort of SOAP web service through which you feed this query. Perhaps there are clues to using it here, but you need a login: http://stats.oecd.org/SDMXWS/sdmx.asmx
+
+
+Yes, it's using SOAP. There's a link on this page -- 
+ http://stats.oecd.org/SDMXWS/sdmx.asmx
+to the "service description", which leads to the WSDL file that describes the 
+web service: http://stats.oecd.org/SDMXWS/sdmx.asmx?WSDL
+
+ 
+You might find it helpful to feed that WSDL (Web Service Definition Language) 
+file into this "online SOAP client"  service - it's very useful and instructive:
+   http://www.soapclient.com/soaptest.html
+ 
+
+http://stats.oecd.org/SDMXWS/sdmx.asmx
+or test at
+http://stats.oecd.org/OECDSTATWS_SDMXNEW/QueryPage.aspx?Type=DataGeneric
+
 XML (Soap?) request for M1 and M3 to oecd (non-public db).
-<message:QueryMessage
-   xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/query" 
-   xmlns:message="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message" 
-   xsi:schemaLocation="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/query 
-   http://www.sdmx.org/docs/2_0/SDMXQuery.xsd 
-   http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message 
-   http://www.sdmx.org/docs/2_0/SDMXMessage.xsd" 
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-<Header xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message">
-<ID>none</ID><Test>false</Test>
-<Truncated>false</Truncated>
-<Prepared>2010-05-17T19:45:39</Prepared>
-<Sender id="YourID"><Name xml:lang="en">Your English Name</Name></Sender>
-<Receiver id="OECD"><Name xml:lang="en">Organisation for Economic Co-operation and Development</Name>
-<Name xml:lang="fr">Organisation de coopération et de développement économiques</Name></Receiver></Header>
-<Query xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message">
-<DataWhere xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/query">
-<And><DataSet>MEI</DataSet>
-<Dimension id="LOCATION">CAN</Dimension>
-<Dimension id="MEASURE">ST</Dimension>
-<Dimension id="FREQUENCY">M</Dimension>
-<Attribute id="TIME_FORMAT">P1M</Attribute>
-<Time><StartTime>1955-01</StartTime><EndTime>2010-07</EndTime></Time>
-<Or>
-<Dimension id="SUBJECT">MANMM101</Dimension>
-<Dimension id="SUBJECT">MABMM301</Dimension>
-</Or></And></DataWhere></Query></message:QueryMessage>
+
+require("SSOAP") #asdcl2
+require("RCurl") #asdcl2
+require("XML")
+
+s1 <- SOAPServer("services.soaplite.com", "interop.cgi")
+z <- .SOAP(s1, "echoString", "From R", action="urn:soapinterop", 
+           xmlns=c(namesp1="http://soapinterop.org/"), handlers =NULL)
+
+oecd <- SOAPServer("stats.oecd.org", "OECDSTATWS_SDMXNEW/QueryPage.aspx")
+
+Following works on the tests site
+   http://stats.oecd.org/OECDSTATWS_SDMXNEW/QueryPage.aspx?Type=DataGeneric
+(validates with error but gets data - but not DEMOPOP_0).
+
+<message:QueryMessage xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/query" xmlns:message="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message" xsi:schemaLocation="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/query http://www.sdmx.org/docs/2_0/SDMXQuery.xsd http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message http://www.sdmx.org/docs/2_0/SDMXMessage.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Header xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message">
+		<ID>none</ID>
+		<Test>false</Test>
+		<Truncated>false</Truncated>
+		<Prepared>2010-10-20T21:05:04</Prepared>
+		<Sender id="YourID">
+			<Name xml:lang="en">Your English Name</Name>
+		</Sender>
+		<Receiver id="OECD">
+			<Name xml:lang="en">Organisation for Economic Co-operation and Development</Name>
+			<Name xml:lang="fr">Organisation de coopération et de développement économiques</Name>
+		</Receiver>
+		<!--
+    <message:DataSetAction>Replace</message:DataSetAction>
+    <message:ReportingBegin>2007-02-22T00:00:00</message:ReportingBegin>
+    -->
+	</Header>
+	<Query xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message">
+		<DataWhere xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/query">
+			<And>
+				<DataSet>REFSERIES</DataSet>
+				<Dimension id="LOCATION">AUS</Dimension>
+				<Attribute id="TIME_FORMAT">P1Y</Attribute>
+				<Time>
+					<StartTime>1960</StartTime>
+					<EndTime>2010</EndTime>
+				</Time>
+				<Or>
+					<Dimension id="SUBJECT">DEMOPOP_0</Dimension>
+					<Dimension id="SUBJECT">IPI</Dimension>
+					<Dimension id="SUBJECT">IMPGOOD</Dimension>
+				</Or>
+			</And>
+		</DataWhere>
+	</Query>
+</message:QueryMessage>
+
+
+Note that with     <!--Dimension id="LOCATION">AUS</Dimension-->
+all countries  are returned.
 
 
 require("TSsdmx")
