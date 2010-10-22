@@ -1,11 +1,11 @@
 Package: TScompare
-Version: 2010.9-1
-Date:2010-09-12
+Version: 2010.10-1
+Date:2010-10-32
 Title:  Time Series Database Comparison
 Description: Utilities for comparing the equality of series on two databases.
 Depends: R (>= 2.10.0), methods, DBI, TSdbi (>= 2010.5-1), tframe, tframePlus, zoo
 Imports: TSdbi (>= 2010.5-1)
-Suggests: TSMySQL, TSPostgreSQL,TSfame, TSpadi, 
+Enhances: TSMySQL, TSSQLite, TSPostgreSQL, TSodbc, TSOracle, TSfame, TSpadi, TShistQuote, TSsdmx, TSgetSymbol
 License: GPL-2
 Author: Paul Gilbert <pgilbert@bank-banque-canada.ca>
 Maintainer: Paul Gilbert <pgilbert@bank-banque-canada.ca>
