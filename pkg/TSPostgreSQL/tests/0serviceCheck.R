@@ -26,6 +26,7 @@ if(identical(as.logical(service), TRUE)) {
        if ("" == host)     host <- Sys.info()["nodename"] 
        passwd  <- Sys.getenv("POSTGRES_PASSWD")
        if ("" == passwd)   passwd <- NULL
+       if (is.null(dbname))   dbname <- "test" #RPostgreSQL default is template1
        #  See  ?"dbConnect-methods"
        con <- dbConnect(m, dbname=dbname,
           user=user, password=passwd, host=host)  

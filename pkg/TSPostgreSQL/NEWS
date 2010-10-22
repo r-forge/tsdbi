@@ -5,6 +5,12 @@ See also
 
 Changes in TSPostgreSQL version 2010.5-1
 
+   o	added method dropTStable to work around problem that different database
+   	engines handle capitalization in table names differently.
+
+
+Changes in TSPostgreSQL version 2010.5-1
+
    o	Removed ... argument from TSdbi:::standardSQL function calls.
 
    o	Added arguments vintage and panel to TSdates() to correspond

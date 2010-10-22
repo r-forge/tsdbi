@@ -24,7 +24,9 @@ exportMethods(
    "TSdescription",
    "TSdoc",
    "TSlabel",
-   "TSdates"
+   "TSdates",
+   "dropTStable"
+
    )
 
 ## S3 methods

@@ -783,7 +783,17 @@ setGeneric("TSexists", valueClass="logicalId",
 
 
 #####################################
-# a little utility
+# this method will generally not be needed by users, but is used in the test
+# database setup. It needs to be generic in order to work around the problem
+# that different db engines treat capitalized table names differently.
+# e.g. MySQL uses table name Meta while Posgresql converts to meta.
+# A default con is not used on purpose.
+
+setGeneric("dropTStable",
+   def= function(con=NULL,Table, yesIknowWhatIamDoing=FALSE)
+    standardGeneric("dropTStable"))
+
+########## a little utility#######
 
 TSfinddb <- function(dbname=NULL, driverOrder=c("MySQL", "SQLite", "padi")) {
   if(is.null(dbname)) stop("dbname must be supplied.")
