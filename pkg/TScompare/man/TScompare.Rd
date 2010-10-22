@@ -1,6 +1,7 @@
 \name{TScompare}
 \alias{TScompare}
 \alias{summary.TScompare}
+\alias{tfplot.TScompare}
 \alias{AllIds}
 \alias{AllPanels}
 \alias{AllVintages}
@@ -9,7 +10,8 @@
 \description{Construct a time series from a database}
 \usage{
     TScompare(ids, con1, con2, na.rm=FALSE, fuzz=1e-14)
-    summary.TScompare(x)
+    summary.TScompare(object, ...)
+    tfplot.TScompare(x, con1, con2, diff=FALSE)
     AllIds(con)
     AllPanels(con)
     AllVintages(con)
@@ -24,10 +26,11 @@
        beginning and end of series.}
     \item{fuzz}{a small value indicating the tolerance within which values are
        considered to be the same.}
-    \item{x}{a \code{TScompare} object as returned by \code{TScompare}.}
+    \item{object}{a \code{TScompare} object as returned by \code{TScompare}.}
+    \item{diff}{logical indicating if the difference should be plotted.}
 }
 \value{depends.}
-\details{
+\details{ MORE HERE
 }
 
 \seealso{ 

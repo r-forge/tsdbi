@@ -4,9 +4,9 @@ export(
    "TScompare",
    "AllIds",
    "AllPanels",
-   "AllVintages",
-   "tfplot")
+   "AllVintages")
 
+S3method("tfplot", "TScompare")
 S3method("summary", "TScompare")
 S3method("print", "summary.TScompare")
 
