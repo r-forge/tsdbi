@@ -7,6 +7,8 @@
 \alias{TSdoc,character,PostgreSQLConnection-method}
 \alias{TSlabel,character,PostgreSQLConnection-method}
 \alias{TSdates,character,PostgreSQLConnection-method}
+\alias{dropTStable,PostgreSQLConnection,character,ANY-method}
+\alias{dropTStable,PostgreSQLConnection,character-method}
 
 \alias{TSPostgreSQLConnection-class}
 
@@ -31,6 +33,8 @@
     \S4method{TSdescription}{character,PostgreSQLConnection}(x, con, ...)
     \S4method{TSdoc}{character,PostgreSQLConnection}(x, con, ...)
     \S4method{TSlabel}{character,PostgreSQLConnection}(x, con, ...)
+    \S4method{dropTStable}{PostgreSQLConnection,character,ANY}(con, Table, 
+                           yesIknowWhatIamDoing=FALSE)
 }
 \arguments{
     \item{drv}{A PostgreSQLDriver.}
@@ -55,10 +59,11 @@
     \item{TSlabel}{TRUE or FALSE indicating whether series label 
        should be extracted.}
     \item{TSlabel.}{Short series label to put on the database.}
-    \item{Table}{Database table indication (necessary if it cannot be
-         determined automatically).}
+    \item{Table}{Character string indicating database table. (In TSput this is 
+    	necessary if it cannot be determined automatically).}
     \item{vintage}{Vintage to be supplied (if supported by db).}
     \item{panel}{Panel to be supplied (if supported by db).}
+    \item{yesIknowWhatIamDoing}{logical to help prevent accidents.}
     \item{...}{Arguments passed to other methods.}
 }
 \value{depends.}

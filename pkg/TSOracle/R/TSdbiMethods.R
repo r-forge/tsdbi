@@ -82,3 +82,12 @@ setMethod("TSdelete",
    definition= function(serIDs, con=getOption("TSconnection"),  
    vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
   TSdbi:::TSdeleteSQL(serIDs=serIDs, con=con, vintage=vintage, panel=panel) )
+
+setMethod("dropTStable", 
+   signature(con="OraConnection", Table="character", yesIknowWhatIamDoing="ANY"),
+   definition= function(con=NULL, Table, yesIknowWhatIamDoing=FALSE){
+    if((!is.logical(yesIknowWhatIamDoing)) || !yesIknowWhatIamDoing)
+      stop("See ?dropTStable! You need to know that you may be doing serious damage.")
+    if(dbExistsTable(con, Table)) dbRemoveTable(con, Table)
+    return(TRUE)
+    } )

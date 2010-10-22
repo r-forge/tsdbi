@@ -3,6 +3,12 @@ See also
    o	See also NEWS in the TSdbi package.
 
 
+Changes in TSMySQL version 2010.10-1
+
+   o	added method dropTStable to work around problem that different database
+   	engines handle capitalization in table names differently.
+
+
 Changes in TSMySQL version 2010.5-1
 
    o	Removed ... argument from TSdbi:::standardSQL function calls.

@@ -8,6 +8,9 @@
 \alias{TSlabel,character,TSodbcConnection-method}
 \alias{TSdates,character,TSodbcConnection-method}
 
+\alias{dropTStable,RODBC,character,ANY-method}
+\alias{dropTStable,RODBC,character-method}
+
 \alias{dbDisconnect,RODBC-method}
 \alias{dbExistsTable,RODBC,character-method}
 \alias{dbGetQuery,RODBC,character-method}
@@ -42,6 +45,9 @@
     \S4method{TSdoc}{character,TSodbcConnection}(x, con, ...)
     \S4method{TSlabel}{character,TSodbcConnection}(x, con, ...)
 
+    \S4method{dropTStable}{RODBC,character,ANY}(con, Table, 
+                           yesIknowWhatIamDoing=FALSE)
+
     \S4method{dbDisconnect}{RODBC}(conn,...)
     \S4method{dbExistsTable}{RODBC,character}(conn, name, ...)
     \S4method{dbGetQuery}{RODBC,character}(conn, statement, ...)
@@ -74,10 +80,11 @@
     \item{TSlabel}{TRUE or FALSE indicating whether series label 
        should be extracted.}
     \item{TSlabel.}{Short series label to put on the database.}
-    \item{Table}{Database table indication (necessary if it cannot be
-         determined automatically).}
+    \item{Table}{Character string indicating database table. (In TSput this is 
+    	necessary if it cannot be determined automatically).}
     \item{vintage}{Vintage to be supplied (if supported by db).}
     \item{panel}{Panel to be supplied (if supported by db).}
+    \item{yesIknowWhatIamDoing}{logical to help prevent accidents.}
     \item{...}{Arguments passed to other methods.}
 }
 \value{depends.}

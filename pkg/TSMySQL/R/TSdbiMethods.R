@@ -82,3 +82,17 @@ setMethod("TSdelete",
    definition= function(serIDs, con=getOption("TSconnection"),  
    vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
   TSdbi:::TSdeleteSQL(serIDs=serIDs, con=con, vintage=vintage, panel=panel) )
+
+# this method will generally not be needed by users, but is used in the test
+# database setup. It needs to be generic in order to work around the problem
+# that different db engines treat capitalized table names differently.
+# e.g. MySQL uses table name Meta while Posgresql converts to meta.
+# A default con is not used on purpose.
+setMethod("dropTStable", 
+   signature(con="MySQLConnection", Table="character", yesIknowWhatIamDoing="ANY"),
+   definition= function(con=NULL, Table, yesIknowWhatIamDoing=FALSE){
+    if((!is.logical(yesIknowWhatIamDoing)) || !yesIknowWhatIamDoing)
+      stop("See ?dropTStable! You need to know that you may be doing serious damage.")
+    if(dbExistsTable(con, Table)) dbRemoveTable(con, Table)
+    return(TRUE)
+    } )

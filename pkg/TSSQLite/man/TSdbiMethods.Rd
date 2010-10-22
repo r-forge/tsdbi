@@ -8,6 +8,8 @@
 \alias{TSlabel,character,SQLiteConnection-method}
 \alias{TSdates,character,SQLiteConnection-method}
 \alias{print,TSSQLiteConnection-method}
+\alias{dropTStable,SQLiteConnection,character,ANY-method}
+\alias{dropTStable,SQLiteConnection,character-method}
 
 \alias{TSSQLiteConnection-class}
 
@@ -34,6 +36,8 @@
     \S4method{TSdoc}{character,SQLiteConnection}(x, con, ...)
     \S4method{TSlabel}{character,SQLiteConnection}(x, con, ...)
     \S4method{print}{TSSQLiteConnection}(x, ...)
+    \S4method{dropTStable}{SQLiteConnection,character,ANY}(con, Table, 
+                           yesIknowWhatIamDoing=FALSE)
 }
 \arguments{
     \item{drv}{A SQLiteDriver.}
@@ -57,10 +61,11 @@
     \item{TSlabel}{TRUE or FALSE indicating whether series label 
        should be extracted.}
     \item{TSlabel.}{Short series label to put on the database.}
-    \item{Table}{Database table indication (necessary if it cannot be
-         determined automatically).}
+    \item{Table}{Character string indicating database table. (In TSput this is 
+    	necessary if it cannot be determined automatically).}
     \item{vintage}{Vintage to be supplied (if supported by db).}
     \item{panel}{Panel to be supplied (if supported by db).}
+    \item{yesIknowWhatIamDoing}{logical to help prevent accidents.}
     \item{...}{Arguments passed to other methods.}
 }
 \value{depends.}
