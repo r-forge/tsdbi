@@ -39,13 +39,13 @@ TScompare <- function(ids, con1, con2, na.rm=FALSE, fuzz=1e-14) {
 	r
 	}
 
-summary.TScompare  <- function(obj, ...){
-	x <- list(n=length(obj$window),
-		  na1=length(obj$na1),
-		  na2=length(obj$na2),
-		  na =sum(is.na(obj$window)),
-		  window=sum(obj$window, na.rm=TRUE),
-		  value=sum(obj$value, na.rm=TRUE))
+summary.TScompare  <- function(object, ...){
+	x <- list(n=length(object$window),
+		  na1=length(object$na1),
+		  na2=length(object$na2),
+		  na =sum(is.na(object$window)),
+		  window=sum(object$window, na.rm=TRUE),
+		  value=sum(object$value, na.rm=TRUE))
 	class(x) <- "summary.TScompare"
 	x
 	}
@@ -58,7 +58,7 @@ print.summary.TScompare  <- function(x, digits=getOption("digits"), ...){
 	invisible(x)
 	}
 
-tfplot.TScompare  <- function(x, diff=FALSE){
+tfplot.TScompare  <- function(x, con1, con2, diff=FALSE){
 	v <- x$value
 	v[is.na(v)] <- FALSE
 	ids <- x$ids[!(v & x$window),]
