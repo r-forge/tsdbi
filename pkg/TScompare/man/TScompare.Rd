@@ -10,8 +10,8 @@
 \description{Construct a time series from a database}
 \usage{
     TScompare(ids, con1, con2, na.rm=FALSE, fuzz=1e-14)
-    summary.TScompare(object, ...)
-    tfplot.TScompare(x, con1, con2, diff=FALSE)
+    \method{summary}{TScompare}(object, ...)
+    \method{tfplot}{TScompare}(x, con1, con2, diff=FALSE, ...)
     AllIds(con)
     AllPanels(con)
     AllVintages(con)
@@ -27,7 +27,9 @@
     \item{fuzz}{a small value indicating the tolerance within which values are
        considered to be the same.}
     \item{object}{a \code{TScompare} object as returned by \code{TScompare}.}
+    \item{x}{a \code{TScompare} object as returned by \code{TScompare} to plot.}
     \item{diff}{logical indicating if the difference should be plotted.}
+    \item{...}{other arguments. (Not currently used.)}
 }
 \value{depends.}
 \details{ MORE HERE
