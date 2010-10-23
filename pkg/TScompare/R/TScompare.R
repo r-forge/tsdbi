@@ -58,7 +58,7 @@ print.summary.TScompare  <- function(x, digits=getOption("digits"), ...){
 	invisible(x)
 	}
 
-tfplot.TScompare  <- function(x, con1, con2, diff=FALSE){
+tfplot.TScompare  <- function(x, con1, con2, diff=FALSE, ...){
 	v <- x$value
 	v[is.na(v)] <- FALSE
 	ids <- x$ids[!(v & x$window),]
