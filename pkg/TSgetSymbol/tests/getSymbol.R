@@ -30,7 +30,7 @@ plot(x)
 tfplot(x)
 TSdescription(x) 
 
-Q dates on these are month-day, and frequency is wrong
+#Q dates on these are month-day, and frequency is wrong
 
 x <- TSget(c("TDSP","FODSP"), con, 
        names=c("Household Debt Service Payments as a Percent of Disposable Personal Income",
@@ -38,14 +38,9 @@ x <- TSget(c("TDSP","FODSP"), con,
 tfplot(x)
 TSdescription(x) 
 
-x <- TSget("ibm", quote = c("Close", "Vol"))
+yahoo <- TSconnect("getSymbol", dbname="yahoo") 
+
+# load Ford as time series class ts. This is mts with open, close, etc
+x <- TSget("F", con=yahoo)
 plot(x)
 tfplot(x)
-if(!all(TSrefperiod(x) == c("Close", "Vol"))) stop("TSrefperiod error, test 4.")
-TSdescription(x) 
-
-tfplot(x, xlab = TSdescription(x))
-tfplot(x, Title="IBM", start="2007-01-01")
-
-conO <- TSconnect("getSymbol", dbname="yahoo") 
-
