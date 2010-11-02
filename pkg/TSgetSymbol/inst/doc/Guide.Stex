@@ -26,7 +26,7 @@ library("TSgetSymbol")
 This will also load required packages \pkg{TSdbi}, \pkg{DBI}, 
 \pkg{methods}, \pkg{tframePlus}, \pkg{zoo}, and \pkg{quantmod}.
 
-\pkg{TSgetSymbol} is just a wrapper to \code{getSymbols} in \pkgquantmod}. 
+\pkg{TSgetSymbol} is just a wrapper to \code{getSymbols} in \pkg{quantmod}. 
 It does not provide
 extra functionality, only an interface that is consistent with \pkg{TSdbi}.
 \pkg{TSgetSymbol} does not support writing data.
@@ -34,8 +34,8 @@ extra functionality, only an interface that is consistent with \pkg{TSdbi}.
 \subsection{Examples  Using TSgetSymbol with FRED}
 
 \begin{Scode}{results=verbatim}
-  con <- TSconnect("getSymbols", dbname="FRED") 
-  x <- TSget("^ftse", con)
+  con <- TSconnect("getSymbol", dbname="FRED") 
+  x <- TSget("M2", con)
   plot(x)
   tfplot(x)
   TSrefperiod(x) 
@@ -46,47 +46,35 @@ It is also possible to specify a connection to be used as the default:
 
 \begin{Scode}{results=verbatim}
   options(TSconnection=con)
-  tfplot(TSget(serIDs="^ftse"))
+  tfplot(TSget(serIDs="M2"))
 \end{Scode}
 
 \begin{Scode}{results=verbatim}
-  x2 <- TSget("^gspc", con)
+  x2 <- TSget("CPIAUCNS", con)
   tfplot(x2)
   plot(x2)
   TSdescription(x2) 
 \end{Scode}
 
 \begin{Scode}{results=verbatim}
-  x <- TSget(c("^ftse","^gspc"), con)
+  x <- TSget(c("CPIAUCNS","M2"), con)
   plot(x)
   tfplot(x)
   TSdescription(x) 
 \end{Scode}
 
 \begin{Scode}{results=verbatim}
-  x <- TSget("ibm", con, quote = c("Close", "Vol"))
+  TSdates(c("CPIAUCNS","M2"), con) # note default start
+\end{Scode}
+
+The folowing connects to yahoo and loads Ford. 
+This is a multivariate time series with open, close, etc.
+
+\begin{Scode}{results=verbatim}
+  yahoo <- TSconnect("getSymbol", dbname="yahoo") 
+  x <- TSget("F", con=yahoo)
+  plot(x)
   tfplot(x)
-  tfplot(x, xlab = TSdescription(x))
-  tfplot(x, Title="IBM", start="2007-01-01")
-  tfplot(x, Title=TSdoc(x), xlab = TSlabel(x), start="2007-01-01")
-\end{Scode}
-
-Oanda has maximum of 500 days, so the start date is specified here so as to
-not exceed that.
-
-\begin{Scode}{results=verbatim}
-  conO <- TSconnect("histQuote", dbname="oanda") 
-  z <- TSget("EUR/USD", conO, start=Sys.Date() - 495)
-  tfplot(z)
-  tfplot(z, Title = "EUR/USD")
-  tfplot(z, Title = "EUR/USD", start="2007-01-01")
-  tfplot(z, Title = "EUR/USD", start="2007-03-01")
-  tfplot(z, Title = "EUR/USD", start=Sys.Date()-14, end=Sys.Date(),
-     xlab = format(Sys.Date(), "%Y"))
-\end{Scode}
-
-\begin{Scode}{results=verbatim}
-  TSdates(c("^ftse","^gspc", "ibm"), con) # note default start
 \end{Scode}
 
 See the \pkg{TSdbi} vignette for additional details.

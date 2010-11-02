@@ -120,13 +120,18 @@ setMethod("TSget",     signature(serIDs="character", con="TSgetSymbolConnection"
        mat <- tbind(mat, r)
        desc <- c(desc, paste(serIDs[i], collapse=" "))
        }
-    if (NCOL(mat) != length(serIDs)) stop("Error retrieving series", serIDs) 
+    #if (NCOL(mat) != length(serIDs)) stop("Error retrieving series", serIDs)
+    #  yahoo connections return high, low , ... 
+    if (NCOL(mat) != length(serIDs)) names <- seriesNames(mat) 
     # getSymbols BUG workaround
-    st <- start(mat) #POSIXlt as return for zoo
+    st <- as.POSIXlt(start(mat)) #POSIXlt as return for zoo
     if (TSrepresentation  %in% c( "ts", "default")) {
-        if(periodicity(mat)$scale == "monthly")  mat <- as.ts(mat, frequency=12,start=c(1900+st$year, 1+st$mon))
-        if(periodicity(mat)$scale == "quarterly")mat <- as.ts(mat, frequency=4, start=c(1900+st$year, 1+(st$mon-1)/3))
-        if(periodicity(mat)$scale == "yearly")   mat <- as.ts(mat, frequency=1, start=c(1900+st$year, 1))
+        if(periodicity(mat)$scale == "monthly")
+	   mat <- as.ts(mat, frequency=12,start=c(1900+st$year, 1+st$mon))
+        else if(periodicity(mat)$scale == "quarterly")
+	   mat <- as.ts(mat, frequency=4, start=c(1900+st$year, 1+(st$mon-1)/3))
+        else if(periodicity(mat)$scale == "yearly")  
+	   mat <- as.ts(mat, frequency=1, start=c(1900+st$year, 1))
 	}
     mat <- tfwindow(mat, tf=tf, start=start, end=end)
     #if (! TSrepresentation  %in% c( "zoo", "default"))
