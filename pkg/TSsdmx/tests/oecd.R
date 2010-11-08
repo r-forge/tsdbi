@@ -34,13 +34,15 @@ s1 <- SOAPServer("services.soaplite.com", "interop.cgi")
 z <- .SOAP(s1, "echoString", "From R", action="urn:soapinterop", 
            xmlns=c(namesp1="http://soapinterop.org/"), handlers =NULL)
 
-oecd <- SOAPServer("stats.oecd.org", "OECDSTATWS_SDMXNEW/QueryPage.aspx")
-
 Following works on the tests site
    http://stats.oecd.org/OECDSTATWS_SDMXNEW/QueryPage.aspx?Type=DataGeneric
 (validates with error but gets data - but not DEMOPOP_0).
 
-<message:QueryMessage xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/query" xmlns:message="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message" xsi:schemaLocation="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/query http://www.sdmx.org/docs/2_0/SDMXQuery.xsd http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message http://www.sdmx.org/docs/2_0/SDMXMessage.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<message:QueryMessage 
+  xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/query" 
+  xmlns:message="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message" 
+  xsi:schemaLocation="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/query http://www.sdmx.org/docs/2_0/SDMXQuery.xsd http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message http://www.sdmx.org/docs/2_0/SDMXMessage.xsd" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<Header xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message">
 		<ID>none</ID>
 		<Test>false</Test>
@@ -87,6 +89,12 @@ require("TSsdmx")
 cat("************** TSsdmx  Examples ******************************\n")
 
 con <- TSconnect("sdmx", dbname="OECD") 
+
+oecd <- SOAPServer("stats.oecd.org", "OECDSTATWS_SDMXNEW/QueryPage.aspx")
+
+z <- .SOAP(oecd, ""),
+	 handlers =NULL)
+
 
 #monthly
 x <- TSget("whatever", con) 
