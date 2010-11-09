@@ -83,6 +83,8 @@ Following works on the tests site
 
 Note that with     <!--Dimension id="LOCATION">AUS</Dimension-->
 all countries  are returned.
+
+queryMessage <- '
 <message:QueryMessage xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/query" xmlns:message="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message" xsi:schemaLocation="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/query http://www.sdmx.org/docs/2_0/SDMXQuery.xsd http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message http://www.sdmx.org/docs/2_0/SDMXMessage.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<Header xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message">
 		<ID>none</ID>
@@ -119,7 +121,7 @@ all countries  are returned.
 			</And>
 		</DataWhere>
 	</Query>
-</message:QueryMessage>
+</message:QueryMessage>'
 
 see also http://www.omegahat.org/SSOAP/examples/keggGen.S
 
@@ -161,13 +163,24 @@ modified from curlMultiPerform examples:
        </SOAP-ENV:Body>\
      </SOAP-ENV:Envelope>\n'
  
+
+soapenv1 <- '<?xml version="1.0" encoding="UTF-8"?>\
+     <SOAP-ENV:Envelope SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" \
+                        xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" \
+                        xmlns:xsd="http://www.w3.org/1999/XMLSchema" \
+                        xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" \
+                        xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance">\
+       <SOAP-ENV:Body>\ '
+
+soapenv2 <- '</SOAP-ENV:Body>\
+     </SOAP-ENV:Envelope>\n'
 			
-body = ''
+body <- paste(soapenv1, queryMessage,soapenv2, collapse="")
+
     soecd <- "http://stats.oecd.org/OECDSTATWS_SDMXNEW/QueryPage.aspx?Type=DataGeneric"
  
     curlPerform(url=soecd,
        httpheader=c(Accept="text/xml", Accept="multipart/*",        
-                    SOAPAction='"http://www.soaplite.com/Demo#hi"',
                     'Content-Type' = "text/xml; charset=utf-8"),
        postfields=body,
        writefunction = h$update,
