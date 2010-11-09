@@ -83,7 +83,63 @@ Following works on the tests site
 
 Note that with     <!--Dimension id="LOCATION">AUS</Dimension-->
 all countries  are returned.
+<message:QueryMessage xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/query" xmlns:message="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message" xsi:schemaLocation="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/query http://www.sdmx.org/docs/2_0/SDMXQuery.xsd http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message http://www.sdmx.org/docs/2_0/SDMXMessage.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Header xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message">
+		<ID>none</ID>
+		<Test>false</Test>
+		<Truncated>false</Truncated>
+		<Prepared>2010-10-20T21:05:04</Prepared>
+		<Sender id="YourID">
+			<Name xml:lang="en">Your English Name</Name>
+		</Sender>
+		<Receiver id="OECD">
+			<Name xml:lang="en">Organisation for Economic Co-operation and Development</Name>
+			<Name xml:lang="fr">Organisation de coopération et de développement économiques</Name>
+		</Receiver>
+		<!--
+    <message:DataSetAction>Replace</message:DataSetAction>
+    <message:ReportingBegin>2007-02-22T00:00:00</message:ReportingBegin>
+    -->
+	</Header>
+	<Query xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message">
+		<DataWhere xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/query">
+			<And>
+				<DataSet>REFSERIES</DataSet>
+				<Dimension id="LOCATION">AUS</Dimension>
+				<Attribute id="TIME_FORMAT">P1Y</Attribute>
+				<Time>
+					<StartTime>1960</StartTime>
+					<EndTime>2010</EndTime>
+				</Time>
+				<Or>
+					<Dimension id="SUBJECT">DEMOPOP_0</Dimension>
+					<Dimension id="SUBJECT">IPI</Dimension>
+					<Dimension id="SUBJECT">IMPGOOD</Dimension>
+				</Or>
+			</And>
+		</DataWhere>
+	</Query>
+</message:QueryMessage>
 
+Note see example in curlPerform as possible option
+
+see also http://www.omegahat.org/SSOAP/examples/keggGen.S
+
+z <-  .SOAP(oecd, 
+     method, ..., 
+     .soapArgs = list(), 
+     action, 
+     nameSpaces = SOAPNameSpaces(), 
+     xmlns = NULL, 
+     handlers = SOAPHandlers(), 
+     .types = NULL, 
+     .convert = TRUE, 
+    .opts = list(), 
+    curlHandle = getCurlHandle(), 
+    .header = getSOAPRequestHeader(action, .server = server), 
+    .literal = FALSE, 
+    .soapHeader = NULL, 
+    .elementFormQualified = FALSE) 
 
 require("TSsdmx")
 cat("************** TSsdmx  Examples ******************************\n")
