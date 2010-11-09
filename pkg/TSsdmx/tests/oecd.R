@@ -121,8 +121,6 @@ all countries  are returned.
 	</Query>
 </message:QueryMessage>
 
-Note see example in curlPerform as possible option
-
 see also http://www.omegahat.org/SSOAP/examples/keggGen.S
 
 z <-  .SOAP(oecd, 
@@ -140,6 +138,44 @@ z <-  .SOAP(oecd,
     .literal = FALSE, 
     .soapHeader = NULL, 
     .elementFormQualified = FALSE) 
+
+
+################# curlPerform from RCurl as possible option##############
+  curlPerform(..., .opts = list(), curl = getCurlHandle(), .encoding = integer())
+     curlMultiPerform(curl, multiple = TRUE)
+     
+modified from curlMultiPerform examples:
+    require("RCurl")
+    h = basicTextGatherer()
+    #h$reset()
+      
+    # SOAP request
+    body = '<?xml version="1.0" encoding="UTF-8"?>\
+     <SOAP-ENV:Envelope SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" \
+                        xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" \
+                        xmlns:xsd="http://www.w3.org/1999/XMLSchema" \
+                        xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" \
+                        xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance">\
+       <SOAP-ENV:Body>\
+            <namesp1:hi xmlns:namesp1="http://www.soaplite.com/Demo"/>\
+       </SOAP-ENV:Body>\
+     </SOAP-ENV:Envelope>\n'
+ 
+			
+body = ''
+    soecd <- "http://stats.oecd.org/OECDSTATWS_SDMXNEW/QueryPage.aspx?Type=DataGeneric"
+ 
+    curlPerform(url=soecd,
+       httpheader=c(Accept="text/xml", Accept="multipart/*",        
+                    SOAPAction='"http://www.soaplite.com/Demo#hi"',
+                    'Content-Type' = "text/xml; charset=utf-8"),
+       postfields=body,
+       writefunction = h$update,
+       verbose = TRUE
+       )
+     
+       body = h$value()
+     
 
 require("TSsdmx")
 cat("************** TSsdmx  Examples ******************************\n")
