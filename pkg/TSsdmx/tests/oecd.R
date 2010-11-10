@@ -84,6 +84,56 @@ Following works on the tests site
 Note that with     <!--Dimension id="LOCATION">AUS</Dimension-->
 all countries  are returned.
 
+
+see also http://www.omegahat.org/SSOAP/examples/keggGen.S
+
+z <-  .SOAP(oecd, 
+     method, ..., 
+     .soapArgs = list(), 
+     action, 
+     nameSpaces = SOAPNameSpaces(), 
+     xmlns = NULL, 
+     handlers = SOAPHandlers(), 
+     .types = NULL, 
+     .convert = TRUE, 
+    .opts = list(), 
+    curlHandle = getCurlHandle(), 
+    .header = getSOAPRequestHeader(action, .server = server), 
+    .literal = FALSE, 
+    .soapHeader = NULL, 
+    .elementFormQualified = FALSE) 
+
+
+################# curlPerform from RCurl as possible option##############
+require("RCurl")
+      
+####### SOAP request example from curlPerform help #######
+    body = '<?xml version="1.0" encoding="UTF-8"?>\
+     <SOAP-ENV:Envelope SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" \
+                        xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" \
+                        xmlns:xsd="http://www.w3.org/1999/XMLSchema" \
+                        xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" \
+                        xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance">\
+       <SOAP-ENV:Body>\
+            <namesp1:hi xmlns:namesp1="http://www.soaplite.com/Demo"/>\
+       </SOAP-ENV:Body>\
+     </SOAP-ENV:Envelope>\n'
+ 
+####### now try oecd sdmx SOAP #######
+require("RCurl")
+require("XML")
+
+soapenv1 <- '<?xml version="1.0" encoding="UTF-8"?>\
+     <SOAP-ENV:Envelope SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" \
+                        xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" \
+                        xmlns:xsd="http://www.w3.org/1999/XMLSchema" \
+                        xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" \
+                        xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance">\
+       <SOAP-ENV:Body>\ '
+
+soapenv2 <- '</SOAP-ENV:Body>\
+     </SOAP-ENV:Envelope>\n'
+
 queryMessage <- '
 <message:QueryMessage xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/query" xmlns:message="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message" xsi:schemaLocation="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/query http://www.sdmx.org/docs/2_0/SDMXQuery.xsd http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message http://www.sdmx.org/docs/2_0/SDMXMessage.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<Header xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message">
@@ -122,76 +172,43 @@ queryMessage <- '
 		</DataWhere>
 	</Query>
 </message:QueryMessage>'
-
-see also http://www.omegahat.org/SSOAP/examples/keggGen.S
-
-z <-  .SOAP(oecd, 
-     method, ..., 
-     .soapArgs = list(), 
-     action, 
-     nameSpaces = SOAPNameSpaces(), 
-     xmlns = NULL, 
-     handlers = SOAPHandlers(), 
-     .types = NULL, 
-     .convert = TRUE, 
-    .opts = list(), 
-    curlHandle = getCurlHandle(), 
-    .header = getSOAPRequestHeader(action, .server = server), 
-    .literal = FALSE, 
-    .soapHeader = NULL, 
-    .elementFormQualified = FALSE) 
-
-
-################# curlPerform from RCurl as possible option##############
-  curlPerform(..., .opts = list(), curl = getCurlHandle(), .encoding = integer())
-     curlMultiPerform(curl, multiple = TRUE)
-     
-modified from curlMultiPerform examples:
-    require("RCurl")
-    h = basicTextGatherer()
-    #h$reset()
-      
-    # SOAP request
-    body = '<?xml version="1.0" encoding="UTF-8"?>\
-     <SOAP-ENV:Envelope SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" \
-                        xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" \
-                        xmlns:xsd="http://www.w3.org/1999/XMLSchema" \
-                        xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" \
-                        xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance">\
-       <SOAP-ENV:Body>\
-            <namesp1:hi xmlns:namesp1="http://www.soaplite.com/Demo"/>\
-       </SOAP-ENV:Body>\
-     </SOAP-ENV:Envelope>\n'
- 
-
-soapenv1 <- '<?xml version="1.0" encoding="UTF-8"?>\
-     <SOAP-ENV:Envelope SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" \
-                        xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" \
-                        xmlns:xsd="http://www.w3.org/1999/XMLSchema" \
-                        xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" \
-                        xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance">\
-       <SOAP-ENV:Body>\ '
-
-soapenv2 <- '</SOAP-ENV:Body>\
-     </SOAP-ENV:Envelope>\n'
 			
 body <- paste(soapenv1, queryMessage,soapenv2, collapse="")
 
-    soecd <- "http://stats.oecd.org/OECDSTATWS_SDMXNEW/QueryPage.aspx?Type=DataGeneric"
+soecd <-
+   "http://stats.oecd.org/OECDSTATWS_SDMXNEW/QueryPage.aspx?Type=DataGeneric"
+soecd <-
+   "http://stats.oecd.org/SDMXWS/sdmx.asmx?op=GetGenericData"
  
-    curlPerform(url=soecd,
+h = basicTextGatherer()
+h$reset()
+
+SOAPAction needs to be fixed below
+
+curlPerform(url=soecd,
        httpheader=c(Accept="text/xml", Accept="multipart/*",        
-                    'Content-Type' = "text/xml; charset=utf-8"),
+       SOAPAction='"http://stats.oecd.org/OECDSTATWS_SDMXNEW/QueryPage.aspx?Type=DataGeneric"',       
+       'Content-Type' = "text/xml; charset=utf-8"),
        postfields=body,
        writefunction = h$update,
        verbose = TRUE
        )
      
-       body = h$value()
-     
+h$value()
+xmlTreeParse(h$value(), asText=TRUE, trim=TRUE)
+str(xmlTreeParse(h$value(), asText=TRUE))
 
-require("TSsdmx")
+names(xmlTreeParse(h$value(), asText=TRUE, trim=TRUE))
+nchar(h$value())
+write(h$value(), file="zot.txt")
+htmlTreeParse(h$value(), asText=TRUE, trim=TRUE)
+     
+# should try to get <faultstring> out of $children in case of bad query
+names(htmlTreeParse(h$value(), asText=TRUE, trim=TRUE))
+htmlTreeParse(h$value(), asText=TRUE, trim=TRUE)$children
+
 cat("************** TSsdmx  Examples ******************************\n")
+require("TSsdmx")
 
 con <- TSconnect("sdmx", dbname="OECD") 
 
