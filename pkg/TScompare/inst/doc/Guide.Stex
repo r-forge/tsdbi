@@ -51,7 +51,7 @@ To provide simple examples, \pkg{TShistQuote} is used to extract some series fro
       if ("" == passwd)   passwd <- NULL
      }
   con <-  if ("" == user) dbConnect("MySQL", dbname="test") else
-    dbConnect(m, dbname="test", username=user, password=passwd, host=host)
+    dbConnect("MySQL", dbname="test", username=user, password=passwd, host=host)
 
   source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
   dbDisconnect(con)
@@ -96,7 +96,8 @@ Now to do a comparison
   print(ids)
 \end{Scode}
 
-If the second database has the same names then ids can be made into a matrix with identical columns. 
+If the second database has the same names then ids can be made into a 
+matrix with identical columns. 
 
 \begin{Scode}{results=verbatim}
   ids <- cbind(ids, ids)
@@ -108,7 +109,8 @@ If the second database has the same names then ids can be made into a matrix wit
   print(summary(eqrm))
 \end{Scode}
 
-Since names are not identical the above indicates discrepancies, which are resolves by indicating the corresponding name pairs.
+Since names are not identical the above indicates discrepancies, which 
+are resolves by indicating the corresponding name pairs.
 
 \begin{Scode}{results=verbatim}
   ids <- matrix(c("ftse","gspc","ibmClose", "ibmVol",
