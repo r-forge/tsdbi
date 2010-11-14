@@ -18,20 +18,27 @@ if(!identical(as.logical(service1), TRUE) |
    if ("" != user1) {
        # specifying host as NULL or "localhost" results in a socket connection
        host1    <- Sys.getenv("MYSQL_HOST")
-       if ("" == host1)     host <- Sys.info()["nodename"] 
+       if ("" == host1)     host1 <- Sys.info()["nodename"] 
        passwd1  <- Sys.getenv("MYSQL_PASSWD")
        if ("" == passwd1)   passwd1 <- NULL
      }
 
    con1 <- if ("" != user1)  
-            tryCatch(TSconnect("MySQL", dbname="ets", username=user1, password=passwd1, host=host)) 
+            tryCatch(TSconnect("MySQL", dbname="ets", username=user1, password=passwd1, host=host1)) 
       else  tryCatch(TSconnect("MySQL", dbname="ets")) # pass user/passwd/host in ~/.my.cnf
 
 
    user2    <- Sys.getenv("PADI_USER")
+   if ("" != user2) {
+       # specifying host as NULL or "localhost" results in a socket connection
+       host2    <- Sys.getenv("MYSQL_HOST")
+       if ("" == host2)     host2 <- Sys.info()["nodename"] 
+       passwd2  <- Sys.getenv("MYSQL_PASSWD")
+       if ("" == passwd2)   passwd2 <- NULL
+     }
     
    con2 <-  if ("" != user2) 
-            try(TSconnect("padi", dbname="ets", username=user, password=passwd, host=host)) 
+            try(TSconnect("padi", dbname="ets", username=user, password=passwd, host=host2)) 
        else try(TSconnect("padi", dbname="ets")) # pass user/passwd/host in ~/.padi.cfg
 
    if (!inherits(con1, "try-error") & !inherits(con2, "try-error")) {
