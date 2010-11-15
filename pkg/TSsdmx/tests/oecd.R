@@ -23,6 +23,8 @@ file into this "online SOAP client"  service - it's very useful and instructive:
 
 http://stats.oecd.org/SDMXWS/sdmx.asmx
 or test at
+http://stats.oecd.org/SDMXWS/QueryPage.aspx?Type=DataGeneric
+or
 http://stats.oecd.org/OECDSTATWS_SDMXNEW/QueryPage.aspx?Type=DataGeneric
 
 XML (Soap?) request for M1 and M3 to oecd (non-public db).
@@ -121,6 +123,7 @@ require("RCurl")
      </SOAP-ENV:Envelope>\n'
  
 ####### now try oecd sdmx SOAP #######
+
 require("RCurl")
 require("XML")
 
@@ -308,6 +311,8 @@ soecd <-
    "http://stats.oecd.org/OECDSTATWS_SDMXNEW/sdmx.aspx?op=GetGenericData"
 soecd <-
    "http://stats.oecd.org/SDMXWS/sdmx.asmx?op=GetGenericData"
+soecd <-
+   "http://stats.oecd.org/OECDStatWS/SDMX/sdmx.asmx?op=GetGenericData"
  
 h = basicTextGatherer()
 
