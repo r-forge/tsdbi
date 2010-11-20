@@ -85,12 +85,8 @@ See the package vignette for additional examples.
 \code{\link[tframe]{tfwindow}},
 }
 \examples{
-  if (require("getSymbols")){
     con <- try(TSconnect("getSymbols", dbname="FRED"))
-    if(! inherits(con, "try-error")) {
-        x <- TSget("CPIAUCNS", con)
-        tfplot(x)
-       }
-    }
+    x <- TSget("CPIAUCNS", con)
+    tfplot(x)
   }
 \keyword{ts}
