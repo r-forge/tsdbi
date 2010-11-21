@@ -85,7 +85,7 @@ See the package vignette for additional examples.
 \code{\link[tframe]{tfwindow}},
 }
 \examples{
-    con <- try(TSconnect("getSymbols", dbname="FRED"))
+    con <- TSconnect("getSymbol", dbname="FRED")
     x <- TSget("CPIAUCNS", con)
     tfplot(x)
   }
