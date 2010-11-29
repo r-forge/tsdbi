@@ -30,13 +30,15 @@ cat("***********   reading from ets /home/ets/db/etsmfacansim.db\n")
 cat("***********   reading from ets /home/ets/db/etsmfacansim.db using con\n")
  
   # using this con requires R package fame 2.10 with fix 
-  con <- fameConnection(service = "2959", 
-     host = "ets", user = "", password = "", stopOnFail = TRUE)
+  #     user = "", password = ""
+  con <- fameConnection(service = "2959", host = "ets", stopOnFail = TRUE)
+
 
    r2 <- getfame("V122646", db="/home/ets/db/etsmfacansim.db",
       connection=con, save = FALSE, 
              envir = parent.frame(),
              start = NULL, end = NULL, getDoc = FALSE)[[1]]
  
+ if (1e-14 < max(abs(r - r2))) stop("Fame call results differ.") 
 
 } else  cat("FAME not available. Skipping tests.")
