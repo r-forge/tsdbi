@@ -11,9 +11,9 @@ Known BUGS
 	package in the case of a remote servers cannot be suppressed.
 
 
-Changes in TSfame version 2010.xx-1
+Changes in TSfame version 2010.12-1
 
-   o	Version requirement for fame package bumped to (> 2.10).
+   o	Version requirement for fame package bumped to (> 2.11).
 
    o	Added test of fame remote server.
 
