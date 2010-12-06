@@ -21,24 +21,18 @@ setMethod("TSconnect",   signature(drv="sdmxDriver", dbname="character"),
   definition= function(drv, dbname, user="", password="", host="", ...){
    #  user / password / host  for future consideration
    if (is.null(dbname)) stop("dbname must be specified")
-   if (dbname == "FRED") {
-      #there could be a better test
-      con <- try(quantmod:::sdmxCall('CPIAUCNS',src='FRED'), silent = TRUE)
-      if(inherits(con, "try-error")) 
+
+   # there could be a better connection test mechanism below
+   if (dbname == "ECB" )      con <- try(TSgetECB('CPIAUCNS',...),  silent=TRUE)
+   else if (dbname == "OECD") con <- try(TSgetOECD('CPIAUCNS',...), silent=TRUE)
+   else stop(dbname, "not recognized. dbname should be one of 'ECB', 'OECD'.")
+
+   if(inherits(con, "try-error")) 
          stop("Could not establish TSsdmxConnection to ",  dbname)
-      #close(con)
-      }
-   else if (dbname == "yahoo") {
-      con <- try(quantmod:::sdmxCall('QQQQ',src='yahoo'), silent = TRUE)
-      if(inherits(con, "try-error")) 
-         stop("Could not establish TSsdmxConnection to ",  dbname)
-      #close(con)
-      }
-   else 
-      warning(dbname, "not recognized. Connection assumed working, but not tested.")
    
-   new("TSsdmxConnection", drv="sdmx", dbname=dbname, hasVintages=FALSE, hasPanels=FALSE,
-    	  user = user, password = password, host = host ) 
+   new("TSsdmxConnection", drv="sdmx", dbname=dbname, 
+        hasVintages=FALSE, hasPanels=FALSE, 
+	user=user, password=password, host=host ) 
    } )
 
 
@@ -78,47 +72,15 @@ setMethod("TSget",     signature(serIDs="character", con="TSsdmxConnection"),
        tf=NULL, start=tfstart(tf), end=tfend(tf),
        names=serIDs, quiet=TRUE, repeat.try=3, ...){ 
     if (is.null(TSrepresentation)) TSrepresentation <- "ts"
-    mat <- desc <- NULL
-    # recycle serIDs and quote to matching lengths
-    # argument 'quote' ignored for provider 'oanda'
-    # if (con@dbname == "yahoo") {
-       # if (length(quote) < length(serIDs))
-       #     quote  <- rep(quote,  length.out=length(serIDs))
-       # if (length(quote) > length(serIDs))
-       #     serIDs <- rep(serIDs, length.out=length(quote))
-       # }
+    desc <- NULL
     
-    #sdmxCall BUG workaround. Set this as zoo otherwise periodicity is wrong
-    #   (and frequency does not work either). Then convert below
-    args <- list(src = con@dbname, return.class="zoo",
-                 auto.assign=FALSE)
-    
-    #args <- if (is.null(start) & is.null(end)) append(args, list(...))
-    #        else if (is.null(start)  ) append(args, list(end=end, ...))
-    #        else if (is.null(end)  )   append(args, list(start=start, ...))
-    #        else         append(args, list(start=start, end=end, ...) )
-    for (i in seq(length(serIDs))) {
-       argsi <- append(list(serIDs[i]),  args)
-       for (rpt in seq(repeat.try)) {
-           # quantmod:::sdmxCall
-           r <- try(do.call("sdmxCall", argsi), silent=quiet)
-	   if (!inherits(r , "try-error")) break
-	   }
-       if (inherits(r , "try-error")) stop("series not retrieved:", r)
-       if (is.character(r)) stop("series not retrieved:", r)
-       #TSrefperiod(r) <- quote[i]
-       mat <- tbind(mat, r)
-       desc <- c(desc, paste(serIDs[i], collapse=" "))
-       }
+    if(con@dbname == "OECD")     mat <- TSgetOECD(serIDs, names=names)
+    else if(con@dbname == "ECB") mat <- TSgetOECD(serIDs, names=names)
+    else stop("dbname not recognized.")
+
     if (NCOL(mat) != length(serIDs)) stop("Error retrieving series", serIDs) 
-    # sdmxCall BUG workaround
-    st <- start(mat) #POSIXlt as return for zoo
-    if (TSrepresentation  %in% c( "ts", "default")) {
-        if(periodicity(mat)$scale == "monthly")  mat <- as.ts(mat, frequency=12,start=c(1900+st$year, 1+st$mon))
-        if(periodicity(mat)$scale == "quarterly")mat <- as.ts(mat, frequency=4, start=c(1900+st$year, 1+(st$mon-1)/3))
-        if(periodicity(mat)$scale == "yearly")   mat <- as.ts(mat, frequency=1, start=c(1900+st$year, 1))
-	}
     mat <- tfwindow(mat, tf=tf, start=start, end=end)
+    #if (TSrepresentation  %in% c( "ts", "default")) {}
     #if (! TSrepresentation  %in% c( "zoo", "default"))
     #	 mat <- do.call(TSrepresentation, list(mat))   
     seriesNames(mat) <- names
@@ -150,3 +112,178 @@ setMethod("TSlabel",   signature(x="character", con="TSsdmxConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
         "TSlabel for TSsdmx connection not supported." )
 
+#######  database source specific methods (not exported)   ######
+# It should be possible to a have a single SDMX parser deal with the
+# result from the fetch, bu that is not (yet) done. The parsing is still
+# specific to the format retrieved from each db.
+
+TSgetBoC <- function(id, names=NULL){
+   f <- gsub("[.]+[0-9,A-Z]*","",sub("[A-Z]*.","",sub("[0-9]*.","",id) ))
+   fr <- f[1]
+   if (!all(f==fr)) stop("series frequencies must all be the same.")
+   
+   uri <- paste( "http://sdw.ecb.europa.eu/export.do?",
+   	    paste("SERIES_KEY=", id, "&", sep="", collapse=""),
+   	    paste( "BS_ITEM=&sfl5=3&sfl4=4&sfl3=4&sfl1=3&DATASET=0&FREQ=",
+     	    fr,"&node=2116082&exportType=sdmx", sep="", collapse=""), sep="")
+
+   h <- basicTextGatherer()
+
+   #h$reset()
+   curlPerform(url=uri, writefunction = h$update, verbose = FALSE)
+   nmsp <- c(ns="http://www.ecb.int/vocabulary/stats/bsi") 
+   #nmsp <- c(ns="https://stats.ecb.europa.eu/stats/vocabulary/sdmx/2.0/SDMXMessage.xsd")
+   #See  getNodeSet examples
+   z <- xmlTreeParse(h$value(),  useInternalNodes = TRUE)  #FALSE)
+
+   # should try to check <faultstring> 
+
+   r <- SDMXparse(z, nmsp, id, fr)
+   if(!is.null(names)) seriesNames(r) <- names
+   r
+   }
+
+TSgetECB <- function(id, names=NULL){
+   f <- gsub("[.]+[0-9,A-Z]*","",sub("[A-Z]*.","",sub("[0-9]*.","",id) ))
+   fr <- f[1]
+   if (!all(f==fr)) stop("series frequencies must all be the same.")
+   
+#  different versions just for testing
+# v1
+   uri <- paste( "http://sdw.ecb.europa.eu/export.do?",
+   	    paste("SERIES_KEY=", id, "&", sep="", collapse=""),
+   	    paste( "BS_ITEM=&sfl5=3&sfl4=4&sfl3=4&sfl1=3&DATASET=0&FREQ=",
+     	    fr,"&node=2116082&exportType=sdmx", sep="", collapse=""), sep="")
+      
+# v2
+#   uri <- paste( "http://sdw.ecb.europa.eu/export.do?",
+#   	    paste("SERIES_KEY=", id, "&", sep="", collapse=""),
+#   	    paste( "sfl5=4&sfl4=4&sfl3=4&sfl2=4&sfl1=3&DATASET=0&FREQ=Q&node=2116082&exportType=sdmx",
+#   	     sep="", collapse=""), sep="")
+	    
+# v3
+#   uri <- paste( "http://sdw.ecb.europa.eu/quickviewexport.do?trans=&start=&end=&snapshot=&periodSortOrder=&",
+#   	    paste("SERIES_KEY=", id, "&", sep="", collapse=""),
+#   	    paste( "type=sdmx", sep="", collapse=""), sep="")
+
+# ns1
+   nmsp <- c(ns="http://www.ecb.int/vocabulary/stats/bsi") 
+# ns2
+#   nmsp <- c(ns="https://stats.ecb.europa.eu/stats/vocabulary/sdmx/2.0/SDMXMessage.xsd")
+#  <dataset xmlns="http://www.ecb.int/vocabulary/stats/bsi" xsi:schemalocation="http://www.ecb.int/vocabulary/stats/bsi https://stats.ecb.int/stats/vocabulary/bsi/2005-07-01/sdmx-compact.xsd
+
+   h <- basicTextGatherer()
+
+   #h$reset()
+   curlPerform(url=uri, writefunction = h$update, verbose = FALSE)
+   #See  getNodeSet examples
+   z <- xmlTreeParse(h$value(),  useInternalNodes = TRUE)  #FALSE)
+
+   # should try to check <faultstring> 
+
+   r <- SDMXparse(z, nmsp, id, fr)
+   if(!is.null(names)) seriesNames(r) <- names
+   r
+   }
+
+SDMXparse <- function(doc, namespace, id, fr){  
+   # id is just for check of number of results
+     # local function
+     meta <- function(node){
+      c(FREQ=		xmlGetAttr(node, "FREQ",	    namespace),
+   	REF_AREA=	xmlGetAttr(node, "REF_AREA",	       namespace),
+   	ADJUSTMENT=	xmlGetAttr(node, "ADJUSTMENT",      namespace),
+   	BS_REP_SECTOR=  xmlGetAttr(node, "BS_REP_SECTOR",   namespace),
+   	BS_ITEM=	xmlGetAttr(node, "BS_ITEM",	       namespace),
+   	MATURITY_ORIG=  xmlGetAttr(node, "MATURITY_ORIG",   namespace),
+   	DATA_TYPE=	xmlGetAttr(node, "DATA_TYPE",	       namespace),
+   	COUNT_AREA=	xmlGetAttr(node, "COUNT_AREA",      namespace),
+   	BS_COUNT_SECTOR=xmlGetAttr(node, "BS_COUNT_SECTOR", namespace),
+   	CURRENCY_TRANS= xmlGetAttr(node, "CURRENCY_TRANS",  namespace),
+   	BS_SUFFIX=	xmlGetAttr(node, "BS_SUFFIX", namespace),
+   	TIME_FORMAT=	xmlGetAttr(node, "TIME_FORMAT", namespace),
+   	COLLECTION=	xmlGetAttr(node, "COLLECTION", namespace))
+       }
+
+   # separate the series
+   zs <-   getNodeSet(doc, "//ns:Series[@FREQ]", namespace )
+   if(length(zs) != length(id)) stop("some series not retrieved.")
+   m <- r <- NULL
+   for (i in seq(length(zs))) { 
+      m <- c(m, paste(meta(zs[[i]]), collapse="."))
+      #cat(paste(meta(zs[[i]]), collapse="."),"\n")
+
+      # getNodeSet(zs[[i]], "//ns:Obs[@TIME_PERIOD]",namespace )
+      # gets Obs from all series. The XPath needs
+      # to tell getNodeSet() to look from that node downwards, not
+      # the original document. So you need a .//
+      zz <-   getNodeSet(zs[[i]], ".//ns:Obs[@TIME_PERIOD]",namespace )  
+
+      dt <- sapply(zz, xmlGetAttr, "TIME_PERIOD")
+      # obs are usually in sequential order, but not certain, so
+      ix <- order(dt)
+      dt <- strptime(paste(dt[ix],"-01",sep=""), format="%Y-%m-%d")
+
+      # Q dates are first month of Q?
+      # cbind(1900+dt$year, 1+dt$mon/3) for all dates
+
+      r1 <- as.numeric( sapply(zz, xmlGetAttr, "OBS_VALUE") )[ix]
+      if (fr == "Q") 
+        r2 <- ts(r1, start=cbind(1900+dt[1]$year, 1+dt$mon[1]/3), frequency=4) 
+      else if (fr == "M") 
+        r2 <- ts(r1, start=cbind(1900+dt[1]$year, dt$mon[1]), frequency=12) 
+      else if (fr == "A") 
+        r2 <- ts(r1, start=cbind(1900+dt[1]$year, 1), frequency=1) 
+      else 
+        r2 <- ts(r1, start=cbind(1900+dt[1]$year, 1), frequency=1) 
+      r <- tbind(r, r2)
+      }
+   seriesNames(r) <- m
+   r
+   }
+
+TSgetURI <- function(query,nmsp= c(ns="http://www.ecb.int/vocabulary/stats/bsi")){
+   # function primarily for debugging queries
+   # nmsp=c(ns="http://www.ecb.int/vocabulary/stats/bsi") 
+   # nmsp=c(ns="https://stats.ecb.europa.eu/stats/vocabulary/sdmx/2.0/SDMXMessage.xsd")
+
+   fr <- 1 # skip trying to set fr properly (for debugging)
+
+   h <- basicTextGatherer()
+
+   h$reset()
+   curlPerform(url=query, writefunction = h$update, verbose = FALSE)
+
+   #See  getNodeSet examples
+   z <- xmlTreeParse(h$value(),  useInternalNodes = TRUE)
+   #z <- xmlTreeParse(h$value(),  useInternalNodes = FALSE)
+
+   #htmlTreeParse(h$value()) # gives nicer printout
+
+   # separate the series
+   zs <-   getNodeSet(z, "//ns:Series[@FREQ]", nmsp )
+   r <- NULL
+   for (i in seq(length(zs))) { 
+      # getNodeSet(zs[[i]], "//ns:Obs[@TIME_PERIOD]",nmsp )
+      # gets Obs from all series. The XPath needs
+      # to tell getNodeSet() to look from that node downwards, not
+      # the original document. So you need a .//
+      zz <-   getNodeSet(zs[[i]], ".//ns:Obs[@TIME_PERIOD]",nmsp )  
+
+      dt <- sapply(zz, xmlGetAttr, "TIME_PERIOD")
+      # obs are usually in sequential order, but not certain, so
+      ix <- order(dt)
+      dt <- strptime(paste(dt[ix],"-01",sep=""), format="%Y-%m-%d")
+
+      # Q dates are first month of Q?
+      # cbind(1900+dt$year, 1+dt$mon/3) for all dates
+
+      r1 <- as.numeric( sapply(zz, xmlGetAttr, "OBS_VALUE") )[ix]
+      # no attempt to deterrmine freq here
+      r2 <- ts(r1, start=cbind(1900+dt[1]$year, 1), frequency=1) 
+      r <- tbind(r, r2)
+      }
+   r
+   }
+
+# debug(TSgetURI)
