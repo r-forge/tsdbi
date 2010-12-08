@@ -2,6 +2,9 @@
 this gets the data but the zs parse fails
 #z <- TSgetURI(query="http://sdw.ecb.europa.eu/quickviewexport.do?trans=&start=&end=&snapshot=&periodSortOrder=&SERIES_KEY=122.ICP.M.U2.N.000000.4.ANR&type=sdmx")
 
+we can tell the namespace in effect for the first Series node:
+  xmlNamespace(xmlRoot(z1)[["DataSet"]][[2]])
+
 vs
 
 this seems to get only the header
@@ -18,3 +21,10 @@ this seems to get only the header
 
 # and this monthly version works too (but not right dates from R)
 #z <- TSgetURI(query="http://sdw.ecb.europa.eu/export.do?SERIES_KEY=117.BSI.M.U2.Y.U.A21.A.4.U2.2250.Z01.E&REF_AREA=308&sfl5=3&sfl4=4&sfl3=4&sfl2=4&sfl1=3&DATASET=0&FREQ=M&BS_SUFFIX=E&node=2116082&exportType=sdmx")
+
+
+TSgetURI("http://sdw.ecb.europa.eu/quickviewexport.do?trans=&start=&end=&snapshot=&periodSortOrder=&SERIES_KEY=118.DD.A.I5.POPE.LEV.4D&type=sdmx") #as v3
+
+z <- TSgetURI(query="http://credit.bank-banque-canada.ca/webservices?service=getSeriesSDMX&args=CDOR_-_-_OIS_-_-_SWAPPEDTOFLOAT_-_-_FIRST_-_-_Last")
+
+z <- TSgetURI(query="http://credit.bank-banque-canada.ca/webservices?service=getSeriesSDMX&args=CDOR_-_-_FIRST_-_-_Last")

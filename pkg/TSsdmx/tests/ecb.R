@@ -9,6 +9,8 @@ con <- TSconnect("sdmx", dbname="ECB")
 
 # there is an SDMX primer at
 # http://www.ecb.int/stats/services/sdmx/html/index.en.html
+# NB firebug shows browser requests to server, so is useful for seeing what is
+#  sent to the server
 
 #for the Guide:
 
@@ -23,16 +25,12 @@ at http://sdw.ecb.europa.eu/ eg
 
 # eg pop
 #http://sdw.ecb.europa.eu/quickviewexport.do?trans=&start=&end=&snapshot=&periodSortOrder=&SERIES_KEY=118.DD.A.I5.POPE.LEV.4D&type=sdmx
+# note that it would be nice to use  
+# TSgetECB("DD.A.I5.POPE.LEV.4D")     #but this fails. It needs 118.
 
-TSgetURI("http://sdw.ecb.europa.eu/quickviewexport.do?trans=&start=&end=&snapshot=&periodSortOrder=&SERIES_KEY=118.DD.A.I5.POPE.LEV.4D&type=sdmx") #as v3
-
-
-z <- TSgetECB("118.DD.A.I5.POPE.LEV.4D") # ns1 fails v1 v2 v3; ns2 fails v1
-# above only seems to get the header and no error message with ns1 v1
-# With v3 it gets data and <dataset> <group ,,,> and parse does not work.
-
-# next gets nothing 
-z <- TSgetECB("DD.A.I5.POPE.LEV.4D")     #fails needs 118.
+# Annual data
+z <- TSgetECB("118.DD.A.I5.POPE.LEV.4D")#works v3 
+# seems to get only the header with v1
 
 
 #quarterly
@@ -41,21 +39,22 @@ z <- TSgetECB("DD.A.I5.POPE.LEV.4D")     #fails needs 118.
 #      |quarterly  | all | select series (click check box) BSI... as below    
 #      | Data table | export (csv SDMX excel)
 
-#annual rate not INX 
-z <- TSgetECB("122.ICP.M.U2.N.000000.4.ANR")# ns1 fails v1 v2 v3; ns2 fails v1 
+# monthly data 
+z <- TSgetECB("122.ICP.M.U2.N.000000.4.ANR")# annual rates #works v3 
+z <- TSgetECB("122.ICP.M.U2.N.000000.4.INX")# index        #works v3 
 
+z <- TSgetECB("117.BSI.M.U2.Y.U.A21.A.4.U2.2250.Z01.E")   #works v3
 
 skey <-c("117.BSI.Q.U2.N.A.A21.A.1.U2.2250.Z01.E",
          "117.BSI.Q.U2.N.A.A22.A.1.U2.2250.Z01.E",
          "117.BSI.Q.U2.N.A.A23.A.1.U2.2250.Z01.E")
 
 
-z <- TSgetECB(skey) #ns1 works v1 v2 v3; ns2 fails v1
-z <- TSgetECB("117.BSI.M.U2.Y.U.A21.A.4.U2.2250.Z01.E")   #ns1 works v1 v3 fails v2; ns2 fails v1
-z <- TSgetECB("117.BSI.Q.U2.N.A.A21.A.1.U2.2250.Z01.E")   #ns1 works v1 v2 v3
-
+z <- TSgetECB(skey)                                       #works v3
+z <- TSgetECB("117.BSI.Q.U2.N.A.A21.A.1.U2.2250.Z01.E")   #works v3
+# length 123 for all three
 z <- TSgetECB(c("117.BSI.Q.U2.N.A.A21.A.1.U2.2250.Z01.E",
-                "117.BSI.Q.U2.N.A.A22.A.1.U2.2250.Z01.E"))#ns1 works v1 v2 v3; ns2 fails v1
+                "117.BSI.Q.U2.N.A.A22.A.1.U2.2250.Z01.E"))#works v3
 
 
 
