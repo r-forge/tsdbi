@@ -4,10 +4,12 @@ import(TSdbi)
 #import(fame) 
 
 export("fame")
+export("fameServer")
 
 ## S4 Classes
 exportClasses(
-   "TSfameConnection"
+   "TSfameConnection",
+   "TSfameServerConnection"
    )
 
 ## S4 methods

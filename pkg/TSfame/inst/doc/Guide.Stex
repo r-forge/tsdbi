@@ -43,6 +43,10 @@ The first thing to do is to establish a connection to the database:
 con <- TSconnect("fame", dbname="testvigFame.db") 
 \end{Scode}
 
+(It is also possible to establish connections to Fame databases using Fame 
+server. See the section ''Examples Using TSdbi with ets'' below for more 
+details.)
+
 This puts a series called \code{vec}  on the database and then reads is back. 
  
 \begin{Scode}
@@ -102,7 +106,7 @@ not much information has been added for these examples.
  TSdoc("vec", con)
 \end{Scode}
 
-Below are exampoles that make more use of \code{TSdescription} and code{TSdoc}.
+Below are examples that make more use of \code{TSdescription} and code{TSdoc}.
 
 Often it is convenient to set the default connection:
 
@@ -291,7 +295,7 @@ and check the saved version:
 \end{Scode}
 
 
-\subsection{Examples  Using TSdbi with ets}
+\subsection{Examples Using TSdbi with ets}
 
 These examples use a database called "ets" which is available at the Bank
 of Canada.
@@ -304,7 +308,7 @@ The following are wrapped in \code{if (!inherits(conets, "try-error"))} so that
 the vignette will build even when the database is not available. This seems to
 require an explicit call to \code{print()}, but that is not usually needed to
 display results below. Another artifact of this is that results printed in the
-if block do not display until the end of the block.
+\code{if} block do not display until the end of the block.
 
 \begin{Scode}{results=verbatim,fig=TRUE}
   m <- dbDriver("fame")
@@ -344,6 +348,23 @@ fameDbClose(id)
   }
 \end{Scode}
 
+In the above connection is recognized to be a server because of the white space
+between ''ets'' and the database name. An alternative way to establish the 
+connnection is to explicitely indicate that the server functionality is to be 
+used:
+\begin{Scode}{results=verbatim,fig=TRUE}
+  conServer <- try(
+    TSconnect("fameServer", dbname="/home/ets/db/etsintoecd.db",
+       service = "2959", host = "ets", user="", password="",stopOnFail = TRUE)) 
+
+  if (!inherits(conServer "try-error")) { 
+    print(TSmeta("M.SDR.CCUSMA02.ST"), con=conServer)
+  }
+\end{Scode}
+
+The first connect is used below, but they are interchangable.
+
+
 \begin{Scode}{results=verbatim,fig=TRUE}
 if (!inherits(conets, "try-error")) {
   print(TSdescription(TSget("M.CAN.CCUSMA02.ST", TSdescription=TRUE)))
@@ -376,8 +397,8 @@ if (!inherits(conets, "try-error")) {
 \end{Scode}
 
 
-Finally, dbDisconnect does nothing in TSfame, but is provided for 
-compatability with other packages.
+Finally, dbDisconnect closes the connection if it is a Fame Server connect, and
+does nothing otherwise, but is provided for compatability with other connections.
 
 \begin{Scode}{results=hide}
 dbDisconnect(con)
