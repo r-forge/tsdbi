@@ -118,27 +118,28 @@ setMethod("TSlabel",   signature(x="character", con="TSsdmxConnection"),
 # specific to the format retrieved from each db.
 
 TSgetBoC <- function(id, names=NULL){
-   f <- gsub("[.]+[0-9,A-Z]*","",sub("[A-Z]*.","",sub("[0-9]*.","",id) ))
-   fr <- f[1]
-   if (!all(f==fr)) stop("series frequencies must all be the same.")
-   
-   uri <- paste( "http://sdw.ecb.europa.eu/export.do?",
-   	    paste("SERIES_KEY=", id, "&", sep="", collapse=""),
-   	    paste( "BS_ITEM=&sfl5=3&sfl4=4&sfl3=4&sfl1=3&DATASET=0&FREQ=",
-     	    fr,"&node=2116082&exportType=sdmx", sep="", collapse=""), sep="")
+    
+
+#TSgetURI(query="http://credit.bank-banque-canada.ca/webservices?service=getSeriesSDMX&args=CDOR_-_-_FIRST_-_-_Last")
+#TSgetURI(query="http://credit.bank-banque-canada.ca/webservices?service=getSeriesSDMX&args=CDOR_-_-_OIS_-_-_SWAPPEDTOFLOAT_-_-_FIRST_-_-_Last")
+
+   uri <- paste( "http://credit.bank-banque-canada.ca/webservices?service=getSeriesSDMX&args=",
+   	    paste("SERIES_KEY=", id, "_-_-_", sep="", collapse=""),
+   	    paste( "FIRST_-_-_Last",sep="", collapse=""), sep="")
 
    h <- basicTextGatherer()
 
    #h$reset()
    curlPerform(url=uri, writefunction = h$update, verbose = FALSE)
-   nmsp <- c(ns="http://www.ecb.int/vocabulary/stats/bsi") 
-   #nmsp <- c(ns="https://stats.ecb.europa.eu/stats/vocabulary/sdmx/2.0/SDMXMessage.xsd")
-   #See  getNodeSet examples
    z <- xmlTreeParse(h$value(),  useInternalNodes = TRUE)  #FALSE)
 
    # should try to check <faultstring> 
 
-   r <- SDMXparse(z, nmsp, id, fr)
+  f <- gsub("[.]+[0-9,A-Z]*","",sub("[A-Z]*.","",sub("[0-9]*.","",id) ))
+   fr <- f[1]
+   if (!all(f==fr)) stop("series frequencies must all be the same.")
+
+   r <- SDMXparse(z, id, fr)
    if(!is.null(names)) seriesNames(r) <- names
    r
    }
@@ -150,11 +151,11 @@ TSgetECB <- function(id, names=NULL){
    
 #  different versions just for testing
 # v1
-   uri <- paste( "http://sdw.ecb.europa.eu/export.do?",
-   	    paste("SERIES_KEY=", id, "&", sep="", collapse=""),
-   	    paste( "BS_ITEM=&sfl5=3&sfl4=4&sfl3=4&sfl1=3&DATASET=0&FREQ=",
-     	    fr,"&node=2116082&exportType=sdmx", sep="", collapse=""), sep="")
-      
+#   uri <- paste( "http://sdw.ecb.europa.eu/export.do?",
+#   	    paste("SERIES_KEY=", id, "&", sep="", collapse=""),
+#   	    paste( "BS_ITEM=&sfl5=3&sfl4=4&sfl3=4&sfl1=3&DATASET=0&FREQ=",
+#     	    fr,"&node=2116082&exportType=sdmx", sep="", collapse=""), sep="")
+#      
 # v2
 #   uri <- paste( "http://sdw.ecb.europa.eu/export.do?",
 #   	    paste("SERIES_KEY=", id, "&", sep="", collapse=""),
@@ -162,15 +163,9 @@ TSgetECB <- function(id, names=NULL){
 #   	     sep="", collapse=""), sep="")
 	    
 # v3
-#   uri <- paste( "http://sdw.ecb.europa.eu/quickviewexport.do?trans=&start=&end=&snapshot=&periodSortOrder=&",
-#   	    paste("SERIES_KEY=", id, "&", sep="", collapse=""),
-#   	    paste( "type=sdmx", sep="", collapse=""), sep="")
-
-# ns1
-   nmsp <- c(ns="http://www.ecb.int/vocabulary/stats/bsi") 
-# ns2
-#   nmsp <- c(ns="https://stats.ecb.europa.eu/stats/vocabulary/sdmx/2.0/SDMXMessage.xsd")
-#  <dataset xmlns="http://www.ecb.int/vocabulary/stats/bsi" xsi:schemalocation="http://www.ecb.int/vocabulary/stats/bsi https://stats.ecb.int/stats/vocabulary/bsi/2005-07-01/sdmx-compact.xsd
+   uri <- paste( "http://sdw.ecb.europa.eu/quickviewexport.do?trans=&start=&end=&snapshot=&periodSortOrder=&",
+	   paste("SERIES_KEY=", id, "&", sep="", collapse=""),
+	   paste( "type=sdmx", sep="", collapse=""), sep="")
 
    h <- basicTextGatherer()
 
@@ -181,89 +176,42 @@ TSgetECB <- function(id, names=NULL){
 
    # should try to check <faultstring> 
 
-   r <- SDMXparse(z, nmsp, id, fr)
+   r <- SDMXparse(z, id, fr)
    if(!is.null(names)) seriesNames(r) <- names
    r
    }
 
-SDMXparse <- function(doc, namespace, id, fr){  
+SDMXparse <- function(doc, id, fr){  
    # id is just for check of number of results
-     # local function
-     meta <- function(node){
-      c(FREQ=		xmlGetAttr(node, "FREQ",	    namespace),
-   	REF_AREA=	xmlGetAttr(node, "REF_AREA",	       namespace),
-   	ADJUSTMENT=	xmlGetAttr(node, "ADJUSTMENT",      namespace),
-   	BS_REP_SECTOR=  xmlGetAttr(node, "BS_REP_SECTOR",   namespace),
-   	BS_ITEM=	xmlGetAttr(node, "BS_ITEM",	       namespace),
-   	MATURITY_ORIG=  xmlGetAttr(node, "MATURITY_ORIG",   namespace),
-   	DATA_TYPE=	xmlGetAttr(node, "DATA_TYPE",	       namespace),
-   	COUNT_AREA=	xmlGetAttr(node, "COUNT_AREA",      namespace),
-   	BS_COUNT_SECTOR=xmlGetAttr(node, "BS_COUNT_SECTOR", namespace),
-   	CURRENCY_TRANS= xmlGetAttr(node, "CURRENCY_TRANS",  namespace),
-   	BS_SUFFIX=	xmlGetAttr(node, "BS_SUFFIX", namespace),
-   	TIME_FORMAT=	xmlGetAttr(node, "TIME_FORMAT", namespace),
-   	COLLECTION=	xmlGetAttr(node, "COLLECTION", namespace))
+
+   #eg. nmsp <- c(ns="http://www.ecb.int/vocabulary/stats/bsi") 
+   nmsp <- c(ns=xmlNamespace(xmlRoot(doc)[["DataSet"]][[2]]))
+
+   # local function
+   meta <- function(node){
+      c(FREQ=		xmlGetAttr(node, "FREQ",	    nmsp),
+   	REF_AREA=	xmlGetAttr(node, "REF_AREA",	    nmsp),
+   	ADJUSTMENT=	xmlGetAttr(node, "ADJUSTMENT",      nmsp),
+   	BS_REP_SECTOR=  xmlGetAttr(node, "BS_REP_SECTOR",   nmsp),
+   	BS_ITEM=	xmlGetAttr(node, "BS_ITEM",	    nmsp),
+   	MATURITY_ORIG=  xmlGetAttr(node, "MATURITY_ORIG",   nmsp),
+   	DATA_TYPE=	xmlGetAttr(node, "DATA_TYPE",	    nmsp),
+   	COUNT_AREA=	xmlGetAttr(node, "COUNT_AREA",      nmsp),
+   	BS_COUNT_SECTOR=xmlGetAttr(node, "BS_COUNT_SECTOR", nmsp),
+   	CURRENCY_TRANS= xmlGetAttr(node, "CURRENCY_TRANS",  nmsp),
+   	BS_SUFFIX=	xmlGetAttr(node, "BS_SUFFIX",       nmsp),
+   	TIME_FORMAT=	xmlGetAttr(node, "TIME_FORMAT",     nmsp),
+   	COLLECTION=	xmlGetAttr(node, "COLLECTION",      nmsp))
        }
 
    # separate the series
-   zs <-   getNodeSet(doc, "//ns:Series[@FREQ]", namespace )
+   zs <-   getNodeSet(doc, "//ns:Series[@FREQ]", nmsp )
    if(length(zs) != length(id)) stop("some series not retrieved.")
    m <- r <- NULL
    for (i in seq(length(zs))) { 
       m <- c(m, paste(meta(zs[[i]]), collapse="."))
       #cat(paste(meta(zs[[i]]), collapse="."),"\n")
 
-      # getNodeSet(zs[[i]], "//ns:Obs[@TIME_PERIOD]",namespace )
-      # gets Obs from all series. The XPath needs
-      # to tell getNodeSet() to look from that node downwards, not
-      # the original document. So you need a .//
-      zz <-   getNodeSet(zs[[i]], ".//ns:Obs[@TIME_PERIOD]",namespace )  
-
-      dt <- sapply(zz, xmlGetAttr, "TIME_PERIOD")
-      # obs are usually in sequential order, but not certain, so
-      ix <- order(dt)
-      dt <- strptime(paste(dt[ix],"-01",sep=""), format="%Y-%m-%d")
-
-      # Q dates are first month of Q?
-      # cbind(1900+dt$year, 1+dt$mon/3) for all dates
-
-      r1 <- as.numeric( sapply(zz, xmlGetAttr, "OBS_VALUE") )[ix]
-      if (fr == "Q") 
-        r2 <- ts(r1, start=cbind(1900+dt[1]$year, 1+dt$mon[1]/3), frequency=4) 
-      else if (fr == "M") 
-        r2 <- ts(r1, start=cbind(1900+dt[1]$year, dt$mon[1]), frequency=12) 
-      else if (fr == "A") 
-        r2 <- ts(r1, start=cbind(1900+dt[1]$year, 1), frequency=1) 
-      else 
-        r2 <- ts(r1, start=cbind(1900+dt[1]$year, 1), frequency=1) 
-      r <- tbind(r, r2)
-      }
-   seriesNames(r) <- m
-   r
-   }
-
-TSgetURI <- function(query,nmsp= c(ns="http://www.ecb.int/vocabulary/stats/bsi")){
-   # function primarily for debugging queries
-   # nmsp=c(ns="http://www.ecb.int/vocabulary/stats/bsi") 
-   # nmsp=c(ns="https://stats.ecb.europa.eu/stats/vocabulary/sdmx/2.0/SDMXMessage.xsd")
-
-   fr <- 1 # skip trying to set fr properly (for debugging)
-
-   h <- basicTextGatherer()
-
-   h$reset()
-   curlPerform(url=query, writefunction = h$update, verbose = FALSE)
-
-   #See  getNodeSet examples
-   z <- xmlTreeParse(h$value(),  useInternalNodes = TRUE)
-   #z <- xmlTreeParse(h$value(),  useInternalNodes = FALSE)
-
-   #htmlTreeParse(h$value()) # gives nicer printout
-
-   # separate the series
-   zs <-   getNodeSet(z, "//ns:Series[@FREQ]", nmsp )
-   r <- NULL
-   for (i in seq(length(zs))) { 
       # getNodeSet(zs[[i]], "//ns:Obs[@TIME_PERIOD]",nmsp )
       # gets Obs from all series. The XPath needs
       # to tell getNodeSet() to look from that node downwards, not
@@ -273,15 +221,63 @@ TSgetURI <- function(query,nmsp= c(ns="http://www.ecb.int/vocabulary/stats/bsi")
       dt <- sapply(zz, xmlGetAttr, "TIME_PERIOD")
       # obs are usually in sequential order, but not certain, so
       ix <- order(dt)
-      dt <- strptime(paste(dt[ix],"-01",sep=""), format="%Y-%m-%d")
+      dt <- dt[ix]
 
-      # Q dates are first month of Q?
-      # cbind(1900+dt$year, 1+dt$mon/3) for all dates
+      # In some formats Q dates are first month of Q, eg Q4 is 2010-10
+      # but usually? 2010-Q4
 
       r1 <- as.numeric( sapply(zz, xmlGetAttr, "OBS_VALUE") )[ix]
-      # no attempt to deterrmine freq here
-      r2 <- ts(r1, start=cbind(1900+dt[1]$year, 1), frequency=1) 
+      if (fr == "Q"){ 
+        y <- as.numeric(sub("-Q[0-9]","",dt[1]))
+	q <- as.numeric(sub("[0-9]*-Q","",dt[1]))
+        r2 <- ts(r1, start=c(y,q), frequency=4)
+	} 
+      else if (fr == "M"){ 
+        dt <- strptime(paste(dt,"-01",sep=""), format="%Y-%m-%d")
+        r2 <- ts(r1, start=cbind(1900+dt[1]$year, dt$mon[1]), frequency=12) 
+	} 
+      else if (fr == "A"){ 
+        y <- as.numeric(dt[1])
+        r2 <- ts(r1, start=cbind(y, 1), frequency=1) 
+	} 
+      else{ 
+        require("zoo")
+	r2 <- zoo(r1, order.by=as.Date(dt)) 
+	} 
       r <- tbind(r, r2)
+      }
+   seriesNames(r) <- m
+   r
+   }
+
+TSgetURI <- function(query){
+   # function primarily for debugging queries
+
+   fr <- 1 # skip trying to set fr properly (for debugging)
+
+   h <- basicTextGatherer()
+   h$reset()
+   curlPerform(url=query, writefunction = h$update, verbose = FALSE)
+
+   #See  getNodeSet examples
+   z <- xmlTreeParse(h$value(),  useInternalNodes = TRUE)
+
+   #htmlTreeParse(h$value()) # gives nicer printout
+
+   # separate the series
+   nmsp <- c(ns=xmlNamespace(xmlRoot(z)[["DataSet"]][[2]]))
+   zs <-   getNodeSet(z, "//ns:Series[@FREQ]", nmsp )
+   r <- dt <- NULL
+   for (i in seq(length(zs))) { 
+      # getNodeSet(zs[[i]], "//ns:Obs[@TIME_PERIOD]",nmsp )
+      # gets Obs from all series. The XPath needs
+      # to tell getNodeSet() to look from that node downwards, not
+      # the original document. So you need a .//
+      zz <-   getNodeSet(zs[[i]], ".//ns:Obs[@TIME_PERIOD]",nmsp )  
+
+      # no attempt at time series
+      dt <- cbind(dt, sapply(zz, xmlGetAttr, "TIME_PERIOD"))
+      r  <- cbind(r,  as.numeric( sapply(zz, xmlGetAttr, "OBS_VALUE") ))
       }
    r
    }
