@@ -17,10 +17,13 @@ con <- TSconnect("sdmx", dbname="BOC")
 # identifiers can be extraced at ??
 
 these retrieve the data but has the wrong ns or <DataSet> parse problem
-z <- TSgetURI(query="http://credit.bank-banque-canada.ca/webservices?service=getSeriesSDMX&args=CDOR_-_-_OIS_-_-_SWAPPEDTOFLOAT_-_-_FIRST_-_-_Last")
+args=CDOR_-_-_OIS_-_-_SWAPPEDTOFLOAT_-_-_FIRST_-_-_Last
 
-z <- TSgetURI(query="http://credit.bank-banque-canada.ca/webservices?service=getSeriesSDMX&args=CDOR_-_-_FIRST_-_-_Last")
 
+
+z <- TSgetBoC("CDOR")
+
+z <- TSgetBoC(c("CDOR", "OIS", "SWAPPEDTOFLOAT"))
 
 TSdescription(z) 
 

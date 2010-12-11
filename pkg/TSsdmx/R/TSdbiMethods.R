@@ -117,38 +117,33 @@ setMethod("TSlabel",   signature(x="character", con="TSsdmxConnection"),
 # result from the fetch, bu that is not (yet) done. The parsing is still
 # specific to the format retrieved from each db.
 
+# NB firebug shows browser requests to server, so is useful for seeing what is
+#  sent to the server
+
 TSgetBoC <- function(id, names=NULL){
     
-
-#TSgetURI(query="http://credit.bank-banque-canada.ca/webservices?service=getSeriesSDMX&args=CDOR_-_-_FIRST_-_-_Last")
-#TSgetURI(query="http://credit.bank-banque-canada.ca/webservices?service=getSeriesSDMX&args=CDOR_-_-_OIS_-_-_SWAPPEDTOFLOAT_-_-_FIRST_-_-_Last")
-
    uri <- paste( "http://credit.bank-banque-canada.ca/webservices?service=getSeriesSDMX&args=",
-   	    paste("SERIES_KEY=", id, "_-_-_", sep="", collapse=""),
+   	    paste(id, "_-_-_", sep="", collapse=""),
    	    paste( "FIRST_-_-_Last",sep="", collapse=""), sep="")
 
-   h <- basicTextGatherer()
-
-   #h$reset()
-   curlPerform(url=uri, writefunction = h$update, verbose = FALSE)
-   z <- xmlTreeParse(h$value(),  useInternalNodes = TRUE)  #FALSE)
-
    # should try to check <faultstring> 
+   z <- getURLContent(uri)
+   #NEED TO STRIP SOAP ENV
+   #zz <- htmlParse(z)
+   #zz <-   getNodeSet(zz, "//dataset" )
+   #zz <-   getNodeSet(zz, "//CompactData" )
+   zz <-   getNodeSet(htmlParse(z, useInternalNodes = FALSE), "//return" )
+   zz <-   getNodeSet(htmlParse(z), "//return" )
+   r <- SDMXparse(zz)
+   
+   if(nseries(r) != length(id)) warning("some series not retrieved.")
 
-  f <- gsub("[.]+[0-9,A-Z]*","",sub("[A-Z]*.","",sub("[0-9]*.","",id) ))
-   fr <- f[1]
-   if (!all(f==fr)) stop("series frequencies must all be the same.")
-
-   r <- SDMXparse(z, id, fr)
    if(!is.null(names)) seriesNames(r) <- names
+
    r
    }
 
 TSgetECB <- function(id, names=NULL){
-   f <- gsub("[.]+[0-9,A-Z]*","",sub("[A-Z]*.","",sub("[0-9]*.","",id) ))
-   fr <- f[1]
-   if (!all(f==fr)) stop("series frequencies must all be the same.")
-   
 #  different versions just for testing
 # v1
 #   uri <- paste( "http://sdw.ecb.europa.eu/export.do?",
@@ -167,22 +162,55 @@ TSgetECB <- function(id, names=NULL){
 	   paste("SERIES_KEY=", id, "&", sep="", collapse=""),
 	   paste( "type=sdmx", sep="", collapse=""), sep="")
 
-   h <- basicTextGatherer()
+   #BTW, rather than all the work with basicTextGatherer(), I would use
+   #z = xmlParse(getURLContent(uri))
+   #And ideally, use getForm(), i.e.
+   # getForm("http://sdw.ecb.europa.eu/export.do",
+   #	  SERIES_KEY = "117.BSI.Q.U2.N.A.A21.A.1.U2.2250.Z01.E",
+   #	  SERIES_KEY = "117.BSI.Q.U2.N.A.A22.A.1.U2.2250.Z01.E",
+   #	  BS_ITEM = "", sfl5 = "3", sfl4 = "4", sfl3 = "4", sfl1 = "3",
+   #DATASET = "0",
+   #	  FREQ = "Q", node = "2116082", exportType = "sdmx")
+
+   #h <- basicTextGatherer()
 
    #h$reset()
-   curlPerform(url=uri, writefunction = h$update, verbose = FALSE)
+   #curlPerform(url=uri, writefunction = h$update, verbose = FALSE)
    #See  getNodeSet examples
-   z <- xmlTreeParse(h$value(),  useInternalNodes = TRUE)  #FALSE)
+   #z <- xmlTreeParse(h$value(),  useInternalNodes = TRUE)  #FALSE)
+   #r <- SDMXparse(z)
+   r <- SDMXparse(getURLContent(uri))
 
    # should try to check <faultstring> 
 
-   r <- SDMXparse(z, id, fr)
+   #f <- gsub("[.]+[0-9,A-Z]*","",sub("[A-Z]*.","",sub("[0-9]*.","",id) ))
+   #fr <- f[1]
+   if(nseries(r) != length(id)) warning("some series not retrieved.")
+   
    if(!is.null(names)) seriesNames(r) <- names
    r
    }
 
-SDMXparse <- function(doc, id, fr){  
-   # id is just for check of number of results
+TSgetFRB <- function(id, names=NULL){
+   uri <- paste( "http://sdw.ecb.europa.eu/quickviewexport.do?trans=&start=&end=&snapshot=&periodSortOrder=&",
+	   paste("SERIES_KEY=", id, "&", sep="", collapse=""),
+	   paste( "type=sdmx", sep="", collapse=""), sep="")
+Consumer credit from all sources (I think)
+https://www.federalreserve.gov/datadownload/Output.aspx?rel=G19&series=79d3b610380314397facd01b59b37659&lastObs=&from=01/01/1943&to=12/31/2010&filetype=sdmx&label=include&layout=seriescolumn
+
+   r <- SDMXparse(getURLContent(uri))
+
+   # should try to check <faultstring> 
+
+   if(nseries(r) != length(id)) warning("some series not retrieved.")
+   
+   if(!is.null(names)) seriesNames(r) <- names
+   r
+   }
+
+SDMXparse <- function(z){  
+   doc <- xmlParse(z)
+   #doc <- xmlParse(z,asText=TRUE)
 
    #eg. nmsp <- c(ns="http://www.ecb.int/vocabulary/stats/bsi") 
    nmsp <- c(ns=xmlNamespace(xmlRoot(doc)[["DataSet"]][[2]]))
@@ -206,11 +234,12 @@ SDMXparse <- function(doc, id, fr){
 
    # separate the series
    zs <-   getNodeSet(doc, "//ns:Series[@FREQ]", nmsp )
-   if(length(zs) != length(id)) stop("some series not retrieved.")
+
    m <- r <- NULL
    for (i in seq(length(zs))) { 
-      m <- c(m, paste(meta(zs[[i]]), collapse="."))
-      #cat(paste(meta(zs[[i]]), collapse="."),"\n")
+      mt <- meta(zs[[i]])
+      m <- c(m, paste(mt, collapse="."))
+      fr <- mt["FREQ"]
 
       # getNodeSet(zs[[i]], "//ns:Obs[@TIME_PERIOD]",nmsp )
       # gets Obs from all series. The XPath needs
@@ -266,6 +295,13 @@ TSgetURI <- function(query){
 
    # separate the series
    nmsp <- c(ns=xmlNamespace(xmlRoot(z)[["DataSet"]][[2]]))
+   #nmsp <- c(ns=xmlNamespace(xmlRoot(z)[["frb:DataSet"]][[2]]))
+   #</kf:Series>
+  #</frb:DataSet>
+#</message:MessageGroup>
+# getNodeSet(z, "//message:MessageGroup")
+# getNodeSet(z, "//frb:DataSet")
+# getNodeSet(z, "//frb:DataSet")
    zs <-   getNodeSet(z, "//ns:Series[@FREQ]", nmsp )
    r <- dt <- NULL
    for (i in seq(length(zs))) { 
