@@ -10,7 +10,8 @@ xls <- function() {
 # require("DBI") for this
 setClass("TSxlsConnection", contains=c("DBIConnection", "conType","TSdb"),
    representation(url="character", data="matrix", ids="character", 
-        dates="character", names="character", description="character") 
+        dates="character", names="character", description="character",
+	tsrepresentation = "function") 
    )
 
 ####### some kludges to make this look like DBI. ######
@@ -20,8 +21,7 @@ setMethod("dbDisconnect", signature(conn="TSxlsConnection"),
 #######     end kludges   ######
 
 setMethod("TSconnect",   signature(drv="xlsDriver", dbname="character"),
-  definition= 
-TSconnectXLS <- function(drv, dbname, 
+  definition=function(drv, dbname, 
      map=list(ids, data, dates, names=NULL, description=NULL,
               tsrepresentation = function(data,dates){
 		       zoo(data, as.Date(dates))}), ...){
@@ -44,7 +44,7 @@ TSconnectXLS <- function(drv, dbname,
    zz <- try(read.xls(dbname, sheet = 1, verbose=FALSE),  silent=TRUE)
                    #method=c("csv","tsv","tab"), perl="perl")
    if(inherits(zz, "try-error")) 
-         stop("Could not establish TSxlsConnection to ",  dbname)
+         stop("Could read spreedsheet ",  dbname, zz)
 
    #NB The first line provides data frame names, so rows are shifted. 
    #   This fixes so matrix corresponds to spreadsheet cells
@@ -61,12 +61,19 @@ TSconnectXLS <- function(drv, dbname,
    ids   <- z[map$ids$i,  jmap(map$ids$j)] 
    data  <- z[map$data$i, jmap(map$data$j)]   
    dates <- z[map$dates$i,jmap(map$dates$j)]   
-   nm    <- if(is.null(map$names)) NULL else combineRows(
+   nm    <- if(is.null(map$names)) NULL else TSxls:::combineRows(
             z[map$names$i,jmap(map$names$j)]) 
-   desc  <- if(is.null(map$description)) NULL else combineRows(
+   desc  <- if(is.null(map$description)) NULL else TSxls:::combineRows(
             z[map$description$i,jmap(map$description$j)]) 
    
    #seriesInColumns=TRUE, assuming this for now
+   
+   z <- dim(data)
+   data <- try(as.numeric(data),  silent=TRUE)
+   if(inherits(data, "try-error")) 
+         stop("Error converting  data to numeric.", data)
+   
+   data <- array(data, z)
 
    if(length(dates) != NROW(data))
        stop("length of dates not equal length of series.")
@@ -80,56 +87,32 @@ TSconnectXLS <- function(drv, dbname,
    if(!is.null(desc)) if(length(desc)   != NCOL(data))
        stop("number of descriptions not equal number of series.")
 
+   if(is.null(nm))   nm   <- rep("",NCOL(data))
+   if(is.null(desc)) desc <- rep("",NCOL(data))
+   
+   seriesNames(data ) <- ids
+   names(nm)   <- ids
+   names(desc) <- ids
 
    #Adjustments <- c(rep("nsa", 10),rep("sa", 4),rep("nsa", 2)) 
    #Units    <- z[1, 1]  ; names(Units) <- NULL
    #Notes    <- z[2, 1]  ; names(Notes) <- NULL
    #Updated <- z[8, -1]  ; names(Updated) <- NULL# date format error?
    #Source   <- z[9, -1] ; names(Source) <- NULL
-
-   seriesNames(data ) <- ids
  
    # check that tsrepresentation works
    z <- try(map$tsrepresentation(data[,1], dates),  silent=TRUE)
    if(inherits(z, "try-error")) 
-         stop("Could not convert data to series using tsrepresentation.")
+         stop("Could not convert data to series using tsrepresentation.",z)
   
    # cache data, etc in con
    # use ids to extract from cache, but give names
    new("TSxlsConnection", drv="xls", dbname=dbname, 
         hasVintages=FALSE, hasPanels=FALSE, url=url,
-	data=data,ids=ids,dates=dates, names=names, description=desc) 
+	data=data,ids=ids,dates=dates, names=nm, description=desc,
+	tsrepresentation=map$tsrepresentation) 
    } 
    )
-
-  # con <- TSconnectXLS(drv="xlsDriver", dbname="d03hist.xls",
-          map=list(ids  =list(i=11,     j="B:Q"), 
-	           data =list(i=12:627, j="B:Q"), 
-	           dates=list(i=12:627, j="A"),
-                   names=list(i=4:7,    j="B:Q"), 
-		   description = NULL,
-		   tsrepresentation = function(data,dates){
-		       ts(data,start=c(1959,7), frequency=12)}))
-
-  # con <- TSconnectXLS(drv="xlsDriver", dbname="d03hist.xls",
-          map=list(ids  =list(i=11,     j="B:Q"), 
-	           data =list(i=12:627, j="B:Q"), 
-	           dates=list(i=12:627, j="A"),
-                   names=list(i=4:7,    j="B:Q"), 
-		   description = NULL,
-		   tsrepresentation = function(data,dates){
-	dt <- strptime(paste("01-",dates[1], sep=""), format="%d-%b-%Y")
-	st <- c(1900+dt$year, dt$mon)
-	ts(data,start=st, frequency=12)}))
-
-  # con <- TSconnectXLS(drv="xlsDriver", dbname="d03hist.xls",
-          map=list(ids  =list(i=11,     j="B:Q"), 
-	           data =list(i=12:627, j="B:Q"), 
-	           dates=list(i=12:627, j="A"),
-                   names=list(i=4:7,    j="B:Q"), 
-		   description = NULL,
-		   tsrepresentation = function(data,dates){
-		       zoo(data,order.by =as.Date(dates))}))
 
 setMethod("TSdates",
   signature(serIDs="character", con="TSxlsConnection", vintage="ANY", panel="ANY"),
@@ -222,24 +205,6 @@ trimAllNA.default <- function(x, startNAs= TRUE, endNAs= TRUE)
  e <- if (endNAs)   max(time(x)[sample]) else tfend(x)
  tfwindow(x, start=s, end=e, warn=FALSE)
 }
-
-TSrepresentation <- function(df, i, j, tf, names=NULL) {
-   zz <- as.matrix(df)[ i, j]  
-   require("tframe")
-   trimAllNA(tframed(array(as.numeric(zz), dim(zz)), tf=tf, names=names)) 
-   }
-
-tsrepresentation <- function(df, i, j, start, frequency=NULL, names=NULL) {
-   # assume ts with start date string "Month-YYYY" (Locale-specific conversion)
-   dt <- strptime(paste("01-",start, sep=""), format="%d-%b-%Y")
-   # drop NA on end
-   TSrepresentation(df, i, j, 
-      list(start=c(1900+dt$year, dt$mon), frequency=frequency),names=names)
-   }
-
-# dt$year and dt$month in next could be used to construct zoo or other time series
-# dt <- z[ -(1:10), 1]
-# dt <- strptime(paste("01-",dt, sep=""), format="%d-%b-%Y")
 
 combineRows <- function(x, i, j, setEmpty=NULL){
   x[setEmpty] <- ""
