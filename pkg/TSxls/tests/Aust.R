@@ -1,10 +1,10 @@
-
-from Int..Money/extracalc
+require("TSxls")
+#see also Int..Money/extracalc
 
 ##################################################
 ##################################################
 
-####### Data from Bank of Australia  #############
+####### Data from Reserve Bank of Australia  #############
 
 ##################################################
 ##################################################
@@ -20,27 +20,51 @@ from Int..Money/extracalc
 TSgetXLS <- function(id, con){
   # data, ids and dates are cached in con
 
-  d <- con@data[,names=Title)
-  length(ids) == NROW(data)
-  length(ids) ==length(dates)
+  d <- try(con@tsrepresentation(con@data[,id], con@dates),  silent=TRUE)
+  if(inherits(d, "try-error")) 
+         stop("Could not convert data to series using tsrepresentation.",d)
+  # give names rather than id mnemonic 
+  seriesNames(d) <- con@names[id]
+  d
   }
+
 ####  Australian Money ####
 
-#NB The first line provides data frame names, so rows are shifted.
-#   Blank rows seem to be skipped, so result is compressed
+  con1 <- TSconnect("xls", dbname="d03hist.xls",
+          map=list(ids  =list(i=11,     j="B:Q"), 
+	           data =list(i=12:627, j="B:Q"), 
+	           dates=list(i=12:627, j="A"),
+                   names=list(i=4:7,    j="B:Q"), 
+		   description = NULL,
+		   tsrepresentation = function(data,dates){
+		       ts(data,start=c(1959,7), frequency=12)}))
 
-z <- as.matrix(read.xls("d03hist.xls", sheet = 1, verbose=FALSE) )
-                   #method=c("csv","tsv","tab"), perl="perl")
+  z <- TSgetXLS("DMACN", con1)
+  tfplot(z)
+   
+  con2 <- TSconnect(drv="xls", dbname="d03hist.xls",
+          map=list(ids  =list(i=11,     j="B:Q"), 
+	           data =list(i=12:627, j="B:Q"), 
+	           dates=list(i=12:627, j="A"),
+                   names=list(i=4:7,    j="B:Q"), 
+		   description = NULL,
+		   tsrepresentation = function(data,dates){
+	dt <- strptime(paste("01-",dates[1], sep=""), format="%d-%b-%Y")
+	st <- c(1900+dt$year, dt$mon)
+	ts(data,start=st, frequency=12)}))
 
-Title    <- combineRows(z, 3:6, -1, setEmpty=c(2, 11)) 
+  z <- TSgetXLS("DMACN", con2)
+  tfplot(z)
 
-Adjustments <- c(rep("nsa", 10),rep("sa", 4),rep("nsa", 2)) # could improve
-Units    <- z[1, 1]  ; names(Units) <- NULL
-Notes    <- z[2, 1]  ; names(Notes) <- NULL
-Updated <- z[8, -1]  ; names(Updated) <- NULL# date format error?
-Source   <- z[9, -1] ; names(Source) <- NULL
-id       <- z[10,-1] ; names(id ) <- NULL
+  con3 <- TSconnect(drv="xls", dbname="d03hist.xls",
+          map=list(ids  =list(i=11,     j="B:Q"), 
+	           data =list(i=12:627, j="B:Q"), 
+	           dates=list(i=12:627, j="A"),
+                   names=list(i=4:7,    j="B:Q"), 
+		   description = NULL,
+		   tsrepresentation = function(data,dates){
+		       zoo(data,order.by = as.Date(
+			 paste("01-",dates, sep=""), format="%d-%b-%Y"))}))
 
-r <- tsrepresentation(z, -(1:10), -1, start=z[11, 1], frequency=12, names=Title)
-start(r)
-end(r)
+  z <- TSgetXLS("DMACN", con3)
+  tfplot(z)

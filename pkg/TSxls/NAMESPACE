@@ -4,6 +4,8 @@ import("tframe")
 import("TSdbi")
 #importClassesFrom("DBI",..)
 
+export("xls")
+
 ## S4 Classes
 exportClasses(
    "xlsDriver",
