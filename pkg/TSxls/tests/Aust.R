@@ -17,6 +17,7 @@ require("TSxls")
 #  wget "http://www.rba.gov.au/statistics/tables/xls/i02hist.xls"  #has Int CPI
 
 
+#remove this
 TSgetXLS <- function(id, con){
   # data, ids and dates are cached in con
 
@@ -39,7 +40,10 @@ TSgetXLS <- function(id, con){
 		   tsrepresentation = function(data,dates){
 		       ts(data,start=c(1959,7), frequency=12)}))
 
-  z <- TSgetXLS("DMACN", con1)
+  z <- TSget("DMACN", con1)
+  tfplot(z)
+
+  z <- TSget(c("DMAM1N", "DMAM3N"), con1)
   tfplot(z)
    
   con2 <- TSconnect(drv="xls", dbname="d03hist.xls",
@@ -53,7 +57,7 @@ TSgetXLS <- function(id, con){
 	st <- c(1900+dt$year, dt$mon)
 	ts(data,start=st, frequency=12)}))
 
-  z <- TSgetXLS("DMACN", con2)
+  z <- TSget("DMACN", con2)
   tfplot(z)
 
   con3 <- TSconnect(drv="xls", dbname="d03hist.xls",
@@ -66,5 +70,5 @@ TSgetXLS <- function(id, con){
 		       zoo(data,order.by = as.Date(
 			 paste("01-",dates, sep=""), format="%d-%b-%Y"))}))
 
-  z <- TSgetXLS("DMACN", con3)
+  z <- TSget("DMACN", con3)
   tfplot(z)

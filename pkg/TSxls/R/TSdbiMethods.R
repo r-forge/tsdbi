@@ -150,11 +150,15 @@ setMethod("TSget",     signature(serIDs="character", con="TSxlsConnection"),
        tf=NULL, start=tfstart(tf), end=tfend(tf),
        names=serIDs, quiet=TRUE, repeat.try=3, ...){ 
     if (is.null(TSrepresentation)) TSrepresentation <- "ts"
-    desc <- NULL
     
-    if(con@dbname == "OECD")     mat <- TSgetOECD(serIDs, names=names)
-    else if(con@dbname == "ECB") mat <- TSgetOECD(serIDs, names=names)
-    else stop("dbname not recognized.")
+    # data, ids and dates are cached in con
+    mat <- try(con@tsrepresentation(con@data[,serIDs], con@dates),
+               silent=TRUE)
+    if(inherits(mat, "try-error")) 
+         stop("Could not convert data to series using tsrepresentation.",mat)
+    # give names rather than id mnemonic 
+    seriesNames(mat) <- con@names[serIDs]
+    desc <- con@description[serIDs]
 
     if (NCOL(mat) != length(serIDs)) stop("Error retrieving series", serIDs) 
     mat <- tfwindow(mat, tf=tf, start=start, end=end)
