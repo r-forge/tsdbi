@@ -40,11 +40,20 @@ TSgetXLS <- function(id, con){
 		   tsrepresentation = function(data,dates){
 		       ts(data,start=c(1959,7), frequency=12)}))
 
+  con1u <- TSconnect("xls",
+          dbname="http://www.rba.gov.au/statistics/tables/xls/d03hist.xls",
+          map=list(ids  =list(i=11,     j="B:Q"), 
+	           data =list(i=12:627, j="B:Q"), 
+	           dates=list(i=12:627, j="A"),
+                   names=list(i=4:7,    j="B:Q"), 
+		   description = NULL,
+		   tsrepresentation = function(data,dates){
+		       ts(data,start=c(1959,7), frequency=12)}))
+
   z <- TSget("DMACN", con1)
   tfplot(z)
 
   z <- TSget(c("DMAM1N", "DMAM3N"), con1)
-  tfplot(z)
    
   con2 <- TSconnect(drv="xls", dbname="d03hist.xls",
           map=list(ids  =list(i=11,     j="B:Q"), 
@@ -58,7 +67,6 @@ TSgetXLS <- function(id, con){
 	ts(data,start=st, frequency=12)}))
 
   z <- TSget("DMACN", con2)
-  tfplot(z)
 
   con3 <- TSconnect(drv="xls", dbname="d03hist.xls",
           map=list(ids  =list(i=11,     j="B:Q"), 
@@ -71,4 +79,6 @@ TSgetXLS <- function(id, con){
 			 paste("01-",dates, sep=""), format="%d-%b-%Y"))}))
 
   z <- TSget("DMACN", con3)
-  tfplot(z)
+
+  TSrefperiod(z) 
+  TSdescription(z) 

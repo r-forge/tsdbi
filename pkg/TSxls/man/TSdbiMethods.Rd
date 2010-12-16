@@ -18,10 +18,11 @@
      xlsCall() 
     \S4method{TSget}{character,TSxlsConnection}(
 	serIDs, con, TSrepresentation = options()$TSrepresentation, 
-	tf = NULL, start = tfstart(tf), end = tfend(tf), names=serIDs, 
-	quiet = TRUE, repeat.try=3, ...)
-    \S4method{TSconnect}{xlsDriver,character}(
-	drv, dbname, user="", password = "", host="", ...)
+	tf = NULL, start = tfstart(tf), end = tfend(tf), names=serIDs, ...)
+    \S4method{TSconnect}{xlsDriver,character}( drv, dbname, 
+       map=list(ids, data, dates, names=NULL, description=NULL,
+         tsrepresentation = function(data,dates){zoo(data, as.Date(dates))}),
+	  ...)
     \S4method{TSdates}{character,TSxlsConnection}(
 	serIDs, con, vintage=NULL, panel=NULL, ... )  
     \S4method{TSdescription}{character,TSxlsConnection}(x, con, ... )  
@@ -49,13 +50,8 @@
     \item{end}{time frame for trimming data, passed to tfwindow.}
     \item{TSrepresentation}{time representation for returned series. 
           (See \code{TSget} in package \pkg{TSdbi}.)}
-    \item{quiet}{logical to suppress progress report.}
-    \item{repeat.try}{integer number of times to attempt retrieval before giving
-          up.}
-    \item{user}{(unused) a character string indicating a user id.}
-    \item{password}{(unused) a character string indicating a password.}
-    \item{host}{(unused) a character string indicating a host computer.}
-    \item{...}{Arguments passed to xlsCall.}
+    \item{map}{A list with elements indicating the location of data, serIDs, dates, and optional metadata (see Details).}
+    \item{...}{Arguments currently unused.}
 }
 \value{Depends.}
 \details{
