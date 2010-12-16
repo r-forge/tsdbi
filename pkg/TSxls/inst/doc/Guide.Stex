@@ -33,10 +33,22 @@ using using spreadsheets as if they are a database. (This is a poor substitute f
 \subsection{Examples  Using TSxls with}
 
 \begin{Scode}{results=verbatim}
-  con <- TSconnect("xlsCall", dbname="OECD") 
-  x <- TSget("^ftse", con)
-  plot(x)
+  con <- TSconnect("xls",
+          dbname="http://www.rba.gov.au/statistics/tables/xls/d03hist.xls",
+          map=list(ids  =list(i=11,     j="B:Q"), 
+	           data =list(i=12:627, j="B:Q"), 
+	           dates=list(i=12:627, j="A"),
+                   names=list(i=4:7,    j="B:Q"), 
+		   description = NULL,
+		   tsrepresentation = function(data,dates){
+		       ts(data,start=c(1959,7), frequency=12)}))
+
+  x <- TSget("DMACN", con)
   tfplot(x)
+
+  x <- TSget(c("DMAM1N", "DMAM3N"), con)
+  tfplot(x)
+   
   TSrefperiod(x) 
   TSdescription(x) 
 \end{Scode}
@@ -45,47 +57,34 @@ It is also possible to specify a connection to be used as the default:
 
 \begin{Scode}{results=verbatim}
   options(TSconnection=con)
-  tfplot(TSget(serIDs="^ftse"))
+  tfplot(TSget(serIDs="DMAM1N"))
 \end{Scode}
 
 \begin{Scode}{results=verbatim}
-  x2 <- TSget("^gspc", con)
+  x2 <- TSget("DMAM3N", con)
   tfplot(x2)
   plot(x2)
   TSdescription(x2) 
 \end{Scode}
 
 \begin{Scode}{results=verbatim}
-  x <- TSget(c("^ftse","^gspc"), con)
+  x <- TSget(c("DMAM1N", "DMAM3N"), con)
   plot(x)
   tfplot(x)
   TSdescription(x) 
 \end{Scode}
 
 \begin{Scode}{results=verbatim}
-  x <- TSget("ibm", con, quote = c("Close", "Vol"))
+  x <- TSget("DMAM1N", con)
   tfplot(x)
   tfplot(x, xlab = TSdescription(x))
-  tfplot(x, Title="IBM", start="2007-01-01")
-  tfplot(x, Title=TSdoc(x), xlab = TSlabel(x), start="2007-01-01")
+  tfplot(x, Title="Australia M1", start=c(2000,1))
+  tfplot(x, Title=TSdoc(x), xlab = TSlabel(x), start=c(2000,1))
 \end{Scode}
 
-Oanda has maximum of 500 days, so the start date is specified here so as to
-not exceed that.
 
 \begin{Scode}{results=verbatim}
-  conO <- TSconnect("histQuote", dbname="oanda") 
-  z <- TSget("EUR/USD", conO, start=Sys.Date() - 495)
-  tfplot(z)
-  tfplot(z, Title = "EUR/USD")
-  tfplot(z, Title = "EUR/USD", start="2007-01-01")
-  tfplot(z, Title = "EUR/USD", start="2007-03-01")
-  tfplot(z, Title = "EUR/USD", start=Sys.Date()-14, end=Sys.Date(),
-     xlab = format(Sys.Date(), "%Y"))
-\end{Scode}
-
-\begin{Scode}{results=verbatim}
-  TSdates(c("^ftse","^gspc", "ibm"), con) # note default start
+  TSdates(c("DMAM1N", "DMAM3N"), con) 
 \end{Scode}
 
 See the \pkg{TSdbi} vignette for additional details.

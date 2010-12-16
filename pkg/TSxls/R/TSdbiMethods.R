@@ -28,20 +28,25 @@ setMethod("TSconnect",   signature(drv="xlsDriver", dbname="character"),
    #  user / password / host  for future consideration
    if (is.null(dbname)) stop("dbname must be specified")
 
-   if (!file.exists(dbname)){
+   if (file.exists(dbname)) {
+      file <- dbname
+      url <- ""
+      }
+   else{
      url <- dbname
-     zz <- try(sys.call(paste("wget", url)),  silent=TRUE)
+     file <- tempfile()
+     on.exit(unlink(file) )
+     zz <- try(download.file(url, file, quiet = FALSE, mode = "w",
+                   cacheOK = TRUE),  silent=TRUE)
+     #or url(url)
+
      if(inherits(zz, "try-error")) 
          stop("Could not find file or url ",  dbname)
-     dbname <-temp.file()
-     file.create(dbname, showWarnings = TRUE)
-     #unlink on R exit or dbdisconnect
      }
-   else url <- ""
 
    require("gdata")
 
-   zz <- try(read.xls(dbname, sheet = 1, verbose=FALSE),  silent=TRUE)
+   zz <- try(read.xls(file, sheet = 1, verbose=FALSE),  silent=TRUE)
                    #method=c("csv","tsv","tab"), perl="perl")
    if(inherits(zz, "try-error")) 
          stop("Could read spreedsheet ",  dbname, zz)
@@ -148,7 +153,7 @@ setMethod("TSdates",
 setMethod("TSget",     signature(serIDs="character", con="TSxlsConnection"),
    definition=function(serIDs, con, TSrepresentation=options()$TSrepresentation,
        tf=NULL, start=tfstart(tf), end=tfend(tf),
-       names=serIDs, quiet=TRUE, repeat.try=3, ...){ 
+       names=serIDs, ...){ 
     if (is.null(TSrepresentation)) TSrepresentation <- "ts"
     
     # data, ids and dates are cached in con
