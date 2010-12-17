@@ -36,7 +36,5 @@ TSdates("V122646", con=con2)
 TSdoc("V122646", con=con2) 
 TSdescription("V122646", con=con2) 
 TSlabel("V122646", con=con2) 
-
-TSmeta("M.SDR.CCUSMA02.ST", con=con2)
  
 } else  cat("FAME not available. Skipping tests.")

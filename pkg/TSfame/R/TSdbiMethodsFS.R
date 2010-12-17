@@ -178,12 +178,16 @@ setMethod("TSput",     signature(x="ANY", serIDs="character", con="TSfameServerC
 
 
 setMethod("TSdescription",   signature(x="character", con="TSfameServerConnection"),
-   definition= function(x, con=getOption("TSconnection"), ...)
-     fameWhats(con@dbname, x, connection=S3Part(con), getDoc = TRUE)$des )
+   definition= function(x, con=getOption("TSconnection"), ...){
+     r <- fameWhats(con@dbname, x, connection=S3Part(con), getDoc = TRUE)$des 
+     if (is.null(r)) stop("Series does not exist.")
+     r})
 
 setMethod("TSdoc",   signature(x="character", con="TSfameServerConnection"),
-   definition= function(x, con=getOption("TSconnection"), ...)
-     fameWhats(con@dbname, x, connection=S3Part(con), getDoc = TRUE)$doc )
+   definition= function(x, con=getOption("TSconnection"), ...){
+     r <- fameWhats(con@dbname, x, connection=S3Part(con), getDoc = TRUE)$doc
+     if (is.null(r)) stop("Series does not exist.")
+     r})
 
 #TSlabel gets used for new("Meta", so issuing a warning is not a good idea here.
 setMethod("TSlabel",   signature(x="character", con="TSfameServerConnection"),
