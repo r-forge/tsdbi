@@ -357,7 +357,7 @@ used:
     TSconnect("fameServer", dbname="/home/ets/db/etsintoecd.db",
        service = "2959", host = "ets", user="", password="",stopOnFail = TRUE)) 
 
-  if (!inherits(conServer "try-error")) { 
+  if (!inherits(conServer, "try-error")) { 
     print(TSmeta("M.SDR.CCUSMA02.ST"), con=conServer)
   }
 \end{Scode}
