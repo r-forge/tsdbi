@@ -1,33 +1,20 @@
 require("TSxls")
-#see also Int..Money/extracalc
 
 ##################################################
 ##################################################
 
-####### Data from Reserve Bank of Australia  #############
+#### Data from Reserve Bank of Australia  ########
 
 ##################################################
 ##################################################
 
 #  http://www.rba.gov.au/statistics/tables/index.html
-#  wget "http://www.rba.gov.au/statistics/tables/xls/d03hist.xls"  #has money
-#  wget "http://www.rba.gov.au/statistics/tables/xls/g10hist.xls"  #has GDP
-#  wget "http://www.rba.gov.au/statistics/tables/xls/f13hist.xls"  #has R (international too)
-#  wget "http://www.rba.gov.au/statistics/tables/xls/i01hist.xls"  #has Int real GDP
-#  wget "http://www.rba.gov.au/statistics/tables/xls/i02hist.xls"  #has Int CPI
+#  http://www.rba.gov.au/statistics/tables/xls/d03hist.xls  #has money
+#  http://www.rba.gov.au/statistics/tables/xls/g10hist.xls  #has GDP
+#  http://www.rba.gov.au/statistics/tables/xls/f13hist.xls  #has interest rate (international too)
+#  http://www.rba.gov.au/statistics/tables/xls/i01hist.xls  #has Int real GDP
+#  http://www.rba.gov.au/statistics/tables/xls/i02hist.xls  #has Int CPI
 
-
-#remove this
-TSgetXLS <- function(id, con){
-  # data, ids and dates are cached in con
-
-  d <- try(con@tsrepresentation(con@data[,id], con@dates),  silent=TRUE)
-  if(inherits(d, "try-error")) 
-         stop("Could not convert data to series using tsrepresentation.",d)
-  # give names rather than id mnemonic 
-  seriesNames(d) <- con@names[id]
-  d
-  }
 
 ####  Australian Money ####
 

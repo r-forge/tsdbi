@@ -60,28 +60,51 @@ It is also possible to specify a connection to be used as the default:
   tfplot(TSget(serIDs="DMAM1N"))
 \end{Scode}
 
+It is then not necessary to specify the \code{con} when the default is to 
+be used.
 \begin{Scode}{results=verbatim}
-  x2 <- TSget("DMAM3N", con)
+  x2 <- TSget("DMAM3N")
   tfplot(x2)
   plot(x2)
   TSdescription(x2) 
 \end{Scode}
 
 \begin{Scode}{results=verbatim}
-  x <- TSget(c("DMAM1N", "DMAM3N"), con)
-  plot(x)
-  tfplot(x)
-  TSdescription(x) 
-\end{Scode}
-
-\begin{Scode}{results=verbatim}
-  x <- TSget("DMAM1N", con)
+  x <- TSget("DMAM1N")
   tfplot(x)
   tfplot(x, xlab = TSdescription(x))
   tfplot(x, Title="Australia M1", start=c(2000,1))
   tfplot(x, Title=TSdoc(x), xlab = TSlabel(x), start=c(2000,1))
 \end{Scode}
 
+The function \code{plot} puts all series on the same graph whereas
+ \code{tfplot} treats each series in the first argument as panels to be
+ plotted.
+\begin{Scode}{results=verbatim}
+  x <- TSget(c("DMAM1N", "DMAM3N", "DMABMN","DMAM1S","DMAM3S","DMABMS"))
+  plot(x)
+  tfplot(x, Title="Australian Monetary Aggregates")
+  TSdescription(x) 
+\end{Scode}
+
+\code{tfplot} treats subsequent time series arguments as objects that should be plot on the same panels (so the number of series in each object must be 
+the same.
+\begin{Scode}{results=verbatim}
+  tfplot(TSget(c("DMAM1S", "DMAM3S", "DMABMS")),
+         TSget(c("DMAM1N", "DMAM3N", "DMABMN")),
+    Title="Australian Monetary Aggregates")
+\end{Scode}
+
+It is possible to put all series on the same graph.
+\begin{Scode}{results=verbatim}
+  tfplot(TSget("DMAM1S"),
+         TSget("DMAM3S"),
+         TSget("DMABMS"),
+	 TSget("DMAM1N"),
+         TSget("DMAM3N"),
+         TSget("DMABMN"),
+    Title="Australian Monetary Aggregates")
+\end{Scode}
 
 \begin{Scode}{results=verbatim}
   TSdates(c("DMAM1N", "DMAM3N"), con) 
