@@ -17,8 +17,12 @@ require("TSxls")
 
 
 ####  Australian Money ####
+  #  test file copied Nov. 29, 2010 from 
+  #  http://www.rba.gov.au/statistics/tables/xls/d03hist.xls  
+  
+  testfile <- system.file("testxls/d03hist.xls", package = "TSxls")
 
-  con1 <- TSconnect("xls", dbname="d03hist.xls",
+  con1 <- TSconnect("xls", dbname=testfile,
           map=list(ids  =list(i=11,     j="B:Q"), 
 	           data =list(i=12:627, j="B:Q"), 
 	           dates=list(i=12:627, j="A"),
@@ -42,7 +46,7 @@ require("TSxls")
 
   z <- TSget(c("DMAM1N", "DMAM3N"), con1)
    
-  con2 <- TSconnect(drv="xls", dbname="d03hist.xls",
+  con2 <- TSconnect(drv="xls", dbname=testfile,
           map=list(ids  =list(i=11,     j="B:Q"), 
 	           data =list(i=12:627, j="B:Q"), 
 	           dates=list(i=12:627, j="A"),
@@ -55,7 +59,7 @@ require("TSxls")
 
   z <- TSget("DMACN", con2)
 
-  con3 <- TSconnect(drv="xls", dbname="d03hist.xls",
+  con3 <- TSconnect(drv="xls", dbname=testfile,
           map=list(ids  =list(i=11,     j="B:Q"), 
 	           data =list(i=12:627, j="B:Q"), 
 	           dates=list(i=12:627, j="A"),
