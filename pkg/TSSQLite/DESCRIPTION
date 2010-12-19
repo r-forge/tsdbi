@@ -1,5 +1,5 @@
 Package: TSSQLite
-Version: 2010.10-1
+Version: 2010.12-1
 Date:2010-10-21
 Title: Time Series Database Interface extentions for SQLite
 Description: TSSQLite provides a SQLite interface for TSdbi.
