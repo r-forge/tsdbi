@@ -49,7 +49,7 @@ setMethod("TSconnect",   signature(drv="xlsDriver", dbname="character"),
    zz <- try(read.xls(file, sheet = 1, verbose=FALSE),  silent=TRUE)
                    #method=c("csv","tsv","tab"), perl="perl")
    if(inherits(zz, "try-error")) 
-         stop("Could read spreedsheet ",  dbname, zz)
+         stop("Could read not spreedsheet ",  dbname, zz)
 
    #NB The first line provides data frame names, so rows are shifted. 
    #   This fixes so matrix corresponds to spreadsheet cells
