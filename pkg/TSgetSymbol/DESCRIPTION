@@ -1,6 +1,6 @@
 Package: TSgetSymbol
-Version: 2010.11-1
-Date:2010-11-20
+Version: 2010.12-1
+Date:2010-12-20
 Title:  Time Series Database Interface extension to connect with getSymbols
 Description: Provides methods for generics in the TSdbi package to 
 	retrieve data with getSymbols, in particular from the Federal Reserve

@@ -1,6 +1,6 @@
 Package: TScompare
-Version: 2010.10-1
-Date:2010-10-32
+Version: 2010.12-1
+Date:2010-12-20
 Title:  Time Series Database Comparison
 Description: Utilities for comparing the equality of series on two databases.
 Depends: R (>= 2.10.0), methods, DBI, TSdbi (>= 2010.5-1), tframe, tframePlus, zoo
