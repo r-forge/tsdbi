@@ -15,7 +15,7 @@
 \title{Methods to wrap getSymbols for TSdbi Generics}
 \description{Get a time series (matrix) using getSymbols from package quantmod, for example, from the Federal Reserve FRED database.}
 \usage{
-     getSymbols() 
+     getSymbol() 
     \S4method{TSget}{character,TSgetSymbolConnection}(
 	serIDs, con, TSrepresentation = options()$TSrepresentation, 
 	tf = NULL, start = tfstart(tf), end = tfend(tf), names=serIDs, 
