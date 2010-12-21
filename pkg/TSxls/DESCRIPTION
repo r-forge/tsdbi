@@ -2,8 +2,8 @@ Package: TSxls
 Version: 2010.12-1
 Date:2010-12-20
 Title:  Time Series Database Interface extension to connect to spreadsheets
-Description: Provides methods for generics in the TSdbi package to 
-	retrieve data from spreadsheets.
+Description: Provides TSdbi package methods to retrieve time series data from
+	spreadsheets, pretending the spreadsheet is a database.
 Depends: R (>= 2.8.0), methods, DBI, TSdbi (>= 2010.5-1), tframe, tframePlus, zoo
 Imports: methods, DBI, TSdbi (>= 2010.5-1)
 Enhances: TSdbi
