@@ -32,6 +32,10 @@ This will also load required packages \pkg{TSdbi}, \pkg{DBI}, \pkg{fame},
 \pkg{methods}, and \pkg{tframe}. 
 Some examples below also require \pkg{zoo}, and \pkg{tseries}.
 
+The package \pkg{fame} may be installed but not functional because the Fame HLI
+code is not available. A warning will be issues and the vignette example will
+not work,
+
 \section{Using the Database - TSdbi Functions}
 
 This section gives several simple examples of putting series on and reading them
