@@ -21,7 +21,9 @@ setClass("TSfameServerConnection",
 # these prevents error messages
 
 setMethod("dbDisconnect", signature(conn="TSfameServerConnection"), 
-   definition=function(conn,...) close(conn))
+   definition=function(conn,...){
+      z <-  close(S3Part(conn))
+      invisible(!inherits(z, "try-error"))})
 
 setMethod("dbUnloadDriver", signature(drv="fameServerDriver"),
    definition=function(drv, ...) invisible(TRUE))
@@ -85,9 +87,7 @@ setMethod("TSdates",
 
 
 setMethod("TSget",     signature(serIDs="character", con="TSfameServerConnection"),
-   definition= 
-   
-   TSget <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation"),
+   definition= function(serIDs, con, TSrepresentation=getOption("TSrepresentation"),
        tf=NULL, start=tfstart(tf), end=tfend(tf),
        names=serIDs, TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE, ...)
 { # ... arguments unused
@@ -198,9 +198,16 @@ setMethod("TSdelete",
    signature(serIDs="character", con="TSfameServerConnection", vintage="ANY", panel="ANY"),
    definition= function(serIDs, con=getOption("TSconnection"),  
             vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...){
+   Id <- try(fameDbOpen(con@dbname, connection=S3Part(con), stopOnFail=TRUE))
+   if(inherits(Id, "try-error") )
+       stop("Could not establish TSfameServerConnection to ", con@dbname)
+   
     ok <- TRUE
     for (i in seq(length(serIDs))) 
-      ok <- ok & 0 == fameDeleteObject(con@dbname, serIDs[i], connection=S3Part(con)) 
+      ok <- ok & 0 == fameDeleteObject(Id, serIDs[i]) 
+
+    fameDbClose(Id, closeConnection = FALSE) # Id is not saved
+
     new("logicalId",  ok, 
          TSid=new("TSid", serIDs=serIDs, dbname=con@dbname, 
            conType=class(con), hasVintages=con@hasVintages, hasPanels=con@hasPanels,

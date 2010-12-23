@@ -20,8 +20,8 @@ It should be possible to view the pdf version of the guide for this
 package with \emph{print(vignette("TSfame"))}.
 
 
-WARNING: running these example will overwrite  the
-fame ''testvigFame.db'' database.
+WARNING: Running these example will overwrite a fame database called
+''testvigFame.db''. Beware, if by any chance you have a database with this name.
 
 Once R is started, the functions in this package are made available with
 
@@ -53,7 +53,7 @@ details.)
 
 This puts a series called \code{vec}  on the database and then reads is back. 
  
-\begin{Scode}
+\begin{Scode}\begin{Scod
  z <- ts(rnorm(10), start=c(1990,1), frequency=1)
  seriesNames(z) <- "vec"
  if(TSexists("vec", con)) TSdelete("vec", con) 
@@ -165,7 +165,6 @@ database with the functions \code{TSdescription} and \code{TSdoc}.
  TSreplace(z, con) 
  tfplot(z+1, TSget(c("matc1","matc2"), con),
            lty=c("solid", "dashed"), col=c("black", "red"))
-
 \end{Scode}
 
 \begin{Scode}{results=verbatim,fig=TRUE}
@@ -174,7 +173,6 @@ database with the functions \code{TSdescription} and \code{TSdoc}.
  TSreplace(z, con)
  tfplot(z+1, TSget(c("matc1","matc2"), con),
            lty=c("solid", "dashed"), col=c("black", "red"))
-
 \end{Scode}
 
 \begin{Scode}{results=verbatim,fig=TRUE}
@@ -193,18 +191,29 @@ require("zoo")
 
  z <- zoo(matrix(rnorm(200),100,2), as.Date("1990-01-01") + 0:99)
   seriesNames(z) <- c("zooc1", "zooc2")
- TSreplace(z, con, Table="D")
+ TSreplace(z, con)
  tfplot(z+1, TSget(c("zooc1","zooc2"), con),
-           lty=c("solid", "dashed"), col=c("black", "red"))
-  
+           lty=c("solid", "dashed"), col=c("black", "red"))  
 \end{Scode}
 
-\begin{Scode}{results=verbatim,fig=TRUE}
+Beware that (as of Dec, 2010) there is a bug with weekly dates:
+\begin{Scode}{results=verbatim,fig=FALSE}
  z <- zoo(matrix(rnorm(200),100,2), as.Date("1990-01-01") + 0:99 * 7)
   seriesNames(z) <- c("zooWc1", "zooWc2")
- TSreplace(z, con, Table="W")
- tfplot(z+1, TSget(c("zooWc1","zooWc2"), con), col=c("black", "red"),
-    lty=c("dashed", "solid"))  
+ TSreplace(z, con)
+ z2 <- TSget(c("zooWc1","zooWc2"), con)
+ time(z)
+ time(z2)
+\end{Scode}
+
+and while this works:
+\begin{Scode}{results=verbatim,fig=TRUE}
+ tfplot(z2)
+\end{Scode}
+
+this may not:
+\begin{Scode}{results=verbatim,fig=TRUE}
+ tfplot(z+1, z2, col=c("black", "red"), lty=c("dashed", "solid"))  
 \end{Scode}
 
 
@@ -272,30 +281,9 @@ and check the saved version:
    tfplot(z, Title="IBM", start="2007-01-01")
 \end{Scode}
 
-Oanda has maximum of 500 days, so the start date is specified here so as to
-not exceed that.
-
-\begin{Scode}{results=verbatim}
-   Oanda <- TSconnect("histQuote", dbname="oanda") 
-   x <- TSget("EUR/USD", start=Sys.Date() - 495, con=Oanda)
-   TSreplace(x, serIDs="EURUSD", con=con)
-\end{Scode}
-
-and check the saved version:
-
-\begin{Scode}{results=verbatim,fig=TRUE}
-   z <- TSget(serIDs="EURUSD",TSdoc=TRUE, TSdescription=TRUE,  con=con)
-   tfplot(z, Title = TSdoc(z), ylab=TSdescription(z))
-   tfplot(z, Title = "EUR/USD", start="2007-01-01")
-   tfplot(z, Title = "EUR/USD", start="2007-03-01")
-   tfplot(z, Title = "EUR/USD", start=Sys.Date()-14, end=Sys.Date(),
-      xlab = format(Sys.Date(), "%Y"))
-\end{Scode}
-
 \begin{Scode}{results=hide}
   dbDisconnect(con)
   dbDisconnect(Yahoo)
-  dbDisconnect(Oanda)
 \end{Scode}
 
 
@@ -308,28 +296,44 @@ database is available. Typically a large database would be installed using
 database scripts directly rather than from R with \code{TSput} or
 \code{TSreplace}. 
 
-The following are wrapped in \code{if (!inherits(conets, "try-error"))} so that
+The following are wrapped in \code{if (!inherits(con, "try-error"))} so that
 the vignette will build even when the database is not available. This seems to
 require an explicit call to \code{print()}, but that is not usually needed to
 display results below. Another artifact of this is that results printed in the
 \code{if} block do not display until the end of the block.
 
-\begin{Scode}{results=verbatim,fig=TRUE}
-  m <- dbDriver("fame")
-  conets <- try(TSconnect(m, dbname="ets /home/ets/db/etsintoecd.db",
+\begin{Scode}{results=verbatim,fig=FALSE}
+  conets <- try(TSconnect("fame", dbname="ets /home/ets/db/etsintoecd.db",
                   accessMode="read")) 
-  if (!inherits(conets, "try-error")) {
+  if (!inherits(conets, "try-error")) { 
+    print(TSmeta("M.SDR.CCUSMA02.ST", con=conets))
+  }
+\end{Scode}
+The above connection is recognized to be a server because of the white space
+between ''ets'' and the database name. This produces a warning message from the
+\pkg{fame} package call, because it is guessing that a Fame server call is 
+intended. An alternative way to establish the 
+connnection is to explicitely indicate that the server functionality is to be 
+used:
+\begin{Scode}{results=verbatim,fig=FALSE}
+  conServer <- try(
+    TSconnect("fameServer", dbname="/home/ets/db/etsintoecd.db",
+       service = "2959", host = "ets", user="", password="",stopOnFail = TRUE)) 
+
+  if (!inherits(conServer, "try-error")) { 
+    print(TSmeta("M.SDR.CCUSMA02.ST", con=conServer))
+  }
+\end{Scode}
+
+This does not give the warning message, and for that reason will be used below, 
+but they are interchangable.
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+  if (!inherits(conServer, "try-error")) {
   
-  options(TSconnection=conets)
+  options(TSconnection=conServer)
 
   print(TSmeta("M.SDR.CCUSMA02.ST"))
-
-#z <- getfame("M.SDR.CCUSMA02.ST", "ets /home/ets/db/etsintoecd.db", 
-# save = FALSE, envir = parent.frame(),start = NULL, end = NULL, getDoc = FALSE)
-
-id <- fameDbOpen("ets /home/ets/db/etsintoecd.db", "read")
-fameWhat(id, "M.SDR.CCUSMA02.ST")
-fameDbClose(id)
 
   EXCH.IDs <- t(matrix(c(
  	"M.SDR.CCUSMA02.ST",	 "SDR/USD exchange rate",
@@ -347,55 +351,40 @@ fameDbClose(id)
   print(start(z))
   print(end(z))
    
-  tfplot(TSget(serIDs="M.CAN.CCUSMA02.ST", conets), ylab="CDN dollors per US dollar",
+  tfplot(TSget(serIDs="M.CAN.CCUSMA02.ST", conServer), 
+      ylab="CDN dollors per US dollar",
       Title="Canada - U.S. Exchange Rate")
   }
 \end{Scode}
 
-In the above connection is recognized to be a server because of the white space
-between ''ets'' and the database name. An alternative way to establish the 
-connnection is to explicitely indicate that the server functionality is to be 
-used:
-\begin{Scode}{results=verbatim,fig=TRUE}
-  conServer <- try(
-    TSconnect("fameServer", dbname="/home/ets/db/etsintoecd.db",
-       service = "2959", host = "ets", user="", password="",stopOnFail = TRUE)) 
-
-  if (!inherits(conServer, "try-error")) { 
-    print(TSmeta("M.SDR.CCUSMA02.ST"), con=conServer)
-  }
-\end{Scode}
-
-The first connect is used below, but they are interchangable.
-
 
 \begin{Scode}{results=verbatim,fig=TRUE}
-if (!inherits(conets, "try-error")) {
+if (!inherits(conServer, "try-error")) {
   print(TSdescription(TSget("M.CAN.CCUSMA02.ST", TSdescription=TRUE)))
   print(TSdescription("M.CAN.CCUSMA02.ST"))
 
   print(TSdoc(TSget("M.CAN.CCUSMA02.ST", TSdoc=TRUE)))
   print(TSdoc("M.CAN.CCUSMA02.ST"))
 
-  tfplot(TSget("M.CAN.CCUSMA02.ST", names="M.CAN.CCUSMA02.ST", conets))
+  tfplot(TSget("M.CAN.CCUSMA02.ST", names="M.CAN.CCUSMA02.ST", conServer))
   }
 \end{Scode}
 
 \begin{Scode}{results=verbatim,fig=TRUE}
-if (!inherits(conets, "try-error")) {
+if (!inherits(conServer, "try-error")) {
   z <- TSget("M.CAN.CCUSMA02.ST", TSdescription=TRUE)
   tfplot(z, Title=strsplit(TSdescription(z), "//")[[1]][1:2])
   }
 \end{Scode}
 
 \begin{Scode}{results=verbatim,fig=TRUE}
-if (!inherits(conets, "try-error")) {
+if (!inherits(conServer, "try-error")) {
   plot(z)
   }
 \end{Scode}
   
 \begin{Scode}{results=hide}
-  if (!inherits(conets, "try-error")) {
+  if (!inherits(conServer, "try-error")) {
   options(TSconnection=NULL)
   }  # end if try-error
 \end{Scode}
@@ -405,6 +394,8 @@ Finally, dbDisconnect closes the connection if it is a Fame Server connect, and
 does nothing otherwise, but is provided for compatability with other connections.
 
 \begin{Scode}{results=hide}
+dbDisconnect(conets)
+dbDisconnect(conServer)
 dbDisconnect(con)
 options(TSconnection=NULL)
 \end{Scode}
