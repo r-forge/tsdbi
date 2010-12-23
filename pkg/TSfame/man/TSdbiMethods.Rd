@@ -9,12 +9,28 @@
 \alias{TSdates,character,TSfameConnection-method}
 \alias{TSexists,character,TSfameConnection-method}
 
+\alias{TSconnect,fameServerDriver,character-method}
+\alias{TSget,character,TSfameServerConnection-method}
+\alias{TSput,ANY,character,TSfameServerConnection-method}
+\alias{TSdelete,character,TSfameServerConnection-method}
+\alias{TSdoc,character,TSfameServerConnection-method}
+\alias{TSdescription,character,TSfameServerConnection-method}
+\alias{TSlabel,character,TSfameServerConnection-method}
+\alias{TSdates,character,TSfameServerConnection-method}
+\alias{TSexists,character,TSfameServerConnection-method}
+
 \alias{dbDisconnect,TSfameConnection-method}
+\alias{dbDisconnect,TSfameServerConnection-method}
+
 \alias{dbUnloadDriver,fameDriver-method}
+\alias{dbUnloadDriver,fameServerDriver-method}
 
 \alias{fame}
+\alias{fameServer}
 
 \alias{TSfameConnection-class}
+\alias{TSfameServerConnection-class}
+
 \alias{dbObjectId-class}
 \alias{fameObject-class}
 \alias{fameDriver-class}
@@ -22,31 +38,59 @@
 \title{TSdbi fame Methods}
 \description{Methods for TSdbi fame time series dtabase connection.}
 \usage{
-    \S4method{TSconnect}{fameDriver,character}(
-	drv, dbname, 
+    \S4method{TSconnect}{fameDriver,character}(drv, dbname, 
 	accessMode = if (file.exists(dbname)) "shared" else "create", ...)
-    \S4method{TSget}{character,TSfameConnection}(
-	serIDs, con, 
+    \S4method{TSconnect}{fameServerDriver,character}(drv, dbname, 
+        service = "", host = "", user = "", password = "", ...)
+
+    \S4method{TSget}{character,TSfameConnection}(serIDs, con, 
 	TSrepresentation = getOption("TSrepresentation"), 
 	tf = NULL, start = tfstart(tf), end = tfend(tf), names = serIDs,
 	TSdescription = FALSE, TSdoc = FALSE, TSlabel=FALSE,   ...)
-    \S4method{TSput}{ANY,character,TSfameConnection}(
-	x, serIDs=seriesNames(x), con, TSdescription.=TSdescription(x),
+    \S4method{TSget}{character,TSfameServerConnection}(serIDs, con, 
+	TSrepresentation = getOption("TSrepresentation"), 
+	tf = NULL, start = tfstart(tf), end = tfend(tf), names = serIDs,
+	TSdescription = FALSE, TSdoc = FALSE, TSlabel=FALSE,   ...)
+
+    \S4method{TSput}{ANY,character,TSfameConnection}(x, serIDs=seriesNames(x), 
+	con, TSdescription.=TSdescription(x), 
 	TSdoc.=TSdoc(x), TSlabel.=NULL, warn = TRUE, ...)
-    \S4method{TSdates}{character,TSfameConnection}(
-	serIDs, con, vintage=NULL, panel=NULL, ...)
+    \S4method{TSput}{ANY,character,TSfameServerConnection}(x, serIDs=seriesNames(x), 
+	con, TSdescription.=TSdescription(x), 
+	TSdoc.=TSdoc(x), TSlabel.=NULL, warn = TRUE, ...)
+
+    \S4method{TSdates}{character,TSfameConnection}(serIDs, con, 
+	vintage=NULL, panel=NULL, ...)
+    \S4method{TSdates}{character,TSfameServerConnection}(serIDs, con, 
+	vintage=NULL, panel=NULL, ...)
+
     \S4method{TSexists}{character,TSfameConnection}(
 	serIDs, con, vintage=NULL, panel=NULL, ...)
+    \S4method{TSexists}{character,TSfameServerConnection}(
+	serIDs, con, vintage=NULL, panel=NULL, ...)
+
     \S4method{TSdelete}{character,TSfameConnection}(serIDs, con,  
             vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
+    \S4method{TSdelete}{character,TSfameServerConnection}(serIDs, con,  
+            vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
+
     \S4method{TSdescription}{character,TSfameConnection}(x, con, ...)
+    \S4method{TSdescription}{character,TSfameServerConnection}(x, con, ...)
+
     \S4method{TSdoc}{character,TSfameConnection}(x, con, ...)
+    \S4method{TSdoc}{character,TSfameServerConnection}(x, con, ...)
+
     \S4method{TSlabel}{character,TSfameConnection}(x, con, ...)
+    \S4method{TSlabel}{character,TSfameServerConnection}(x, con, ...)
 
     \S4method{dbDisconnect}{TSfameConnection}(conn,...)
+    \S4method{dbDisconnect}{TSfameServerConnection}(conn,...)
+
     \S4method{dbUnloadDriver}{fameDriver}(drv, ...)
+    \S4method{dbUnloadDriver}{fameServerDriver}(drv, ...)
 
     \method{fame}{default}()
+    \method{fameServer}{default}()
 }
 \arguments{
     \item{drv}{A fameDriver.}
@@ -80,18 +124,31 @@
     \item{accessMode}{Optional character indicating the mode to use when opening 
           the Fame database when establishing the first connection. After the 
 	  first connection, "read" will be used for reading and "update" for writing.}
+    \item{host}{A character string indicating a server.}
+    \item{service}{A character string indicating a server port number.}
+    \item{user}{A character string indicating a user id (if needed).}
+    \item{password}{A character string indicating a password (if needed).}
     \item{...}{Arguments passed to other methods.}
 }
 \value{depends.}
 \details{
 These are fame methods for \pkg{TSdbi}. See the package \pkg{TSdbi} for details 
 and see the vignette distributed with this package for more complete examples.
+
+This package provides a wrapper to the \pkg{fame} package to provide a 
+\pkg{TSdbi} API for users. The \code{TSfameConnection} establishes a connection
+using the locally fame which can access local databases or databases on a remote
+server, specified by the server name followed by a space and the database name.
+The \code{TSfameServerConnection} establishes a connection to a remote server
+using one of Fame's remote server protocols. See package \pkg{fame} for more
+specific details.
 }
 
 \seealso{ 
 \code{\link[TSdbi]{TSdbi-package}},
 \code{\link[DBI]{dbConnect}},
 \code{\link[TSdbi]{TSput}}
+\code{\link[fame]{getfame}}
 }
 \examples{
     con <- try(TSconnect(dbDriver("fame"), dbname="test.db"))

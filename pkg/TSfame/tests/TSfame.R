@@ -151,7 +151,6 @@ if(weekdays(start(seriesC)) != weekdays(end(seriesC))) stop("seriesC weekdays er
 #dayOfWeek(start(seriesC))
 
 cat("**************        disconnecting test\n")
-#dbDisconnect(con)
-#dbUnloadDriver(m)
+dbDisconnect(con)
 
 } else  cat("FAME not available. Skipping tests.")

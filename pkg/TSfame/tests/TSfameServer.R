@@ -21,6 +21,7 @@ if(!inherits(con, "try-error") ) {
    if(any(start(z) != c(1969,1))) stop("Error reading V122646.")
    tfplot(z)
 
+   dbDisconnect(con)
    } else  cat("ets fame server not available. Skipping tests.")
 
 cat("***********   reading from ets /home/ets/db/etsmfacansim.db using con\n")
@@ -36,5 +37,7 @@ TSdates("V122646", con=con2)
 TSdoc("V122646", con=con2) 
 TSdescription("V122646", con=con2) 
 TSlabel("V122646", con=con2) 
- 
+
+dbDisconnect(con2)
+
 } else  cat("FAME not available. Skipping tests.")
