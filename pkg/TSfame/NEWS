@@ -4,16 +4,18 @@ See also
 
 Known BUGS
 
-   o	remote servers require fame (> 2.9) but recent Windows version of fame
-	are not working, so the requirement is not yet specified.
+   o	Weekly (zoo) dates can get shifted. The Guide vignette has an 
+   	example of this.
 
    o	Warning messages about "may be a Fame Server path" coming from the fame
-	package in the case of a remote servers cannot be suppressed.
+	package in the case of a remote servers (cannot be suppressed).
 
 
 Changes in TSfame version 2010.12-1
 
-   o	Version requirement for fame package bumped to (> 2.11).
+   o	Version requirement for fame package bumped to (> 2.12).
+
+   o	Fame server connection is now also working.
 
    o	Added test of fame remote server.
 
