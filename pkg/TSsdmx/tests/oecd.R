@@ -126,6 +126,38 @@ require("RCurl")
 
 require("RCurl")
 require("XML")
+#  get public key
+soap1.2.env.head <- '<?xml version="1.0" encoding="utf-8"?>
+<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope"> <soap12:Body>'
+
+soap1.2.env.foot <- ' </soap12:Body></soap12:Envelope>'
+
+keyServer <- 'http://stats.oecd.org//OECDStatWS_Authentication/OECDStatWS_Authentication.asmx' 
+
+getKey.soap1.2 <-
+ '<GetPublicKey xmlns="http://stats.oecd.org/OECDStatWS/Authentication/" />'
+
+
+# authenticate
+
+auth <- '<?xml version="1.0" encoding="utf-8"?>
+<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
+  <soap12:Header>
+    <RequesterInfoSoapHeader xmlns="http://stats.oecd.org/OECDStatWS/Authentication/">
+      <RequestingApplication>string</RequestingApplication>
+      <UserIdentityDomain>string</UserIdentityDomain>
+      <UserIdentityUserName>string</UserIdentityUserName>
+      <SessionToken>string</SessionToken>
+    </RequesterInfoSoapHeader>
+  </soap12:Header>
+  <soap12:Body>
+    <Authenticate xmlns="http://stats.oecd.org/OECDStatWS/Authentication/">
+      <logon>string</logon>
+      <domain>string</domain>
+      <encryptedpassword>string</encryptedpassword>
+    </Authenticate>
+  </soap12:Body>
+</soap12:Envelope>
 
 # see example at http://stats.oecd.org/SDMXWS/sdmx.asmx?op=GetGenericData
 

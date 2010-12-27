@@ -1,4 +1,10 @@
 
+# there is an SDMX primer at
+# http://www.ecb.int/stats/services/sdmx/html/index.en.html
+
+# NB firebug shows browser requests to server, so is useful for seeing what is
+#  sent to the server
+
 setClass("sdmxDriver", representation("DBIDriver", Id = "character")) 
 
 sdmx <- function() {
@@ -23,9 +29,12 @@ setMethod("TSconnect",   signature(drv="sdmxDriver", dbname="character"),
    if (is.null(dbname)) stop("dbname must be specified")
 
    # there could be a better connection test mechanism below
-   if (dbname == "ECB" )      con <- try(TSgetECB('CPIAUCNS',...),  silent=TRUE)
+   if      (dbname == "ECB" ) con <- try(TSgetECB('118.DD.A.I5.POPE.LEV.4D',...),  silent=TRUE)
    else if (dbname == "OECD") con <- try(TSgetOECD('CPIAUCNS',...), silent=TRUE)
-   else stop(dbname, "not recognized. dbname should be one of 'ECB', 'OECD'.")
+   else if (dbname == "FRB")  con <- try(TSgetFRB('', ...), silent=TRUE)
+   else if (dbname == "BoC")  con <- try(TSgetBoC(c('CDOR', 'OIS'),...), silent=TRUE)
+   else if (dbname == "BIS")  con <- try(TSgetBIS('', ...), silent=TRUE)
+   else stop(dbname, "not recognized. dbname should be one of 'ECB', 'OECD', 'FRB', 'BoC'.")
 
    if(inherits(con, "try-error")) 
          stop("Could not establish TSsdmxConnection to ",  dbname)
@@ -72,11 +81,14 @@ setMethod("TSget",     signature(serIDs="character", con="TSsdmxConnection"),
        tf=NULL, start=tfstart(tf), end=tfend(tf),
        names=serIDs, quiet=TRUE, repeat.try=3, ...){ 
     if (is.null(TSrepresentation)) TSrepresentation <- "ts"
-    desc <- NULL
+    desc <- "" # NEEDS WORK
     
-    if(con@dbname == "OECD")     mat <- TSgetOECD(serIDs, names=names)
-    else if(con@dbname == "ECB") mat <- TSgetOECD(serIDs, names=names)
-    else stop("dbname not recognized.")
+    if    (con@dbname == "OECD") mat <- TSgetOECD(serIDs, names=names)
+    else if(con@dbname == "ECB") mat <- TSgetECB(serIDs, names=names)
+    else if(con@dbname == "FRB") mat <- TSgetFRB(serIDs, names=names)
+    else if(con@dbname == "BoC") mat <- TSgetBoC(serIDs, names=names)
+    else if(con@dbname == "BIS") mat <- TSgetBIS(serIDs, names=names)
+    else stop("dbname", con@dbname, "not recognized.")
 
     if (NCOL(mat) != length(serIDs)) stop("Error retrieving series", serIDs) 
     mat <- tfwindow(mat, tf=tf, start=start, end=end)
@@ -130,11 +142,28 @@ TSgetBoC <- function(id, names=NULL){
    z <- getURLContent(uri)
    #NEED TO STRIP SOAP ENV
    #zz <- htmlParse(z)
+   #zz <-   getNodeSet(htmlParse(z), "//series" )
    #zz <-   getNodeSet(zz, "//dataset" )
    #zz <-   getNodeSet(zz, "//CompactData" )
-   zz <-   getNodeSet(htmlParse(z, useInternalNodes = FALSE), "//return" )
-   zz <-   getNodeSet(htmlParse(z), "//return" )
-   r <- SDMXparse(zz)
+   #zz <-   getNodeSet(htmlParse(z, useInternalNodes = FALSE), "//return" )
+   #zz <-   getNodeSet(htmlParse(z), "//return" )
+   
+   # should be able to parse for nmsp as in TSgetECB
+   nmsp <-  c(ns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message") 
+   #        getNodeSet(htmlParse(z), "//series", nmsp )
+   # length(getNodeSet(htmlParse(z), "//series", nmsp ) )
+   # mode(getNodeSet(htmlParse(z), "//series", nmsp ) )
+
+   #doc <- xmlParse(z)
+   doc <- htmlParse(z)
+   
+   # DataSetParse assumes Xpath points to  Series nodes in doc 
+   #   so getNodeSet(doc, Xpath, nmsp ) is a list with series as elements
+   #   so getNodeSet(doc, "//series[@freq]", nmsp ) is a list with series as elements
+   #r <- DataSetParse(doc,"//ns:Series[@FREQ]" ,nmsp)
+   #r <- DataSetParse(doc,"//series[@freq]" ,nmsp)
+   r <- DataSetParse(doc,"//series[@freq]" ,nmsp,
+    obs=".//obs[@time_period]", timeperiod="time_period", value="obs_value")
    
    if(nseries(r) != length(id)) warning("some series not retrieved.")
 
@@ -145,6 +174,7 @@ TSgetBoC <- function(id, names=NULL){
 
 TSgetECB <- function(id, names=NULL){
 #  different versions just for testing
+# #works with v3, seems to get only the header with v1
 # v1
 #   uri <- paste( "http://sdw.ecb.europa.eu/export.do?",
 #   	    paste("SERIES_KEY=", id, "&", sep="", collapse=""),
@@ -179,7 +209,21 @@ TSgetECB <- function(id, names=NULL){
    #See  getNodeSet examples
    #z <- xmlTreeParse(h$value(),  useInternalNodes = TRUE)  #FALSE)
    #r <- SDMXparse(z)
-   r <- SDMXparse(getURLContent(uri))
+   # SDMXparse <- function(z){  
+   #   doc <- xmlParse(z)
+   #   #doc <- xmlParse(z,asText=TRUE)
+   #
+   #   #eg. nmsp <- c(ns="http://www.ecb.int/vocabulary/stats/bsi") 
+   #   nmsp <- c(ns=xmlNamespace(xmlRoot(doc)[["DataSet"]][[2]]))
+   #   DataSetParse(doc,"//ns:Series[@FREQ]" ,nmsp)
+   #   }
+   #  r <- SDMXparse(getURLContent(uri))
+   
+   doc <- xmlParse(getURLContent(uri))
+   #nmsp <-  c(ns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message") 
+   nmsp <- c(ns=xmlNamespace(xmlRoot(doc)[["DataSet"]][[2]]))
+
+   r <- DataSetParse(doc,"//ns:Series[@FREQ]" ,nmsp)
 
    # should try to check <faultstring> 
 
@@ -195,12 +239,17 @@ TSgetFRB <- function(id, names=NULL){
    uri <- paste( "http://sdw.ecb.europa.eu/quickviewexport.do?trans=&start=&end=&snapshot=&periodSortOrder=&",
 	   paste("SERIES_KEY=", id, "&", sep="", collapse=""),
 	   paste( "type=sdmx", sep="", collapse=""), sep="")
-Consumer credit from all sources (I think)
-https://www.federalreserve.gov/datadownload/Output.aspx?rel=G19&series=79d3b610380314397facd01b59b37659&lastObs=&from=01/01/1943&to=12/31/2010&filetype=sdmx&label=include&layout=seriescolumn
-
-   r <- SDMXparse(getURLContent(uri))
+#Consumer credit from all sources (I think)
+#https://www.federalreserve.gov/datadownload/Output.aspx?rel=G19&series=79d3b610380314397facd01b59b37659&lastObs=&from=01/01/1943&to=12/31/2010&filetype=sdmx&label=include&layout=seriescolumn
 
    # should try to check <faultstring> 
+   
+   doc <- xmlParse(getURLContent(uri))
+   #nmsp <-  c(ns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message") 
+   nmsp <- c(ns=xmlNamespace(xmlRoot(doc)[["DataSet"]][[2]]))
+
+   r <- DataSetParse(doc,"//ns:Series[@FREQ]" ,nmsp)
+
 
    if(nseries(r) != length(id)) warning("some series not retrieved.")
    
@@ -208,16 +257,18 @@ https://www.federalreserve.gov/datadownload/Output.aspx?rel=G19&series=79d3b6103
    r
    }
 
-SDMXparse <- function(z){  
-   doc <- xmlParse(z)
-   #doc <- xmlParse(z,asText=TRUE)
 
-   #eg. nmsp <- c(ns="http://www.ecb.int/vocabulary/stats/bsi") 
-   nmsp <- c(ns=xmlNamespace(xmlRoot(doc)[["DataSet"]][[2]]))
-
-   # local function
-   meta <- function(node){
+DataSetParse <- function(doc, Xpath, nmsp, 
+    obs=".//ns:Obs[@TIME_PERIOD]", timeperiod="TIME_PERIOD", value="OBS_VALUE"){
+   #obs, timeperiod,  value are kludge
+   # assumes Xpath points to  Series nodes in doc 
+   #   so getNodeSet(doc, Xpath, nmsp ) is a list with series as elements
+   # It might be better? is this this pointed to DataSet?
+   # It might be possible to extract nmsp?
+   
+   meta <- function(node){# local function
       c(FREQ=		xmlGetAttr(node, "FREQ",	    nmsp),
+        freq=		xmlGetAttr(node, "freq",	    nmsp),  #kludge
    	REF_AREA=	xmlGetAttr(node, "REF_AREA",	    nmsp),
    	ADJUSTMENT=	xmlGetAttr(node, "ADJUSTMENT",      nmsp),
    	BS_REP_SECTOR=  xmlGetAttr(node, "BS_REP_SECTOR",   nmsp),
@@ -233,21 +284,29 @@ SDMXparse <- function(z){
        }
 
    # separate the series
-   zs <-   getNodeSet(doc, "//ns:Series[@FREQ]", nmsp )
+   zs <-   getNodeSet(doc, Xpath, nmsp )
 
    m <- r <- NULL
-   for (i in seq(length(zs))) { 
+   for (i in seqN(length(zs))) { 
       mt <- meta(zs[[i]])
       m <- c(m, paste(mt, collapse="."))
-      fr <- mt["FREQ"]
+      #fr <- mt["FREQ"]
+      fr <- mt[c("FREQ", "freq")] #kludge
+      fr <- fr[!is.na(fr)] #kludge
 
       # getNodeSet(zs[[i]], "//ns:Obs[@TIME_PERIOD]",nmsp )
       # gets Obs from all series. The XPath needs
       # to tell getNodeSet() to look from that node downwards, not
       # the original document. So you need a .//
-      zz <-   getNodeSet(zs[[i]], ".//ns:Obs[@TIME_PERIOD]",nmsp )  
+      
+      #zz <-   getNodeSet(zs[[i]], ".//ns:Obs[@TIME_PERIOD]",nmsp )  
+      #zz <-   getNodeSet(zs[[i]], ".//obs[@time_period]",nmsp )  
+      zz <-   getNodeSet(zs[[i]], obs,nmsp )        
+# first  works for ecb but fails for boc which has lines 
+#   <obs obs_status="A" obs_value="1.78" time_period="2010-12-09"/>
+# </series> 
 
-      dt <- sapply(zz, xmlGetAttr, "TIME_PERIOD")
+      dt <- sapply(zz, xmlGetAttr, timeperiod)
       # obs are usually in sequential order, but not certain, so
       ix <- order(dt)
       dt <- dt[ix]
@@ -255,7 +314,7 @@ SDMXparse <- function(z){
       # In some formats Q dates are first month of Q, eg Q4 is 2010-10
       # but usually? 2010-Q4
 
-      r1 <- as.numeric( sapply(zz, xmlGetAttr, "OBS_VALUE") )[ix]
+      r1 <- as.numeric( sapply(zz, xmlGetAttr, value) )[ix]
       if (fr == "Q"){ 
         y <- as.numeric(sub("-Q[0-9]","",dt[1]))
 	q <- as.numeric(sub("[0-9]*-Q","",dt[1]))
@@ -275,6 +334,8 @@ SDMXparse <- function(z){
 	} 
       r <- tbind(r, r2)
       }
+   if(is.null(r))
+     stop("No series retrieved. Series do not exist on the database, or some other problem.")
    seriesNames(r) <- m
    r
    }
