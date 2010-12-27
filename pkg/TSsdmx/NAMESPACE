@@ -4,7 +4,7 @@ import("tframe")
 import("TSdbi")
 #importClassesFrom("DBI",..)
 
-export("getSymbol")
+export("sdmx")
 
 ## S4 Classes
 exportClasses(
