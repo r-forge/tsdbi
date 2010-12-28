@@ -31,7 +31,8 @@ setMethod("TSconnect",   signature(drv="sdmxDriver", dbname="character"),
    # there could be a better connection test mechanism below
    if      (dbname == "ECB" ) con <- try(TSgetECB('118.DD.A.I5.POPE.LEV.4D',...),  silent=TRUE)
    else if (dbname == "OECD") con <- try(TSgetOECD('CPIAUCNS',...), silent=TRUE)
-   else if (dbname == "FRB")  con <- try(TSgetFRB('', ...), silent=TRUE)
+   else if (dbname == "FRB")  con <-
+             try(TSgetFRB('79d3b610380314397facd01b59b37659', ...), silent=TRUE)
    else if (dbname == "BoC")  con <- try(TSgetBoC(c('CDOR', 'OIS'),...), silent=TRUE)
    else if (dbname == "BIS")  con <- try(TSgetBIS('', ...), silent=TRUE)
    else stop(dbname, "not recognized. dbname should be one of 'ECB', 'OECD', 'FRB', 'BoC'.")
@@ -236,20 +237,30 @@ TSgetECB <- function(id, names=NULL){
    }
 
 TSgetFRB <- function(id, names=NULL){
-   uri <- paste( "http://sdw.ecb.europa.eu/quickviewexport.do?trans=&start=&end=&snapshot=&periodSortOrder=&",
-	   paste("SERIES_KEY=", id, "&", sep="", collapse=""),
-	   paste( "type=sdmx", sep="", collapse=""), sep="")
+   uri <- paste( "https://www.federalreserve.gov/datadownload/Output.aspx?rel=G19&",
+	   paste("series=", id, "&", sep="", collapse=""),
+	   paste( "lastObs=&from=01/01/1981&to=12/31/2010&filetype=sdmx&label=include&layout=seriescolumn", sep="", collapse=""), sep="")
+	   
 #Consumer credit from all sources (I think)
 #https://www.federalreserve.gov/datadownload/Output.aspx?rel=G19&series=79d3b610380314397facd01b59b37659&lastObs=&from=01/01/1943&to=12/31/2010&filetype=sdmx&label=include&layout=seriescolumn
 
    # should try to check <faultstring> 
+
+   #getURLContent should work, but gets octet=stream from frb
+   #doc <- xmlParse(getURLContent(uri))
+    h <- basicTextGatherer()
+   h$reset()
+   curlPerform(url=uri, writefunction = h$update, verbose = FALSE)
+   z <- h$value()
    
-   doc <- xmlParse(getURLContent(uri))
+   doc <- xmlParse(z)
    #nmsp <-  c(ns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message") 
-   nmsp <- c(ns=xmlNamespace(xmlRoot(doc)[["DataSet"]][[2]]))
+   #nmsp <- c(ns=xmlNamespace(xmlRoot(doc)[["DataSet"]][[2]]))
 
-   r <- DataSetParse(doc,"//ns:Series[@FREQ]" ,nmsp)
-
+   nmspfrb <- c(kf="http://www.federalreserve.gov/structure/compact/G19_CCOUT",
+               frb="http://www.federalreserve.gov/structure/compact/common") 
+   r <- DataSetParse(doc,"//kf:Series[@FREQ]" ,nmspfrb,
+    obs="frb:Obs[@TIME_PERIOD]", timeperiod="TIME_PERIOD", value="OBS_VALUE")
 
    if(nseries(r) != length(id)) warning("some series not retrieved.")
    
@@ -345,38 +356,47 @@ TSgetURI <- function(query){
 
    fr <- 1 # skip trying to set fr properly (for debugging)
 
+   #getURLContent should work, but gets octet=stream from frb
+   #z <- getURLContent(query)
+   
    h <- basicTextGatherer()
    h$reset()
    curlPerform(url=query, writefunction = h$update, verbose = FALSE)
+   z <- h$value()
 
-   #See  getNodeSet examples
-   z <- xmlTreeParse(h$value(),  useInternalNodes = TRUE)
+   #doc <- xmlTreeParse(z,  useInternalNodes = TRUE)
+   #htmlTreeParse(z) # gives nicer printout
+   doc <- xmlParse(z)
+   nmsp <-  c(ns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message") 
+   #nmsp <- c(ns=xmlNamespace(xmlRoot(doc)[["DataSet"]][[2]]))
 
-   #htmlTreeParse(h$value()) # gives nicer printout
 
    # separate the series
-   nmsp <- c(ns=xmlNamespace(xmlRoot(z)[["DataSet"]][[2]]))
-   #nmsp <- c(ns=xmlNamespace(xmlRoot(z)[["frb:DataSet"]][[2]]))
-   #</kf:Series>
-  #</frb:DataSet>
-#</message:MessageGroup>
-# getNodeSet(z, "//message:MessageGroup")
-# getNodeSet(z, "//frb:DataSet")
-# getNodeSet(z, "//frb:DataSet")
-   zs <-   getNodeSet(z, "//ns:Series[@FREQ]", nmsp )
-   r <- dt <- NULL
-   for (i in seq(length(zs))) { 
-      # getNodeSet(zs[[i]], "//ns:Obs[@TIME_PERIOD]",nmsp )
-      # gets Obs from all series. The XPath needs
-      # to tell getNodeSet() to look from that node downwards, not
-      # the original document. So you need a .//
-      zz <-   getNodeSet(zs[[i]], ".//ns:Obs[@TIME_PERIOD]",nmsp )  
+   # zs <-   getNodeSet(doc, Xpath, nmsp )
 
-      # no attempt at time series
-      dt <- cbind(dt, sapply(zz, xmlGetAttr, "TIME_PERIOD"))
-      r  <- cbind(r,  as.numeric( sapply(zz, xmlGetAttr, "OBS_VALUE") ))
-      }
+   # DataSetParse assumes Xpath points to  Series nodes in doc 
+   #   so getNodeSet(doc, Xpath, nmsp ) is a list with series as elements
+   #   so getNodeSet(doc, "//series[@freq]", nmsp ) is a list with series as elements
+   #   so zs <-  getNodeSet(doc, Xpath, nmsp )
+   #   so zs <-  getNodeSet(doc, "//kf:Series[@FREQ]", nmspfrb )
+   
+   #zz <-   getNodeSet(zs[[i]], ".//ns:Obs[@TIME_PERIOD]",nmsp )  
+   #r <- DataSetParse(doc,"//ns:Series[@FREQ]" ,nmsp)
+   #r <- DataSetParse(doc,"//series[@freq]" ,nmsp,
+   # obs=".//obs[@time_period]", timeperiod="time_period", value="obs_value")
+   
+   # </frb:DataSet>
+   nmspfrb <- c(kf="http://www.federalreserve.gov/structure/compact/G19_CCOUT",
+               frb="http://www.federalreserve.gov/structure/compact/common") 
+   r <- TSsdmx:::DataSetParse(doc,"//kf:Series[@FREQ]" ,nmspfrb,
+    obs="frb:Obs[@TIME_PERIOD]", timeperiod="TIME_PERIOD", value="OBS_VALUE")
+
+   
+   if(nseries(r) != length(id)) warning("some series not retrieved.")
+
+   if(!is.null(names)) seriesNames(r) <- names
+
    r
    }
 
-# debug(TSgetURI)
+debug(TSgetURI)
