@@ -26,12 +26,17 @@ library("TSxls")
 This will also load required packages \pkg{TSdbi}, \pkg{DBI}, 
 \pkg{methods}, \pkg{tframePlus}, and \pkg{zoo}.
 
-\pkg{TSxls} provides an interface that is consistent with \pkg{TSdbi} for 
-using using spreadsheets as if they are a database. (This is a poor substitute for a real database, but is sometimes convenient.)
-\pkg{TSxls} does not support writing data to the spreadsheet, but see \code{writeXLS} to write a new spreadsheet.
+\pkg{TSxls} provides methods for the \pkg{TSdbi} interface, allowing the 
+use of spreadsheets as if they are a database. (This is a poor substitute for a real database, but is sometimes convenient.)
+\pkg{TSxls} does not support writing data to the spreadsheet, but see \code{writeXLS} to write a new spreadsheet. The spreedsheet can be a remote
+file which is retrieved when the connection is established.
 
-\subsection{Examples  Using TSxls with}
+\subsection{Examples using Reserve Bank of Australia data}
 
+The following retrieves the file and maps the elements that are used: data, 
+dates, identifiers, and series names. The mechanism for converting the data to
+an \pkg{R} time series object is also set by the function defined 
+in the argument \code{tsrepresentation}.
 \begin{Scode}{results=verbatim}
   con <- TSconnect("xls",
           dbname="http://www.rba.gov.au/statistics/tables/xls/d03hist.xls",
@@ -42,34 +47,39 @@ using using spreadsheets as if they are a database. (This is a poor substitute f
 		   description = NULL,
 		   tsrepresentation = function(data,dates){
 		       ts(data,start=c(1959,7), frequency=12)}))
+\end{Scode}
+Beware that data is read into \pkg{R} when the connection is established, so
+changes in the spreadsheet will not be visible in \pkg{R} until a new connection
+is established.
 
+Once the connection is established, data can be read from it with the same
+functions as for other \pkg{TSdbi} packages.
+\begin{Scode}{results=verbatim,fig=TRUE}
   x <- TSget("DMACN", con)
   tfplot(x)
 
   x <- TSget(c("DMAM1N", "DMAM3N"), con)
   tfplot(x)
-   
-  TSrefperiod(x) 
   TSdescription(x) 
 \end{Scode}
 
 It is also possible to specify a connection to be used as the default:
 
-\begin{Scode}{results=verbatim}
+\begin{Scode}{results=verbatim,fig=TRUE}
   options(TSconnection=con)
   tfplot(TSget(serIDs="DMAM1N"))
 \end{Scode}
 
 It is then not necessary to specify the \code{con} when the default is to 
 be used.
-\begin{Scode}{results=verbatim}
+\begin{Scode}{results=verbatim,fig=TRUE}
   x2 <- TSget("DMAM3N")
   tfplot(x2)
   plot(x2)
   TSdescription(x2) 
 \end{Scode}
 
-\begin{Scode}{results=verbatim}
+\begin{Scode}{results=verbatim,fig=TRUE}
   x <- TSget("DMAM1N")
   tfplot(x)
   tfplot(x, xlab = TSdescription(x))
@@ -80,23 +90,23 @@ be used.
 The function \code{plot} puts all series on the same graph whereas
  \code{tfplot} treats each series in the first argument as panels to be
  plotted.
-\begin{Scode}{results=verbatim}
+\begin{Scode}{results=verbatim,fig=TRUE}
   x <- TSget(c("DMAM1N", "DMAM3N", "DMABMN","DMAM1S","DMAM3S","DMABMS"))
   plot(x)
-  tfplot(x, Title="Australian Monetary Aggregates")
+  tfplot(x, Title="Australian Monetary Aggregates", graphs.per.page=3)
   TSdescription(x) 
 \end{Scode}
 
 \code{tfplot} treats subsequent time series arguments as objects that should be plot on the same panels (so the number of series in each object must be 
 the same.
-\begin{Scode}{results=verbatim}
+\begin{Scode}{results=verbatim,fig=TRUE}
   tfplot(TSget(c("DMAM1S", "DMAM3S", "DMABMS")),
          TSget(c("DMAM1N", "DMAM3N", "DMABMN")),
     Title="Australian Monetary Aggregates")
 \end{Scode}
 
 It is possible to put all series on the same graph.
-\begin{Scode}{results=verbatim}
+\begin{Scode}{results=verbatim,fig=TRUE}
   tfplot(TSget("DMAM1S"),
          TSget("DMAM3S"),
          TSget("DMABMS"),
@@ -110,5 +120,6 @@ It is possible to put all series on the same graph.
   TSdates(c("DMAM1N", "DMAM3N"), con) 
 \end{Scode}
 
-See the \pkg{TSdbi} vignette for additional details.
+See the \pkg{TSdbi} vignette for additional details on using the \pkg{TSdbi} 
+interface.
 \end{document}
