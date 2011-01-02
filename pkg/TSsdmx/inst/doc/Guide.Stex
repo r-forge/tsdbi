@@ -27,65 +27,110 @@ This will also load required packages \pkg{TSdbi}, \pkg{DBI},
 \pkg{methods}, \pkg{tframePlus}, and \pkg{zoo}.
 
 \pkg{TSsdmx} provides an interface that is consistent with \pkg{TSdbi} for 
-using SDMX databases such as the one at the OECD. It is expected that this protocol will eventually be supported by several central banks and  statistical agencies.
+using SDMX databases supported at several organizations web sites. 
+It is expected that this protocol will eventually be supported by several central banks and statistical agencies.
 \pkg{TSsdmx} does not support writing data to the database.
 
-\subsection{Examples  Using TSsdmx with the OECD web portal}
+The interface is fairly straight forward, and similar to other \pkg{TSdbi} 
+packages, however, finding the mneumonic identifier for series at some web sites
+is difficult. Hopefully this will improve when organizations understand that
+people would like to analyze their data rather than simply view it on their web
+sites. If you have ideas about how to improve this situation please take action.
+If nothing else, it might be useful to point out to some of these organizations
+how they could improve, and point to others that are doing a better job of 
+making data accessible.
+
+The following examples illustrate the use of the \pkg{TSsdmx} interface, but the
+main content describes how to find mneumonic identifiers. If you discover better
+ways to do this, please let me know (Paul Gilbert).
+
+\subsection{European Central Bank Examples}
 
 \begin{Scode}{results=verbatim}
-  con <- TSconnect("sdmxCall", dbname="OECD") 
+  ecb <- TSconnect("sdmx", dbname="ECB")
   x <- TSget("^ftse", con)
-  plot(x)
   tfplot(x)
   TSrefperiod(x) 
   TSdescription(x) 
 \end{Scode}
 
 It is also possible to specify a connection to be used as the default:
-
 \begin{Scode}{results=verbatim}
-  options(TSconnection=con)
-  tfplot(TSget(serIDs="^ftse"))
+  options(TSconnection=ecb)
+\end{Scode}
+but several different connections are used below and a default will not be used. The default is unset by
+\begin{Scode}{results=verbatim}
+  options(TSconnection=NULL)
 \end{Scode}
 
+Identifiers can be found on the ECB web site by viewing the series key as 
+listed under the title at http://sdw.ecb.europa.eu/. Fore example, 
+\url{http://sdw.ecb.europa.eu/quickviewexport.do?trans=&start=&end=&snapshot=&periodSortOrder=&SERIES_KEY=118.DD.A.I5.POPE.LEV.4D&type=sdmx}
+or extracted by following the link to export/XML
+For example, the Inflation rate at annual rates link is 
+\url{http://sdw.ecb.europa.eu/quickview.do?SERIES_KEY=122.ICP.M.U2.N.000000.4.ANR}
+so the series key is \code{122.ICP.M.U2.N.000000.4.ANR}
+
+# eg pop
+#http://sdw.ecb.europa.eu/quickviewexport.do?trans=&start=&end=&snapshot=&periodSortOrder=&SERIES_KEY=118.DD.A.I5.POPE.LEV.4D&type=sdmx
+# note that it would be nice to use  
+# TSgetECB("DD.A.I5.POPE.LEV.4D")     #but this fails. It needs 118.
+
+# Annual data
 \begin{Scode}{results=verbatim}
-  x2 <- TSget("^gspc", con)
-  tfplot(x2)
-  plot(x2)
-  TSdescription(x2) 
+z <- TSget("118.DD.A.I5.POPE.LEV.4D", con=con ) 
+# #works v3, seems to get only the header with v1
+tfplot(z)
 \end{Scode}
 
+#quarterly
+# http://sdw.ecb.europa.eu/
+#    >Money,banking, and fin. >MFIs loans, dep..> households 
+#      |quarterly  | all | select series (click check box) BSI... as below    
+#      | Data table | export (csv SDMX excel)
+
+
+# monthly data 
+
 \begin{Scode}{results=verbatim}
-  x <- TSget(c("^ftse","^gspc"), con)
-  plot(x)
+options(TSconnection=con)
+
+z <- TSget("122.ICP.M.U2.N.000000.4.ANR")# annual rates #works v3 
+z <- TSget("122.ICP.M.U2.N.000000.4.INX")# index        #works v3 
+tfplot(z)
+
+z <- TSget("117.BSI.M.U2.Y.U.A21.A.4.U2.2250.Z01.E")   #works v3
+tfplot(z)
+\end{Scode}
+
+
+# quarterly data 
+
+\begin{Scode}{results=verbatim}
+skey <-c("117.BSI.Q.U2.N.A.A21.A.1.U2.2250.Z01.E",
+         "117.BSI.Q.U2.N.A.A22.A.1.U2.2250.Z01.E",
+         "117.BSI.Q.U2.N.A.A23.A.1.U2.2250.Z01.E")
+
+
+z <- TSget(skey)                                       #works v3
+tfplot(z)
+
+z <- TSget("117.BSI.Q.U2.N.A.A21.A.1.U2.2250.Z01.E")   #works v3
+
+z <- TSget(c("117.BSI.Q.U2.N.A.A21.A.1.U2.2250.Z01.E",
+                "117.BSI.Q.U2.N.A.A22.A.1.U2.2250.Z01.E"))#works v3
+tfplot(z)
+\end{Scode}
+
+
+\subsection{OECD Examples}
+
+\begin{Scode}{results=verbatim}
+  oecd <- TSconnect("sdmx", dbname="OECD") 
+  x <- TSget("^ftse", con)
   tfplot(x)
+  TSrefperiod(x) 
   TSdescription(x) 
-\end{Scode}
-
-\begin{Scode}{results=verbatim}
-  x <- TSget("ibm", con, quote = c("Close", "Vol"))
-  tfplot(x)
-  tfplot(x, xlab = TSdescription(x))
-  tfplot(x, Title="IBM", start="2007-01-01")
-  tfplot(x, Title=TSdoc(x), xlab = TSlabel(x), start="2007-01-01")
-\end{Scode}
-
-Oanda has maximum of 500 days, so the start date is specified here so as to
-not exceed that.
-
-\begin{Scode}{results=verbatim}
-  conO <- TSconnect("histQuote", dbname="oanda") 
-  z <- TSget("EUR/USD", conO, start=Sys.Date() - 495)
-  tfplot(z)
-  tfplot(z, Title = "EUR/USD")
-  tfplot(z, Title = "EUR/USD", start="2007-01-01")
-  tfplot(z, Title = "EUR/USD", start="2007-03-01")
-  tfplot(z, Title = "EUR/USD", start=Sys.Date()-14, end=Sys.Date(),
-     xlab = format(Sys.Date(), "%Y"))
-\end{Scode}
-
-\begin{Scode}{results=verbatim}
-  TSdates(c("^ftse","^gspc", "ibm"), con) # note default start
 \end{Scode}
 
 See the \pkg{TSdbi} vignette for additional details.

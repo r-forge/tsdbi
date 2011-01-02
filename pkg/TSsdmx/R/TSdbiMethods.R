@@ -27,15 +27,27 @@ setMethod("TSconnect",   signature(drv="sdmxDriver", dbname="character"),
   definition= function(drv, dbname, user="", password="", host="", ...){
    #  user / password / host  for future consideration
    if (is.null(dbname)) stop("dbname must be specified")
-
+   
    # there could be a better connection test mechanism below
-   if      (dbname == "ECB" ) con <- try(TSgetECB('118.DD.A.I5.POPE.LEV.4D',...),  silent=TRUE)
-   else if (dbname == "OECD") con <- try(TSgetOECD('CPIAUCNS',...), silent=TRUE)
-   else if (dbname == "FRB")  con <-
-             try(TSgetFRB('79d3b610380314397facd01b59b37659', ...), silent=TRUE)
-   else if (dbname == "BoC")  con <- try(TSgetBoC(c('CDOR', 'OIS'),...), silent=TRUE)
-   else if (dbname == "BIS")  con <- try(TSgetBIS('', ...), silent=TRUE)
-   else stop(dbname, "not recognized. dbname should be one of 'ECB', 'OECD', 'FRB', 'BoC'.")
+   if      (dbname == "ECB" ) 
+      con <- try(TSgetECB('118.DD.A.I5.POPE.LEV.4D',...),  silent=TRUE)
+   else if (dbname == "FRB")
+      con <- try(TSgetFRB('79d3b610380314397facd01b59b37659', ...), silent=TRUE)
+   else if (dbname == "BoC")
+      con <- try(TSgetBoC(c('CDOR', 'OIS'),...), silent=TRUE)
+   else if (dbname == "OECD")
+      con <- try(TSgetOECD('CPIAUCNS',...), silent=FALSE)
+   else if (dbname == "BIS")
+      con <- try(TSgetBIS('', ...), silent=FALSE)
+   else if (dbname == "WB")
+      con <- try(TSgetWB('', ...), silent=FALSE)
+   else if (dbname == "UN")
+      con <- try(TSgetUN('', ...), silent=FALSE)
+   else if (dbname == "IMF")
+      con <- try(TSgetIMF('', ...), silent=FALSE)
+   else if (dbname == "EuroStat")
+      con <- try(TSgetEuroStat('', ...), silent=FALSE)
+   else stop(dbname,"not recognized. Please contact the package maintainer if you would like to help implement this database.")
 
    if(inherits(con, "try-error")) 
          stop("Could not establish TSsdmxConnection to ",  dbname)
@@ -84,11 +96,15 @@ setMethod("TSget",     signature(serIDs="character", con="TSsdmxConnection"),
     if (is.null(TSrepresentation)) TSrepresentation <- "ts"
     desc <- "" # NEEDS WORK
     
-    if    (con@dbname == "OECD") mat <- TSgetOECD(serIDs, names=names)
-    else if(con@dbname == "ECB") mat <- TSgetECB(serIDs, names=names)
+    if     (con@dbname == "ECB") mat <- TSgetECB(serIDs, names=names)
     else if(con@dbname == "FRB") mat <- TSgetFRB(serIDs, names=names)
     else if(con@dbname == "BoC") mat <- TSgetBoC(serIDs, names=names)
-    else if(con@dbname == "BIS") mat <- TSgetBIS(serIDs, names=names)
+    else if(con@dbname == "OECD") mat <- TSgetOECD(serIDs, names=names)
+    else if(con@dbname == "BIS")  mat <- TSgetBIS(serIDs, names=names)
+    else if(con@dbname == "WB")   mat <- TSgetWB(serIDs, names=names)
+    else if(con@dbname == "UN")   mat <- TSgetUN(serIDs, names=names)
+    else if(con@dbname == "IMF")  mat <- TSgetIMF(serIDs, names=names)
+    else if(con@dbname == "EuroStat") mat <- TSgetEuroStat(serIDs, names=names)
     else stop("dbname", con@dbname, "not recognized.")
 
     if (NCOL(mat) != length(serIDs)) stop("Error retrieving series", serIDs) 
@@ -127,11 +143,47 @@ setMethod("TSlabel",   signature(x="character", con="TSsdmxConnection"),
 
 #######  database source specific methods (not exported)   ######
 # It should be possible to a have a single SDMX parser deal with the
-# result from the fetch, bu that is not (yet) done. The parsing is still
-# specific to the format retrieved from each db.
+# result from the fetch, but that is not (yet) done. The parsing still
+# needs too much specific information retrieved from each db.
 
 # NB firebug shows browser requests to server, so is useful for seeing what is
 #  sent to the server
+
+TSgetOECD <- function(id, names=NULL){
+  stop("Connect to this database is not yet working. 
+  Please contact the package maintainer if you would like to help implement it.")
+ FALSE
+ }
+
+TSgetBIS <- function(id, names=NULL){
+  stop("Connect to this database is not yet working. 
+  Please contact the package maintainer if you would like to help implement it.")
+ FALSE
+ }
+
+TSgetUN <- function(id, names=NULL){
+  stop("Connect to this database is not yet working. 
+  Please contact the package maintainer if you would like to help implement it.")
+ FALSE
+ }
+
+TSgetWB <- function(id, names=NULL){
+  stop("Connect to this database is not yet working. 
+  Please contact the package maintainer if you would like to help implement it.")
+ FALSE
+ }
+
+TSgetIMF <- function(id, names=NULL){
+  stop("Connect to this database is not yet working. 
+  Please contact the package maintainer if you would like to help implement it.")
+ FALSE
+ }
+
+TSgetEuroStat <- function(id, names=NULL){
+  stop("Connect to this database is not yet working. 
+  Please contact the package maintainer if you would like to help implement it.")
+ FALSE
+ }
 
 TSgetBoC <- function(id, names=NULL){
     
@@ -388,15 +440,16 @@ TSgetURI <- function(query){
    # </frb:DataSet>
    nmspfrb <- c(kf="http://www.federalreserve.gov/structure/compact/G19_CCOUT",
                frb="http://www.federalreserve.gov/structure/compact/common") 
-   r <- TSsdmx:::DataSetParse(doc,"//kf:Series[@FREQ]" ,nmspfrb,
-    obs="frb:Obs[@TIME_PERIOD]", timeperiod="TIME_PERIOD", value="OBS_VALUE")
+   # r <- TSsdmx:::DataSetParse(doc,"//kf:Series[@FREQ]" ,nmspfrb,
+   #  obs="frb:Obs[@TIME_PERIOD]", timeperiod="TIME_PERIOD", value="OBS_VALUE")
 
    
-   if(nseries(r) != length(id)) warning("some series not retrieved.")
+   # if(nseries(r) != length(id)) warning("some series not retrieved.")
 
-   if(!is.null(names)) seriesNames(r) <- names
+   # if(!is.null(names)) seriesNames(r) <- names
 
-   r
+   # r
+   doc
    }
 
-debug(TSgetURI)
+# debug(TSgetURI)

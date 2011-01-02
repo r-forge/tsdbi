@@ -1,3 +1,6 @@
+# Status: Partially working, but finding series identifiers is difficult and
+#    limited data is available (as of December 2010).
+#    Needs documentation.
 
 cat("************** Bank of Canada sdmx   ******************************\n")
 require("TSsdmx")

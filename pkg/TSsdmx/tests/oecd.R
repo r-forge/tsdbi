@@ -1,33 +1,38 @@
-I found this wiki about SDMX that has some examples that might help. It looks 
-like this is a query format for ISTAT SDMX.
-  http://sdmx.wikispaces.com/Example4 
+# Status:  Not nearly working
+#    Preliminary investigation notes below.
+#    Uses SOAP and may require authentication. 
+#    Account does not seem necessary, but not sure.
 
-I also found this: 
- http://stats.oecd.org/OECDSTATWS_SDMXNEW/QueryPage.aspx?Type=MDDimensionMember 
-It looks like you can plug in the SDMX export query here.
+#This wiki about SDMX that has some examples that might help. It looks 
+#like this is a query format for ISTAT SDMX.
+#  http://sdmx.wikispaces.com/Example4 
 
-So yes, there is some sort of SOAP web service through which you feed this query. Perhaps there are clues to using it here, but you need a login: http://stats.oecd.org/SDMXWS/sdmx.asmx
+#It looks like you can plug in the SDMX export query here:
+#http://stats.oecd.org/OECDSTATWS_SDMXNEW/QueryPage.aspx?Type=MDDimensionMember 
+
+#Tthere is some sort of SOAP web service through which you feed this query. #Perhaps there are clues to using it here, but you need a login: #http://stats.oecd.org/SDMXWS/sdmx.asmx
 
 
-Yes, it's using SOAP. There's a link on this page -- 
- http://stats.oecd.org/SDMXWS/sdmx.asmx
-to the "service description", which leads to the WSDL file that describes the 
-web service: http://stats.oecd.org/SDMXWS/sdmx.asmx?WSDL
-web service: http://stats.oecd.org/OECDSTATWS_SDMXNEW/sdmx.asmx?WSDL
+#It is using SOAP. There's a link on this page -- 
+# http://stats.oecd.org/SDMXWS/sdmx.asmx
+#to the "service description", which leads to the WSDL file that describes the 
+#web service: http://stats.oecd.org/SDMXWS/sdmx.asmx?WSDL
+#web service: http://stats.oecd.org/OECDSTATWS_SDMXNEW/sdmx.asmx?WSDL
 
  
-You might find it helpful to feed that WSDL (Web Service Definition Language) 
-file into this "online SOAP client"  service - it's very useful and instructive:
-   http://www.soapclient.com/soaptest.html
+#You might find it helpful to feed that WSDL (Web Service Definition Language) 
+#file into this "online SOAP client"  service - it's very useful 
+#and instructive:
+#   http://www.soapclient.com/soaptest.html
  
 
-http://stats.oecd.org/SDMXWS/sdmx.asmx
-or test at
-http://stats.oecd.org/SDMXWS/QueryPage.aspx?Type=DataGeneric
-or
-http://stats.oecd.org/OECDSTATWS_SDMXNEW/QueryPage.aspx?Type=DataGeneric
+#http://stats.oecd.org/SDMXWS/sdmx.asmx
+#or test at
+#http://stats.oecd.org/SDMXWS/QueryPage.aspx?Type=DataGeneric
+#or
+#http://stats.oecd.org/OECDSTATWS_SDMXNEW/QueryPage.aspx?Type=DataGeneric
 
-XML (Soap?) request for M1 and M3 to oecd (non-public db).
+#XML (Soap?) request for M1 and M3 to oecd (non-public db).
 
 require("SSOAP") #asdcl2
 require("RCurl") #asdcl2
@@ -37,10 +42,11 @@ s1 <- SOAPServer("services.soaplite.com", "interop.cgi")
 z <- .SOAP(s1, "echoString", "From R", action="urn:soapinterop", 
            xmlns=c(namesp1="http://soapinterop.org/"), handlers =NULL)
 
-Following works on the tests site
-   http://stats.oecd.org/OECDSTATWS_SDMXNEW/QueryPage.aspx?Type=DataGeneric
-(validates with error but gets data - but not DEMOPOP_0).
+#Following works on the tests site
+#   http://stats.oecd.org/OECDSTATWS_SDMXNEW/QueryPage.aspx?Type=DataGeneric
+#(validates with error but gets data - but not DEMOPOP_0).
 
+query <- '
 <message:QueryMessage 
   xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/query" 
   xmlns:message="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message" 
@@ -56,7 +62,7 @@ Following works on the tests site
 		</Sender>
 		<Receiver id="OECD">
 			<Name xml:lang="en">Organisation for Economic Co-operation and Development</Name>
-			<Name xml:lang="fr">Organisation de coopération et de développement économiques</Name>
+			<Name xml:lang="fr">Organisation de cooperation et de developpement economiques</Name>
 		</Receiver>
 		<!--
     <message:DataSetAction>Replace</message:DataSetAction>
@@ -82,45 +88,19 @@ Following works on the tests site
 		</DataWhere>
 	</Query>
 </message:QueryMessage>
+'  #end query
+
+#Note that with     <!--Dimension id="LOCATION">AUS</Dimension-->
+#all countries  are returned.
 
 
-Note that with     <!--Dimension id="LOCATION">AUS</Dimension-->
-all countries  are returned.
+#see also http://www.omegahat.org/SSOAP/examples/keggGen.S
 
-
-see also http://www.omegahat.org/SSOAP/examples/keggGen.S
-
-z <-  .SOAP(oecd, 
-     method, ..., 
-     .soapArgs = list(), 
-     action, 
-     nameSpaces = SOAPNameSpaces(), 
-     xmlns = NULL, 
-     handlers = SOAPHandlers(), 
-     .types = NULL, 
-     .convert = TRUE, 
-    .opts = list(), 
-    curlHandle = getCurlHandle(), 
-    .header = getSOAPRequestHeader(action, .server = server), 
-    .literal = FALSE, 
-    .soapHeader = NULL, 
-    .elementFormQualified = FALSE) 
-
+#see ?.SOAP
 
 ################# curlPerform from RCurl as possible option##############
-require("RCurl")
       
-####### SOAP request example from curlPerform help #######
-    body = '<?xml version="1.0" encoding="UTF-8"?>\
-     <SOAP-ENV:Envelope SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" \
-                        xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" \
-                        xmlns:xsd="http://www.w3.org/1999/XMLSchema" \
-                        xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" \
-                        xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance">\
-       <SOAP-ENV:Body>\
-            <namesp1:hi xmlns:namesp1="http://www.soaplite.com/Demo"/>\
-       </SOAP-ENV:Body>\
-     </SOAP-ENV:Envelope>\n'
+####### see SOAP request example from curlPerform help #######
  
 ####### now try oecd sdmx SOAP #######
 
@@ -157,11 +137,12 @@ auth <- '<?xml version="1.0" encoding="utf-8"?>
       <encryptedpassword>string</encryptedpassword>
     </Authenticate>
   </soap12:Body>
-</soap12:Envelope>
+</soap12:Envelope>'
 
 # see example at http://stats.oecd.org/SDMXWS/sdmx.asmx?op=GetGenericData
 
 #soap1.0
+
 soap1.0.env.head <- '<?xml version="1.0" encoding="UTF-8"?>\
      <SOAP-ENV:Envelope SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" \
                         xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" \
@@ -176,6 +157,7 @@ soap1.0.env.foot <- '</SOAP-ENV:Body>\
 #soap1.1
 # note SOAPAction: "http://stats.oecd.org/OECDStatWS/SDMX/GetGenericData"
 # is in the HTML header befor the soap envelope
+
 soap1.1.env.head <- '<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>'
@@ -217,7 +199,7 @@ queryMessageEg <- '
 		</Sender>
 		<Receiver id="OECD">
 			<Name xml:lang="en">Organisation for Economic Co-operation and Development</Name>
-			<Name xml:lang="fr">Organisation de coopération et de développement économiques</Name>
+			<Name xml:lang="fr">Organisation de cooperation et de developpement economiques</Name>
 		</Receiver>
 		<!--
     <message:DataSetAction>Replace</message:DataSetAction>
@@ -312,7 +294,7 @@ queryMessage <- '
 		</Sender>
 		<Receiver id="OECD">
 			<Name xml:lang="en">Organisation for Economic Co-operation and Development</Name>
-			<Name xml:lang="fr">Organisation de coopération et de développement économiques</Name>
+			<Name xml:lang="fr">Organisation de cooperation et de developpement economiques</Name>
 		</Receiver>
 		<!--
     <message:DataSetAction>Replace</message:DataSetAction>
@@ -348,9 +330,9 @@ soecd <-
  
 h = basicTextGatherer()
 
-SOAPAction  below may be for wrong version? 
-<wsdl:operation name="GetGenericData">
-<soap12:operation soapAction="http://stats.oecd.org/OECDStatWS/SDMX/GetGenericData" 
+# SOAPAction  below may be for wrong version? 
+# <wsdl:operation name="GetGenericData">
+# <soap12:operation soapAction="http://stats.oecd.org/OECDStatWS/SDMX/GetGenericData" 
 
 body <- paste(soap1.0.env.head, queryMessage,soap1.0.env.foot, collapse="")
 body <- paste(soap1.1.env.head, queryMessage,soap1.1.env.foot, collapse="")
@@ -371,11 +353,11 @@ curlPerform(url=soecd,
 h$value()
 
 xmlTreeParse(h$value(), asText=TRUE, trim=TRUE)
-str(xmlTreeParse(h$value(), asText=TRUE))
+#  str(xmlTreeParse(h$value(), asText=TRUE))
 
 names(xmlTreeParse(h$value(), asText=TRUE, trim=TRUE))
 nchar(h$value())
-write(h$value(), file="zot.txt")
+# write(h$value(), file="zot.txt")
 htmlTreeParse(h$value(), asText=TRUE, trim=TRUE)
      
 # should try to get <faultstring> out of $children in case of bad query
@@ -385,12 +367,13 @@ htmlTreeParse(h$value(), asText=TRUE, trim=TRUE)$children
 cat("************** TSsdmx  Examples ******************************\n")
 require("TSsdmx")
 
+if(FALSE) {
+
 con <- TSconnect("sdmx", dbname="OECD") 
 
 oecd <- SOAPServer("stats.oecd.org", "OECDSTATWS_SDMXNEW/QueryPage.aspx")
 
-z <- .SOAP(oecd, ""),
-	 handlers =NULL)
+z <- .SOAP(oecd, "", handlers =NULL)
 
 
 #monthly
@@ -408,34 +391,4 @@ tfplot(x2)
 plot(x2)
 TSdescription(x2) 
 
-x <- TSget(c("CPIAUCNS","M2"), con)
-plot(x)
-tfplot(x)
-TSdescription(x) 
-
-x <- TSget(c("TOTALSL","TOTALNS"), con, 
-       names=c("Total Consumer Credit Outstanding SA",
-               "Total Consumer Credit Outstanding NSA"))
-plot(x)
-tfplot(x)
-TSdescription(x) 
-
-Q dates on these are month-day, and frequency is wrong
-
-x <- TSget(c("TDSP","FODSP"), con, 
-       names=c("Household Debt Service Payments as a Percent of Disposable Personal Income",
-               "Household Financial Obligations as a percent of Disposable Personal Income"))
-tfplot(x)
-TSdescription(x) 
-
-x <- TSget("ibm", quote = c("Close", "Vol"))
-plot(x)
-tfplot(x)
-if(!all(TSrefperiod(x) == c("Close", "Vol"))) stop("TSrefperiod error, test 4.")
-TSdescription(x) 
-
-tfplot(x, xlab = TSdescription(x))
-tfplot(x, Title="IBM", start="2007-01-01")
-
-conO <- TSconnect("sdmx", dbname="yahoo") 
-
+} # end if FALSE
