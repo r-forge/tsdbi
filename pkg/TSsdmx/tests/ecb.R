@@ -1,27 +1,10 @@
+# Status:  Working, but finding series identifiers is difficult and the
+#    mneumonics are obscure. Needs documentation.
 
 cat("************** ECB sdmx   ******************************\n")
 require("TSsdmx")
-#require("RCurl") 
-#require("XML")
-#require("tframe")
 
 con <- TSconnect("sdmx", dbname="ECB")
-
-#for the Guide:
-
-# identifiers can be found by viewing the series key is listed under the title
-# at http://sdw.ecb.europa.eu/ eg 
-#http://sdw.ecb.europa.eu/quickviewexport.do?trans=&start=&end=&snapshot=&periodSortOrder=&SERIES_KEY=118.DD.A.I5.POPE.LEV.4D&type=sdmx
-
-#  or extracted from the link to export / XML
-# For example, the Inflation rate at annual rates link is 
-#http://sdw.ecb.europa.eu/quickview.do?SERIES_KEY=122.ICP.M.U2.N.000000.4.ANR
-# so the series key is 122.ICP.M.U2.N.000000.4.ANR
-
-# eg pop
-#http://sdw.ecb.europa.eu/quickviewexport.do?trans=&start=&end=&snapshot=&periodSortOrder=&SERIES_KEY=118.DD.A.I5.POPE.LEV.4D&type=sdmx
-# note that it would be nice to use  
-# TSgetECB("DD.A.I5.POPE.LEV.4D")     #but this fails. It needs 118.
 
 # Annual data
 z <- TSget("118.DD.A.I5.POPE.LEV.4D", con=con ) 
