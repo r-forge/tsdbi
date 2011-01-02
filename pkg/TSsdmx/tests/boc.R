@@ -10,7 +10,7 @@ con <- TSconnect("sdmx", dbname="BoC")
 # identifiers can be extraced at ??
 
 # z <- TSget("CDOR", con=con)
-# above seems to end with fummy <Series/>
+# above seems to end with funny <Series/>
 # </Obs></Series><Series/></DataSet></CompactData></return>
 
 

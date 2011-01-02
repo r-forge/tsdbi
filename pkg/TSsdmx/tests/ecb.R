@@ -11,13 +11,6 @@ z <- TSget("118.DD.A.I5.POPE.LEV.4D", con=con )
 # #works v3, seems to get only the header with v1
 tfplot(z)
 
-#quarterly
-# http://sdw.ecb.europa.eu/
-#    >Money,banking, and fin. >MFIs loans, dep..> households 
-#      |quarterly  | all | select series (click check box) BSI... as below    
-#      | Data table | export (csv SDMX excel)
-
-
 # monthly data 
 
 options(TSconnection=con)
