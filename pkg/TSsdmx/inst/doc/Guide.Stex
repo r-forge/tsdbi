@@ -106,23 +106,34 @@ series key is \code{122.ICP.M.U2.N.000000.4.ANR} as used above.
 To find series identifiers go to \url{https://www.federalreserve.gov/datadownload/} and click on a data group,
 for example, \code{Consumer Credit (G19)}. Click on \code{Build Package} and
 go through all the steps and click on \code{add to package} then click on 
-\code{Format Package} and slect \code{XML} then \code{Go to download}. (Selecting dates is not important as you are only trying to discover the series id.) At this point you can see the release and series id in either the link to 
-\code{preview sample} or the link to \code{Direct download for automated systems}. It will be something like \code{rel=H3&series=a0e6e4ca4fd8cd3d7227e549939ec0ff&}.
-
-javascript:var%20w=window.open('DownloadTable.aspx?rel=H3&series=a0e6e4ca4fd8cd3d7227e549939ec0ff&lastObs=7&from=&to=&filetype=sdmx&label=include&layout=seriescolumn','','width=700,height=550,menubar=1,resizable=1,scrollbars=1');
-
-Consumer credit from all sources (I think)
-\url{https://www.federalreserve.gov/datadownload/Output.aspx?rel=G19&series=79d3b610380314397facd01b59b37659&lastObs=&from=01/01/1943&to=12/31/2010&filetype=sdmx&label=include&layout=seriescolumn}
+\code{Format Package} and select \code{XML} then \code{Go to download}. (Selecting dates is not important as you are only trying to discover the series id.) At this point you can see the release and series id in either the link to 
+\code{preview sample} or the link to \code{Direct download for automated systems}. It will be something like \code{rel=G19&series=79d3b610380314397facd01b59b37659&}. It is necessary to 
+indicate the release \code{G19} and the series \code{79d3b610380314397facd01b59b37659} separated by a ''.'' as the id in the call to \code{TSget):
 
 \begin{Scode}{results=verbatim,fig=TRUE}
   frb <- TSconnect("sdmx", dbname="FRB") 
-  z <- TSget("79d3b610380314397facd01b59b37659", frb)
-  tfplot(z, Title="From Federal Reserve Board")
+  z <- TSget("G19.79d3b610380314397facd01b59b37659", frb)
+  tfplot(z, Title="Consumer Credit from Federal Reserve Board")
+  TSdescription(z) 
+\end{Scode}
+
+As a second example, follow the link to ''Aggregate Reserves ... (H3)''. 
+Click on \code{Build Package}, then select ''monetary base'', ''SA_BA'',
+''monthly'' and click on \code{add to package} then \code{Format Package} and select \code{XML} then \code{Go to download}. You can see the release and 
+series id in the link to \code{Direct download for automated systems} It will be something like \code{rel=H3&series=a0e6e4ca4fd8cd3d7227e549939ec0ff&}. 
+Indicate the release \code{H3} and the series \code{a0e6e4ca4fd8cd3d7227e549939ec0ff} separated by a ''.'' as the id in the call to \code{TSget):
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+  frb <- TSconnect("sdmx", dbname="FRB") 
+  z <- TSget("H3.a0e6e4ca4fd8cd3d7227e549939ec0ff", frb)
+  tfplot(z, Title="'Monetary Base from Federal Reserve Board")
   TSdescription(z) 
 \end{Scode}
 
 \subsection{Bank of Canada Examples}
-Identifiers can be found by ...
+Identifiers can be found by 
+
+...
 
 \begin{Scode}{results=verbatim,fig=TRUE}
   con <- TSconnect("sdmx", dbname="BoC") 
