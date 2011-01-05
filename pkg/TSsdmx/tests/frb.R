@@ -22,9 +22,9 @@ z <- TSget("H3.a0e6e4ca4fd8cd3d7227e549939ec0ff", con=con)
 tfplot(z, Title="From Federal Reserve Board")
 TSdescription(z) 
 
-z <- TSget(c("G19.79d3b610380314397facd01b59b37659",
-             "H3.a0e6e4ca4fd8cd3d7227e549939ec0ff"), con=con)
-
-tfplot(z, Title="From Federal Reserve Board")
-TSdescription(z) 
+#z <- TSget(c("G19.79d3b610380314397facd01b59b37659",
+#             "H3.a0e6e4ca4fd8cd3d7227e549939ec0ff"), con=con)
+#
+#tfplot(z, Title="From Federal Reserve Board")
+#TSdescription(z) 
 

@@ -32,7 +32,7 @@ setMethod("TSconnect",   signature(drv="sdmxDriver", dbname="character"),
    if      (dbname == "ECB" ) 
       con <- try(TSgetECB('118.DD.A.I5.POPE.LEV.4D',...),  silent=TRUE)
    else if (dbname == "FRB")
-      con <- try(TSgetFRB('79d3b610380314397facd01b59b37659', ...), silent=TRUE)
+    con <- try(TSgetFRB('G19.79d3b610380314397facd01b59b37659',...),silent=TRUE)
    else if (dbname == "BoC")
       con <- try(TSgetBoC(c('CDOR', 'OIS'),...), silent=TRUE)
    else if (dbname == "OECD")
@@ -289,13 +289,21 @@ TSgetECB <- function(id, names=NULL){
    }
 
 TSgetFRB <- function(id, names=NULL){
-   uri <- paste( "https://www.federalreserve.gov/datadownload/Output.aspx?rel=G19&",
-	   paste("series=", id, "&", sep="", collapse=""),
-	   paste( "lastObs=&from=01/01/1981&to=12/31/2010&filetype=sdmx&label=include&layout=seriescolumn", sep="", collapse=""), sep="")
-	   
+   #id should be the release and the key separated by "."
+   # eg G19.79d3b610380314397facd01b59b37659
+
 #Consumer credit from all sources (I think)
 #https://www.federalreserve.gov/datadownload/Output.aspx?rel=G19&series=79d3b610380314397facd01b59b37659&lastObs=&from=01/01/1943&to=12/31/2010&filetype=sdmx&label=include&layout=seriescolumn
 
+
+   key <- sub("[0-9,A-Z,a-z]*.","",id)
+   rel <- sub("[.]+[0-9,A-Z,a-z]*","",id)
+   uri <- paste( 
+       paste("https://www.federalreserve.gov/datadownload/Output.aspx?rel=",
+                       rel, "&", sep="", collapse=""),
+       paste("series=",key, "&", sep="", collapse=""),
+       paste( "lastObs=&from=01/01/1981&to=12/31/2010&filetype=sdmx&label=include&layout=seriescolumn", sep="", collapse=""), sep="")
+  
    # should try to check <faultstring> 
 
    #getURLContent should work, but gets octet=stream from frb
@@ -308,9 +316,27 @@ TSgetFRB <- function(id, names=NULL){
    doc <- xmlParse(z)
    #nmsp <-  c(ns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message") 
    #nmsp <- c(ns=xmlNamespace(xmlRoot(doc)[["DataSet"]][[2]]))
+   #nmsp <- c(ns=xmlNamespace(xmlRoot(doc))
+   #xmlNamespace(doc)
+   #xmlNamespace(xmlRoot(doc))
+   #xmlNamespace(xmlRoot(doc)[["DataSet"]])
+#  <frb:DataSet xmlns:kf="http://www.federalreserve.gov/structure/compact/H3_H3" #id="H3" #xsi:schemaLocation="http://www.federalreserve.gov/structure/compact/H3_H3 #H3_H3.xsd">
+   #xmlNamespace((xmlRoot(doc)[["Series"]]))
+   #nmspfrb <- xmlNamespace((xmlRoot(doc)[["DataSet"]])) # gets .compact/common
+   #xmlNamespaceDefinitions(doc, simplify = TRUE)
+   #xmlNamespaceDefinitions(doc, simplify = FALSE)
+   #xmlNamespaceDefinitions(doc, recursive = TRUE)
+   #nmspfrb<-xmlNamespaceDefinitions(xmlRoot(doc)[["DataSet"]],recursive= TRUE)
 
-   nmspfrb <- c(kf="http://www.federalreserve.gov/structure/compact/G19_CCOUT",
-               frb="http://www.federalreserve.gov/structure/compact/common") 
+   nmspfrb <- xmlNamespaceDefinitions(doc, recursive = TRUE, simplify = TRUE)
+
+
+
+   #nmspfrb <-c(kf="http://www.federalreserve.gov/structure/compact/G19_CCOUT",
+   #            frb="http://www.federalreserve.gov/structure/compact/common") 
+   #nmspfrb <- c(kf="http://www.federalreserve.gov/structure/compact/H3_H3",
+   #            frb="http://www.federalreserve.gov/structure/compact/common") 
+
    r <- DataSetParse(doc,"//kf:Series[@FREQ]" ,nmspfrb,
     obs="frb:Obs[@TIME_PERIOD]", timeperiod="TIME_PERIOD", value="OBS_VALUE")
 
@@ -319,6 +345,9 @@ TSgetFRB <- function(id, names=NULL){
    if(!is.null(names)) seriesNames(r) <- names
    r
    }
+
+#  z <- TSsdmx:::TSgetFRB("G19.79d3b610380314397facd01b59b37659")
+#  z <- TSsdmx:::TSgetFRB("H3.a0e6e4ca4fd8cd3d7227e549939ec0ff")
 
 
 DataSetParse <- function(doc, Xpath, nmsp, 
