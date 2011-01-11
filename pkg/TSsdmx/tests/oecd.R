@@ -3,6 +3,10 @@
 #    Uses SOAP and may require authentication. 
 #    Account does not seem necessary, but not sure.
 
+#################################################
+####### lots of junk to clean out below #######
+#################################################
+
 #This wiki about SDMX that has some examples that might help. It looks 
 #like this is a query format for ISTAT SDMX.
 #  http://sdmx.wikispaces.com/Example4 
@@ -321,18 +325,20 @@ queryMessage <- '
 </message:QueryMessage>'
 			
 
-soecd <-
+soecdA <-
    "http://stats.oecd.org/OECDSTATWS_SDMXNEW/sdmx.aspx?op=GetGenericData"
-soecd <-
+soecdB <-
    "http://stats.oecd.org/SDMXWS/sdmx.asmx?op=GetGenericData"
-soecd <-
+soecdC <-
    "http://stats.oecd.org/OECDStatWS/SDMX/sdmx.asmx?op=GetGenericData"
  
 h = basicTextGatherer()
 
 # SOAPAction  below may be for wrong version? 
 # <wsdl:operation name="GetGenericData">
-# <soap12:operation soapAction="http://stats.oecd.org/OECDStatWS/SDMX/GetGenericData" 
+# <soap12:operation soapActionA="http://stats.oecd.org/OECDSTATWS_SDMXNEW/GetGenericData" 
+soapActionB="http://stats.oecd.org/SDMXWS/GetGenericData" 
+soapActionC="http://stats.oecd.org/OECDStatWS/SDMX/GetGenericData" 
 
 body <- paste(soap1.0.env.head, queryMessage,soap1.0.env.foot, collapse="")
 body <- paste(soap1.1.env.head, queryMessage,soap1.1.env.foot, collapse="")
@@ -341,16 +347,22 @@ body <- paste(soap1.2.env.head, queryMessageEg,soap1.2.env.foot, collapse="")
 body <- paste(soap1.2.env.head, queryMessage,soap1.2.env.foot, collapse="")
 
 h$reset()
-curlPerform(url=soecd,
+curlPerform(url=soecdB,
+curlPerform(url=soecdC,
+curlPerform(url=soecdA,
        httpheader=c(Accept="text/xml", Accept="multipart/*",        
-       SOAPAction='http://stats.oecd.org/OECDStatWS/SDMX/GetGenericData',
-       'Content-Type' = "text/xml; charset=utf-8"),
+                    SOAPAction=soapActionA,
+                    'Content-Type' = "text/xml; charset=utf-8"),
        postfields=body,
        writefunction = h$update,
        verbose = TRUE
        )
      
 h$value()
+# C returns <title>Object moved</title>
+# B returns Internal Server Error  SoapException: Server did not recognize the value of HTTP Head
+# A returns <title>Object moved</title>
+
 
 xmlTreeParse(h$value(), asText=TRUE, trim=TRUE)
 #  str(xmlTreeParse(h$value(), asText=TRUE))
@@ -363,6 +375,10 @@ htmlTreeParse(h$value(), asText=TRUE, trim=TRUE)
 # should try to get <faultstring> out of $children in case of bad query
 names(htmlTreeParse(h$value(), asText=TRUE, trim=TRUE))
 htmlTreeParse(h$value(), asText=TRUE, trim=TRUE)$children
+ 
+ 
+   #uri <- 
+   #z <- getURLContent(uri)
 
 cat("************** TSsdmx  Examples ******************************\n")
 require("TSsdmx")
