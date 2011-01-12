@@ -1,6 +1,6 @@
 # Status:  Not nearly working
 #    Preliminary investigation notes.
-#    So far it is not clear they support sdmx, but there is a button on the
-#    web site linking to the SDMX web site.
+#    They do not yet support sdmx for export, although they use it for
+#    importing data from the 4 main sponser organizations.
 
 #http://www.jedh.org/jedh_dbase.html
