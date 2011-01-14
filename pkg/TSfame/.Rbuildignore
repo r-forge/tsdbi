@@ -3,6 +3,7 @@
 (^|.*/)run$
 (^|.*/)zot$
 (^|.*/)zotTestFame.db$
+^testFame.db$
 CVS
 (^|.*/)/CVS$
 (^|.*/)/(^|.*/)/CVS$
