@@ -9,10 +9,22 @@
 
 #This wiki about SDMX that has some examples that might help. It looks 
 #like this is a query format for ISTAT SDMX.
+#  http://sdmx.wikispaces.com 
+#  http://sdmx.wikispaces.com/Example 
 #  http://sdmx.wikispaces.com/Example4 
 
+#####  http://sdmx.wikispaces.com/OECD+Web+Service  #####
+#####  http://sdmx.wikispaces.com  #####
+
 #It looks like you can plug in the SDMX export query here:
+#http://webnet.oecd.org/Sdmxws/Home.aspx
+#or
+#http://webnet.oecd.org/Sdmxws/Home.aspx?Type=MDDimensionMember
+# the old service is at
+#http://webnet.oecd.org/OECDStatWS_SDMX/SDMXQuery.aspx
+#and new service was previously called 
 #http://stats.oecd.org/OECDSTATWS_SDMXNEW/QueryPage.aspx?Type=MDDimensionMember 
+
 
 #Tthere is some sort of SOAP web service through which you feed this query. #Perhaps there are clues to using it here, but you need a login: #http://stats.oecd.org/SDMXWS/sdmx.asmx
 
