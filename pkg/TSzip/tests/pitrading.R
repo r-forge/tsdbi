@@ -8,8 +8,7 @@ require("TSzip")
 ## http://pitrading.com/free_eod_data/INDU.zip
 ##################################################
 ##################################################
-  pit <- TSconnect("zip", dbname="http://pitrading.com/free_eod_data",
-          read.csvArg=list())
+  pit <- TSconnect("zip", dbname="http://pitrading.com/free_eod_data")
 
   z <- TSget("INDU", pit)
   tfplot(z)
@@ -22,3 +21,7 @@ require("TSzip")
  
   TSrefperiod(z) 
   TSdescription(z) 
+
+  z <- TSget(c("AD", "CD"), pit, select="Close")
+  tfplot(z, start="2007-01-01",
+         Title="Australian and Canadian Dollar Continuous Contract, Close")

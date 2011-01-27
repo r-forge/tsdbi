@@ -32,16 +32,13 @@ database series (or group of series such as high, low, open, close, for a
 stock). The \code{dbname} is a directory or \code{url}. 
 \pkg{TSzip} does not support writing data to the database. 
 
-\subsection{Examples using pitrading data}
+\subsection{Examples using $\Pi$trading data}
 
-The following retrieves zipped files from \url{//pitrading.com/free_market_data.htm} which provides some end of day data free of charge. (Disclaimer: This site is used as an example. Other than using this free data, I have no association with the company.) 
-The mechanism for converting the data to
-an \pkg{R} time series object is also set by the function defined 
-in the argument \code{tsrepresentation}.
-
+The following retrieves zipped files 
+from \code{http://pitrading.com/free\_market\_data.htm} which 
+provides some end of day data free of charge. (Disclaimer: This site is used as an example. Other than using this free data, I have no association with the company.) 
 \begin{Scode}{results=verbatim}
- con <- TSconnect("zip", dbname="http://pitrading.com/free_eod_data",
-          read.csvArg=list())
+ con <- TSconnect("zip", dbname="http://pitrading.com/free_eod_data")
 \end{Scode}
 
 Once the connection is established, data can be read from it with the same
