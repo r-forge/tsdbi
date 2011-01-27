@@ -18,15 +18,16 @@ setMethod("dbDisconnect", signature(conn="TSzipConnection"),
 #######     end kludges   ######
 
 setMethod("TSconnect",   signature(drv="zipDriver", dbname="character"),
-  definition=function(drv, dbname,  read.csvArgs=list()){ 
+  definition=function(drv, dbname, 
+                suffix=c("Open","High","Low","Close","Volume","OI"), ...){ 
    #  user / password / host  for future consideration
    # may need to to have this function specific to dbname  cases as in TSsdmx
    if (is.null(dbname)) stop("dbname must be specified")
    
    new("TSzipConnection", drv="zip", dbname=dbname, 
         hasVintages=FALSE, hasPanels=FALSE,
-	#read.csvArgs=read.csvArgs, 
-	suffix=c("Open","High","Low","Close","Volume","OI")) 
+	#read.csvArgs=list(...), 
+	suffix=suffix) 
    } 
    )
 
@@ -65,7 +66,7 @@ setMethod("TSget",     signature(serIDs="character", con="TSzipConnection"),
    definition=function(serIDs, con, TSrepresentation=options()$TSrepresentation,
        tf=NULL, start=tfstart(tf), end=tfend(tf),
        names=NULL, select=con@suffix, ...){ 
-   if (is.null(TSrepresentation)) TSrepresentation <- "ts"
+   if (is.null(TSrepresentation)) TSrepresentation <- "zoo"
     
    if(is.null(names)) names <- c(t(outer(serIDs, select, paste, sep=".")))
    select <- con@suffix %in% select
@@ -107,29 +108,18 @@ setMethod("TSget",     signature(serIDs="character", con="TSzipConnection"),
   
       mat <- tbind(mat,d)
       }
-  #if(length(ids)   != NCOL(d))
-  #     stop("number of ids not equal number of series.")
    
-   #if(!is.null(nm)) if(length(nm)   != NCOL(data))
-   #    stop("number of names not equal number of series.")
-
-   #if(!is.null(desc)) if(length(desc)   != NCOL(data))
-   #    stop("number of descriptions not equal number of series.")
-
-   #if(is.null(nm))   nm   <- rep("",NCOL(data))
-   desc <- rep("",NCOL(data))
+    seriesNames(mat) <- names
+    desc <- paste(names, " from ", con@dbname)
    
-  seriesNames(mat) <- names
-
-    #if (NCOL(mat) != length(serIDs)) stop("Error retrieving series", serIDs) 
-    #mat <- tfwindow(mat, tf=tf, start=start, end=end)
+    mat <- tfwindow(mat, tf=tf, start=start, end=end)
  
     TSmeta(mat) <- new("TSmeta", serIDs=serIDs,  dbname=con@dbname, 
         hasVintages=con@hasVintages, hasPanels=con@hasPanels,
   	conType=class(con), DateStamp= Sys.time(), 
-	TSdoc=paste(desc, " from ", con@dbname, "retrieved ", Sys.time()),
-	TSdescription=paste(desc, " from ", con@dbname),
-	TSlabel=desc
+	TSdoc=paste(desc, "retrieved ", Sys.time()),
+	TSdescription=desc,
+	TSlabel=names
 	) 
     mat
     } 
