@@ -87,12 +87,14 @@ and \code{TSget} in \pkg{TSdbi} for more details.
 }
 \examples{
   # data from http://pitrading.com/
+  # par(ask=TRUE) # to pause between pages
   con <- TSconnect("zip", dbname="http://pitrading.com/free_eod_data")
   x <- TSget("EURUSD", con)
-  tfplot(x)
+  tfplot(x, graphs.per.page=3)
 
-  z <- TSget(c("AD", "CD"), pit, select="Close")
-  tfplot(z, start="2007-01-01",
-   Title="Futures, Australian and Canadian Dollar Continuous Contract at Close")
+  z <- TSget(c("AD", "CD"), con, select="Close")
+  tfplot(z, start="2007-01-01", Title=
+   "Futures, Australian and Canadian Dollar Continuous Contract at Close",
+    graphs.per.page=3)
  }
 \keyword{ts}
