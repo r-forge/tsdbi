@@ -66,7 +66,10 @@ setMethod("TSget",     signature(serIDs="character", con="TSzipConnection"),
    definition=function(serIDs, con, TSrepresentation=options()$TSrepresentation,
        tf=NULL, start=tfstart(tf), end=tfend(tf),
        names=NULL, select=con@suffix, ...){ 
-   if (is.null(TSrepresentation)) TSrepresentation <- "zoo"
+   if (is.null(TSrepresentation)) {
+      require("zoo")
+      TSrepresentation <- zoo
+      }
     
    if(is.null(names)) names <- c(t(outer(serIDs, select, paste, sep=".")))
    select <- con@suffix %in% select
@@ -104,7 +107,9 @@ setMethod("TSget",     signature(serIDs="character", con="TSzipConnection"),
    	    stop("Error converting  data to numeric.", data)
       
       d <- matrix(zzz, NROW(zz), NCOL(zz)-1 )
-      d <- zoo(d[, select], order.by=dates)
+      #d <- zoo(d[, select], order.by=dates)
+      #d <- timeSeries(d[, select], charvec=dates)
+      d <- TSrepresentation(d[, select], dates)
   
       mat <- tbind(mat,d)
       }
