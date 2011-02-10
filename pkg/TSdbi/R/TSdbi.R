@@ -415,7 +415,7 @@ TSputSQL <- function(x, serIDs=seriesNames(x), con, Table=NULL,
   #ids <- gsub(" ", "", serIDs ) # remove spaces in id
   #if(! all( ids == serIDs)) warning("spaces removed from series names.")
   rP <- TSrefperiod(x)
-  N <- periods(x)
+  #N <- NROW(x) # could be periods() (or Tobs())
   # SHOULD PROBABLY HAVE METHODS FOR TS, ZOO, ITS, ... HERE
   if(is.ts(x)) {
     fr <-frequency(x) 
