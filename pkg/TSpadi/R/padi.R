@@ -312,7 +312,7 @@ putpadi.default <-function(data,  server=PADIserver(), dbname="",
          }
        }
 
-    nobs <-periods(data)
+    nobs <-NROW(data) # periods() or Tobs() 
     starty<- tfstart(data)[1]
     freq  <- tffrequency(data)
     startd <- 1
@@ -337,7 +337,8 @@ putpadi.default <-function(data,  server=PADIserver(), dbname="",
        #freq<-??? In Fame starty=1 is may be valid for vectors
       }
     buffsz <- 120  # warning message buffer
-    if (!is.matrix(data)) data <- matrix(data, periods(data),nseries(data))
+    if (!is.matrix(data)) data <- matrix(data, NROW(data),nseries(data))
+    #  NROW() should be periods() or Tobs() 
     ok <- rep(NA,N)
     for (i in 1:N)
        {ns<-.C("putpadi",
