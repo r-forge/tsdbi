@@ -66,6 +66,10 @@ setMethod("TSget",     signature(serIDs="character", con="TSzipConnection"),
    definition=function(serIDs, con, TSrepresentation=options()$TSrepresentation,
        tf=NULL, start=tfstart(tf), end=tfend(tf),
        names=NULL, select=con@suffix, ...){ 
+   if (mode(TSrepresentation) == "character" && TSrepresentation == "tis") {
+	    require("tis")
+	    require("zoo")
+	    }
    if (is.null(TSrepresentation)) {
       require("zoo")
       TSrepresentation <- zoo
@@ -108,8 +112,13 @@ setMethod("TSget",     signature(serIDs="character", con="TSzipConnection"),
       
       d <- matrix(zzz, NROW(zz), NCOL(zz)-1 )
       #d <- zoo(d[, select], order.by=dates)
+      #d <- as.tis(zoo(d[, select], order.by=dates))
       #d <- timeSeries(d[, select], charvec=dates)
-      d <- TSrepresentation(d[, select], dates)
+      #d <- TSrepresentation(d[, select], dates)
+      if (mode(TSrepresentation) == "character") d <- 
+	 if (TSrepresentation == "tis") as.tis(zoo(d[, select], order.by=dates))
+	 else                do.call(TSrepresentation, list(d[, select], dates))
+      else d <- TSrepresentation(d[, select], dates)
   
       mat <- tbind(mat,d)
       }
