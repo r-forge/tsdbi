@@ -38,6 +38,10 @@ if(identical(as.logical(service), TRUE)) {
       print(end(z))
        
       tfplot(TSget(serIDs="V122646", conets))
+
+      z <- TSget(serIDs="V122646", conets, TSrepresentation="timeSeries")
+      if("timeSeries" != class(z)) stop("timeSeries class object not returned.")
+
     } else  {
       cat("ets not available\n")
    }

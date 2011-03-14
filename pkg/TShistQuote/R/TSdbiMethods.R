@@ -120,8 +120,12 @@ setMethod("TSget",     signature(serIDs="character", con="TShistQuoteConnection"
     if ((TSrepresentation  == "default")&&
         (tffrequency(mat) %in% c( 1,4,12,2))) mat <- as.ts(mat)
     mat <- tfwindow(mat, tf=tf, start=start, end=end)
-    if (! TSrepresentation  %in% c( "zoo", "default"))
- 	 mat <- do.call(TSrepresentation, list(mat))   
+  
+    if (! TSrepresentation  %in% c( "zoo", "default")){
+      require("tframePlus")
+      mat <- changeTSrepresentation(mat, TSrepresentation)
+      }
+
     seriesNames(mat) <- names
     TSmeta(mat) <- new("TSmeta", serIDs=serIDs,  dbname=con@dbname, 
         hasVintages=con@hasVintages, hasPanels=con@hasPanels,

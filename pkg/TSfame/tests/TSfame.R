@@ -139,6 +139,12 @@ ci  <- TSget("seriesC", con, TSrepresentation="tis")
 start(ci)
 start(bi)
 
+cat("*******  timeSeries representation\n")
+ci  <- TSget("seriesC", con, TSrepresentation="timeSeries")
+if("timeSeries" != class(ci)) stop("timeSeries class object not returned.")
+start(ci)
+start(bi)
+
 cat("*******  misc\n")
 
 TSdates("seriesA", con)

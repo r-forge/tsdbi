@@ -134,8 +134,12 @@ setMethod("TSget",     signature(serIDs="character", con="TSgetSymbolConnection"
 	   mat <- as.ts(mat, frequency=1, start=c(1900+st$year, 1))
 	}
     mat <- tfwindow(mat, tf=tf, start=start, end=end)
-    #if (! TSrepresentation  %in% c( "zoo", "default"))
-    #	 mat <- do.call(TSrepresentation, list(mat))   
+    
+#    if (! TSrepresentation  %in% c( "zoo", "default")){
+#      require("tframePlus")
+#      mat <- changeTSrepresentation(mat, TSrepresentation)
+#      }
+
     seriesNames(mat) <- names
     TSmeta(mat) <- new("TSmeta", serIDs=serIDs,  dbname=con@dbname, 
         hasVintages=con@hasVintages, hasPanels=con@hasPanels,

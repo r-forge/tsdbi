@@ -11,6 +11,10 @@ Known BUGS
 	package in the case of a remote servers (cannot be suppressed).
 
 
+Changes in TSfame version 2011.3-1
+
+   o	added support for TSrepresentation.
+
 Changes in TSfame version 2011.1-1
 
    o	Version requirement for fame package bumped to (> 2.12).

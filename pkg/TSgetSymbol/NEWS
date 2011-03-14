@@ -4,7 +4,7 @@ See also
 
 Known BUGS
 
-   o	None for the moment.
+   o	Can only return default time series representation.
 
 
 Changes in TSgetSymbol version 2010.11-1

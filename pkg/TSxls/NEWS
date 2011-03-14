@@ -2,7 +2,14 @@ See also
 
    o	See also NEWS in the TSdbi package.
 
+Known BUGS
+
+   o	TSrepresentaion is specified in TSconnect rather than TSget.
+
+Changes in TSxls version 2011.3-1
+
+   o	minor documentation changes.
 
 Changes in TSxls version 2010.12-1
 
-   o	first release
+   o	first release.

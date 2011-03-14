@@ -16,7 +16,8 @@
 \usage{
      padi() 
     \S4method{TSget}{character,TSpadiConnection}(
-	serIDs, con, names=serIDs, ...)
+	serIDs, con,
+       TSrepresentation=getOption("TSrepresentation"), names=serIDs, ...)
     \S4method{TSput}{ANY,character,TSpadiConnection}(
 	x, serIDs=seriesNames(data), con, ...)   
     \S4method{TSconnect}{padiDriver,character}(
@@ -44,6 +45,8 @@
     \item{password}{a character string indicating a password.}
     \item{host}{a character string indicating a padi server computer.}
     \item{timeout}{time in seconds to wait for host to respond.}
+    \item{TSrepresentation}{time representation for returned series. 
+          (See \code{TSget} in package \pkg{TSdbi}.)}
     \item{...}{Arguments passed to getpadi or putpadi.}
 }
 \value{Depends.}

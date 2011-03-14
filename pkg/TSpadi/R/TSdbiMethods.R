@@ -114,7 +114,8 @@ setMethod("TSdates",
 
 
 setMethod("TSget",     signature(serIDs="character", con="TSpadiConnection"),
-   definition= function(serIDs, con, names=serIDs, ...)
+   definition= function(serIDs, con,
+       TSrepresentation=getOption("TSrepresentation"), names=serIDs, ...)
 { # ... arguments unused
   # This function retreives data from a PADI server using getpadi
   # A server specified as NULL or as "" is expanded to the localhost.
@@ -161,6 +162,12 @@ setMethod("TSget",     signature(serIDs="character", con="TSpadiConnection"),
 
 # if ( !is.na(tffrequency(serIDs)) && (tffrequency(serIDs)) != tffrequency(r))
 #       warning("returned serIDs frequency differs from request.")
+ 
+ if (! TSrepresentation  %in% c( "ts", "default")){
+      require("tframePlus")
+      r <- changeTSrepresentation(r, TSrepresentation)
+      }
+
  TSmeta(r) <- new("TSmeta", serIDs=serIDs,  dbname=con@dbname, 
       hasVintages=con@hasVintages, hasPanels=con@hasPanels,
       conType=class(con), DateStamp= Sys.time(), TSdescription="", TSdoc="") 

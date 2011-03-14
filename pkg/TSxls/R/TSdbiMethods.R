@@ -167,9 +167,11 @@ setMethod("TSget",     signature(serIDs="character", con="TSxlsConnection"),
 
     if (NCOL(mat) != length(serIDs)) stop("Error retrieving series", serIDs) 
     mat <- tfwindow(mat, tf=tf, start=start, end=end)
-    #if (TSrepresentation  %in% c( "ts", "default")) {}
-    #if (! TSrepresentation  %in% c( "zoo", "default"))
-    #	 mat <- do.call(TSrepresentation, list(mat))   
+    #if (! TSrepresentation  %in% c( "zoo", "default")){
+    #  require("tframePlus")
+    #  mat <- changeTSrepresentation(mat, TSrepresentation)
+    #  }
+
     seriesNames(mat) <- names
     TSmeta(mat) <- new("TSmeta", serIDs=serIDs,  dbname=con@dbname, 
         hasVintages=con@hasVintages, hasPanels=con@hasPanels,
