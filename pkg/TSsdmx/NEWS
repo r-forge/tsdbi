@@ -7,6 +7,10 @@ Known BUGS
    o	None for the moment.
 
 
+Changes in TSsdmx version 2011.3-1
+
+   o	added support for TSrepresentation.
+
 Changes in TSsdmx version 2010.12-1
 
    o	first release

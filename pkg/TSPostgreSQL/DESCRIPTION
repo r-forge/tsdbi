@@ -1,6 +1,6 @@
 Package: TSPostgreSQL
-Version: 2010.12-1
-Date:2010-12-20
+Version: 2011.3-1
+Date:2011-03-14
 Title: Time Series Database Interface extensions for PostgreSQL
 Description: TSPostgreSQL provides a PostgreSQL interface for TSdbi.
 Depends: R (>= 2.8.0), methods, tframe, tframePlus, TSdbi (>= 2010.10-1), RPostgreSQL

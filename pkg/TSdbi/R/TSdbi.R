@@ -663,14 +663,17 @@ TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation")
     if(TSdescription) desc <- c(desc, TSdescription(serIDs[i],con) ) # where?
     if(TSdoc)         doc  <- c(doc,  TSdoc(serIDs[i],con) ) # where?
     if(TSlabel)       label<- c(label,TSlabel(serIDs[i],con) ) # where?
+
     mat <- tbind(mat, r)
     } # where[j]
     } # serID[i]
   mat <- tfwindow(mat, tf=tf, start=start, end=end)
   if( (!all(is.na(rp))) && !all(rp == "	" ) ) TSrefperiod(mat) <- rp      
   
-  if (! TSrepresentation  %in% c( "zoo", "default"))
-      mat <- do.call(TSrepresentation, list(mat))   
+  if (! TSrepresentation  %in% c( "zoo", "default")){
+      require("tframePlus")
+      mat <- changeTSrepresentation(mat, TSrepresentation)
+      }
 
   seriesNames(mat) <- names
 
@@ -682,7 +685,6 @@ TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation")
       TSlabel      =if(TSlabel)      label else  as(NA, "character"))
   mat
   }
-
 
 setGeneric("TSdates", def=
    function(serIDs, con=getOption("TSconnection"), 

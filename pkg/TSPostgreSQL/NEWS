@@ -3,6 +3,10 @@ See also
    o	See also NEWS in the TSdbi package.
 
 
+Changes in TSPostgreSQL version 2011.3-1
+
+   o	added support for TSrepresentation.
+
 Changes in TSPostgreSQL version 2010.5-1
 
    o	added method dropTStable to work around problem that different database

@@ -29,13 +29,4 @@ exportMethods(
 
 
 import("tframe")
-S3method("tfstart","tis")
-S3method("tfstart","tistframe")
-S3method("tfend","tis")
-S3method("tfend","tistframe")
-S3method("tfperiods","tistframe")
-S3method("periods","tistframe")
-S3method("tframe","tis")
-S3method("tfSet","tistframe")
-S3method("tfwindow","tis")
-S3method("tbind","tis")
+import("tframePlus")

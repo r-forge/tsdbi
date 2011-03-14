@@ -6,6 +6,14 @@ Known BUGS
 
    o	Probably does not build on Windows or Mac.
 
+Changes in TSpadi version 2011.3-1
+
+   o	added support for TSrepresentation.
+
+Changes in TSpadi version 2011.2-1
+
+   o	Added argument TSrepresentation to TSget.
+
 Changes in TSpadi version 2010.11-2
 
    o	Removing trivial dependence on periods() to avoid complications in

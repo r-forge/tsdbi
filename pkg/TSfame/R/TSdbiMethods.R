@@ -113,8 +113,11 @@ setMethod("TSget",     signature(serIDs="character", con="TSfameConnection"),
 
   if( (!is.null(rp)) && !all(is.na(rp)) ) TSrefperiod(mat) <- rp      
 
-  if (! TSrepresentation  %in% c( "zoo", "default", "tis"))
-      mat <- do.call(TSrepresentation, list(mat))   
+  if (! TSrepresentation  %in% c( "zoo", "default", "tis")){
+      require("tframePlus")
+      mat <- changeTSrepresentation(mat, TSrepresentation)
+      }
+
   seriesNames(mat) <- if(!is.null(names)) names else serIDs 
 
   TSmeta(mat) <- new("TSmeta", serIDs=serIDs, dbname=con@dbname, 

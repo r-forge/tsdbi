@@ -19,6 +19,8 @@ plot(x2)
 TSdescription(x2) 
 
 x <- TSget(c("CPIAUCNS","M2"), con)
+#x <- TSget(c("CPIAUCNS","M2"), con, TSrepresentation="timeSeries")
+#if("timeSeries" != class(x)) stop("timeSeries class object not returned.")
 plot(x)
 tfplot(x)
 TSdescription(x) 
