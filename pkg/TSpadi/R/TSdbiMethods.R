@@ -163,6 +163,8 @@ setMethod("TSget",     signature(serIDs="character", con="TSpadiConnection"),
 # if ( !is.na(tffrequency(serIDs)) && (tffrequency(serIDs)) != tffrequency(r))
 #       warning("returned serIDs frequency differs from request.")
  
+ if (is.null(TSrepresentation)) TSrepresentation <- "ts"
+ 
  if (! TSrepresentation  %in% c( "ts", "default")){
       require("tframePlus")
       r <- changeTSrepresentation(r, TSrepresentation)
