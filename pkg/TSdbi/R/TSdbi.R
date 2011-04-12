@@ -133,38 +133,53 @@ setMethod("TSdescription",   signature(x="missing", con="missing"),
 
 # internal utilities to construct WHERE
 
-realVintage <- function(con, vintage, x) {
+realVintage <- function(con, vintage, serIDs) {
    # replace alias with canonical name if necessary
+   # assuming if vintage is a vector then serIDs has already been expanded to
+   # the same length. Otherwise, vintage should be null or a scalar which is
+   # expanded to the length of serIDs. 
    if(!con@hasVintages) return(vintage) #usually NULL in this case 
+   
    if(is.null(vintage)) vintage <- "current"
-   if(1 < length(vintage)) stop("vintage must be a scalar string.")
-   id <- paste(paste("'", x ,"'",sep=""),collapse=",")
-   q <- paste("SELECT vintage  FROM vintageAlias WHERE alias='",
-              vintage,"' AND id IN (",id,");", sep="") 
-   rV <- dbGetQuery(con,q )$vintage
-   # if alias result is empty check null id which applies to all series.
-   if (0== NROW(rV)) {
-      q <- paste(
-        "SELECT vintage  FROM vintageAlias WHERE alias='", vintage,"' ;", sep="")
-      rV <- dbGetQuery(con,q )$vintage
-      }
-   # if alias result is still empty assume vintage is already the real one.
-   if (0== NROW(rV)) rep(vintage, length(x)) else rV
+   else if( 1 == length(vintage)) vintage <- rep(vintage, length(serIDs))
+   
+   rV <- NULL
+   for (i in seq(length(serIDs))){
+     q <- paste("SELECT vintage  FROM vintageAlias WHERE alias ='",
+              vintage[i],"' AND id = '",serIDs[i],"';", sep="") 
+     r <- dbGetQuery(con,q )$vintage
+     # if alias result is empty check null id which applies to all series.
+     if (0== NROW(r)) {
+        q <- paste( "SELECT vintage  FROM vintageAlias WHERE alias='", 
+	            vintage[i],"' ;", sep="")
+        r <- dbGetQuery(con,q )$vintage
+        }
+     # if alias result is still empty assume vintage is already the real one.
+     if (0== NROW(r)) r <- vintage[i]
+     rV <- c(rV, r)
+     }
+   rV
    }
 
 realPanel <- function(con, panel) {
    # replace alias with canonical name if necessary
    if(!con@hasPanels) return(panel) #usually NULL in this case
    if(is.null(panel)) stop("panel must be specified")
-   q <- paste("SELECT panel  FROM panelAlias WHERE alias='",panel,"';", sep="") 
+   for (i in seq(length(panel))){
+     q <- paste("SELECT panel  FROM panelAlias WHERE alias='",
+                panel[i],"';", sep="") 
 
-   rP <- dbGetQuery(con,q )$panel
-   # if alias result is empty assume panel is already the real one.
-   if (0== NROW(rP)) panel else rP
+     r <- dbGetQuery(con,q )$panel
+     # if alias result is empty assume panel is already the real one.
+     if (0== NROW(r)) r <- panel[i]
+     rP <- c(rP, r)
+     }
+   rP
    }
 
-setWhere <- function(con, x, realVintage, realPanel) {
-   where <-  paste(" WHERE id = '", x, "'", sep="")
+setWhere <- function(con, serIDs, realVintage, realPanel) {
+   # serIDs must be a scale for this function
+   where <-  paste(" WHERE id = '", serIDs, "'", sep="")
    if(!is.null(realVintage))
       where <- paste(where, " AND vintage='", realVintage, "'", sep="")
    if(!is.null(realPanel)) 
@@ -576,6 +591,8 @@ TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation")
          if ( length(vintage) > 1 ) vintage  else  serIDs 
 
   panel <- realPanel(con,panel)
+  # if vintage is a vector then serIDs needs to be expanded
+  if ( 1 < length(vintage)) serIDs <- rep(serIDs, length(vintage))
   # next returns a vector of length equal serIDs
   vintage <- realVintage(con,vintage, serIDs) 
 
