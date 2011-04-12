@@ -11,7 +11,7 @@ Known BUGS
 
 Changes in TSdbi version 2011.4-1
 
-   o	fixed bug in vintageAlias with multiple versions.".
+   o	fixed bug in vintageAlias with multiple versions.
 
 Changes in TSdbi version 2011.3-1
 
