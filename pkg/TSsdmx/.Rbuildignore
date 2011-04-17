@@ -8,6 +8,8 @@ CVS
 (^|.*/)/(^|.*/)/CVS$
 TMP$
 FLAGS$
+^Rplots(.*).pdf$
+inst/doc/Rplots(.*).pdf$
 mansrc$
 guidesrc$
 zot$

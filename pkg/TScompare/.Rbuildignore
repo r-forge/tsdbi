@@ -8,6 +8,8 @@ CVS
 (^|.*/)/(^|.*/)/CVS$
 TMP$
 FLAGS$
+^Rplots(.*).pdf$
+inst/doc/Rplots(.*).pdf$
 zot$
 run$
 inst/doc/(^|.*)\.tex$
