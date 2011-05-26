@@ -15,7 +15,9 @@ setOldClass("fameConnection",  prototype=structure(integer(1),
   host=character(1),     user=character(1), password=character(1)))
 
 setClass("TSfameServerConnection",
-    contains=c("DBIConnection","conType","TSdb","fameConnection"))
+    contains=c("DBIConnection","conType","TSdb","fameConnection"),
+   representation(current="character"))
+   # current is only used with vintages (faking info the db should have)
    
 ####### some kludges to make this look like DBI. ######
 # these prevents error messages
@@ -31,11 +33,19 @@ setMethod("dbUnloadDriver", signature(drv="fameServerDriver"),
 
 setMethod("TSconnect",   signature(drv="fameServerDriver", dbname="character"),
   definition= function(drv, dbname, 
-     service = "", host = "", user = "", password = "", ...){
+     service = "", host = "", user = "", password = "", 
+	      current=NA, ...){
    #It might be possible to leave the Fame db open, but getfame needs it closed.
    if (is.null(dbname)) stop("dbname must be specified")
    #ensure the db name ends in .db, otherwise fameServer adds this and then con fails
-   db <- sub('$', '.db',sub('.db$', '', dbname))
+   nm <- names(dbname)
+   dbname <- sub('$', '.db',sub('.db$', '', dbname))
+   if(is.null(nm) & (1 < length(dbname))) {
+      nm <- as.character(seq(length(dbname)))
+      warning("vintage names generated as sequence: ", nm)
+      }
+   names(dbname) <- nm
+
    if(!fameRunning()) fameStart(workingDB = FALSE)
 
    con <- fameConnection(service=service, host=host, 
@@ -43,23 +53,34 @@ setMethod("TSconnect",   signature(drv="fameServerDriver", dbname="character"),
    if(inherits(con, "try-error") )
        stop("Could not establish TSfameServerConnection.")
 
-   Id <- try(fameDbOpen(dbname,
-                 connection=con, stopOnFail=TRUE))
-   if(inherits(Id, "try-error") )
-       stop("Could not establish TSfameServerConnection to ", dbname)
-   
-   fameDbClose(Id, closeConnection = FALSE) # Id is not saved
+   # if dbname is a vector (for vintages) it should have names so that
+   #  dbname[vintage] can be used to subset it in TSget.
+   for (i in seq(length(dbname))){
+      Id <- try(fameDbOpen(dbname[i], connection=con, stopOnFail=TRUE))
+      if(inherits(Id, "try-error") ) 
+       stop("Could not establish TSfameServerConnection to ", dbname[i])
+      fameDbClose(Id, closeConnection = FALSE) # this Id is not saved
+      }
    
    new("TSfameServerConnection", drv="fameServer", dbname=dbname, 
-	  hasVintages=FALSE, hasPanels=FALSE, con) 
+	  hasVintages= (1 < length(dbname)), hasPanels=FALSE,
+	  current=as.character(current), con) 
    } )
 
 
 setMethod("TSdates",  
    signature(serIDs="character", con="TSfameServerConnection", vintage="ANY", panel="ANY"),
-   definition= function(serIDs, con, vintage=NULL, panel=NULL, ... )  
+   definition= function(serIDs, con, vintage=getOption("TSvintage"), panel=NULL, ... )  
 {  # Indicate  dates for which data is available.
    # This requires retrieving series individually so they are not truncated.
+   if(con@hasVintages){
+     if(is.null(vintage)) vintage <- "current"
+     if(1 != length(vintage))
+        stop("only one vintage must be specified for TSdates.")
+     if("current" == vintage) vintage <- con@current
+     if(is.na(vintage))
+ 	 stop("connection does not have a specified current vintage.")
+     } 
    r <- av <- st <- en <- tb <- NULL
    for (i in 1:length(serIDs))
      {r <- try(TSget( serIDs[i], con=con), silent=TRUE) 
@@ -85,20 +106,42 @@ setMethod("TSdates",
   r
 } )
 
-
 setMethod("TSget",     signature(serIDs="character", con="TSfameServerConnection"),
-   definition= function(serIDs, con, TSrepresentation=getOption("TSrepresentation"),
+   definition=function(serIDs, con, TSrepresentation=getOption("TSrepresentation"),
        tf=NULL, start=tfstart(tf), end=tfend(tf),
-       names=serIDs, TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE, ...)
+       names=NULL, TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE,
+       vintage=getOption("TSvintage"), ...)
 { # ... arguments unused
   if (is.null(TSrepresentation)) TSrepresentation <- "default"
+
+  if ( 1 < sum(c(length(serIDs), length(vintage)) > 1))
+   stop("Only one of serIDs or vintage can have length greater than 1.")
+
+  if(con@hasVintages){
+    if(is.null(names)) names <- 
+         if ( length(vintage) > 1 ) vintage  else  serIDs 
+    if(is.null(vintage)) vintage <- "current"
+    vintage["current" == vintage] <- con@current
+    if(any(is.na(vintage)))
+        stop("connection does not have a specified current vintage.")
+    # if vintage is a vector then serIDs needs to be expanded, 
+    #  otherwise dbname needs to be expanded.
+    dbname <- con@dbname[vintage]
+    if ( 1 == length(vintage)) dbname  <- rep(dbname, length(serIDs))
+    else  serIDs <- rep(serIDs, length(vintage))
+    } 
+  else {
+    if(is.null(names)) names <- serIDs 
+    dbname <- rep(con@dbname, length(serIDs))   
+  }
+
   mat <- desc <- doc <- label <-  rp <- NULL
   for (i in seq(length(serIDs))) {
-    r <- getfame(serIDs[i], db=con@dbname, connection=S3Part(con),
+    r <- getfame(serIDs[i], db=dbname[i], connection=S3Part(con),
               save = FALSE, envir = parent.frame(),
              start = NULL, end = NULL, getDoc = FALSE)
     if(0==length(r))
-       stop("Fame retrieval failed. Series may not exist on ",con@dbname,".")
+       stop("Fame retrieval failed. Series may not exist on ",dbname[i],".")
     # r is class tis
 #    r <-  if((TSrepresentation=="default" | TSrepresentation=="ts")
 #             && frequency(r) %in% c(1,4,12,2)) as.ts(r[[1]]) else as.zoo(r[[1]])
@@ -128,12 +171,12 @@ setMethod("TSget",     signature(serIDs="character", con="TSfameServerConnection
       mat <- changeTSrepresentation(mat, TSrepresentation)
       }
 
-  seriesNames(mat) <- if(!is.null(names)) names else serIDs 
+  seriesNames(mat) <- names  
 
-  TSmeta(mat) <- new("TSmeta", serIDs=serIDs, dbname=con@dbname, 
+  TSmeta(mat) <- new("TSmeta", serIDs=serIDs, dbname=dbname, 
       hasVintages=con@hasVintages, hasPanels=con@hasPanels,
       conType=class(con), DateStamp=Sys.time(), 
-      TSdescription=if(TSdescription) paste(desc, " from ", con@dbname, 
+      TSdescription=if(TSdescription) paste(desc, " from ", dbname, 
             "retrieved ", Sys.time()) else as(NA, "character"), 
       TSdoc=if(TSdoc) doc else as(NA, "character"),
       TSlabel=if(TSlabel) label else as(NA, "character"))
@@ -146,7 +189,11 @@ setMethod("TSput",     signature(x="ANY", serIDs="character", con="TSfameServerC
        TSdescription.=TSdescription(x), TSdoc.=TSdoc(x), TSlabel.=NULL, 
        warn=TRUE, ...) 
  {
+  if (con@hasVintages)
+    stop("TSput does not support vintages. Open the con to a single dbname.")
   if (!is.null(TSlabel.)) warning("TSlabel is not supported in Fame.")
+  if ( 1 < length(con@dbname))
+    stop("TSput does not support vintages. Open the con to a single dbname.")
   ids <-  serIDs 
   x <- as.matrix(as.tis(x)) # clobbers seriesNames(x)
   #ids <- gsub(" ", "", serIDs ) # remove spaces in id
@@ -182,13 +229,13 @@ setMethod("TSput",     signature(x="ANY", serIDs="character", con="TSfameServerC
 
 setMethod("TSdescription",   signature(x="character", con="TSfameServerConnection"),
    definition= function(x, con=getOption("TSconnection"), ...){
-     r <- fameWhats(con@dbname, x, connection=S3Part(con), getDoc = TRUE)$des 
+     r <- fameWhats(con@dbname[1], x, connection=S3Part(con), getDoc = TRUE)$des 
      if (is.null(r)) stop("Series does not exist.")
      r})
 
 setMethod("TSdoc",   signature(x="character", con="TSfameServerConnection"),
    definition= function(x, con=getOption("TSconnection"), ...){
-     r <- fameWhats(con@dbname, x, connection=S3Part(con), getDoc = TRUE)$doc
+     r <- fameWhats(con@dbname[1], x, connection=S3Part(con), getDoc = TRUE)$doc
      if (is.null(r)) stop("Series does not exist.")
      r})
 
@@ -201,6 +248,8 @@ setMethod("TSdelete",
    signature(serIDs="character", con="TSfameServerConnection", vintage="ANY", panel="ANY"),
    definition= function(serIDs, con=getOption("TSconnection"),  
             vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...){
+   if (con@hasVintages)
+       stop("TSdelete does not support vintages. Open the con to a single dbname.")
    Id <- try(fameDbOpen(con@dbname, connection=S3Part(con), stopOnFail=TRUE))
    if(inherits(Id, "try-error") )
        stop("Could not establish TSfameServerConnection to ", con@dbname)
@@ -222,6 +271,8 @@ setMethod("TSexists",
  signature(serIDs="character", con="TSfameServerConnection", vintage="ANY", panel="ANY"),
  definition= function(serIDs, con=getOption("TSconnection"), 
                       vintage=NULL, panel=NULL, ...){
+   if (con@hasVintages)
+       stop("TSexists does not support vintages. Open the con to a single dbname.")
    op <- options(warn=-1)
    on.exit(options(op))
    ok <- fameWhats(con@dbname, serIDs, connection=S3Part(con), getDoc = FALSE)

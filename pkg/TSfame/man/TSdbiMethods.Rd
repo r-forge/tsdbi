@@ -39,18 +39,21 @@
 \description{Methods for TSdbi fame time series dtabase connection.}
 \usage{
     \S4method{TSconnect}{fameDriver,character}(drv, dbname, 
-	accessMode = if (file.exists(dbname)) "shared" else "create", ...)
+	accessMode = if (file.exists(dbname)) "shared" else "create", 
+	current = NA, ...)
     \S4method{TSconnect}{fameServerDriver,character}(drv, dbname, 
-        service = "", host = "", user = "", password = "", ...)
+        service = "", host = "", user = "", password = "", current = NA, ...)
 
     \S4method{TSget}{character,TSfameConnection}(serIDs, con, 
 	TSrepresentation = getOption("TSrepresentation"), 
-	tf = NULL, start = tfstart(tf), end = tfend(tf), names = serIDs,
-	TSdescription = FALSE, TSdoc = FALSE, TSlabel=FALSE,   ...)
+	tf = NULL, start = tfstart(tf), end = tfend(tf), names = NULL,
+	TSdescription = FALSE, TSdoc = FALSE, TSlabel=FALSE,
+        vintage=getOption("TSvintage"),   ...)
     \S4method{TSget}{character,TSfameServerConnection}(serIDs, con, 
 	TSrepresentation = getOption("TSrepresentation"), 
-	tf = NULL, start = tfstart(tf), end = tfend(tf), names = serIDs,
-	TSdescription = FALSE, TSdoc = FALSE, TSlabel=FALSE,   ...)
+	tf = NULL, start = tfstart(tf), end = tfend(tf), names = NULL,
+	TSdescription = FALSE, TSdoc = FALSE, TSlabel=FALSE,
+        vintage=getOption("TSvintage"),   ...)
 
     \S4method{TSput}{ANY,character,TSfameConnection}(x, serIDs=seriesNames(x), 
 	con, TSdescription.=TSdescription(x), 
@@ -60,9 +63,9 @@
 	TSdoc.=TSdoc(x), TSlabel.=NULL, warn = TRUE, ...)
 
     \S4method{TSdates}{character,TSfameConnection}(serIDs, con, 
-	vintage=NULL, panel=NULL, ...)
+	vintage=getOption("TSvintage"), panel=NULL, ...)
     \S4method{TSdates}{character,TSfameServerConnection}(serIDs, con, 
-	vintage=NULL, panel=NULL, ...)
+	vintage=getOption("TSvintage"), panel=NULL, ...)
 
     \S4method{TSexists}{character,TSfameConnection}(
 	serIDs, con, vintage=NULL, panel=NULL, ...)
@@ -99,14 +102,15 @@
     \item{conn}{A database connection.}
     \item{serIDs}{identifiers for series to extract.}
     \item{vintage}{character string indicating vintage of the series on the 
-        database (not supported by this database).}
+        databases.}
     \item{panel}{character string indicating panel of the series on the 
         database (not supported by this database).}
     \item{x}{data series to put on the database, or a series identifier for
        TSdescription and TSdoc or, for print, 
        a database connection as returned by TSconnect.}
     \item{TSrepresentation}{time series representation to use for the result.}
-    \item{names}{Optional character vector to use for series names.}
+    \item{names}{Optional character vector to use for series names. Defaults to
+       serIDs unless vintage is a vector, in which case it defaults to vintage.}
     \item{tf}{Optional tframe to use for truncating data. (See \code{tfwindow}.)}
     \item{start}{Optional start date to use for truncating data. (See \code{tfwindow}.)}
     \item{end}{Optional end date to use for truncating data. (See \code{tfwindow}.)}
@@ -128,7 +132,9 @@
     \item{service}{A character string indicating a server port number.}
     \item{user}{A character string indicating a user id (if needed).}
     \item{password}{A character string indicating a password (if needed).}
-    \item{...}{Arguments passed to other methods.}
+    \item{current}{A character string indicating a vintage that should be
+      considered the current vintage (see details).}
+   \item{...}{Arguments passed to other methods.}
 }
 \value{depends.}
 \details{
@@ -142,6 +148,19 @@ server, specified by the server name followed by a space and the database name.
 The \code{TSfameServerConnection} establishes a connection to a remote server
 using one of Fame's remote server protocols. See package \pkg{fame} for more
 specific details.
+
+There is a simplistic mechanism for accessing vintages of data stored in 
+different Fame databases. To use this, the \code{dbname} argument to 
+\code{TSconnect} should be a vector of character strings indicating the 
+databases, with names of the elements indicating the vintages. The 
+\code{vintage} argument to \code{TSget} is then a character vector used to 
+select a subset of \code{dbname}. The \code{dbname} argument to 
+\code{TSconnect} can also be specified to indicate the version that should be
+considered current. (That is, the user needs to know that information and specify it,
+rather than having it supplied by the database.) In other respects the vintages 
+support is then similar to other TSdbi packages such as \pkg{TSMySQL}, and 
+examples in those packages may be useful. Some examples are also provided in 
+the \pkg{TSfame} Guide vingette.
 }
 
 \seealso{ 

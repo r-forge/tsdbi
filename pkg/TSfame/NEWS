@@ -11,6 +11,10 @@ Known BUGS
 	package in the case of a remote servers (cannot be suppressed).
 
 
+Changes in TSfame version 2011.6-1
+
+   o	added support for vintages coming from different Fame databases.
+
 Changes in TSfame version 2011.3-1
 
    o	added support for TSrepresentation.

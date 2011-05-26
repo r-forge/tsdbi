@@ -389,7 +389,6 @@ if (!inherits(conServer, "try-error")) {
   }  # end if try-error
 \end{Scode}
 
-
 Finally, dbDisconnect closes the connection if it is a Fame Server connect, and
 does nothing otherwise, but is provided for compatability with other connections.
 
@@ -398,5 +397,42 @@ dbDisconnect(conets)
 dbDisconnect(conServer)
 dbDisconnect(con)
 options(TSconnection=NULL)
+\end{Scode}
+
+A simple mechanism for accessing vintages of data stored in 
+different Fame databases is available as illustrated by the following examples. 
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+  dbs <- paste("ets /home/ets5/mfadata/etsmfacansim_", c(
+             "20110513.db", "20060526.db", "20110520.db"), sep="")
+  names(dbs) <- c("2011-05-13", "2006-05-26", "2011-05-20")
+	     
+  conetsV <- try(TSconnect("fame", dbname=dbs, "read", current="2011-05-13")) 
+
+  if (!inherits(conetsV, "try-error")) {   
+   z <- TSget("V122646", con=conetsV, vintage=c("2011-05-13", "2006-05-26"))
+   tfplot(z)
+   options(TSconnection=conetsV)
+   z <- TSget("V122646") 
+   z <- TSget(c("V122646", "V122647")) 
+   tfplot(z)
+   dbDisconnect(conetsV)
+  }
+\end{Scode}
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+  dbs <- paste("/home/ets5/mfadata/etsmfacansim_", c(
+             "20110513.db", "20060526.db", "20110520.db"), sep="")
+  names(dbs) <- c("2011-05-13", "2006-05-26", "2011-05-20")
+
+  conServerV <- try( TSconnect("fameServer", dbname=dbs, 
+            service = "2959", host = "ets", stopOnFail = TRUE)) 
+
+  if (!inherits(conServerV, "try-error")) { 
+   r <- TSget("V122646", con=conServerV, vintage=c("2011-05-13", "2006-05-26"))
+   tfplot(r)
+   dbDisconnect(conServerV)
+    
+  }
 \end{Scode}
 \end{document}
