@@ -131,7 +131,12 @@ setMethod("TSdescription",   signature(x="missing", con="missing"),
 	else TSdescription(x=serIDs, ...)
 	})
 
-# internal utilities to construct WHERE
+# internal utilities to construct WHERE and table name
+
+tbNm <- function(hasVintages, tbl, rV) {
+	if(hasVintages) tbl <- paste(tbl, rV, sep="")
+	tbl
+	}
 
 realVintage <- function(con, vintage, serIDs) {
    # replace alias with canonical name if necessary
@@ -179,6 +184,8 @@ realPanel <- function(con, panel) {
 
 setWhere <- function(con, serIDs, realVintage, realPanel) {
    # serIDs must be a scale for this function
+   # Calls for Meta will pass realVintage, but data tables will set 
+   #  realVintage=NULL and append vintage to table name.
    where <-  paste(" WHERE id = '", serIDs, "'", sep="")
    if(!is.null(realVintage))
       where <- paste(where, " AND vintage='", realVintage, "'", sep="")
@@ -413,10 +420,10 @@ TSputSQL <- function(x, serIDs=seriesNames(x), con, Table=NULL,
     for (i in 1:length(x)) vl <- paste(vl, x[[i]], sep="', '")
     # SQL wants NULL (not 'NULL') for NA
     vl <-   gsub("'NA'", "NULL", paste(vl,"'", sep=""))
-    dbGetQuery(con, paste("DELETE FROM  ",table,
-                     setWhere(con,id[1],vintage,panel), ";", sep="")) 
+    dbGetQuery(con, paste("DELETE FROM  ",tableV,
+                     setWhere(con,id[1],NULL,panel), ";", sep="")) 
     for (i in seq(length(vl))){
-      q <- paste("INSERT INTO ",table, " (", columns,
+      q <- paste("INSERT INTO ",tableV, " (", columns,
                      ") VALUES ('", vl[i], ") ", sep="")  
       dbGetQuery(con, q) 
       }
@@ -542,12 +549,14 @@ setMethod("TSdelete",
 TSdeleteSQL <- function(serIDs, con=getOption("TSconnection"),  
    vintage=getOption("TSvintage"), panel=getOption("TSpanel")) {
      for (i in seq(length(serIDs))) {
-     	where <-  setWhere(con, serIDs[i],  
-		        realVintage(con, vintage, i),
-		        realPanel(con,panel))
+     	rv <- realVintage(con, vintage, i)
+	rp <- realPanel(con,panel)
+	where  <-  setWhere(con, serIDs[i], rv,   rp)
+     	whereT <-  setWhere(con, serIDs[i], NULL, rp)
      	q <- dbGetQuery(con, paste("SELECT tbl  FROM Meta ",where, ";"))
-     	 if(0 != length(q)) {
-     	   dbGetQuery(con, paste("DELETE FROM ", q$tbl, where, ";")) 
+	tbl <- tbNm(con@hasVintages, q$tbl, rv)
+	if(0 != length(q)) {
+     	   dbGetQuery(con, paste("DELETE FROM ", tbl, whereT, ";")) 
      	   dbGetQuery(con, paste("DELETE FROM Meta ",	where, ";")) 
      	   }
      	 }
@@ -594,7 +603,11 @@ TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation")
   # if vintage is a vector then serIDs needs to be expanded
   if ( 1 < length(vintage)) serIDs <- rep(serIDs, length(vintage))
   # next returns a vector of length equal serIDs
-  vintage <- realVintage(con,vintage, serIDs) 
+  if (con@hasVintages) {
+     hV <- TRUE
+     vintage <- realVintage(con,vintage, serIDs)
+     }
+  else hV <- FALSE 
 
   Q <- function(q) {# local function
       res <- dbGetQuery(con, q)
@@ -605,7 +618,8 @@ TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation")
   mat <- desc <- doc <- label <- rp <- NULL
   # if series are in "A", "Q", "M","S" use  ts otherwise zoo.
   for (i in seq(length(serIDs))) {
-    where <-  setWhere(con, serIDs[i], vintage[i], panel)
+    where  <-  setWhere(con, serIDs[i], vintage[i], panel)
+    whereT <-  setWhere(con, serIDs[i], NULL,       panel)
     for (j in seq(length(where))) {
     qq <- paste("SELECT tbl, refperiod  FROM Meta ",where[j], ";")
     q <- dbGetQuery(con, qq)
@@ -625,51 +639,61 @@ TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation")
     rp <- c(rp, q$refperiod)
 
     if (tbl=="A") 
-      {res <- Q(paste("SELECT year, v FROM A ",where[j], " order by year;"))
+      {res <- Q(paste("SELECT year, v FROM ", tbNm(hV, "A", vintage), 
+                whereT[j], " order by year;"))
        r   <- ts(res[,2], start=c(res[1,1], 1), frequency=1) 
        if(useZoo) r <- as.zoo(r)
      }
     else if (tbl=="Q")  
-      {res <- Q(paste("SELECT year, period, v FROM Q ",where[j], " order by year, period;"))
+      {res <- Q(paste("SELECT year, period, v FROM ", tbNm(hV, "Q", vintage), 
+                whereT[j], " order by year, period;"))
        r   <- ts(res[,3], start=c(res[1,1:2]), frequency=4) 	 
        if(useZoo) r <- as.zoo(r)
       }
     else if (tbl=="M")
-      {res <- Q(paste("SELECT year, period, v FROM M ",where[j], " order by year, period;"))
+      {res <- Q(paste("SELECT year, period, v FROM ", tbNm(hV, "M", vintage), 
+                whereT[j], " order by year, period;"))
        r   <- ts(res[,3], start=c(res[1,1:2]), frequency=12)	 
        if(useZoo) r <- as.zoo(r)
       }
     else if (tbl=="W") 
-      {res <- Q(paste("SELECT date, period, v FROM W ",where[j], " order by date;"))
+      {res <- Q(paste("SELECT date, period, v FROM ", tbNm(hV, "W", vintage), 
+                whereT[j], " order by date;"))
        r   <- zoo(as.numeric(res[,3]), as.Date(res[,1]))
        # period is as.int(res[,2]) 	 
       }
     else if (tbl=="B") 
-      {res <- Q(paste("SELECT date, period, v FROM B ",where[j], " order by date;"))
+      {res <- Q(paste("SELECT date, period, v FROM ", tbNm(hV, "B", vintage), 
+                whereT[j], " order by date;"))
        r   <- zoo(as.numeric(res[,3]), as.Date(res[,1]))
        # period is as.int(res[,2]) 	 
       }
     else if (tbl=="D")  
-      {res <- Q(paste("SELECT date, period, v FROM D ",where[j], " order by date;"))
+      {res <- Q(paste("SELECT date, period, v FROM ", tbNm(hV, "D", vintage), 
+                whereT[j], " order by date;"))
        r   <- zoo(as.numeric(res[,3]), as.Date(res[,1]))
        # period is as.int(res[,2]) 	 
       }
     else if (tbl=="S")    
-      {res <- Q(paste("SELECT year, period, v FROM S ",where[j], " order by year, period;"))
+      {res <- Q(paste("SELECT year, period, v FROM ", tbNm(hV, "S", vintage), 
+                whereT[j], " order by year, period;"))
        r   <- ts(res[,3], start=c(res[1,1:2]), frequency=2)	 
        if(useZoo) r <- as.zoo(r)
       }
     else if (tbl=="U")  
-      {res <- Q(paste("SELECT date, tz, period, v FROM U ",where[j], " order by date;"))
+      {res <- Q(paste("SELECT date, tz, period, v FROM U ",tbNm(hV,"U",vintage),
+                whereT[j], " order by date;"))
        r   <- zoo(as.numeric(res[,4]), as.Date(res[,1]))
        # tz ? period is as.int(res[,3]) 	 
       }
     else if (tbl=="I")  
-      {res <- Q(paste("SELECT date, v FROM I ",where[j], " order by date;"))
+      {res <- Q(paste("SELECT date, v FROM ", tbNm(hV, "I", vintage), 
+                whereT[j], " order by date;"))
        r   <- zoo(as.numeric(res[,2]), as.Date(res[,1]))
       }
     else if (tbl=="T")  
-      {res <- Q(paste("SELECT date, v FROM T ",where[j], " order by date;"))
+      {res <- Q(paste("SELECT date, v FROM ", tbNm(hV, "T", vintage), 
+                whereT[j], " order by date;"))
        r   <- zoo(as.numeric(res[,2]), as.POSIXct(res[,1]))
       }
     else stop("Specified table not found.", 
