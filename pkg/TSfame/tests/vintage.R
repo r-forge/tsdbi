@@ -22,6 +22,7 @@ if(!inherits(con, "try-error") ) {
    tfplot(z)
 
    dbDisconnect(con)
+   }
 	     
 con <- TSconnect("fame", dbname=dbs, "read", current="2011-05-13") 
 
@@ -33,6 +34,7 @@ if(!inherits(con, "try-error") ) {
    tfplot(z)
 
    dbDisconnect(con)
+   }
 
 cat("***********   connecting ets fame server using remote Fame server\n")
 # this is using  connection which uses remote Fame server.
@@ -44,18 +46,18 @@ names(dbs) <- c("2011-05-13", "2006-05-26", "2011-05-20")
 con2 <- TSconnect("fameServer", dbname=dbs, 
     service = "2959", host = "ets", stopOnFail = TRUE, current="2011-05-13") 
 
-r <- TSget("V122646", con=con2, vintage=c("2011-05-13", "2006-05-26"))
-# WHAT DOES THIS GET?
-TSdates("V122646", con=con2, vintage=c("2011-05-13", "2006-05-26"))
+if(!inherits(con2, "try-error") ) {
+   r <- TSget("V122646", con=con2, vintage=c("2011-05-13", "2006-05-26"))
+   TSdates("V122646", con=con2, vintage=c("2006-05-26"))
 
-# CHECK ALL NEXT JUST GETS CURRENT
-r <- TSget(c("V122646", "V122647"), con=con2)
+   # next just gets current by default
+   r <- TSget(c("V122646", "V122647"), con=con2)
 
-TSdates("V122646", con=con2)
-TSdoc("V122646", con=con2) 
-TSdescription("V122646", con=con2) 
-TSlabel("V122646", con=con2) 
+   TSdates("V122646", con=con2)
+   TSdoc("V122646", con=con2) 
+   TSdescription("V122646", con=con2) 
+   TSlabel("V122646", con=con2) 
 
-dbDisconnect(con2)
-
+   dbDisconnect(con2)
+   }
 } else  cat("FAME not available. Skipping tests.")
