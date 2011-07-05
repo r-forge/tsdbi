@@ -1,11 +1,11 @@
 Package: TSzip
-Version: 2011.3-1
+Version: 2011.6-1
 Date:2011-3-14
 Title:  Time Series Database Interface extension to connect to zip files
 Description: Provides TSdbi package methods to retrieve time series data from
 	zipped, as if the files form a database.
-Depends: R (>= 2.8.0), methods, DBI, TSdbi (>= 2010.12-1), tframe, tframePlus, gdata
-Imports: methods, DBI, TSdbi (>= 2010.12-1)
+Depends: R (>= 2.8.0), methods, DBI, TSdbi (>= 2011.6-1), tframe, tframePlus, gdata
+Imports: methods, DBI, TSdbi (>= 2011.6-1)
 Suggests: zoo, timeSeries, xts, tis, tframePlus (>= 2011.2-2)
 Enhances: TSdbi
 License: GPL-2 | file LICENSE
