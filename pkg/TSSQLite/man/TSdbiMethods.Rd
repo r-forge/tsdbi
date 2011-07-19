@@ -1,12 +1,12 @@
 \name{TSdbiMethods}
 \alias{TSconnect,SQLiteDriver,character-method}
-\alias{TSget,character,SQLiteConnection-method}
-\alias{TSput,ANY,character,SQLiteConnection-method}
-\alias{TSdelete,character,SQLiteConnection-method}
-\alias{TSdescription,character,SQLiteConnection-method}
-\alias{TSdoc,character,SQLiteConnection-method}
-\alias{TSlabel,character,SQLiteConnection-method}
-\alias{TSdates,character,SQLiteConnection-method}
+\alias{TSget,character,TSSQLiteConnection-method}
+\alias{TSput,ANY,character,TSSQLiteConnection-method}
+\alias{TSdelete,character,TSSQLiteConnection-method}
+\alias{TSdescription,character,TSSQLiteConnection-method}
+\alias{TSdoc,character,TSSQLiteConnection-method}
+\alias{TSlabel,character,TSSQLiteConnection-method}
+\alias{TSdates,character,TSSQLiteConnection-method}
 \alias{print,TSSQLiteConnection-method}
 \alias{dropTStable,SQLiteConnection,character,ANY-method}
 \alias{dropTStable,SQLiteConnection,character-method}
@@ -17,24 +17,24 @@
 \description{Methods for TSdbi SQLite time series dtabase connection.}
 \usage{
     \S4method{TSconnect}{SQLiteDriver,character}(drv, dbname, ...)
-    \S4method{TSget}{character,SQLiteConnection}(
+    \S4method{TSget}{character,TSSQLiteConnection}(
 	serIDs, con, TSrepresentation=options()$TSrepresentation,
 	tf=NULL, start=tfstart(tf), end=tfend(tf),
 	names=NULL, TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE,
 	vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
-    \S4method{TSput}{ANY,character,SQLiteConnection}(
+    \S4method{TSput}{ANY,character,TSSQLiteConnection}(
 	x, serIDs, con, Table=NULL, 
 	TSdescription.=TSdescription(x), TSdoc.=TSdoc(x),  TSlabel.=TSlabel(x), 
 	vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
-    \S4method{TSdates}{character,SQLiteConnection}(
+    \S4method{TSdates}{character,TSSQLiteConnection}(
 	serIDs, con, 
 	vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
-    \S4method{TSdelete}{character,SQLiteConnection}(
+    \S4method{TSdelete}{character,TSSQLiteConnection}(
 	serIDs, con,  
 	vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
-    \S4method{TSdescription}{character,SQLiteConnection}(x, con, ...)
-    \S4method{TSdoc}{character,SQLiteConnection}(x, con, ...)
-    \S4method{TSlabel}{character,SQLiteConnection}(x, con, ...)
+    \S4method{TSdescription}{character,TSSQLiteConnection}(x, con, ...)
+    \S4method{TSdoc}{character,TSSQLiteConnection}(x, con, ...)
+    \S4method{TSlabel}{character,TSSQLiteConnection}(x, con, ...)
     \S4method{print}{TSSQLiteConnection}(x, ...)
     \S4method{dropTStable}{SQLiteConnection,character,ANY}(con, Table, 
                            yesIknowWhatIamDoing=FALSE)

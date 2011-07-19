@@ -9,6 +9,11 @@ Known BUGS
    o	There is a warning message about ambiguous slot choice in the integer 
 	coercion of the connection con. (This is a bug in DBI packages.)
 
+Changes in TSdbi version 2011.7-1
+
+   o	modified several methods signatures to expect a TSdbi connection and not attempt
+   	(and fail) with a raw DBI connection.
+
 Changes in TSdbi version 2011.6-1
 
    o	modified vintage support to use separate tables rather than just an

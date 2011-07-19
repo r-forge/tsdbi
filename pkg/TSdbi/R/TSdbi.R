@@ -114,7 +114,8 @@ setMethod("TSdescription",   signature(x="ANY", con="missing"),
 setMethod("TSdescription",   signature(x="character", con="ANY"),
    definition= function(x, con=getOption("TSconnection"), ...) {
        if(is.null(con)) stop("NULL con is not allowed. See ?TSdescription.")
-       else stop("con class ", class(con), " is not supported.")} )
+       else stop("con class ", class(con), 
+       " is not supported. (Check this is a TSdbi connection, not a raw DBI connection.)")} )
 
 #  Next two methods are for case where the user mistakenly specifies
 #     serIDS="whatever"  rather than x="whatever"
@@ -231,7 +232,8 @@ setMethod("TSdoc",   signature(x="ANY", con="missing"),
 setMethod("TSdoc",   signature(x="character", con="ANY"),
    definition= function(x, con=getOption("TSconnection"), ...) {
        if(is.null(con)) stop("NULL con is not allowed. See ?TSdoc.")
-       else stop("con class ", class(con), " is not supported.")} )
+       else stop("con class ", class(con), 
+       " is not supported. (Check this is a TSdbi connection, not a raw DBI connection.)")} )
 
 #  Next two methods are for case where the user mistakenly specifies
 #     serIDS="whatever"  rather than x="whatever"
@@ -285,7 +287,8 @@ setMethod("TSlabel",   signature(x="ANY", con="missing"),
 setMethod("TSlabel",   signature(x="character", con="ANY"),
    definition= function(x, con=getOption("TSconnection"), ...) {
        if(is.null(con)) stop("NULL con is not allowed. See ?TSlabel.")
-       else stop("con class ", class(con), " is not supported.")} )
+       else stop("con class ", class(con), 
+       " is not supported. (Check this is a TSdbi connection, not a raw DBI connection.)")} )
 
 #  Next two methods are for case where the user mistakenly specifies
 #     serIDS="whatever"  rather than x="whatever"
@@ -374,7 +377,8 @@ setMethod("TSput",   signature(x="ANY", serIDs="DBIConnection", con="missing"),
 setMethod("TSput",   signature(x="ANY", serIDs="character", con="ANY"),
    definition= function(x, serIDs=seriesNames(x), con=getOption("TSconnection"), ...) {
        if(is.null(con)) stop("NULL con is not allowed. See ?TSput.")
-       else stop("con class ", class(con), " is not supported.")} )
+       else stop("con class ", class(con), 
+       " is not supported. (Check this is a TSdbi connection, not a raw DBI connection.)")} )
 
    
 
@@ -546,7 +550,8 @@ setMethod("TSdelete",
    definition= function(serIDs, con=getOption("TSconnection"),
         vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...) {
        if(is.null(con)) stop("NULL con is not allowed. See ?TSdelete.")
-       else stop("con class ", class(con), " is not supported.")} )
+       else stop("con class ", class(con), 
+       " is not supported. (Check this is a TSdbi connection, not a raw DBI connection.)")} )
 
    
 TSdeleteSQL <- function(serIDs, con=getOption("TSconnection"),  
@@ -585,7 +590,8 @@ setMethod("TSget",   signature(serIDs="character", con="missing"),
 setMethod("TSget",   signature(serIDs="character", con="ANY"),
    definition= function(serIDs, con=getOption("TSconnection"), ...){
        if(is.null(con)) stop("NULL con is not allowed. See ?TSget.")
-       else stop("con class ", class(con), " is not supported.")} )
+       else stop("con class ", class(con), 
+       " is not supported. (Check this is a TSdbi connection, not a raw DBI connection.)")} )
 
 # next is called by methods for various SQL dbs.
 TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation"),
@@ -749,7 +755,8 @@ setMethod("TSdates",
    definition= function(serIDs, con=getOption("TSconnection"), 
            vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...) {
        if(is.null(con)) stop("NULL con is not allowed. See ?TSdates.")
-       else stop("con class ", class(con), " is not supported.")} )
+       else stop("con class ", class(con), 
+       " is not supported. (Check this is a TSdbi connection, not a raw DBI connection.)")} )
 
 TSdatesSQL <- function(serIDs, con,  
        vintage=getOption("TSvintage"), panel=getOption("TSpanel")) {

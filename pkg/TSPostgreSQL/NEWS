@@ -3,6 +3,11 @@ See also
    o	See also NEWS in the TSdbi package.
 
 
+Changes in TSPostgreSQL version 2011.7-1
+
+   o	modified several methods signatures to expect a TSdbi connection and not attempt
+   	(and fail) with a raw DBI connection.
+
 Changes in TSPostgreSQL version 2011.3-1
 
    o	added support for TSrepresentation.

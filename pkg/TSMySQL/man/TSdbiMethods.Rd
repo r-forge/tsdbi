@@ -1,12 +1,12 @@
 \name{TSdbiMethods}
 \alias{TSconnect,MySQLDriver,character-method}
-\alias{TSget,character,MySQLConnection-method}
-\alias{TSput,ANY,character,MySQLConnection-method}
-\alias{TSdelete,character,MySQLConnection-method}
-\alias{TSdescription,character,MySQLConnection-method}
-\alias{TSdoc,character,MySQLConnection-method}
-\alias{TSlabel,character,MySQLConnection-method}
-\alias{TSdates,character,MySQLConnection-method}
+\alias{TSget,character,TSMySQLConnection-method}
+\alias{TSput,ANY,character,TSMySQLConnection-method}
+\alias{TSdelete,character,TSMySQLConnection-method}
+\alias{TSdescription,character,TSMySQLConnection-method}
+\alias{TSdoc,character,TSMySQLConnection-method}
+\alias{TSlabel,character,TSMySQLConnection-method}
+\alias{TSdates,character,TSMySQLConnection-method}
 \alias{dropTStable,MySQLConnection,character,ANY-method}
 \alias{dropTStable,MySQLConnection,character-method}
 
@@ -16,21 +16,21 @@
 \description{Methods for TSdbi MySQL time series dtabase connection.}
 \usage{
     \S4method{TSconnect}{MySQLDriver,character}(drv, dbname, ...)
-    \S4method{TSget}{character,MySQLConnection}(serIDs, con, 
+    \S4method{TSget}{character,TSMySQLConnection}(serIDs, con, 
        TSrepresentation=options()$TSrepresentation,
        tf=NULL, start=tfstart(tf), end=tfend(tf),
        names=NULL, TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE,
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"),   ...)
-    \S4method{TSput}{ANY,character,MySQLConnection}(x, serIDs, con, Table=NULL, 
+    \S4method{TSput}{ANY,character,TSMySQLConnection}(x, serIDs, con, Table=NULL, 
        TSdescription.=TSdescription(x), TSdoc.=TSdoc(x), TSlabel.=TSlabel(x),  
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"),  ...)
-    \S4method{TSdates}{character,MySQLConnection}(serIDs, con,  
+    \S4method{TSdates}{character,TSMySQLConnection}(serIDs, con,  
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
-    \S4method{TSdelete}{character,MySQLConnection}(serIDs, con,  
+    \S4method{TSdelete}{character,TSMySQLConnection}(serIDs, con,  
    vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
-    \S4method{TSdescription}{character,MySQLConnection}(x, con, ...)
-    \S4method{TSdoc}{character,MySQLConnection}(x, con, ...)
-    \S4method{TSlabel}{character,MySQLConnection}(x, con, ...)
+    \S4method{TSdescription}{character,TSMySQLConnection}(x, con, ...)
+    \S4method{TSdoc}{character,TSMySQLConnection}(x, con, ...)
+    \S4method{TSlabel}{character,TSMySQLConnection}(x, con, ...)
     \S4method{dropTStable}{MySQLConnection,character,ANY}(con, Table, 
                            yesIknowWhatIamDoing=FALSE)
 }

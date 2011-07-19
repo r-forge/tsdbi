@@ -1,12 +1,12 @@
 \name{TSdbiMethods}
 \alias{TSconnect,PostgreSQLDriver,character-method}
-\alias{TSget,character,PostgreSQLConnection-method}
-\alias{TSput,ANY,character,PostgreSQLConnection-method}
-\alias{TSdelete,character,PostgreSQLConnection-method}
-\alias{TSdescription,character,PostgreSQLConnection-method}
-\alias{TSdoc,character,PostgreSQLConnection-method}
-\alias{TSlabel,character,PostgreSQLConnection-method}
-\alias{TSdates,character,PostgreSQLConnection-method}
+\alias{TSget,character,TSPostgreSQLConnection-method}
+\alias{TSput,ANY,character,TSPostgreSQLConnection-method}
+\alias{TSdelete,character,TSPostgreSQLConnection-method}
+\alias{TSdescription,character,TSPostgreSQLConnection-method}
+\alias{TSdoc,character,TSPostgreSQLConnection-method}
+\alias{TSlabel,character,TSPostgreSQLConnection-method}
+\alias{TSdates,character,TSPostgreSQLConnection-method}
 \alias{dropTStable,PostgreSQLConnection,character,ANY-method}
 \alias{dropTStable,PostgreSQLConnection,character-method}
 
@@ -17,22 +17,22 @@
 \usage{
     \S4method{TSconnect}{PostgreSQLDriver,character}(drv, dbname, host = 
        if(!is.null(Sys.getenv("PGHOST"))) Sys.getenv("PGHOST") else "localhost", ...)
-    \S4method{TSget}{character,PostgreSQLConnection}(serIDs, 
+    \S4method{TSget}{character,TSPostgreSQLConnection}(serIDs, 
        con=getOption("TSconnection"), 
        TSrepresentation=getOption("TSrepresentation"),
        tf=NULL, start=tfstart(tf), end=tfend(tf),
        names=NULL, TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE,
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
-    \S4method{TSput}{ANY,character,PostgreSQLConnection}(x, serIDs, con, Table=NULL, 
+    \S4method{TSput}{ANY,character,TSPostgreSQLConnection}(x, serIDs, con, Table=NULL, 
        TSdescription.=TSdescription(x), TSdoc.=TSdoc(x), TSlabel.=TSlabel(x),  
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
-    \S4method{TSdates}{character,PostgreSQLConnection}(serIDs, con,  
+    \S4method{TSdates}{character,TSPostgreSQLConnection}(serIDs, con,  
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
-    \S4method{TSdelete}{character,PostgreSQLConnection}(serIDs, con,  
+    \S4method{TSdelete}{character,TSPostgreSQLConnection}(serIDs, con,  
    vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
-    \S4method{TSdescription}{character,PostgreSQLConnection}(x, con, ...)
-    \S4method{TSdoc}{character,PostgreSQLConnection}(x, con, ...)
-    \S4method{TSlabel}{character,PostgreSQLConnection}(x, con, ...)
+    \S4method{TSdescription}{character,TSPostgreSQLConnection}(x, con, ...)
+    \S4method{TSdoc}{character,TSPostgreSQLConnection}(x, con, ...)
+    \S4method{TSlabel}{character,TSPostgreSQLConnection}(x, con, ...)
     \S4method{dropTStable}{PostgreSQLConnection,character,ANY}(con, Table, 
                            yesIknowWhatIamDoing=FALSE)
 }
