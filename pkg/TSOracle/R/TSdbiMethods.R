@@ -40,7 +40,7 @@ setMethod("TSconnect",   signature(drv="OraDriver", dbname="character"),
   	       hasPanels  =dbExistsTable(con, "panels")) 
 	})
 
-setMethod("TSput",   signature(x="ANY", serIDs="character", con="OraConnection"),
+setMethod("TSput",   signature(x="ANY", serIDs="character", con="TSOraConnection"),
    definition= function(x, serIDs, con=getOption("TSconnection"), Table=NULL, 
        TSdescription.=TSdescription(x), TSdoc.=TSdoc(x), TSlabel.=TSlabel(x),  
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
@@ -48,7 +48,7 @@ setMethod("TSput",   signature(x="ANY", serIDs="character", con="OraConnection")
        TSdescription.=TSdescription., TSdoc.=TSdoc.,  TSlabel.=TSlabel.,
        vintage=vintage, panel=panel) )
 
-setMethod("TSget",   signature(serIDs="character", con="OraConnection"),
+setMethod("TSget",   signature(serIDs="character", con="TSOraConnection"),
    definition= function(serIDs, con=getOption("TSconnection"), 
        TSrepresentation=options()$TSrepresentation,
        tf=NULL, start=tfstart(tf), end=tfend(tf),
@@ -59,26 +59,26 @@ setMethod("TSget",   signature(serIDs="character", con="OraConnection"),
        names=names, TSdescription=TSdescription, TSdoc=TSdoc, TSlabel=TSlabel,
        vintage=vintage, panel=panel) )
 
-setMethod("TSdates",    signature(serIDs="character", con="OraConnection"),
+setMethod("TSdates",    signature(serIDs="character", con="TSOraConnection"),
    definition= function(serIDs, con=getOption("TSconnection"),  
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
      TSdbi:::TSdatesSQL(serIDs, con, vintage=vintage, panel=panel) )
 
 
-setMethod("TSdescription",   signature(x="character", con="OraConnection"),
+setMethod("TSdescription",   signature(x="character", con="TSOraConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
         TSdbi:::TSdescriptionSQL(x=x, con=con) )
 
-setMethod("TSdoc",   signature(x="character", con="OraConnection"),
+setMethod("TSdoc",   signature(x="character", con="TSOraConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
         TSdbi:::TSdocSQL(x=x, con=con) )
 
-setMethod("TSlabel",   signature(x="character", con="OraConnection"),
+setMethod("TSlabel",   signature(x="character", con="TSOraConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
         TSdbi:::TSlabelSQL(x=x, con=con) )
 
 setMethod("TSdelete", 
-   signature(serIDs="character", con="OraConnection", vintage="ANY", panel="ANY"),
+   signature(serIDs="character", con="TSOraConnection", vintage="ANY", panel="ANY"),
    definition= function(serIDs, con=getOption("TSconnection"),  
    vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
   TSdbi:::TSdeleteSQL(serIDs=serIDs, con=con, vintage=vintage, panel=panel) )

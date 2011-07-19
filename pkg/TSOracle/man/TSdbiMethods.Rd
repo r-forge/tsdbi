@@ -1,12 +1,12 @@
 \name{TSdbiMethods}
 \alias{TSconnect,OracleDriver,character-method}
-\alias{TSget,character,OracleConnection-method}
-\alias{TSput,ANY,character,OracleConnection-method}
-\alias{TSdelete,character,OracleConnection-method}
-\alias{TSdescription,character,OracleConnection-method}
-\alias{TSdoc,character,OracleConnection-method}
-\alias{TSlabel,character,OracleConnection-method}
-\alias{TSdates,character,OracleConnection-method}
+\alias{TSget,character,TSOracleConnection-method}
+\alias{TSput,ANY,character,TSOracleConnection-method}
+\alias{TSdelete,character,TSOracleConnection-method}
+\alias{TSdescription,character,TSOracleConnection-method}
+\alias{TSdoc,character,TSOracleConnection-method}
+\alias{TSlabel,character,TSOracleConnection-method}
+\alias{TSdates,character,TSOracleConnection-method}
 \alias{dropTStable,OracleConnection,character,ANY-method}
 \alias{dropTStable,OracleConnection,character-method}
 
@@ -16,21 +16,21 @@
 \description{Methods for TSdbi Oracle time series dtabase connection.}
 \usage{
     \S4method{TSconnect}{OracleDriver,character}(drv, dbname, ...)
-    \S4method{TSget}{character,OracleConnection}(serIDs, con, 
+    \S4method{TSget}{character,TSOracleConnection}(serIDs, con, 
        TSrepresentation=options()$TSrepresentation,
        tf=NULL, start=tfstart(tf), end=tfend(tf),
        names=NULL, TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE,
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"),   ...)
-    \S4method{TSput}{ANY,character,OracleConnection}(x, serIDs, con, Table=NULL, 
+    \S4method{TSput}{ANY,character,TSOracleConnection}(x, serIDs, con, Table=NULL, 
        TSdescription.=TSdescription(x), TSdoc.=TSdoc(x), TSlabel.=TSlabel(x),  
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"),  ...)
-    \S4method{TSdates}{character,OracleConnection}(serIDs, con,  
+    \S4method{TSdates}{character,TSOracleConnection}(serIDs, con,  
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
-    \S4method{TSdelete}{character,OracleConnection}(serIDs, con,  
+    \S4method{TSdelete}{character,TSOracleConnection}(serIDs, con,  
    vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
-    \S4method{TSdescription}{character,OracleConnection}(x, con, ...)
-    \S4method{TSdoc}{character,OracleConnection}(x, con, ...)
-    \S4method{TSlabel}{character,OracleConnection}(x, con, ...)
+    \S4method{TSdescription}{character,TSOracleConnection}(x, con, ...)
+    \S4method{TSdoc}{character,TSOracleConnection}(x, con, ...)
+    \S4method{TSlabel}{character,TSOracleConnection}(x, con, ...)
     \S4method{dropTStable}{OracleConnection,character,ANY}(con, Table, 
                            yesIknowWhatIamDoing=FALSE)
 }
