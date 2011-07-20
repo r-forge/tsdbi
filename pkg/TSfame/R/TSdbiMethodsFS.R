@@ -37,9 +37,12 @@ setMethod("TSconnect",   signature(drv="fameServerDriver", dbname="character"),
 	      current=NA, ...){
    #It might be possible to leave the Fame db open, but getfame needs it closed.
    if (is.null(dbname)) stop("dbname must be specified")
-   #ensure the db name ends in .db, otherwise fameServer adds this and then con fails
+   #ensure the db name does not end in .db, fameServer adds this.
+   #dbname <- sub('$', '.db',sub('.db$', '', dbname))
+   dbname <- sub('.db$', '', dbname)
+   # if dbname is a vector (for vintages) it should have names so that
+   #  dbname[vintage] can be used to subset it in TSget.
    nm <- names(dbname)
-   dbname <- sub('$', '.db',sub('.db$', '', dbname))
    if(is.null(nm) & (1 < length(dbname))) {
       nm <- as.character(seq(length(dbname)))
       warning("vintage names generated as sequence: ", nm)
@@ -52,9 +55,6 @@ setMethod("TSconnect",   signature(drv="fameServerDriver", dbname="character"),
              user=user, password=password, stopOnFail=TRUE)
    if(inherits(con, "try-error") )
        stop("Could not establish TSfameServerConnection.")
-
-   # if dbname is a vector (for vintages) it should have names so that
-   #  dbname[vintage] can be used to subset it in TSget.
    for (i in seq(length(dbname))){
       Id <- try(fameDbOpen(dbname[i], connection=con, stopOnFail=TRUE))
       if(inherits(Id, "try-error") ) 
