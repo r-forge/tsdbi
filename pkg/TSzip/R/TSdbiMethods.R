@@ -87,9 +87,11 @@ setMethod("TSget",     signature(serIDs="character", con="TSzipConnection"),
       url <- paste(con@dbname, "/", serIDs[i], ".zip", sep="")
       file <- paste(dir, "/", serIDs[i], ".zip", sep="")
 
-      zz <- try(download.file(url, file, quiet = TRUE, mode = "w",
+      zz <- try(download.file(url, file, quiet = TRUE, mode = "wb",
    		      cacheOK = TRUE),  silent=TRUE) 
-      if(inherits(zz, "try-error")) stop("Could not find file or url ",  url)
+      if(inherits(zz, "try-error") || (0 != zz)) 
+       stop("download.file error, possibly could not find url ",  url,
+            " or file ", file)
 
       zz <- try(unzip(file, overwrite = TRUE, exdir=dir))
       #zz <- try(system(paste("unzip", file, " -d ", dir)),  silent=TRUE)
