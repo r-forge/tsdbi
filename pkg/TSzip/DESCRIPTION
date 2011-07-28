@@ -1,6 +1,6 @@
 Package: TSzip
-Version: 2011.6-1
-Date:2011-3-14
+Version: 2011.7-1
+Date:2011-07-28
 Title:  Time Series Database Interface extension to connect to zip files
 Description: Provides TSdbi package methods to retrieve time series data from
 	zipped, as if the files form a database.
