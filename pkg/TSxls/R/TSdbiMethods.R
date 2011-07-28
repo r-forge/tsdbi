@@ -36,12 +36,13 @@ setMethod("TSconnect",   signature(drv="xlsDriver", dbname="character"),
      url <- dbname
      file <- tempfile()
      on.exit(unlink(file) )
-     zz <- try(download.file(url, file, quiet = FALSE, mode = "w",
+     zz <- try(download.file(url, file, quiet = FALSE, mode = "wb",
                    cacheOK = TRUE),  silent=TRUE)
      #or url(url)
 
-     if(inherits(zz, "try-error")) 
-         stop("Could not find file or url ",  dbname)
+     if(inherits(zz, "try-error") || (0 != zz)) 
+       stop("download.file error, possibly could not find url ",  url,
+            " or file ", file)
      }
 
    require("gdata")

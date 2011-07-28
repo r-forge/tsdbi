@@ -1,6 +1,6 @@
 Package: TSxls
-Version: 2011.6-1
-Date:2011-3-14
+Version: 2011.7-1
+Date:2011-07-28
 Title:  Time Series Database Interface extension to connect to spreadsheets
 Description: Provides TSdbi package methods to retrieve time series data from
 	spreadsheets, pretending the spreadsheet is a database.
