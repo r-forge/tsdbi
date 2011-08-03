@@ -7,9 +7,10 @@ require("TSsdmx")
 con <- TSconnect("sdmx", dbname="ECB")
 
 # Annual data
-z <- TSget("118.DD.A.I5.POPE.LEV.4D", con=con ) 
-# #works v3, seems to get only the header with v1
-tfplot(z)
+#  this series seems to no longer be available
+# z <- TSget("118.DD.A.I5.POPE.LEV.4D", con=con ) 
+# #worked v3, seems to get only the header with v1
+# tfplot(z)
 
 # monthly data 
 
