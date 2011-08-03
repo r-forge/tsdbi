@@ -25,7 +25,7 @@ seriesNames(seriesC) <- "seriesC"
 start(seriesC)
 
 
-TSdoc(seriesB) <- paste("Line", 1:4, "of seriesB documentation")
+TSdoc(seriesB) <- paste("Line", 1:4, "of seriesB documentation", collapse="\n")
 TSdescription(seriesB) <- "seriesB description"
 
 cat("*******  cleanup to db\n")
@@ -109,7 +109,7 @@ tfwindow(seriesB, tf=NULL)
 bi <- TSget("seriesB", con, TSrepresentation="tis")
 if(max(abs(c(bi) - c(seriesB))) > 1e-15) stop("TSget bi error.")
 
-if(as.Date(start(bi))!= "2002-01-07")              stop("bi start date error.")
+if(base::as.Date(start(bi))!= "2002-01-07")        stop("bi start date error.")
 if(weekdays(start(seriesB)) != weekdays(start(bi)))stop("bi weekdays error.")
 if(weekdays(start(bi)) != "Monday")                stop("bi start weekdays error.")
 if(weekdays(start(bi)) != weekdays(end(bi)))       stop("bi weekdays error.")
@@ -148,7 +148,7 @@ start(bi)
 cat("*******  misc\n")
 
 TSdates("seriesA", con)
-if(as.Date(start(seriesC))!= "2002-01-04") stop("seriesC start date error.")
+if(base::as.Date(start(seriesC))!= "2002-01-04") stop("seriesC start date error.")
 
 if(weekdays(start(seriesC)) != "Friday") stop("seriesC start weekdays error.")
 if(weekdays(start(seriesC)) != weekdays(end(seriesC))) stop("seriesC weekdays error.")
