@@ -6,6 +6,11 @@ Known BUGS
 
    o	Probably does not build on Windows or Mac.
 
+Changes in TSpadi version 2011.8-1
+
+   o	fixed tframePlus version suggest to fix bug with TSrepresentation for
+   	timeSeries class.
+
 Changes in TSpadi version 2011.3-1
 
    o	added support for TSrepresentation.

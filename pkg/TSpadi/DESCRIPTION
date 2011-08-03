@@ -1,13 +1,13 @@
 Package: TSpadi
-Version: 2011.6-1
-Date:2011-07-4
+Version: 2011.8-1
+Date:2011-08-3
 Title:  Time Series Database Interface extensions for PADI Time Series Server
 Description: Provides methods for generics in the TSdbi package to 
 	connect through a protocol for application database interface (PADI)
 	to a time series database (e.g. Fame).
 SystemRequirements: rpcgen, GNU make
 Depends: R (>= 2.8.0), methods, DBI, TSdbi (>= 2011.6-1), tframe (>= 2008.5-1)
-Suggests: tframePlus
+Suggests: tframePlus (>= 2011.8-1)
 Imports: methods, DBI, TSdbi (>= 2011.6-1)
 Enhances: TSdbi
 Collate: padi.R TSdbiMethods.R

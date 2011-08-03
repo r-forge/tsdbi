@@ -10,6 +10,10 @@ Known BUGS
    o	Warning messages about "may be a Fame Server path" coming from the fame
 	package in the case of a remote servers (cannot be suppressed).
 
+Changes in TSfame version 2011.8-1
+
+   o	fixed bug from competing as.Date() in tests generics, depending on 
+   	attached packages.
 
 Changes in TSfame version 2011.7-1
 
