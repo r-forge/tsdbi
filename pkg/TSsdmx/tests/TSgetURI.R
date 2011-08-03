@@ -26,6 +26,7 @@ require("XML")
 #"http://sdw.ecb.europa.eu/export.do?SERIES_KEY=117.BSI.M.U2.Y.U.A21.A.4.U2.2250.Z01.E&REF_AREA=308&sfl5=3&sfl4=4&sfl3=4&sfl2=4&sfl1=3&DATASET=0&FREQ=M&BS_SUFFIX=E&node=2116082&exportType=sdmx")
 
 
+#  this worked but then series disappeared
 TSsdmx:::TSgetURI("http://sdw.ecb.europa.eu/quickviewexport.do?trans=&start=&end=&snapshot=&periodSortOrder=&SERIES_KEY=118.DD.A.I5.POPE.LEV.4D&type=sdmx") #as v3
 
 z <- TSsdmx:::TSgetURI(query="http://credit.bank-banque-canada.ca/webservices?service=getSeriesSDMX&args=CDOR_-_-_OIS_-_-_SWAPPEDTOFLOAT_-_-_FIRST_-_-_Last")

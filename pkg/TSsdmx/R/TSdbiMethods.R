@@ -28,9 +28,11 @@ setMethod("TSconnect",   signature(drv="sdmxDriver", dbname="character"),
    #  user / password / host  for future consideration
    if (is.null(dbname)) stop("dbname must be specified")
    
-   # there could be a better connection test mechanism below
+   # there could be a better connection test mechanism below, especially
+   #  since this breaks if the test series disappears
    if      (dbname == "ECB" ) 
-      con <- try(TSgetECB('118.DD.A.I5.POPE.LEV.4D',...),  silent=TRUE)
+      con <- try(TSgetECB('122.ICP.M.U2.N.000000.4.ANR',...),  silent=TRUE)
+      # series '118.DD.A.I5.POPE.LEV.4D' disappeared
    else if (dbname == "FRB")
     con <- try(TSgetFRB('G19.79d3b610380314397facd01b59b37659',...),silent=TRUE)
    else if (dbname == "BoC")
