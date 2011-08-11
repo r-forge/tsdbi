@@ -9,6 +9,8 @@ cat("**************   connecting ets fame server using local Fame server\n")
 # this is using (fake) connection which uses Fame drivers to talk to
 # local or remote dbs.
 
+# alternatively the vintage names (dates) and files paths can be in a file, and
+#  us vintageMap() to read it
 dbs <- paste("ets /home/ets5/mfadata/etsmfacansim_", c(
              "20110513.db", "20060526.db", "20110520.db"), sep="")
 names(dbs) <- c("2011-05-13", "2006-05-26", "2011-05-20")

@@ -5,6 +5,7 @@ import(TSdbi)
 
 export("fame")
 export("fameServer")
+export("vintageMap")
 
 ## S4 Classes
 exportClasses(
