@@ -265,3 +265,17 @@ setMethod("TSexists",
          conType=class(con), hasVintages=con@hasVintages, hasPanels=con@hasPanels,
 	 DateStamp=NA))
    })
+
+
+######## a utility ###########################
+
+# could be generalize and put in TSdbi (possibly for TSxls TSzip use too)
+vintageMap <- function(file){
+  #file should have lines with the first column giving a date to be used as
+  #the vintage identifier, and the second column a indicating a
+  #  file name including absolute or relative path.
+  z <- as.matrix(read.table(file))
+  map <- z[,2]
+  names(map) <- z[,1]
+  map
+  }
