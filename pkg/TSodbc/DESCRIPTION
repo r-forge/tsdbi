@@ -1,6 +1,6 @@
 Package: TSodbc
-Version: 2011.6-1
-Date:2011-07-4
+Version: 2011.8-1
+Date:2011-08-12
 Title: Time Series Database Interface extensions for ODBC
 Description: TSodbc provides an ODBC interface for TSdbi.
 Depends: R (>= 2.8.0), methods, tframe, tframePlus, TSdbi (>= 2011.6-1), DBI, RODBC

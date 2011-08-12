@@ -24,6 +24,7 @@ exportMethods(
    "TSlabel",
    "TSdates",
    "TSexists",
+   "TSvintages",
    "dbDisconnect",
    "dbUnloadDriver"
    )

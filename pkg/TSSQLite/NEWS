@@ -4,6 +4,10 @@ See also
 
 
 
+Changes in TSTSSQLite version 2011.8-1
+
+   o	added TSvintages method.
+
 Changes in TSSQLite version 2011.7-1
 
    o	modified several methods signatures to expect a TSdbi connection and not attempt

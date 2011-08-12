@@ -83,6 +83,13 @@ setMethod("TSdelete",
    vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
   TSdbi:::TSdeleteSQL(serIDs=serIDs, con=con, vintage=vintage, panel=panel) )
 
+setMethod("TSvintages", 
+   signature(con="TSMySQLConnection"),
+   definition=function(con) {
+     if(!con@hasVintages) NULL else   
+     dbGetQuery(con,"SELECT  DISTINCT(vintage) FROM  vintages;" )$vintage
+     } )
+
 # this method will generally not be needed by users, but is used in the test
 # database setup. It needs to be generic in order to work around the problem
 # that different db engines treat capitalized table names differently.

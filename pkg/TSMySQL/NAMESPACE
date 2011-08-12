@@ -20,5 +20,6 @@ exportMethods(
    "TSdoc",
    "TSlabel",
    "TSdates",
+   "TSvintages",
    "dropTStable"
    )

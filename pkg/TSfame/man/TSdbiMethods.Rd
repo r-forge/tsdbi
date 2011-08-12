@@ -8,6 +8,7 @@
 \alias{TSlabel,character,TSfameConnection-method}
 \alias{TSdates,character,TSfameConnection-method}
 \alias{TSexists,character,TSfameConnection-method}
+\alias{TSvintages,TSfameConnection-method}
 
 \alias{TSconnect,fameServerDriver,character-method}
 \alias{TSget,character,TSfameServerConnection-method}
@@ -18,6 +19,7 @@
 \alias{TSlabel,character,TSfameServerConnection-method}
 \alias{TSdates,character,TSfameServerConnection-method}
 \alias{TSexists,character,TSfameServerConnection-method}
+\alias{TSvintages,TSfameServerConnection-method}
 
 \alias{dbDisconnect,TSfameConnection-method}
 \alias{dbDisconnect,TSfameServerConnection-method}
@@ -85,6 +87,9 @@
 
     \S4method{TSlabel}{character,TSfameConnection}(x, con, ...)
     \S4method{TSlabel}{character,TSfameServerConnection}(x, con, ...)
+
+    \S4method{TSvintages}{TSfameConnection}(con)
+    \S4method{TSvintages}{TSfameServerConnection}(con)
 
     \S4method{dbDisconnect}{TSfameConnection}(conn,...)
     \S4method{dbDisconnect}{TSfameServerConnection}(conn,...)

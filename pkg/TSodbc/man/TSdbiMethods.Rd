@@ -7,6 +7,7 @@
 \alias{TSdoc,character,TSodbcConnection-method}
 \alias{TSlabel,character,TSodbcConnection-method}
 \alias{TSdates,character,TSodbcConnection-method}
+\alias{TSvintages,TSodbcConnection-method}
 
 \alias{dropTStable,RODBC,character,ANY-method}
 \alias{dropTStable,RODBC,character-method}
@@ -44,6 +45,7 @@
     \S4method{TSdescription}{character,TSodbcConnection}(x, con, ...)
     \S4method{TSdoc}{character,TSodbcConnection}(x, con, ...)
     \S4method{TSlabel}{character,TSodbcConnection}(x, con, ...)
+    \S4method{TSvintages}{TSodbcConnection}(con)
 
     \S4method{dropTStable}{RODBC,character,ANY}(con, Table, 
                            yesIknowWhatIamDoing=FALSE)

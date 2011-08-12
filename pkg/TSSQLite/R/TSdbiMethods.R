@@ -63,6 +63,13 @@ setMethod("TSdelete", signature(serIDs="character", con="TSSQLiteConnection"),
   TSdbi:::TSdeleteSQL(serIDs=serIDs, con=con, vintage=vintage, panel=panel) )
 
 
+setMethod("TSvintages", 
+   signature(con="TSSQLiteConnection"),
+   definition=function(con) {
+     if(!con@hasVintages) NULL else   
+     dbGetQuery(con,"SELECT  DISTINCT(vintage) FROM  vintages;" )$vintage
+     } )
+
 setMethod("dropTStable", 
    signature(con="SQLiteConnection", Table="character", yesIknowWhatIamDoing="ANY"),
    definition= function(con=NULL, Table, yesIknowWhatIamDoing=FALSE){

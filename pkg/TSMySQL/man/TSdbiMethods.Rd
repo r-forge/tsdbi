@@ -7,6 +7,7 @@
 \alias{TSdoc,character,TSMySQLConnection-method}
 \alias{TSlabel,character,TSMySQLConnection-method}
 \alias{TSdates,character,TSMySQLConnection-method}
+\alias{TSvintages,TSMySQLConnection-method}
 \alias{dropTStable,MySQLConnection,character,ANY-method}
 \alias{dropTStable,MySQLConnection,character-method}
 
@@ -31,6 +32,7 @@
     \S4method{TSdescription}{character,TSMySQLConnection}(x, con, ...)
     \S4method{TSdoc}{character,TSMySQLConnection}(x, con, ...)
     \S4method{TSlabel}{character,TSMySQLConnection}(x, con, ...)
+    \S4method{TSvintages}{TSMySQLConnection}(con)
     \S4method{dropTStable}{MySQLConnection,character,ANY}(con, Table, 
                            yesIknowWhatIamDoing=FALSE)
 }

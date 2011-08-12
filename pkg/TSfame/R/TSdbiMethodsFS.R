@@ -281,3 +281,10 @@ setMethod("TSexists",
          conType=class(con), hasVintages=con@hasVintages, hasPanels=con@hasPanels,
 	 DateStamp=NA))
    })
+
+setMethod("TSvintages",  
+   signature(con="TSfameServerConnection"), 
+   definition= function(con){
+     if(!con@hasVintages) NULL else names(con@dbname)
+     } ) 
+

@@ -266,6 +266,11 @@ setMethod("TSexists",
 	 DateStamp=NA))
    })
 
+setMethod("TSvintages",  
+   signature(con="TSfameConnection"), 
+   definition= function(con){
+     if(!con@hasVintages) NULL else names(con@dbname)
+     } ) 
 
 ######## a utility ###########################
 

@@ -9,6 +9,10 @@ Known BUGS
 	so it is necessary to have a properly defined ~/.odbc.ini  file.
 
 
+Changes in TSodbc version 2011.8-1
+
+   o	added TSvintages method.
+
 Changes in TSodbc version 2011.3-1
 
    o	added support for TSrepresentation.

@@ -83,6 +83,13 @@ setMethod("TSdelete",
    vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
   TSdbi:::TSdeleteSQL(serIDs=serIDs, con=con, vintage=vintage, panel=panel) )
 
+setMethod("TSvintages", 
+   signature(con="TSOraConnection"),
+   definition=function(con) {
+     if(!con@hasVintages) NULL else   
+     dbGetQuery(con,"SELECT  DISTINCT(vintage) FROM  vintages;" )$vintage
+     } )
+
 setMethod("dropTStable", 
    signature(con="OraConnection", Table="character", yesIknowWhatIamDoing="ANY"),
    definition= function(con=NULL, Table, yesIknowWhatIamDoing=FALSE){
