@@ -10,6 +10,10 @@ Known BUGS
    o	Warning messages about "may be a Fame Server path" coming from the fame
 	package in the case of a remote servers (cannot be suppressed).
 
+Changes in TSfame version 2011.8-3
+
+   o	added TSvintages method.
+
 Changes in TSfame version 2011.8-2
 
    o	added utility function vintageMap() to read vintage names and file paths

@@ -7,6 +7,7 @@
 \alias{TSdoc,character,TSOracleConnection-method}
 \alias{TSlabel,character,TSOracleConnection-method}
 \alias{TSdates,character,TSOracleConnection-method}
+\alias{TSvintages,TSOracleConnection-method}
 \alias{dropTStable,OracleConnection,character,ANY-method}
 \alias{dropTStable,OracleConnection,character-method}
 
@@ -31,6 +32,7 @@
     \S4method{TSdescription}{character,TSOracleConnection}(x, con, ...)
     \S4method{TSdoc}{character,TSOracleConnection}(x, con, ...)
     \S4method{TSlabel}{character,TSOracleConnection}(x, con, ...)
+    \S4method{TSvintage}{TSOracleConnection}(con)
     \S4method{dropTStable}{OracleConnection,character,ANY}(con, Table, 
                            yesIknowWhatIamDoing=FALSE)
 }

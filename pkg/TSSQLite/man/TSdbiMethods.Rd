@@ -7,6 +7,7 @@
 \alias{TSdoc,character,TSSQLiteConnection-method}
 \alias{TSlabel,character,TSSQLiteConnection-method}
 \alias{TSdates,character,TSSQLiteConnection-method}
+\alias{TSvintages,TSSQLiteConnection-method}
 \alias{print,TSSQLiteConnection-method}
 \alias{dropTStable,SQLiteConnection,character,ANY-method}
 \alias{dropTStable,SQLiteConnection,character-method}
@@ -35,6 +36,7 @@
     \S4method{TSdescription}{character,TSSQLiteConnection}(x, con, ...)
     \S4method{TSdoc}{character,TSSQLiteConnection}(x, con, ...)
     \S4method{TSlabel}{character,TSSQLiteConnection}(x, con, ...)
+    \S4method{TSvintages}{TSSQLiteConnection}(con)
     \S4method{print}{TSSQLiteConnection}(x, ...)
     \S4method{dropTStable}{SQLiteConnection,character,ANY}(con, Table, 
                            yesIknowWhatIamDoing=FALSE)

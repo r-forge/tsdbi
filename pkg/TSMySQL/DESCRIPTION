@@ -1,9 +1,9 @@
 Package: TSMySQL
-Version: 2011.7-1
-Date:2011-07-18
+Version: 2011.8-1
+Date:2011-08-12
 Title: Time Series Database Interface extensions for MySQL
 Description: TSMySQL provides a MySQL interface for TSdbi.
-Depends: R (>= 2.8.0), methods, tframe, tframePlus, TSdbi (>= 2011.6-1), RMySQL
+Depends: R (>= 2.8.0), methods, tframe, tframePlus, TSdbi (>= 2011.8-1), RMySQL
 Imports: methods, TSdbi (>= 2011.6-1), DBI, RMySQL (>= 0.6-0) 
 Suggests: zoo, tseries, TShistQuote (>= 2010.5-1)
 Enhances: TSdbi

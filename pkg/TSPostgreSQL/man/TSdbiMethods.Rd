@@ -7,6 +7,7 @@
 \alias{TSdoc,character,TSPostgreSQLConnection-method}
 \alias{TSlabel,character,TSPostgreSQLConnection-method}
 \alias{TSdates,character,TSPostgreSQLConnection-method}
+\alias{TSvintages,TSPostgreSQLConnection-method}
 \alias{dropTStable,PostgreSQLConnection,character,ANY-method}
 \alias{dropTStable,PostgreSQLConnection,character-method}
 
@@ -33,6 +34,7 @@
     \S4method{TSdescription}{character,TSPostgreSQLConnection}(x, con, ...)
     \S4method{TSdoc}{character,TSPostgreSQLConnection}(x, con, ...)
     \S4method{TSlabel}{character,TSPostgreSQLConnection}(x, con, ...)
+    \S4method{TSvintages}{TSPostgreSQLConnection}(con)
     \S4method{dropTStable}{PostgreSQLConnection,character,ANY}(con, Table, 
                            yesIknowWhatIamDoing=FALSE)
 }
