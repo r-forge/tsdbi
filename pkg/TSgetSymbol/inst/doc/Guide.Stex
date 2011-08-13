@@ -74,7 +74,7 @@ This is a multivariate time series with open, close, etc.
   yahoo <- TSconnect("getSymbol", dbname="yahoo") 
   x <- TSget("F", con=yahoo)
   plot(x)
-  tfplot(x)
+  tfplot(x, graphs.per.page=3)
 \end{Scode}
 
 See the \pkg{TSdbi} vignette for additional details.
