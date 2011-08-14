@@ -425,6 +425,14 @@ DataSetParse <- function(doc, Xpath, nmsp,
         y <- as.numeric(dt[1])
         r2 <- ts(r1, start=cbind(y, 1), frequency=1) 
 	} 
+      else if (fr == "W"){ 
+        require("zoo")
+        wk <- as.numeric(sub("....W", "", dt))
+	y  <- as.numeric(sub("W..", "", dt))
+        lastwk <- as.numeric(format(as.Date(sprintf("%s-12-31", y)), "%V"))#%V, %W, %U ?
+	ix <- y + (wk - 1)/ lastwk
+	r2 <- zoo(r1, order.by = ix)  
+	} 
       else{ 
         require("zoo")
 	r2 <- zoo(r1, order.by=as.Date(dt)) 
