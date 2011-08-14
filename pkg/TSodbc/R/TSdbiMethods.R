@@ -146,7 +146,7 @@ setMethod("TSdelete", signature(serIDs="character", con="TSodbcConnection"),
    TSdbi:::TSdeleteSQL(serIDs=serIDs, con=con, vintage=vintage, panel=panel) )
 
 setMethod("TSvintages", 
-   signature(con="TSMySQLConnection"),
+   signature(con="TSodbcConnection"),
    definition=function(con) {
      if(!con@hasVintages) NULL else   
      dbGetQuery(con,"SELECT  DISTINCT(vintage) FROM  vintages;" )$vintage
