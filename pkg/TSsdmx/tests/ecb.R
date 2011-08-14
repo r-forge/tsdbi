@@ -41,3 +41,6 @@ z <- TSget(c("117.BSI.Q.U2.N.A.A21.A.1.U2.2250.Z01.E",
 tfplot(z)
 
 
+# weeky data 
+
+z <- TSget("ILM.W.U2.C.A010.Z5.Z0Z")
