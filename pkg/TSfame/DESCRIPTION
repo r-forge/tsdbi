@@ -7,6 +7,7 @@ Depends: R (>= 2.8.0), methods, tframe, tframePlus(>= 2011.8-1), TSdbi (>= 2011.
 Imports: methods, DBI, TSdbi (>= 2011.6-1), tframe
 Suggests: tseries, TShistQuote
 Enhances: TSdbi
+BuildVignettes: false
 License: GPL-2 | file LICENSE
 Author: Paul Gilbert <pgilbert@bank-banque-canada.ca>
 Maintainer: Paul Gilbert <pgilbert@bank-banque-canada.ca>
