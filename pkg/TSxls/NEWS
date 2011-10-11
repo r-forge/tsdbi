@@ -7,6 +7,10 @@ Known BUGS
    o	TSrepresentaion is specified in TSconnect rather than TSget.
 
 
+Changes in TSxls version 2011.11-1
+
+   o	updated maintainer email address.
+
 Changes in TSxls version 2011.7-1
 
    o	fixed bug downloading xls file, which should be written as binary.
