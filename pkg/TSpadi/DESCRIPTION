@@ -1,6 +1,5 @@
 Package: TSpadi
-Version: 2011.8-1
-Date:2011-08-3
+Version: 2011.11-1
 Title:  Time Series Database Interface extensions for PADI Time Series Server
 Description: Provides methods for generics in the TSdbi package to 
 	connect through a protocol for application database interface (PADI)
@@ -12,6 +11,6 @@ Imports: methods, DBI, TSdbi (>= 2011.6-1)
 Enhances: TSdbi
 Collate: padi.R TSdbiMethods.R
 License: GPL-2 | file LICENSE
-Author: Paul Gilbert <pgilbert@bank-banque-canada.ca>
-Maintainer: Paul Gilbert <pgilbert@bank-banque-canada.ca>
-URL: http://www.bank-banque-canada.ca/pgilbert
+Author: Paul Gilbert <pgilbert.ttv9z@ncf.ca>
+Maintainer: Paul Gilbert <pgilbert.ttv9z@ncf.ca>
+URL: http://tsdbi.r-forge.r-project.org/

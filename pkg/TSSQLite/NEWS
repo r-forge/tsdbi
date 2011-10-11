@@ -4,7 +4,11 @@ See also
 
 
 
-Changes in TSTSSQLite version 2011.8-1
+Changes in TSSQLite version 2011.11-1
+
+   o	updated maintainer email address.
+
+Changes in TSSQLite version 2011.8-1
 
    o	added TSvintages method.
 

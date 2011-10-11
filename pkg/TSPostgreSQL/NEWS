@@ -3,6 +3,10 @@ See also
    o	See also NEWS in the TSdbi package.
 
 
+Changes in TSPostgreSQL version 2011.11-1
+
+   o	updated maintainer email address.
+
 Changes in TSPostgreSQL version 2011.8-1
 
    o	added TSvintages method.

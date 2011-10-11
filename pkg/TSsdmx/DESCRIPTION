@@ -1,6 +1,5 @@
 Package: TSsdmx
-Version: 2011.6-1
-Date:2011-07-4
+Version: 2011.11-1
 Title:  Time Series Database Interface extension to connect with SDMX
 Description: Provides methods for generics in the TSdbi package to 
 	retrieve data with SDMX, in particular from the ECB and OECD database.
@@ -8,6 +7,6 @@ Depends: R (>= 2.8.0), methods, DBI, TSdbi (>= 2011.6-1), RCurl, XML, tframe, tf
 Imports: methods, DBI, TSdbi (>= 2011.6-1)
 Enhances: TSdbi
 License: GPL-2 | file LICENSE
-Author: Paul Gilbert <pgilbert@bank-banque-canada.ca>
-Maintainer: Paul Gilbert <pgilbert@bank-banque-canada.ca>
-URL: http://www.bank-banque-canada.ca/pgilbert
+Author: Paul Gilbert <pgilbert.ttv9z@ncf.ca>
+Maintainer: Paul Gilbert <pgilbert.ttv9z@ncf.ca>
+URL: http://tsdbi.r-forge.r-project.org/

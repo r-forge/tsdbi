@@ -6,6 +6,10 @@ Known BUGS
 
    o	Probably does not build on Windows or Mac.
 
+Changes in TSpadi version 2011.11-1
+
+   o	updated maintainer email address.
+
 Changes in TSpadi version 2011.8-1
 
    o	fixed tframePlus version suggest to fix bug with TSrepresentation for
