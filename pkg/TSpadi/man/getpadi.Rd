@@ -84,7 +84,7 @@
 \details{
  The function getpadi retrieves data from a (time series) server.
 The padi code is also available (including the PADI server side)
-at \url{www.bank-banque-canada.ca/pgilbert}.
+at \url{http://tsdbi.r-forge.r-project.org/}.
 
 (This documentation could use some cleaning up, but first I am really hoping to
  convert the whole interface to a more modern, non-RPC based, mechanism.)

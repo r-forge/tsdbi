@@ -130,8 +130,8 @@ some of the underlying code should probably be replaced with a newer approach,
 perhaps based on something like SOAP.
 
 Code and a description of a prototype of a standard for a Time Series
-Protocol for Application - Database Interface (TS PADI) is still available
-at http://www.bank-banque-canada.ca/pgilbert. The code includes a
-working interface to a Fame database. 
+Protocol for Application - Database Interface (TS PADI) 
+may still be available at http://www.bank-banque-canada.ca/pgilbert. 
+The code includes a working interface to a Fame database. 
 
 \end{document}
