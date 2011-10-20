@@ -40,8 +40,9 @@ setMethod("dbListTables", signature(conn="RODBC"), definition=function(conn,...)
 setMethod("dbExistsTable", signature(conn="RODBC", name="character"),
    definition=function(conn, name, ...) name %in% dbListTables(conn))
 
-##setMethod("dbExistsTable", signature(conn="TSodbcConnection", name="character"),
-##   definition=function(conn, name, ...) name %in% dbListTables(conn))
+setMethod("dbRemoveTable", signature(conn="RODBC", name="character"),
+   definition=function(conn, name, ...) {
+     if (-1 == sqlDrop(conn, name, errors = FALSE) ) FALSE else TRUE})
 
 setMethod("dbGetQuery", signature(conn="RODBC", statement="character"),
    definition=function (conn, statement, ...){
@@ -157,6 +158,5 @@ setMethod("dropTStable",
    definition= function(con=NULL, Table, yesIknowWhatIamDoing=FALSE){
     if((!is.logical(yesIknowWhatIamDoing)) || !yesIknowWhatIamDoing)
       stop("See ?dropTStable! You need to know that you may be doing serious damage.")
-    if(dbExistsTable(con, Table)) dbRemoveTable(con, Table)
-    return(TRUE)
+    if(dbExistsTable(con, Table)) dbRemoveTable(con, Table) else TRUE
     } )

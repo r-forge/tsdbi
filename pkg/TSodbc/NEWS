@@ -13,6 +13,8 @@ Changes in TSodbc version 2011.11-1
 
    o	updated maintainer email address.
 
+   o	added dbRemoveTable() for DBI consistency (uses RODBC sqlDrop()).
+
 Changes in TSodbc version 2011.8-2
 
    o	fixed method signature for TSvintages method.

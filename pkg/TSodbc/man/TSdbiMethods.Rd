@@ -14,6 +14,7 @@
 
 \alias{dbDisconnect,RODBC-method}
 \alias{dbExistsTable,RODBC,character-method}
+\alias{dbRemoveTable,RODBC,character-method}
 \alias{dbGetQuery,RODBC,character-method}
 \alias{dbListTables,RODBC-method}
 \alias{dbUnloadDriver,ODBCDriver-method}
@@ -52,6 +53,7 @@
 
     \S4method{dbDisconnect}{RODBC}(conn,...)
     \S4method{dbExistsTable}{RODBC,character}(conn, name, ...)
+    \S4method{dbRemoveTable}{RODBC,character}(conn, name, ...)
     \S4method{dbGetQuery}{RODBC,character}(conn, statement, ...)
     \S4method{dbListTables}{RODBC}(conn,...)
     \S4method{dbUnloadDriver}{ODBCDriver}(drv, ...)
