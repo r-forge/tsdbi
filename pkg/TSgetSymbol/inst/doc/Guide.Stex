@@ -33,7 +33,7 @@ extra functionality, only an interface that is consistent with \pkg{TSdbi}.
 
 \subsection{Examples  Using TSgetSymbol with FRED}
 
-\begin{Scode}{results=verbatim}
+\begin{Scode}{results=verbatim,fig=TRUE}
   con <- TSconnect("getSymbol", dbname="FRED") 
   x <- TSget("M2", con)
   plot(x)
@@ -44,22 +44,24 @@ extra functionality, only an interface that is consistent with \pkg{TSdbi}.
 
 It is also possible to specify a connection to be used as the default:
 
-\begin{Scode}{results=verbatim}
+\begin{Scode}{results=verbatim,fig=TRUE}
   options(TSconnection=con)
   tfplot(TSget(serIDs="M2"))
 \end{Scode}
 
-\begin{Scode}{results=verbatim}
+\begin{Scode}{results=verbatim,fig=TRUE}
   x2 <- TSget("CPIAUCNS", con)
   tfplot(x2)
   plot(x2)
   TSdescription(x2) 
 \end{Scode}
 
-\begin{Scode}{results=verbatim}
+Set \code{par(ask=TRUE)} here if you want to stop and prompt for <Return>
+between pages in the graphics output.
+\begin{Scode}{results=verbatim,fig=TRUE}
   x <- TSget(c("CPIAUCNS","M2"), con)
   plot(x)
-  tfplot(x)
+  tfplot(x, graphs.per.page=3)
   TSdescription(x) 
 \end{Scode}
 
@@ -70,7 +72,7 @@ It is also possible to specify a connection to be used as the default:
 The folowing connects to yahoo and loads Ford. 
 This is a multivariate time series with open, close, etc.
 
-\begin{Scode}{results=verbatim}
+\begin{Scode}{results=verbatim,fig=TRUE}
   yahoo <- TSconnect("getSymbol", dbname="yahoo") 
   x <- TSget("F", con=yahoo)
   plot(x)

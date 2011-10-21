@@ -37,10 +37,12 @@ setMethod("TSconnect",   signature(drv="getSymbolDriver", dbname="character"),
       #close(con)
       }
    else if (dbname == "yahoo") {
-      con <- try(quantmod:::getSymbols('QQQQ',src='yahoo'), silent = TRUE)
-      if(inherits(con, "try-error")) 
-         stop("Could not establish TSgetSymbolConnection to ",  dbname)
-      #close(con)
+      #this breaks if the symbol disappears, so it is more trouble than value
+      # a better test would be good
+      #con <- try(quantmod:::getSymbols('QQQQ',src='yahoo'), silent = TRUE)
+      #if(inherits(con, "try-error")) 
+      #   stop("Could not establish TSgetSymbolConnection to ",  dbname)
+      ##close(con)
       }
    else 
       warning(dbname, "not recognized. Connection assumed working, but not tested.")
