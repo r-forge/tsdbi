@@ -1,11 +1,3 @@
-#.onLoad  <- function(library, section) {
-#  ok <- require("methods")
-#  ok <- ok & require("DBI") # this seems to be needed for dbConnect (not just namespace)
-#  ok <- ok & require("TSdbi")
-#  ok <- ok & require("tseries")
-#  ok <- ok & require("tframePlus")
-#  invisible(ok)
-#  }
 
 setClass("getSymbolDriver", representation("DBIDriver", Id = "character")) 
 
@@ -129,11 +121,11 @@ setMethod("TSget",     signature(serIDs="character", con="TSgetSymbolConnection"
     st <- as.POSIXlt(start(mat)) #POSIXlt as return for zoo
     if (TSrepresentation  %in% c( "ts", "default")) {
         if(periodicity(mat)$scale == "monthly")
-	   mat <- as.ts(mat, frequency=12,start=c(1900+st$year, 1+st$mon))
+	   mat <- ts(mat, frequency=12,start=c(1900+st$year, 1+st$mon))
         else if(periodicity(mat)$scale == "quarterly")
-	   mat <- as.ts(mat, frequency=4, start=c(1900+st$year, 1+(st$mon-1)/3))
+	   mat <- ts(mat, frequency=4, start=c(1900+st$year, 1+(st$mon-1)/3))
         else if(periodicity(mat)$scale == "yearly")  
-	   mat <- as.ts(mat, frequency=1, start=c(1900+st$year, 1))
+	   mat <- ts(mat, frequency=1, start=c(1900+st$year, 1))
 	}
     mat <- tfwindow(mat, tf=tf, start=start, end=end)
     

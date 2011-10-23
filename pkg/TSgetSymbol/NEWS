@@ -4,12 +4,17 @@ See also
 
 Known BUGS
 
-   o	Can only return default time series representation.
+   o	Can only return default or zoo time series representation.
 
 
 Changes in TSgetSymbol version 2011.11-1
 
    o	updated maintainer email address.
+
+   o	fixed faulty conversion from zoo to ts.
+
+   o	fixed vignette to use monthly rather than weekly M2. (Binding a weekly
+   	and monthly series together caused problems.)
 
    o	removed yahoo connection test in TSconnect as it causes more problems
    	than it likely prevents.
