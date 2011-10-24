@@ -6,6 +6,7 @@
 \alias{TSdescription,character,TSSQLiteConnection-method}
 \alias{TSdoc,character,TSSQLiteConnection-method}
 \alias{TSlabel,character,TSSQLiteConnection-method}
+\alias{TSsource,character,TSSQLiteConnection-method}
 \alias{TSdates,character,TSSQLiteConnection-method}
 \alias{TSvintages,TSSQLiteConnection-method}
 \alias{print,TSSQLiteConnection-method}
@@ -20,12 +21,13 @@
     \S4method{TSconnect}{SQLiteDriver,character}(drv, dbname, ...)
     \S4method{TSget}{character,TSSQLiteConnection}(
 	serIDs, con, TSrepresentation=options()$TSrepresentation,
-	tf=NULL, start=tfstart(tf), end=tfend(tf),
-	names=NULL, TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE,
+	tf=NULL, start=tfstart(tf), end=tfend(tf), names=NULL, 
+	TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE, TSsource=TRUE,
 	vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
     \S4method{TSput}{ANY,character,TSSQLiteConnection}(
 	x, serIDs, con, Table=NULL, 
-	TSdescription.=TSdescription(x), TSdoc.=TSdoc(x),  TSlabel.=TSlabel(x), 
+	TSdescription.=TSdescription(x), TSdoc.=TSdoc(x),  TSlabel.=TSlabel(x),
+	TSsource.=TSsource(x), 
 	vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
     \S4method{TSdates}{character,TSSQLiteConnection}(
 	serIDs, con, 
@@ -36,6 +38,7 @@
     \S4method{TSdescription}{character,TSSQLiteConnection}(x, con, ...)
     \S4method{TSdoc}{character,TSSQLiteConnection}(x, con, ...)
     \S4method{TSlabel}{character,TSSQLiteConnection}(x, con, ...)
+    \S4method{TSsource}{character,TSSQLiteConnection}(x, con, ...)
     \S4method{TSvintages}{TSSQLiteConnection}(con)
     \S4method{print}{TSSQLiteConnection}(x, ...)
     \S4method{dropTStable}{SQLiteConnection,character,ANY}(con, Table, 
@@ -63,6 +66,9 @@
     \item{TSlabel}{TRUE or FALSE indicating whether series label 
        should be extracted.}
     \item{TSlabel.}{Short series label to put on the database.}
+    \item{TSsource}{TRUE or FALSE indicating whether source indication 
+       should be extracted.}
+    \item{TSsource.}{Source indication to put on the database.}
     \item{Table}{Character string indicating database table. (In TSput this is 
     	necessary if it cannot be determined automatically).}
     \item{vintage}{Vintage to be supplied (if supported by db).}

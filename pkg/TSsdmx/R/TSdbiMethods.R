@@ -123,7 +123,9 @@ setMethod("TSget",     signature(serIDs="character", con="TSsdmxConnection"),
   	conType=class(con), DateStamp= Sys.time(), 
 	TSdoc=paste(desc, " from ", con@dbname, "retrieved ", Sys.time()),
 	TSdescription=paste(desc, " from ", con@dbname),
-	TSlabel=desc) 
+	TSlabel=desc, 
+	TSsource=con@dbname # could be better
+	) 
     mat
     } 
     )
@@ -145,6 +147,10 @@ setMethod("TSdoc",   signature(x="character", con="TSsdmxConnection"),
 setMethod("TSlabel",   signature(x="character", con="TSsdmxConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
         "TSlabel for TSsdmx connection not supported." )
+
+setMethod("TSsource",   signature(x="character", con="TSsdmxConnection"),
+   definition= function(x, con=getOption("TSconnection"), ...)
+        "TSsource for TSsdmx connection not supported." )
 
 #######  database source specific methods (not exported)   ######
 # It should be possible to a have a single SDMX parser deal with the

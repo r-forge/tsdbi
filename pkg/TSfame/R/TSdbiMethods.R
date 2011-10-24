@@ -1,11 +1,3 @@
-#.onLoad <- function(library, section) {
-#   ok <- require("methods")
-#   ok <- ok & require("DBI")
-#   ok <- ok & require("TSdbi")
-#   ok <- ok & require("fame")
-#   ok <- ok & require("zoo")
-#   invisible(ok)
-#   }
 
 setClass("fameDriver", representation("DBIDriver", Id = "character")) 
 
@@ -107,8 +99,8 @@ setMethod("TSdates",
 
 setMethod("TSget",     signature(serIDs="character", con="TSfameConnection"),
    definition= function(serIDs, con, TSrepresentation=getOption("TSrepresentation"),
-       tf=NULL, start=tfstart(tf), end=tfend(tf),
-       names=NULL, TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE,
+       tf=NULL, start=tfstart(tf), end=tfend(tf), names=NULL, 
+       TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE, TSsource=FALSE,
        vintage=getOption("TSvintage"), ...)
 { # ... arguments unused
   if (is.null(TSrepresentation)) TSrepresentation <- "default"
@@ -133,7 +125,7 @@ setMethod("TSget",     signature(serIDs="character", con="TSfameConnection"),
     dbname <- rep(con@dbname, length(serIDs))   
   }
   
-  mat <- desc <- doc <- label <-  rp <- NULL
+  mat <- desc <- doc <- label <- source <-  rp <- NULL
   for (i in seq(length(serIDs))) {
     r <- getfame(serIDs[i], dbname[i], save = FALSE, envir = parent.frame(),
              start = NULL, end = NULL, getDoc = FALSE)
@@ -152,8 +144,9 @@ setMethod("TSget",     signature(serIDs="character", con="TSfameConnection"),
        }
     mat <- tbind(mat, r)
     if(TSdescription) desc <- c(desc, TSdescription(serIDs[i],con) ) 
-    if(TSdoc)         doc  <- c(doc,  TSdoc(serIDs[i],con) ) 
-    if(TSlabel)       label<- c(label,as(NA, "character")) #TSlabel(serIDs[i],con) ) 
+    if(TSdoc)     doc  <- c(doc,  TSdoc(serIDs[i],con) ) 
+    if(TSlabel)   label<- c(label,as(NA, "character")) #TSlabel(serIDs[i],con) )
+    if(TSsource)  source<- c(source,as("Fame db", "character")) $could be better
     }
 
   if(TSlabel) warning("TSlabel not supported in Fame.") 
@@ -176,17 +169,19 @@ setMethod("TSget",     signature(serIDs="character", con="TSfameConnection"),
       TSdescription=if(TSdescription) paste(desc, " from ", dbname, 
             "retrieved ", Sys.time()) else as(NA, "character"), 
       TSdoc=if(TSdoc) doc else as(NA, "character"),
-      TSlabel=if(TSlabel) label else as(NA, "character"))
+      TSlabel=if(TSlabel) label else as(NA, "character"),
+      TSsource=if(TSsource) source else as(NA, "character"))
   mat
 } )
 
 
 setMethod("TSput",     signature(x="ANY", serIDs="character", con="TSfameConnection"),
    definition= function(x, serIDs=seriesNames(x), con,   
-       TSdescription.=TSdescription(x), TSdoc.=TSdoc(x), TSlabel.=NULL, 
-       warn=TRUE, ...) 
+       TSdescription.=TSdescription(x), TSdoc.=TSdoc(x), TSlabel.=NULL,  
+       TSsource.=NULL, warn=TRUE, ...) 
  {
   if (!is.null(TSlabel.)) warning("TSlabel is not supported in Fame.")
+  if (!is.null(TSsource.)) warning("TSsource is not supported in Fame.")
   if (con@hasVintages)
     stop("TSput does not support vintages. Open the con to a single dbname.")
   ids <-  serIDs 
@@ -232,6 +227,10 @@ setMethod("TSdoc",   signature(x="character", con="TSfameConnection"),
 
 #TSlabel gets used for new("Meta", so issuing a warning is not a good idea here.
 setMethod("TSlabel",   signature(x="character", con="TSfameConnection"),
+   definition= function(x, con=getOption("TSconnection"), ...)
+     as(NA, "character") )
+
+setMethod("TSsource",   signature(x="character", con="TSfameConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
      as(NA, "character") )
 

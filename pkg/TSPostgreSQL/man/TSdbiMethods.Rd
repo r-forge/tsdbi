@@ -6,6 +6,7 @@
 \alias{TSdescription,character,TSPostgreSQLConnection-method}
 \alias{TSdoc,character,TSPostgreSQLConnection-method}
 \alias{TSlabel,character,TSPostgreSQLConnection-method}
+\alias{TSsource,character,TSPostgreSQLConnection-method}
 \alias{TSdates,character,TSPostgreSQLConnection-method}
 \alias{TSvintages,TSPostgreSQLConnection-method}
 \alias{dropTStable,PostgreSQLConnection,character,ANY-method}
@@ -21,11 +22,12 @@
     \S4method{TSget}{character,TSPostgreSQLConnection}(serIDs, 
        con=getOption("TSconnection"), 
        TSrepresentation=getOption("TSrepresentation"),
-       tf=NULL, start=tfstart(tf), end=tfend(tf),
-       names=NULL, TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE,
+       tf=NULL, start=tfstart(tf), end=tfend(tf), names=NULL, 
+       TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE, TSsource=TRUE,
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
     \S4method{TSput}{ANY,character,TSPostgreSQLConnection}(x, serIDs, con, Table=NULL, 
-       TSdescription.=TSdescription(x), TSdoc.=TSdoc(x), TSlabel.=TSlabel(x),  
+       TSdescription.=TSdescription(x), TSdoc.=TSdoc(x), TSlabel.=TSlabel(x),
+       TSsource.=TSsource(x), 
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
     \S4method{TSdates}{character,TSPostgreSQLConnection}(serIDs, con,  
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
@@ -34,6 +36,7 @@
     \S4method{TSdescription}{character,TSPostgreSQLConnection}(x, con, ...)
     \S4method{TSdoc}{character,TSPostgreSQLConnection}(x, con, ...)
     \S4method{TSlabel}{character,TSPostgreSQLConnection}(x, con, ...)
+    \S4method{TSsource}{character,TSPostgreSQLConnection}(x, con, ...)
     \S4method{TSvintages}{TSPostgreSQLConnection}(con)
     \S4method{dropTStable}{PostgreSQLConnection,character,ANY}(con, Table, 
                            yesIknowWhatIamDoing=FALSE)
@@ -61,6 +64,9 @@
     \item{TSlabel}{TRUE or FALSE indicating whether series label 
        should be extracted.}
     \item{TSlabel.}{Short series label to put on the database.}
+    \item{TSsource}{TRUE or FALSE indicating whether source indicator 
+       should be extracted.}
+    \item{TSsource.}{Source indicator to put on the database.}
     \item{Table}{Character string indicating database table. (In TSput this is 
     	necessary if it cannot be determined automatically).}
     \item{vintage}{Vintage to be supplied (if supported by db).}

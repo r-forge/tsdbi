@@ -22,6 +22,7 @@ exportMethods(
    "TSdescription",
    "TSdoc",
    "TSlabel",
+   "TSsource",
    "TSdates",
    "TSexists",
    "TSvintages",

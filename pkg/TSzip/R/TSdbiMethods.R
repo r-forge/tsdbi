@@ -135,7 +135,8 @@ setMethod("TSget",     signature(serIDs="character", con="TSzipConnection"),
   	conType=class(con), DateStamp= Sys.time(), 
 	TSdoc=paste(desc, "retrieved ", Sys.time()),
 	TSdescription=desc,
-	TSlabel=names
+	TSlabel=names,
+	TSsource=con@dbname # could be better
 	) 
     mat
     } 
@@ -158,3 +159,7 @@ setMethod("TSdoc",   signature(x="character", con="TSzipConnection"),
 setMethod("TSlabel",   signature(x="character", con="TSzipConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
         "TSlabel for TSzip connection not supported." )
+
+setMethod("TSsource",   signature(x="character", con="TSzipConnection"),
+   definition= function(x, con=getOption("TSconnection"), ...)
+        "TSsource for TSzip connection not supported." )

@@ -6,6 +6,7 @@
 \alias{TSdescription,character,TSzipConnection-method}
 \alias{TSdoc,character,TSzipConnection-method}
 \alias{TSlabel,character,TSzipConnection-method}
+\alias{TSsource,character,TSzipConnection-method}
 
 \alias{dbDisconnect,TSzipConnection-method}
 
@@ -27,6 +28,7 @@
     \S4method{TSdescription}{character,TSzipConnection}(x, con, ... )  
     \S4method{TSdoc}{character,TSzipConnection}(x, con, ... )  
     \S4method{TSlabel}{character,TSzipConnection}(x, con, ... )  
+    \S4method{TSsource}{character,TSzipConnection}(x, con, ... )  
 
     \S4method{dbDisconnect}{TSzipConnection}(conn,...)
 }

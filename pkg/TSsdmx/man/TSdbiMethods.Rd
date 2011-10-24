@@ -6,6 +6,7 @@
 \alias{TSdescription,character,TSsdmxConnection-method}
 \alias{TSdoc,character,TSsdmxConnection-method}
 \alias{TSlabel,character,TSsdmxConnection-method}
+\alias{TSsource,character,TSsdmxConnection-method}
 
 \alias{dbDisconnect,TSsdmxConnection-method}
 
@@ -27,6 +28,7 @@
     \S4method{TSdescription}{character,TSsdmxConnection}(x, con, ... )  
     \S4method{TSdoc}{character,TSsdmxConnection}(x, con, ... )  
     \S4method{TSlabel}{character,TSsdmxConnection}(x, con, ... )  
+    \S4method{TSsource}{character,TSsdmxConnection}(x, con, ... )  
 
     \S4method{dbDisconnect}{TSsdmxConnection}(conn,...)
 }

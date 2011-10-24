@@ -7,6 +7,7 @@
 \alias{TSdescription,character,TSpadiConnection-method}
 \alias{TSdoc,character,TSpadiConnection-method}
 \alias{TSlabel,character,TSpadiConnection-method}
+\alias{TSsource,character,TSpadiConnection-method}
 
 \alias{padiDriver-class}
 \alias{TSpadiConnection-class}
@@ -27,6 +28,7 @@
     \S4method{TSdescription}{character,TSpadiConnection}(x, con, ... )  
     \S4method{TSdoc}{character,TSpadiConnection}(x, con, ... )  
     \S4method{TSlabel}{character,TSpadiConnection}(x, con, ... )  
+    \S4method{TSsource}{character,TSpadiConnection}(x, con, ... )  
 }
 \arguments{
     \item{con}{a database connection object.}

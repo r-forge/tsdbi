@@ -6,6 +6,7 @@
 \alias{TSdescription,character,TSOracleConnection-method}
 \alias{TSdoc,character,TSOracleConnection-method}
 \alias{TSlabel,character,TSOracleConnection-method}
+\alias{TSsource,character,TSOracleConnection-method}
 \alias{TSdates,character,TSOracleConnection-method}
 \alias{TSvintages,TSOracleConnection-method}
 \alias{dropTStable,OracleConnection,character,ANY-method}
@@ -19,11 +20,12 @@
     \S4method{TSconnect}{OracleDriver,character}(drv, dbname, ...)
     \S4method{TSget}{character,TSOracleConnection}(serIDs, con, 
        TSrepresentation=options()$TSrepresentation,
-       tf=NULL, start=tfstart(tf), end=tfend(tf),
-       names=NULL, TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE,
+       tf=NULL, start=tfstart(tf), end=tfend(tf), names=NULL, 
+       TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE, TSsource=TRUE,
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"),   ...)
     \S4method{TSput}{ANY,character,TSOracleConnection}(x, serIDs, con, Table=NULL, 
-       TSdescription.=TSdescription(x), TSdoc.=TSdoc(x), TSlabel.=TSlabel(x),  
+       TSdescription.=TSdescription(x), TSdoc.=TSdoc(x), TSlabel.=TSlabel(x),
+        TSsource.=TSsource(x),  
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"),  ...)
     \S4method{TSdates}{character,TSOracleConnection}(serIDs, con,  
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
@@ -32,6 +34,7 @@
     \S4method{TSdescription}{character,TSOracleConnection}(x, con, ...)
     \S4method{TSdoc}{character,TSOracleConnection}(x, con, ...)
     \S4method{TSlabel}{character,TSOracleConnection}(x, con, ...)
+    \S4method{TSsource}{character,TSOracleConnection}(x, con, ...)
     \S4method{TSvintage}{TSOracleConnection}(con)
     \S4method{dropTStable}{OracleConnection,character,ANY}(con, Table, 
                            yesIknowWhatIamDoing=FALSE)
@@ -58,6 +61,9 @@
     \item{TSlabel}{TRUE or FALSE indicating whether series label 
        should be extracted.}
     \item{TSlabel.}{Short series label to put on the database.}
+    \item{TSsource}{TRUE or FALSE indicating whether source indication 
+       should be extracted.}
+    \item{TSsource.}{Source indication to put on the database.}
     \item{Table}{Character string indicating database table. (In TSput this is 
     	necessary if it cannot be determined automatically).}
     \item{vintage}{Vintage to be supplied (if supported by db).}

@@ -41,6 +41,7 @@ exportMethods(
    "TSdescription",
    "TSdoc",
    "TSlabel",
+   "TSsource",
    "TSget",
    "TSput"
    )
