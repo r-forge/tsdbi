@@ -101,13 +101,16 @@ And now more examples:
 \end{Scode}
  
 The following extract information about the series from the database, although
-not much information has been added for these examples. 
+not much information has been added for these examples, and not all fields are
+supported by the Fame database. 
 \begin{Scode}
  TSmeta("mat2c1", con)
  TSmeta("vec", con)
  TSdates("vec", con)
  TSdescription("vec", con)
  TSdoc("vec", con)
+ TSlabel("vec", con)
+ TSsource("vec", con)
 \end{Scode}
 
 Below are examples that make more use of \code{TSdescription} and code{TSdoc}.
@@ -190,7 +193,7 @@ so the \pkg{zoo} time representation is used.
 require("zoo") 
 
  z <- zoo(matrix(rnorm(200),100,2), as.Date("1990-01-01") + 0:99)
-  seriesNames(z) <- c("zooc1", "zooc2")
+ seriesNames(z) <- c("zooc1", "zooc2")
  TSreplace(z, con)
  tfplot(z+1, TSget(c("zooc1","zooc2"), con),
            lty=c("solid", "dashed"), col=c("black", "red"))  
@@ -199,7 +202,7 @@ require("zoo")
 Beware that (as of Dec, 2010) there is a bug with weekly dates:
 \begin{Scode}{results=verbatim,fig=FALSE}
  z <- zoo(matrix(rnorm(200),100,2), as.Date("1990-01-01") + 0:99 * 7)
-  seriesNames(z) <- c("zooWc1", "zooWc2")
+ seriesNames(z) <- c("zooWc1", "zooWc2")
  TSreplace(z, con)
  z2 <- TSget(c("zooWc1","zooWc2"), con)
  time(z)
