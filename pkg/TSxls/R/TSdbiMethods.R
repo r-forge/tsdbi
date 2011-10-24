@@ -11,7 +11,7 @@ xls <- function() {
 setClass("TSxlsConnection", contains=c("DBIConnection", "conType","TSdb"),
    representation(url="character", data="matrix", ids="character", 
         dates="character", names="character", description="character",
-	tsrepresentation = "function") 
+	source="character", tsrepresentation = "function") 
    )
 
 ####### some kludges to make this look like DBI. ######
@@ -116,6 +116,7 @@ setMethod("TSconnect",   signature(drv="xlsDriver", dbname="character"),
    new("TSxlsConnection", drv="xls", dbname=dbname, 
         hasVintages=FALSE, hasPanels=FALSE, url=url,
 	data=data,ids=ids,dates=dates, names=nm, description=desc,
+	source=dbname,  #this could be better
 	tsrepresentation=map$tsrepresentation) 
    } 
    )
@@ -179,7 +180,8 @@ setMethod("TSget",     signature(serIDs="character", con="TSxlsConnection"),
   	conType=class(con), DateStamp= Sys.time(), 
 	TSdoc=paste(desc, " from ", con@dbname, "retrieved ", Sys.time()),
 	TSdescription=paste(desc, " from ", con@dbname),
-	TSlabel=desc) 
+	TSlabel=desc,
+	TSsource=con@dbname ) 
     mat
     } 
     )
@@ -201,6 +203,10 @@ setMethod("TSdoc",   signature(x="character", con="TSxlsConnection"),
 setMethod("TSlabel",   signature(x="character", con="TSxlsConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
         "TSlabel for TSxls connection not supported." )
+
+setMethod("TSsource",   signature(x="character", con="TSxlsConnection"),
+   definition= function(x, con=getOption("TSconnection"), ...)
+        "TSsource for TSxls connection not supported." )
 
 ##### utilities #####
 

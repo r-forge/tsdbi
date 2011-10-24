@@ -209,3 +209,7 @@ setMethod("TSlabel",   signature(x="character", con="TSpadiConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
         "TSlabel for padi connection not supported." )
 
+setMethod("TSsource",   signature(x="character", con="TSpadiConnection"),
+   definition= function(x, con=getOption("TSconnection"), ...)
+        "TSsource for padi connection not supported." )
+

@@ -41,6 +41,8 @@ export(
    "TSdoc<-",
    "TSlabel",
    "TSlabel<-",
+   "TSsource",
+   "TSsource<-",
    "TSmeta",
    "TSmeta<-",
    "TSrefperiod",

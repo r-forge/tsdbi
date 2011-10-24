@@ -6,6 +6,7 @@
 \alias{TSdescription,character,TSgetSymbolConnection-method}
 \alias{TSdoc,character,TSgetSymbolConnection-method}
 \alias{TSlabel,character,TSgetSymbolConnection-method}
+\alias{TSsource,character,TSgetSymbolConnection-method}
 
 \alias{dbDisconnect,TSgetSymbolConnection-method}
 
@@ -27,6 +28,7 @@
     \S4method{TSdescription}{character,TSgetSymbolConnection}(x, con, ... )  
     \S4method{TSdoc}{character,TSgetSymbolConnection}(x, con, ... )  
     \S4method{TSlabel}{character,TSgetSymbolConnection}(x, con, ... )  
+    \S4method{TSsource}{character,TSgetSymbolConnection}(x, con, ... )  
 
     \S4method{dbDisconnect}{TSgetSymbolConnection}(conn,...)
 }

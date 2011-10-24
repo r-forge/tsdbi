@@ -1,11 +1,3 @@
-#.onLoad  <- function(library, section) {
-#  ok <- require("methods")
-#  ok <- ok & require("DBI") # this seems to be needed for dbConnect (not just namespace)
-#  ok <- ok & require("TSdbi")
-#  ok <- ok & require("tseries")
-#  ok <- ok & require("tframePlus")
-#  invisible(ok)
-#  }
 
 setClass("histQuoteDriver", representation("DBIDriver", Id = "character")) 
 
@@ -132,7 +124,8 @@ setMethod("TSget",     signature(serIDs="character", con="TShistQuoteConnection"
   	conType=class(con), DateStamp= Sys.time(), 
 	TSdoc=paste(desc, " from ", con@dbname, "retrieved ", Sys.time()),
 	TSdescription=paste(desc, " from ", con@dbname),
-	TSlabel=desc) 
+	TSlabel=desc, 
+	TSsource= con@dbname)
     mat
     } )
 
@@ -154,3 +147,7 @@ setMethod("TSlabel",   signature(x="character", con="TShistQuoteConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
         "TSlabel for TShistQuote connection not supported." )
 
+
+setMethod("TSsource",   signature(x="character", con="TShistQuoteConnection"),
+   definition= function(x, con=getOption("TSconnection"), ...)
+        con@dbname)

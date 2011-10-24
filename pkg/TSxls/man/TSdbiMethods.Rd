@@ -6,6 +6,7 @@
 \alias{TSdescription,character,TSxlsConnection-method}
 \alias{TSdoc,character,TSxlsConnection-method}
 \alias{TSlabel,character,TSxlsConnection-method}
+\alias{TSsource,character,TSxlsConnection-method}
 
 \alias{dbDisconnect,TSxlsConnection-method}
 
@@ -28,6 +29,7 @@
     \S4method{TSdescription}{character,TSxlsConnection}(x, con, ... )  
     \S4method{TSdoc}{character,TSxlsConnection}(x, con, ... )  
     \S4method{TSlabel}{character,TSxlsConnection}(x, con, ... )  
+    \S4method{TSsource}{character,TSxlsConnection}(x, con, ... )  
 
     \S4method{dbDisconnect}{TSxlsConnection}(conn,...)
 }

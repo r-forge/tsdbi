@@ -140,7 +140,11 @@ setMethod("TSget",     signature(serIDs="character", con="TSgetSymbolConnection"
   	conType=class(con), DateStamp= Sys.time(), 
 	TSdoc=paste(desc, " from ", con@dbname, "retrieved ", Sys.time()),
 	TSdescription=paste(desc, " from ", con@dbname),
-	TSlabel=desc) 
+	TSlabel=desc, 
+	TSsource= (if("yahoo" == con@dbname) "yahoo" 
+	      else if("FRED" == con@dbname) "Federal Reserve Bank of St. Louis"
+	      else "unspecified" )
+	) 
     mat
     } 
     )
@@ -163,3 +167,8 @@ setMethod("TSlabel",   signature(x="character", con="TSgetSymbolConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
         "TSlabel for TSgetSymbol connection not supported." )
 
+setMethod("TSsource",   signature(x="character", con="TSgetSymbolConnection"),
+   definition= function(x, con=getOption("TSconnection"), ...)
+        if("yahoo" == con@dbname) "yahoo" 
+	      else if("FRED" == con@dbname) "Federal Reserve Bank of St. Louis"
+	      else "unspecified"  )

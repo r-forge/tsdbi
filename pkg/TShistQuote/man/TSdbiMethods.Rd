@@ -6,6 +6,7 @@
 \alias{TSdescription,character,TShistQuoteConnection-method}
 \alias{TSdoc,character,TShistQuoteConnection-method}
 \alias{TSlabel,character,TShistQuoteConnection-method}
+\alias{TSsource,character,TShistQuoteConnection-method}
 
 \alias{dbDisconnect,TShistQuoteConnection-method}
 
@@ -29,6 +30,7 @@
     \S4method{TSdescription}{character,TShistQuoteConnection}(x, con, ... )  
     \S4method{TSdoc}{character,TShistQuoteConnection}(x, con, ... )  
     \S4method{TSlabel}{character,TShistQuoteConnection}(x, con, ... )  
+    \S4method{TSsource}{character,TShistQuoteConnection}(x, con, ... )  
 
     \S4method{dbDisconnect}{TShistQuoteConnection}(conn,...)
 }

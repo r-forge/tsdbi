@@ -23,7 +23,8 @@ setClass("TSid",  contains="TSdb", representation(serIDs="character",
 
 # this has serIDs and source db (in TDid) as well as documentation
 setClass("TSmeta", contains="TSid", 
-  representation(TSdescription="character", TSdoc="character", TSlabel="character" )) 
+  representation(TSdescription="character", TSdoc="character",
+                 TSlabel="character", TSsource="character")) 
 
 # this is a logical but has TSid (so could be used to retrieve data)
 setClass("logicalId", contains="logical",
@@ -42,8 +43,9 @@ setMethod("TSmeta",   signature(x="character", con="ANY"),
                hasVintages=con@hasVintages, hasPanels=con@hasPanels,
                conType=class(con), DateStamp=NA, 
 	       TSdoc=TSdoc(x, con=con, ...),
+               TSdescription=TSdescription(x, con=con, ...),
 	       TSlabel=TSlabel(x, con=con, ...),
-               TSdescription=TSdescription(x, con=con, ...))
+	       TSsource=TSsource(x, con=con, ...))
 	} )
 
 setMethod("TSmeta",   signature(x="character", con="missing"),
@@ -59,7 +61,8 @@ setMethod("TSmeta",   signature(x="ANY", con="missing"),
 	         conType="", DateStamp=NA, #NULL,
 		 TSdescription= as(NA, "character"), 
 		 TSdoc =  as(NA, "character"), 
-		 TSlabel= as(NA, "character")) else m
+		 TSlabel= as(NA, "character"),
+		 TSsource= as(NA, "character")) else m
       })
 
 setGeneric("TSmeta<-", 
@@ -92,47 +95,7 @@ setMethod("TSconnect",   signature(drv="character", dbname="character"),
    definition=function(drv, dbname, ...)
              TSconnect(dbDriver(drv), dbname=dbname, ...))
 
-setGeneric("TSdescription<-", 
-   def= function(x, value) standardGeneric("TSdescription<-"),
-   useAsDefault=  function (x, value){
-    m <- TSmeta(x)
-    m@TSdescription <- value
-    TSmeta(x) <- m
-    x})
-
-setGeneric("TSdescription", def= function(x, con=getOption("TSconnection"), ...)
-    standardGeneric("TSdescription"))
-
-setMethod("TSdescription",   signature(x="character", con="missing"),
-   definition= function(x, con=getOption("TSconnection"), ...) 
-       TSdescription(x, con=getOption("TSconnection"), ...) )
-
-setMethod("TSdescription",   signature(x="ANY", con="missing"),
-   definition=  function(x, con, ...)TSmeta(x)@TSdescription)
-
-#  next is for case where there is no method for con  
-setMethod("TSdescription",   signature(x="character", con="ANY"),
-   definition= function(x, con=getOption("TSconnection"), ...) {
-       if(is.null(con)) stop("NULL con is not allowed. See ?TSdescription.")
-       else stop("con class ", class(con), 
-       " is not supported. (Check this is a TSdbi connection, not a raw DBI connection.)")} )
-
-#  Next two methods are for case where the user mistakenly specifies
-#     serIDS="whatever"  rather than x="whatever"
-#   ( A natural mistaken as this is the syntax for other functions.)
-setMethod("TSdescription",   signature(x="missing", con="ANY"),
-   definition=  function(x, con, serIDs, ...) {
-        if(missing(serIDs)) stop("missing argument x, must be specified.")
-	else TSdescription(x=serIDs, con=con, ...)
-	})
-
-setMethod("TSdescription",   signature(x="missing", con="missing"),
-   definition=  function(x, serIDs, ...) {
-        if(missing(serIDs)) stop("missing argument x, must be specified.")
-	else TSdescription(x=serIDs, ...)
-	})
-
-# internal utilities to construct WHERE and table name
+########## internal utilities to construct WHERE and table name#########
 
 tbNm <- function(hasVintages, tbl, rV) {
 	if(hasVintages) tbl <- paste(tbl, rV, sep="_")
@@ -196,6 +159,49 @@ setWhere <- function(con, serIDs, realVintage, realPanel) {
    where
    }
 
+
+######### TSdescription #########
+
+setGeneric("TSdescription<-", 
+   def= function(x, value) standardGeneric("TSdescription<-"),
+   useAsDefault=  function (x, value){
+    m <- TSmeta(x)
+    m@TSdescription <- value
+    TSmeta(x) <- m
+    x})
+
+setGeneric("TSdescription", def= function(x, con=getOption("TSconnection"), ...)
+    standardGeneric("TSdescription"))
+
+setMethod("TSdescription",   signature(x="character", con="missing"),
+   definition= function(x, con=getOption("TSconnection"), ...) 
+       TSdescription(x, con=getOption("TSconnection"), ...) )
+
+setMethod("TSdescription",   signature(x="ANY", con="missing"),
+   definition=  function(x, con, ...)TSmeta(x)@TSdescription)
+
+#  next is for case where there is no method for con  
+setMethod("TSdescription",   signature(x="character", con="ANY"),
+   definition= function(x, con=getOption("TSconnection"), ...) {
+       if(is.null(con)) stop("NULL con is not allowed. See ?TSdescription.")
+       else stop("con class ", class(con), 
+       " is not supported. (Check this is a TSdbi connection, not a raw DBI connection.)")} )
+
+#  Next two methods are for case where the user mistakenly specifies
+#     serIDS="whatever"  rather than x="whatever"
+#   ( A natural mistaken as this is the syntax for other functions.)
+setMethod("TSdescription",   signature(x="missing", con="ANY"),
+   definition=  function(x, con, serIDs, ...) {
+        if(missing(serIDs)) stop("missing argument x, must be specified.")
+	else TSdescription(x=serIDs, con=con, ...)
+	})
+
+setMethod("TSdescription",   signature(x="missing", con="missing"),
+   definition=  function(x, serIDs, ...) {
+        if(missing(serIDs)) stop("missing argument x, must be specified.")
+	else TSdescription(x=serIDs, ...)
+	})
+
 TSdescriptionSQL <-  function(x=NULL, con=getOption("TSconnection"), 
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), 
        lang=getOption("TSlang")) {	    
@@ -207,6 +213,8 @@ TSdescriptionSQL <-  function(x=NULL, con=getOption("TSconnection"),
 	    if(is.null(r))  as(NA, "character") else as(r, "character")
 	    }
 
+######### TSdoc #########
+
 setGeneric("TSdoc<-", 
    def= function(x, value) standardGeneric("TSdoc<-"),
    useAsDefault=  function (x, value){
@@ -214,7 +222,6 @@ setGeneric("TSdoc<-",
     m@TSdoc <- value
     TSmeta(x) <- m
     x})
-
 
 setGeneric("TSdoc", 
    def= function(x, con=getOption("TSconnection"), ...) standardGeneric("TSdoc"))
@@ -262,6 +269,8 @@ TSdocSQL <-  function(x=NULL, con=getOption("TSconnection"),
 	    if(is.null(r))  as(NA, "character") else as(r, "character")
 	    }
 
+######### TSlabel #########
+
 setGeneric("TSlabel<-", 
    def= function(x, value) standardGeneric("TSlabel<-"),
    useAsDefault=  function (x, value){
@@ -269,7 +278,6 @@ setGeneric("TSlabel<-",
     m@TSlabel <- value
     TSmeta(x) <- m
     x})
-
 
 setGeneric("TSlabel", 
    def= function(x, con=getOption("TSconnection"), ...) standardGeneric("TSlabel"))
@@ -311,6 +319,65 @@ TSlabelSQL <-  function(x=NULL, con=getOption("TSconnection"),
             if(1 < length(x)) stop("One series only for TSlabel")
 	    #  NOT YET
             #r <- dbGetQuery(con, paste("SELECT label", lang, 
+	    #        "  FROM Meta ", setWhere(con, x, 
+	    #            realVintage(con, vintage, x),
+	    #	         realPanel(con,panel)), ";", sep=""))[[1]]
+	    ## r should already be char, but odbc converts NA to logical
+	    #if(is.null(r)) as(NA, "character") else as(r, "character")
+	    as(NA, "character")
+	    }
+
+######### TSsource #########
+
+setGeneric("TSsource<-", 
+   def= function(x, value) standardGeneric("TSsource<-"),
+   useAsDefault=  function (x, value){
+    m <- TSmeta(x)
+    m@TSsource <- value
+    TSmeta(x) <- m
+    x})
+
+
+setGeneric("TSsource", 
+   def= function(x, con=getOption("TSconnection"), ...) standardGeneric("TSsource"))
+
+setMethod("TSsource",   signature(x="character", con="missing"),
+   definition= function(x, con=getOption("TSconnection"), ...){ 
+       if(is.null(con)) 
+          stop("con should be specified or set with options(TSconnection=con). See ?TSsource.") 
+       TSsource(x, con=con, ...)} )
+
+setMethod("TSsource",   signature(x="ANY", con="missing"),
+   definition=  function(x, con, ...) TSmeta(x)@TSsource)
+
+#  next is for case where there is no method for con  
+setMethod("TSsource",   signature(x="character", con="ANY"),
+   definition= function(x, con=getOption("TSconnection"), ...) {
+       if(is.null(con)) stop("NULL con is not allowed. See ?TSsource.")
+       else stop("con class ", class(con), 
+       " is not supported. (Check this is a TSdbi connection, not a raw DBI connection.)")} )
+
+#  Next two methods are for case where the user mistakenly specifies
+#     serIDS="whatever"  rather than x="whatever"
+#   ( A natural mistaken as this is the syntax for other functions.)
+setMethod("TSsource",   signature(x="missing", con="ANY"),
+   definition=  function(x, con, serIDs, ...) {
+        if(missing(serIDs)) stop("missing argument x, must be specified.")
+	else TSsource(x=serIDs, con=con, ...)
+	})
+
+setMethod("TSsource",   signature(x="missing", con="missing"),
+   definition=  function(x, serIDs, ...) {
+        if(missing(serIDs)) stop("missing argument x, must be specified.")
+	else TSsource(x=serIDs, ...)
+	})
+
+TSsourceSQL <-  function(x=NULL, con=getOption("TSconnection"), 
+       vintage=getOption("TSvintage"), panel=getOption("TSpanel"), 
+       lang=getOption("TSlang")) {
+            if(1 < length(x)) stop("One series only for TSsource")
+	    #  NOT YET
+            #r <- dbGetQuery(con, paste("SELECT source", lang, 
 	    #        "  FROM Meta ", setWhere(con, x, 
 	    #            realVintage(con, vintage, x),
 	    #	         realPanel(con,panel)), ";", sep=""))[[1]]
@@ -383,7 +450,8 @@ setMethod("TSput",   signature(x="ANY", serIDs="character", con="ANY"),
    
 
 TSputSQL <- function(x, serIDs=seriesNames(x), con, Table=NULL,
-       TSdescription.=TSdescription(x), TSdoc.=TSdoc(x),  TSlabel.=TSlabel(x), 
+       TSdescription.=TSdescription(x), TSdoc.=TSdoc(x),  TSlabel.=TSlabel(x),
+       TSsource.=TSsource(x), 
        vintage=getOption("TSvintage"), panel=getOption("TSpanel")) {
 
   # so far I think this is generic to all SQL, but not extensively tested.
@@ -596,7 +664,8 @@ setMethod("TSget",   signature(serIDs="character", con="ANY"),
 # next is called by methods for various SQL dbs.
 TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation"),
        tf=NULL, start=tfstart(tf), end=tfend(tf),
-       names=NULL, TSdescription=FALSE, TSdoc=FALSE,  TSlabel=FALSE,
+       names=NULL, 
+       TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE, TSsource=TRUE,
        vintage=getOption("TSvintage"), panel=getOption("TSpanel")) {
   # so far I think this is generic to all SQL.
   if(is.null(TSrepresentation)) TSrepresentation <- "default"
@@ -624,7 +693,7 @@ TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation")
       as.matrix(res)
       }
 
-  mat <- desc <- doc <- label <- rp <- NULL
+  mat <- desc <- doc <- label <- source <- rp <- NULL
   # if series are in "A", "Q", "M","S" use  ts otherwise zoo.
   for (i in seq(length(serIDs))) {
     where  <-  setWhere(con, serIDs[i], vintage[i], panel)
@@ -710,9 +779,10 @@ TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation")
 	      " looking for series ", serIDs[i],
               " could not find tbl ", tbl)  
     
-    if(TSdescription) desc <- c(desc, TSdescription(serIDs[i],con) ) # where?
-    if(TSdoc)         doc  <- c(doc,  TSdoc(serIDs[i],con) ) # where?
-    if(TSlabel)       label<- c(label,TSlabel(serIDs[i],con) ) # where?
+    if(TSdescription) desc <- c(desc,  TSdescription(serIDs[i],con) ) # where?
+    if(TSdoc)         doc  <- c(doc,   TSdoc(serIDs[i],con) ) # where?
+    if(TSlabel)       label<- c(label, TSlabel(serIDs[i],con) ) # where?
+    if(TSsource)     source<- c(source,TSsource(serIDs[i],con) ) # where?
 
     mat <- tbind(mat, r)
     } # where[j]
@@ -732,7 +802,8 @@ TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation")
       DateStamp=NA, # bug in 2.7.0 =Sys.time(), 
       TSdescription=if(TSdescription) desc else  as(NA, "character"), 
       TSdoc        =if(TSdoc)          doc else  as(NA, "character"),
-      TSlabel      =if(TSlabel)      label else  as(NA, "character"))
+      TSlabel      =if(TSlabel)      label else  as(NA, "character"),
+      TSsource     =if(TSsource)    source else  as(NA, "character"))
   mat
   }
 

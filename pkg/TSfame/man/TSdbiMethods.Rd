@@ -6,6 +6,7 @@
 \alias{TSdoc,character,TSfameConnection-method}
 \alias{TSdescription,character,TSfameConnection-method}
 \alias{TSlabel,character,TSfameConnection-method}
+\alias{TSsource,character,TSfameConnection-method}
 \alias{TSdates,character,TSfameConnection-method}
 \alias{TSexists,character,TSfameConnection-method}
 \alias{TSvintages,TSfameConnection-method}
@@ -17,6 +18,7 @@
 \alias{TSdoc,character,TSfameServerConnection-method}
 \alias{TSdescription,character,TSfameServerConnection-method}
 \alias{TSlabel,character,TSfameServerConnection-method}
+\alias{TSsource,character,TSfameServerConnection-method}
 \alias{TSdates,character,TSfameServerConnection-method}
 \alias{TSexists,character,TSfameServerConnection-method}
 \alias{TSvintages,TSfameServerConnection-method}
@@ -49,20 +51,20 @@
     \S4method{TSget}{character,TSfameConnection}(serIDs, con, 
 	TSrepresentation = getOption("TSrepresentation"), 
 	tf = NULL, start = tfstart(tf), end = tfend(tf), names = NULL,
-	TSdescription = FALSE, TSdoc = FALSE, TSlabel=FALSE,
+	TSdescription = FALSE, TSdoc = FALSE, TSlabel=FALSE, TSsource=TRUE,
         vintage=getOption("TSvintage"),   ...)
     \S4method{TSget}{character,TSfameServerConnection}(serIDs, con, 
 	TSrepresentation = getOption("TSrepresentation"), 
 	tf = NULL, start = tfstart(tf), end = tfend(tf), names = NULL,
-	TSdescription = FALSE, TSdoc = FALSE, TSlabel=FALSE,
+	TSdescription = FALSE, TSdoc = FALSE, TSlabel=FALSE, TSsource=TRUE,
         vintage=getOption("TSvintage"),   ...)
 
     \S4method{TSput}{ANY,character,TSfameConnection}(x, serIDs=seriesNames(x), 
 	con, TSdescription.=TSdescription(x), 
-	TSdoc.=TSdoc(x), TSlabel.=NULL, warn = TRUE, ...)
+	TSdoc.=TSdoc(x), TSlabel.=NULL, TSsource.=NULL, warn = TRUE, ...)
     \S4method{TSput}{ANY,character,TSfameServerConnection}(x, serIDs=seriesNames(x), 
 	con, TSdescription.=TSdescription(x), 
-	TSdoc.=TSdoc(x), TSlabel.=NULL, warn = TRUE, ...)
+	TSdoc.=TSdoc(x), TSlabel.=NULL, TSsource.=NULL, warn = TRUE, ...)
 
     \S4method{TSdates}{character,TSfameConnection}(serIDs, con, 
 	vintage=getOption("TSvintage"), panel=NULL, ...)
@@ -87,6 +89,9 @@
 
     \S4method{TSlabel}{character,TSfameConnection}(x, con, ...)
     \S4method{TSlabel}{character,TSfameServerConnection}(x, con, ...)
+
+    \S4method{TSsource}{character,TSfameConnection}(x, con, ...)
+    \S4method{TSsource}{character,TSfameServerConnection}(x, con, ...)
 
     \S4method{TSvintages}{TSfameConnection}(con)
     \S4method{TSvintages}{TSfameServerConnection}(con)
@@ -128,6 +133,10 @@
     \item{TSlabel}{For compatibility with other TS packages. Not supported in
         Fame}
     \item{TSlabel.}{For compatibility with other TS packages. Not supported in
+        Fame}
+    \item{TSsource}{For compatibility with other TS packages. Not supported in
+        Fame}
+    \item{TSsource.}{For compatibility with other TS packages. Not supported in
         Fame}
     \item{warn}{Logical indicating if warning messages should be suppressed.} 
     \item{accessMode}{Optional character indicating the mode to use when opening 
