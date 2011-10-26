@@ -176,12 +176,12 @@ setMethod("TSget",     signature(serIDs="character", con="TSfameServerConnection
 
   TSmeta(mat) <- new("TSmeta", serIDs=serIDs, dbname=dbname, 
       hasVintages=con@hasVintages, hasPanels=con@hasPanels,
-      conType=class(con), DateStamp=Sys.time(), 
-      TSdescription=if(TSdescription) paste(desc, " from ", dbname, 
-            "retrieved ", Sys.time()) else as(NA, "character"), 
-      TSdoc   =if(TSdoc)      doc  else as(NA, "character"),
-      TSlabel =if(TSlabel)   label else as(NA, "character"),
-      TSsource=if(TSsource) source else as(NA, "character"))
+      conType=class(con), 
+      DateStamp=Sys.time(), 
+      TSdescription=if(TSdescription) paste(desc, " from ", dbname) else NA, 
+      TSdoc=if(TSdoc)        doc   else NA,
+      TSlabel=if(TSlabel)   label  else NA,
+      TSsource=if(TSsource) source else NA )
   mat
 } )
 
@@ -233,14 +233,16 @@ setMethod("TSput",     signature(x="ANY", serIDs="character", con="TSfameServerC
 setMethod("TSdescription",   signature(x="character", con="TSfameServerConnection"),
    definition= function(x, con=getOption("TSconnection"), ...){
      r <- fameWhats(con@dbname[1], x, connection=S3Part(con), getDoc = TRUE)$des 
-     if (is.null(r)) stop("Series does not exist.")
-     r})
+     if (is.null(r)) stop("Series (probably) does not exist.")
+     #if(is.null(r) || is.na(r)|| ("NA" == r)) NA else r 
+     if(is.na(r)|| ("NA" == r)) NA else r })
 
 setMethod("TSdoc",   signature(x="character", con="TSfameServerConnection"),
    definition= function(x, con=getOption("TSconnection"), ...){
      r <- fameWhats(con@dbname[1], x, connection=S3Part(con), getDoc = TRUE)$doc
-     if (is.null(r)) stop("Series does not exist.")
-     r})
+     if (is.null(r)) stop("Series (probably) does not exist.")
+     #if(is.null(r) || is.na(r)|| ("NA" == r)) NA else r 
+     if(is.na(r)|| ("NA" == r)) NA else r })
 
 #TSlabel,TSsource, get used for new("Meta", so issuing a warning is not a good idea here.
 

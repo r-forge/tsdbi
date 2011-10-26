@@ -102,7 +102,7 @@ And now more examples:
  
 The following extract information about the series from the database, although
 not much information has been added for these examples, and not all fields are
-supported by the Fame database. 
+supported by the Fame database. (The output is suppressed.)
 \begin{Scode}
  TSmeta("mat2c1", con)
  TSmeta("vec", con)
@@ -114,7 +114,6 @@ supported by the Fame database.
 \end{Scode}
 
 Below are examples that make more use of \code{TSdescription} and code{TSdoc}.
-
 Often it is convenient to set the default connection:
 
 \begin{Scode}

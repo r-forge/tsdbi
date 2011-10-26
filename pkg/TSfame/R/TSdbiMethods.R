@@ -145,7 +145,7 @@ setMethod("TSget",     signature(serIDs="character", con="TSfameConnection"),
     mat <- tbind(mat, r)
     if(TSdescription) desc <- c(desc,   TSdescription(serIDs[i],con) ) 
     if(TSdoc)     doc      <- c(doc,    TSdoc(serIDs[i],con) ) 
-    if(TSlabel)   label    <- c(label,  as(NA, "character")) #TSlabel(serIDs[i],con) )
+    if(TSlabel)   label    <- c(label,  NA) #TSlabel(serIDs[i],con) )
     if(TSsource)  source   <- c(source, "Fame db") #could be better
     }
 
@@ -165,12 +165,12 @@ setMethod("TSget",     signature(serIDs="character", con="TSfameConnection"),
 
   TSmeta(mat) <- new("TSmeta", serIDs=serIDs, dbname=dbname, 
       hasVintages=con@hasVintages, hasPanels=con@hasPanels,
-      conType=class(con), DateStamp=Sys.time(), 
-      TSdescription=if(TSdescription) paste(desc, " from ", dbname, 
-            "retrieved ", Sys.time()) else as(NA, "character"), 
-      TSdoc=if(TSdoc) doc else as(NA, "character"),
-      TSlabel=if(TSlabel) label else as(NA, "character"),
-      TSsource=if(TSsource) source else as(NA, "character"))
+      conType=class(con), 
+      DateStamp=Sys.time(), 
+      TSdescription=if(TSdescription) paste(desc, " from ", dbname) else NA, 
+      TSdoc=if(TSdoc)        doc   else NA,
+      TSlabel=if(TSlabel)   label  else NA,
+      TSsource=if(TSsource) source else NA )
   mat
 } )
 
@@ -218,22 +218,26 @@ setMethod("TSput",     signature(x="ANY", serIDs="character", con="TSfameConnect
 
 
 setMethod("TSdescription",   signature(x="character", con="TSfameConnection"),
-   definition= function(x, con=getOption("TSconnection"), ...)
-     fameWhats(con@dbname[1], x, getDoc = TRUE)$des )
+   definition= function(x, con=getOption("TSconnection"), ...){
+     r <- fameWhats(con@dbname[1], x, getDoc = TRUE)$des 
+     if (is.null(r)) stop("Series (probably) does not exist.")
+     #if(is.null(r) || is.na(r)|| ("NA" == r)) NA else r 
+     if(is.na(r)|| ("NA" == r)) NA else r })
 
 setMethod("TSdoc",   signature(x="character", con="TSfameConnection"),
-   definition= function(x, con=getOption("TSconnection"), ...)
-     fameWhats(con@dbname[1], x, getDoc = TRUE)$doc )
+   definition= function(x, con=getOption("TSconnection"), ...){
+     r <- fameWhats(con@dbname[1], x, getDoc = TRUE)$doc
+     if (is.null(r)) stop("Series (probably) does not exist.")
+     #if(is.null(r) || is.na(r)|| ("NA" == r)) NA else r 
+     if(is.na(r)|| ("NA" == r)) NA else r })
 
 #TSlabel,TSsource, get used for new("Meta", so issuing a warning is not a good idea here.
 
 setMethod("TSlabel",   signature(x="character", con="TSfameConnection"),
-   definition= function(x, con=getOption("TSconnection"), ...)
-     as(NA, "character") )
+   definition= function(x, con=getOption("TSconnection"), ...) NA )
 
 setMethod("TSsource",   signature(x="character", con="TSfameConnection"),
-   definition= function(x, con=getOption("TSconnection"), ...)
-     as(NA, "character") )
+   definition= function(x, con=getOption("TSconnection"), ...) NA )
 
 setMethod("TSdelete",
    signature(serIDs="character", con="TSfameConnection", vintage="ANY", panel="ANY"),
