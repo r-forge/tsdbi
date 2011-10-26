@@ -1,5 +1,3 @@
-#.onLoad <- function(library, section) {require("methods")}
-
 #setClassUnion("OptionalPOSIXct",   c("POSIXct",   "NULL"))
 # bug work around
 setClassUnion("OptionalPOSIXct",   c("POSIXct",   "logical"))
@@ -21,10 +19,12 @@ setClass("TSdb", representation( dbname="character",
 setClass("TSid",  contains="TSdb", representation(serIDs="character", 
                      conType="character",DateStamp="OptionalPOSIXct")) 
 
-# this has serIDs and source db (in TDid) as well as documentation
+# TSmeta has serIDs and source db (in TSid) as well as documentation
+setClassUnion("OptionalChar",   c("character",   "logical"))
+#  NA is logical so this allows NA
 setClass("TSmeta", contains="TSid", 
-  representation(TSdescription="character", TSdoc="character",
-                 TSlabel="character", TSsource="character")) 
+  representation(TSdescription="OptionalChar",    TSdoc="OptionalChar",
+                       TSlabel="OptionalChar", TSsource="OptionalChar")) 
 
 # this is a logical but has TSid (so could be used to retrieve data)
 setClass("logicalId", contains="logical",
@@ -58,17 +58,19 @@ setMethod("TSmeta",   signature(x="ANY", con="missing"),
       m <- attr(x, "TSmeta")
       if(is.null(m)) new("TSmeta",serIDs=seriesNames(x), 
 	         dbname="", hasVintages=FALSE, hasPanels=FALSE,
-	         conType="", DateStamp=NA, #NULL,
-		 TSdescription= as(NA, "character"), 
-		 TSdoc =  as(NA, "character"), 
-		 TSlabel= as(NA, "character"),
-		 TSsource= as(NA, "character")) else m
+	         conType="", 
+		 DateStamp     = NA, 
+		 TSdescription = NA, 
+		 TSdoc         = NA,  
+		 TSlabel       = NA,
+		 TSsource      = NA) else m
       })
 
 setGeneric("TSmeta<-", 
    def= function(x, value) standardGeneric("TSmeta<-"),
    useAsDefault= function(x, value){
-      if (!is(value,"TSmeta")) stop("trying to set attribute TSmeta incorrectly.") 
+      if (!is(value,"TSmeta")) 
+         stop("trying to set attribute TSmeta incorrectly.") 
       attr(x, "TSmeta") <- value
       x
       })
@@ -209,8 +211,8 @@ TSdescriptionSQL <-  function(x=NULL, con=getOption("TSconnection"),
 	            "  FROM Meta ", setWhere(con, x, 
 		        realVintage(con, vintage, x),
 		        realPanel(con,panel)), ";", sep=""))[[1]]
-	    # r should already be char, but odbc converts NA to logical
-	    if(is.null(r))  as(NA, "character") else as(r, "character")
+	    # odbc converts NA to logical, but other db may return char
+	    if(is.null(r) || is.na(r)|| ("NA" == r)) NA else r
 	    }
 
 ######### TSdoc #########
@@ -265,8 +267,8 @@ TSdocSQL <-  function(x=NULL, con=getOption("TSconnection"),
 	            "  FROM Meta ", setWhere(con, x, 
 		        realVintage(con, vintage, x),
 		        realPanel(con,panel)), ";", sep=""))[[1]]
-	    # r should already be char, but odbc converts NA to logical
-	    if(is.null(r))  as(NA, "character") else as(r, "character")
+	    # odbc converts NA to logical, but other db may return char
+	    if(is.null(r) || is.na(r)|| ("NA" == r)) NA else r
 	    }
 
 ######### TSlabel #########
@@ -322,9 +324,9 @@ TSlabelSQL <-  function(x=NULL, con=getOption("TSconnection"),
 	    #        "  FROM Meta ", setWhere(con, x, 
 	    #            realVintage(con, vintage, x),
 	    #	         realPanel(con,panel)), ";", sep=""))[[1]]
-	    ## r should already be char, but odbc converts NA to logical
-	    #if(is.null(r)) as(NA, "character") else as(r, "character")
-	    as(NA, "character")
+	    # odbc converts NA to logical, but other db may return char
+	    #if(is.null(r) || is.na(r)|| ("NA" == r)) NA else r
+	    NA
 	    }
 
 ######### TSsource #########
@@ -381,19 +383,27 @@ TSsourceSQL <-  function(x=NULL, con=getOption("TSconnection"),
 	    #        "  FROM Meta ", setWhere(con, x, 
 	    #            realVintage(con, vintage, x),
 	    #	         realPanel(con,panel)), ";", sep=""))[[1]]
-	    ## r should already be char, but odbc converts NA to logical
-	    #if(is.null(r)) as(NA, "character") else as(r, "character")
-	    as(NA, "character")
+	    # odbc converts NA to logical, but other db may return char
+	    #if(is.null(r) || is.na(r)|| ("NA" == r)) NA else r
+	    NA
 	    }
 
-#setMethod("show", "TSmeta", function(object) {
-#    cat("serIDs: ", object@serIDs, " from dbname: ", object@dbname) 
-#    cat("(type: ", object@conType, ")\n") 
-#    cat("description: ", object@TSdescription, "\n") 
-#    cat("documentaion: ", object@TSdoc, "\n") 
-#    invisible(object)
-#    })
-#
+setMethod("show", "TSmeta", function(object) {
+    cat("serIDs: ", object@serIDs,"\n") 
+    if(!all(is.na(object@TSsource))) cat("source: ", object@TSsource,"\n") 
+    cat(" from dbname ", object@dbname) 
+    cat(" using ", object@conType) 
+        if(!is.na(object@DateStamp)) cat(" on ",object@DateStamp) 
+        cat("\n") 
+    if(!is.na(object@TSlabel))       
+            cat("label:        ", object@TSlabel, "\n") 
+    if(!is.na(object@TSdescription))
+            cat("description: ", object@TSdescription, "\n") 
+    if(!is.na(object@TSdoc)) 
+            cat("documentaion: ", object@TSdoc, "\n") 
+    invisible(NULL)
+    })
+
 #setMethod("print", "TSmeta", function(x, ...) {
 #    cat("serIDs: ", x@serIDs, " from dbname ", x@dbname) 
 #    cat("(type: ", x@conType, ")\n") 
@@ -800,10 +810,10 @@ TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation")
   TSmeta(mat) <- new("TSmeta", serIDs=serIDs, dbname=con@dbname, 
       conType=class(con), hasVintages=con@hasVintages, hasPanels=con@hasPanels, 
       DateStamp=NA, # bug in 2.7.0 =Sys.time(), 
-      TSdescription=if(TSdescription) desc else  as(NA, "character"), 
-      TSdoc        =if(TSdoc)          doc else  as(NA, "character"),
-      TSlabel      =if(TSlabel)      label else  as(NA, "character"),
-      TSsource     =if(TSsource)    source else  as(NA, "character"))
+      TSdescription=if(TSdescription) desc else  NA, 
+      TSdoc        =if(TSdoc)          doc else  NA,
+      TSlabel      =if(TSlabel)      label else  NA,
+      TSsource     =if(TSsource)    source else  NA)
   mat
   }
 

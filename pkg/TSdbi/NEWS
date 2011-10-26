@@ -13,6 +13,8 @@ Changes in TSdbi version 2011.11-1
 
    o	updated maintainer email address.
 
+   o	added show method for TSmeta object. 
+
    o	added structure for support of TSsource metadata field. 
 
    o	added check for lowercase table names in CreateTables.TSsql setup. 

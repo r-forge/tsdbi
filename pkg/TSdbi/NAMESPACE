@@ -52,6 +52,7 @@ export(
 
 ## S4 methods
 exportMethods(
+   "show",
    ##"print",
    ## "dbConnect", # generic from DBI
    "TSconnect",
