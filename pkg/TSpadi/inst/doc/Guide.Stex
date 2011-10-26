@@ -67,7 +67,7 @@ if block do not display until the end of the block. Also, graphics are not
 displayed in the vignette because, when they are not generated, the missing 
 file causes an error building the vignette.
 
-\begin{Scode}{results=verbatim}
+\begin{Scode}{results=verbatim,fig=TRUE}
   m <- dbDriver("padi")
   conets <- try(TSconnect(m, dbname="ets")) 
   if (!inherits(conets, "try-error")) {
@@ -99,7 +99,7 @@ file causes an error building the vignette.
   }
 \end{Scode}
 
-\begin{Scode}{results=verbatim}
+\begin{Scode}{results=verbatim,fig=TRUE}
 if (!inherits(conets, "try-error")) {
   print(TSdescription(TSget("V122646", TSdescription=TRUE)))
   print(TSdoc(TSget("V122646", TSdoc=TRUE)))
@@ -107,14 +107,14 @@ if (!inherits(conets, "try-error")) {
   }
 \end{Scode}
 
-\begin{Scode}{results=verbatim}
+\begin{Scode}{results=verbatim,fig=TRUE}
 if (!inherits(conets, "try-error")) {
   z <- TSget("V122646", TSdescription=TRUE)
-  tfplot(z, Title=strsplit(TSdescription(z), ","))
+  tfplot(z, Title="Total short-term business credit")
   }
 \end{Scode}
 
-\begin{Scode}{results=verbatim}
+\begin{Scode}{results=verbatim,fig=TRUE}
 if (!inherits(conets, "try-error")) {
   ETSgdp    <- annualizedGrowth(aggregate(TSget("V1992067"),
                    nfrequency=4,FUN=mean), lag=4, names="GDP Y/Y Growth")
