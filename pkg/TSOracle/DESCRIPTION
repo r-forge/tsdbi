@@ -2,7 +2,7 @@ Package: TSOracle
 Version: 2011.11-1
 Title: Time Series Database Interface extensions for Oracle
 Description: TSOracle provides a Oracle interface for TSdbi.
-Depends: R (>= 2.8.0), methods, tframe, tframePlus, TSdbi (>= 2011.8-1), ROracle
+Depends: R (>= 2.8.0), methods, tframe, tframePlus, TSdbi (>= 2011.11-1), ROracle
 Imports: methods, TSdbi (>= 2011.6-1), DBI
 Suggests: zoo, tseries, TShistQuote (>= 2010.5-1)
 Enhances: TSdbi

@@ -147,30 +147,26 @@ And now more examples:
  
 The following extract information about the series from the database, although
 not much information has been added for these examples. 
-\begin{Scode}
+\begin{Scode}{results=verbatim}
  TSmeta("mat2c1", con)
  TSmeta("vec", con)
  TSdates("vec", con)
  TSdescription("vec", con)
  TSdoc("vec", con)
 \end{Scode}
-
-Below are exampoles that make more use of \code{TSdescription} and code{TSdoc}.
+Below are examples that make more use of \code{TSdescription} and code{TSdoc}.
 
 Often it is convenient to set the default connection:
-
 \begin{Scode}
  options(TSconnection=con)
 \end{Scode}
 and then the \code{con} specification can be omitted from the function calls
 unless another connection is needed. The \code{con} can still be specified, and
 some examples below do specify it, just to illustrate the alternative syntax.
-
 \begin{Scode}{results=verbatim}
  z <- TSget("mat2c1") 
  TSmeta("mat2c1")
 \end{Scode}
-
 
 Data documentation can be in two forms, a description specified by 
 \code{TSdescription}
@@ -286,6 +282,7 @@ Now connect to the web server and fetch data:
   TSdescription(x) 
   TSdoc(x) 
   TSlabel(x) 
+  TSsource(x) 
 \end{Scode}
 
 Then write the data to the local server, specifying table B for business day 

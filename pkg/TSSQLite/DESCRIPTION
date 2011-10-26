@@ -3,7 +3,7 @@ Version: 2011.11-1
 Title: Time Series Database Interface extentions for SQLite
 Description: TSSQLite provides a SQLite interface for TSdbi.
 Depends: R (>= 2.8.0), methods, tframe, tframePlus, TSdbi (>= 2011.8-1), RSQLite
-Imports: methods, DBI, TSdbi (>= 2011.6-1), RSQLite 
+Imports: methods, DBI, TSdbi (>= 2011.11-1), RSQLite 
 Suggests: zoo, tseries,  TShistQuote (>= 2010.5-1)
 Enhances: TSdbi
 License: GPL-2 | file LICENSE
