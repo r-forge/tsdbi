@@ -172,7 +172,12 @@ setMethod("TSget",     signature(serIDs="character", con="TSpadiConnection"),
 
  TSmeta(r) <- new("TSmeta", serIDs=serIDs,  dbname=con@dbname, 
       hasVintages=con@hasVintages, hasPanels=con@hasPanels,
-      conType=class(con), DateStamp= Sys.time(), TSdescription="", TSdoc="") 
+      conType=class(con), 
+      DateStamp= Sys.time(), 
+      TSdescription=NA, 
+      TSdoc    = NA,
+      TSlabel  = NA,
+      TSsource = NA) 
  r
 } )
 
@@ -197,19 +202,14 @@ setMethod("TSput",     signature(x="ANY", serIDs="character", con="TSpadiConnect
 
 
 setMethod("TSdescription",   signature(x="character", con="TSpadiConnection"),
-   definition= function(x, con=getOption("TSconnection"), ...)
-        "TSdescription for padi connection not supported." )
-
+   definition= function(x, con=getOption("TSconnection"), ...) NA )
 
 setMethod("TSdoc",   signature(x="character", con="TSpadiConnection"),
-   definition= function(x, con=getOption("TSconnection"), ...)
-        "TSdoc for padi connection not supported." )
+   definition= function(x, con=getOption("TSconnection"), ...) NA )
 
 setMethod("TSlabel",   signature(x="character", con="TSpadiConnection"),
-   definition= function(x, con=getOption("TSconnection"), ...)
-        "TSlabel for padi connection not supported." )
+   definition= function(x, con=getOption("TSconnection"), ...) NA )
 
 setMethod("TSsource",   signature(x="character", con="TSpadiConnection"),
-   definition= function(x, con=getOption("TSconnection"), ...)
-        "TSsource for padi connection not supported." )
+   definition= function(x, con=getOption("TSconnection"), ...) NA )
 
