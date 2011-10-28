@@ -367,7 +367,7 @@ if block do not display until the end of the block.
   
   options(TSconnection=conets)
 
-  print(TSmeta("M.SDR.CCUSMA02.ST"))
+  print(TSmeta(TSget("M.SDR.CCUSMA02.ST")))
 
   EXCH.IDs <- t(matrix(c(
  	"M.SDR.CCUSMA02.ST",	 "SDR/USD exchange rate",
