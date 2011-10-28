@@ -5,12 +5,13 @@
 \begin{document}
 \maketitle
 %\VignetteIndexEntry{TShistQuote Guide}
-\SweaveOpts{eval=TRUE,echo=TRUE,results=hide,fig=FALSE}
-%\SweaveOpts{eval=TRUE,echo=TRUE,results=verbatim,fig=TRUE}
-\begin{Scode}{echo=FALSE,results=hide}
+%\SweaveOpts{eval=TRUE,echo=TRUE,results=hide,fig=FALSE}
+\SweaveOpts{eval=TRUE,echo=TRUE,results=verbatim,fig=TRUE}
+%
+\begin{Scode}{echo=FALSE,results=hide,fig=FALSE}
  options(continue="  ")
 \end{Scode}
-
+%
 \section{Introduction}
 The code from the vignette that generates this guide can 
 be loaded into an editor with \emph{edit(vignette("TShistQuote"))}.
@@ -20,7 +21,7 @@ package with \emph{print(vignette("TShistQuote"))}.
 
 Once R is started, the functions in this package are made available with
 
-\begin{Scode}
+\begin{Scode}{results=verbatim,fig=FALSE}
 library("TShistQuote")  
 \end{Scode}
 This will also load required packages \pkg{TSdbi}, \pkg{DBI}, 
@@ -32,10 +33,13 @@ extra functionality, only an interface that is consistent with \pkg{TSdbi}.
 
 \subsection{Examples  Using TSdbi with ets}
 
-\begin{Scode}{results=verbatim}
+\begin{Scode}{results=verbatim,fig=TRUE}
   con <- TSconnect("histQuote", dbname="yahoo") 
   x <- TSget("^ftse", con)
   plot(x)
+\end{Scode}
+
+\begin{Scode}{results=verbatim,fig=TRUE}
   tfplot(x)
   TSrefperiod(x) 
   TSdescription(x) 
@@ -43,48 +47,72 @@ extra functionality, only an interface that is consistent with \pkg{TSdbi}.
 
 It is also possible to specify a connection to be used as the default:
 
-\begin{Scode}{results=verbatim}
+\begin{Scode}{results=verbatim,fig=TRUE}
   options(TSconnection=con)
   tfplot(TSget(serIDs="^ftse"))
 \end{Scode}
 
-\begin{Scode}{results=verbatim}
+\begin{Scode}{results=verbatim,fig=TRUE}
   x2 <- TSget("^gspc", con)
   tfplot(x2)
+\end{Scode}
+
+\begin{Scode}{results=verbatim,fig=TRUE}
   plot(x2)
   TSdescription(x2) 
 \end{Scode}
 
-\begin{Scode}{results=verbatim}
+\begin{Scode}{results=verbatim,fig=TRUE}
   x <- TSget(c("^ftse","^gspc"), con)
   plot(x)
+\end{Scode}
+
+\begin{Scode}{results=verbatim,fig=TRUE}
   tfplot(x)
   TSdescription(x) 
 \end{Scode}
 
-\begin{Scode}{results=verbatim}
+\begin{Scode}{results=verbatim,fig=TRUE}
   x <- TSget("ibm", con, quote = c("Close", "Vol"))
   tfplot(x)
+\end{Scode}
+
+\begin{Scode}{results=verbatim,fig=TRUE}
   tfplot(x, xlab = TSdescription(x))
+\end{Scode}
+
+\begin{Scode}{results=verbatim,fig=TRUE}
   tfplot(x, Title="IBM", start="2007-01-01")
+\end{Scode}
+
+\begin{Scode}{results=verbatim,fig=TRUE}
   tfplot(x, Title=TSdoc(x), xlab = TSlabel(x), start="2007-01-01")
 \end{Scode}
 
 Oanda has maximum of 500 days, so the start date is specified here so as to
 not exceed that.
 
-\begin{Scode}{results=verbatim}
+\begin{Scode}{results=verbatim,fig=TRUE}
   conO <- TSconnect("histQuote", dbname="oanda") 
   z <- TSget("EUR/USD", conO, start=Sys.Date() - 495)
   tfplot(z)
-  tfplot(z, Title = "EUR/USD")
-  tfplot(z, Title = "EUR/USD", start="2007-01-01")
-  tfplot(z, Title = "EUR/USD", start="2007-03-01")
-  tfplot(z, Title = "EUR/USD", start=Sys.Date()-14, end=Sys.Date(),
-     xlab = format(Sys.Date(), "%Y"))
 \end{Scode}
 
-\begin{Scode}{results=verbatim}
+\begin{Scode}{results=verbatim,fig=TRUE}
+  tfplot(z, Title = "EUR/USD")
+\end{Scode}
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+  tfplot(z, Title = "EUR/USD", start="2007-01-01")
+\end{Scode}
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+  tfplot(z, Title = "EUR/USD", start="2007-03-01")
+\end{Scode}
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+  tfplot(z, Title = "EUR/USD", start=Sys.Date()-14, end=Sys.Date(),
+     xlab = format(Sys.Date(), "%Y"))
   TSdates(c("^ftse","^gspc", "ibm"), con) # note default start
 \end{Scode}
 

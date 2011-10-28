@@ -5,12 +5,13 @@
 \begin{document}
 \maketitle
 %\VignetteIndexEntry{TSgetSymbol Guide}
-\SweaveOpts{eval=TRUE,echo=TRUE,results=hide,fig=FALSE}
-%\SweaveOpts{eval=TRUE,echo=TRUE,results=verbatim,fig=TRUE}
-\begin{Scode}{echo=FALSE,results=hide}
+%\SweaveOpts{eval=TRUE,echo=TRUE,results=hide,fig=FALSE}
+\SweaveOpts{eval=TRUE,echo=TRUE,results=verbatim,fig=TRUE}
+%
+\begin{Scode}{echo=FALSE,results=hide,fig=FALSE}
  options(continue="  ")
 \end{Scode}
-
+%
 \section{Introduction}
 The code from the vignette that generates this guide can 
 be loaded into an editor with \emph{edit(vignette("TSgetSymbol"))}.
@@ -20,7 +21,7 @@ package with \emph{print(vignette("TSgetSymbol"))}.
 
 Once R is started, the functions in this package are made available with
 
-\begin{Scode}
+\begin{Scode}{fig=FALSE}
 library("TSgetSymbol")  
 \end{Scode}
 This will also load required packages \pkg{TSdbi}, \pkg{DBI}, 
@@ -35,12 +36,12 @@ extra functionality, only an interface that is consistent with \pkg{TSdbi}.
 
 A connection can be used to get data from the Federal Reserve Bank of St.Louis. (Look at http://research.stlouisfed.org/fred2/ to find series identifiers.)
 
-\begin{Scode}{results=verbatim,fig=TRUE}
+\begin{Scode}
   con <- TSconnect("getSymbol", dbname="FRED") 
   x <- TSget("M2", con)
   plot(x)
 \end{Scode}
-\begin{Scode}{results=verbatim,fig=TRUE}
+\begin{Scode}
   tfplot(x)
   TSrefperiod(x) 
   TSdescription(x) 
@@ -48,7 +49,7 @@ A connection can be used to get data from the Federal Reserve Bank of St.Louis. 
 
 It is also possible to specify a connection to be used as the default:
 
-\begin{Scode}{results=verbatim,fig=TRUE}
+\begin{Scode}
   options(TSconnection=con)
   tfOnePlot(percentChange(TSget(serIDs="M2"), lag=52), 
     Title = "Running commentary, blah, blah, blah", 
@@ -64,7 +65,7 @@ It is also possible to return multiple series, but beware that the FRED
 series called M2 is a weekly series, whereas CPIAUCNS is monthly. Binding
 together series of different frequency may fail, or produce strange results.
 
-\begin{Scode}{results=verbatim,fig=TRUE}
+\begin{Scode}
   x <- TSget(c("CPIAUCNS","M2SL"), con)
   tfplot(x, 
     Title = "Running commentary, blah, blah, blah", 
@@ -79,7 +80,7 @@ together series of different frequency may fail, or produce strange results.
 \end{Scode}
 
 
-\begin{Scode}{results=verbatim}
+\begin{Scode}{results=verbatim,fig=FALSE}
   TSdates(c("CPIAUCNS","M2SL"), con) # note default start
 \end{Scode}
 
@@ -88,13 +89,13 @@ This is a multivariate time series with open, close, etc.
 Set \code{par(ask=TRUE)} here if you want to stop and prompt for <Return>
 between pages in the graphics output.
 
-\begin{Scode}{results=verbatim,fig=TRUE}
+\begin{Scode}
   yahoo <- TSconnect("getSymbol", dbname="yahoo") 
   x <- TSget("F", con=yahoo)
   plot(x)
 \end{Scode}
 
-\begin{Scode}{results=verbatim,fig=TRUE}
+\begin{Scode}
   tfplot(x, graphs.per.page=3)
 \end{Scode}
 
