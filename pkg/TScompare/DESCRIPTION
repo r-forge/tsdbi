@@ -5,7 +5,7 @@ Description: Utilities for comparing the equality of series on two databases.
 Depends: R (>= 2.10.0), methods, DBI, TSdbi (>= 2011.11-1), tframe, tframePlus, zoo
 Imports: TSdbi (>= 2011.11-1), tframe
 Enhances: TSMySQL, TSSQLite, TSPostgreSQL, TSodbc, TSOracle, TSfame, TSpadi, TShistQuote, TSsdmx, TSgetSymbol
-BuildVignettes: true
+BuildVignettes: false
 License: GPL-2 | file LICENSE
 Author: Paul Gilbert <pgilbert.ttv9z@ncf.ca>
 Maintainer: Paul Gilbert <pgilbert.ttv9z@ncf.ca>
