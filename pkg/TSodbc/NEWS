@@ -13,6 +13,9 @@ Changes in TSodbc version 2011.11-1
 
    o	updated maintainer email address.
 
+   o	fixed problem that TSdoc and TSdescription were returning factors
+   	rather than character.
+
    o	added dbRemoveTable() for DBI consistency (uses RODBC sqlDrop()).
 
 Changes in TSodbc version 2011.8-2

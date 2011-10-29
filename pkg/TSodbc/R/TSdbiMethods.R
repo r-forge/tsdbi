@@ -127,19 +127,19 @@ setMethod("TSdates",    signature(serIDs="character", con="TSodbcConnection"),
 
 setMethod("TSdescription",   signature(x="character", con="TSodbcConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
-        TSdbi:::TSdescriptionSQL(x=x, con=con) )
+        as.character(TSdbi:::TSdescriptionSQL(x=x, con=con)) )
 
 setMethod("TSdoc",   signature(x="character", con="TSodbcConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
-        TSdbi:::TSdocSQL(x=x, con=con) )
+        as.character(TSdbi:::TSdocSQL(x=x, con=con)) )
 
 setMethod("TSlabel",   signature(x="character", con="TSodbcConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
-        TSdbi:::TSlabelSQL(x=x, con=con) )
+        as.character(TSdbi:::TSlabelSQL(x=x, con=con)) )
 
 setMethod("TSsource",   signature(x="character", con="TSodbcConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
-        TSdbi:::TSsourceSQL(x=x, con=con) )
+        TSdbi:::TSsourceSQL(x=x, con=con))
 
 setMethod("TSdelete", signature(serIDs="character", con="TSodbcConnection"),
      definition= function(serIDs, con=getOption("TSconnection"),  
