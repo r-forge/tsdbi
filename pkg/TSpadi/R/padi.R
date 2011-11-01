@@ -1,16 +1,7 @@
-.onLoad  <- function(library, section) {
-  #require("methods")
-  #require("DBI") # this seems to be needed for dbConnect (not just namespace)
-  #require("TSdbi")
-   # next require is necessary for bundle check to run examples,  
-   # but does not seem to be necessary when packages are not bundled
-   if(!require("tframe", warn.conflicts=TRUE))
-       warning("This package requires the tframe packages.")
-   if(!exists("Sys.setenv", baseenv()))
-	   Sys.setenv <- base::Sys.putenv   # name change in R-2.5.0
-   # set PADI if it is not set. (It is needed by the srcipts.)
+.onAttach  <- function(libname, pkgname) {
+   # set PADI if it is not set. (It is needed by the scripts.)
    if("" == Sys.getenv("PADI"))
-        Sys.setenv(PADI=paste(library, "/", section, "/exec/", sep = ""))
+        Sys.setenv(PADI=paste(libname, "/", pkgname, "/exec/", sep = ""))
    # could be a problem with csh
    Sys.setenv(PATH=paste(Sys.getenv("PADI"),":",Sys.getenv("PATH"), sep = ""))
    invisible(TRUE)
