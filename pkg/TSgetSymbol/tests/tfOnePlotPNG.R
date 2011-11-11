@@ -1,0 +1,39 @@
+require("TSgetSymbol")  
+
+fred <- TSconnect("getSymbol", dbname="FRED") 
+
+png(file="US-M2.png",width = 480, height = 240, pointsize=12, bg = "white")
+  tfOnePlot(percentChange(TSget(serIDs="M2", con=fred), lag=52), 
+    Title = "Running commentary, blah, blah, blah", 
+    subtitle="Broad Money (M2)",
+    ylab= "y/y percent change*",
+    source="Source: Federal Reserve Bank of St.Louis (M2)",
+    footnoteLeft = "seasonally adjusted data",
+    footnoteRight = "* approximated by 52 week growth",
+    lastObs = TRUE )
+dev.off()
+
+png(file="US-CPI.png",width = 480, height = 240, pointsize=12, bg = "white")
+  tfOnePlot(annualizedGrowth(TSget("CPIAUCNS", fred)), start=c(2005,1),
+    Title = "U.S. Consumer Price Growth, m/m at Annual Rates", 
+    subtitle="Consumer Price Index for All Urban Consumers: All Items",
+    ylab= "Percent",
+    source= "Data Source: Federal Reserve Bank of St.Louis (CPIAUCNS)",
+    footnoteLeft  = "not seasonally adjusted",
+    footnoteRight = paste("Extracted:", date()),
+    lastObs = TRUE )
+dev.off()
+
+  yahoo <- TSconnect("getSymbol", dbname="yahoo") 
+  x <- TSget("F", con=yahoo)
+  #plot(x)
+
+png(file="Ford.png",width = 480, height = 240, pointsize=12, bg = "white")
+  tfOnePlot(x[,"F.Close"], 
+    Title = "Ford Motor Co. Closing Price", 
+    ylab= "US$",
+    source= "Data Source: yahoo symbol F",
+    footnoteRight = paste("Extracted:", date()),
+    lastObs = TRUE )
+dev.off()
+
