@@ -3,6 +3,11 @@ See also
    o	See also NEWS in the TSdbi package.
 
 
+Changes in TSzip version 2011.11-2
+
+   o	renamed TSget argument 'select' to 'quote' for consistency with
+   	TShistQuote.
+
 Changes in TSzip version 2011.11-1
 
    o	updated maintainer email address.
