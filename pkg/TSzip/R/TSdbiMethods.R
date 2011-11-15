@@ -65,7 +65,7 @@ setMethod("TSdates",
 setMethod("TSget",     signature(serIDs="character", con="TSzipConnection"),
    definition=function(serIDs, con, TSrepresentation=options()$TSrepresentation,
        tf=NULL, start=tfstart(tf), end=tfend(tf),
-       names=NULL, select=con@suffix, ...){ 
+       names=NULL, quote=con@suffix, ...){ 
    if (mode(TSrepresentation) == "character" && TSrepresentation == "tis") {
 	    require("tis")
 	    require("zoo")
@@ -75,8 +75,8 @@ setMethod("TSget",     signature(serIDs="character", con="TSzipConnection"),
       TSrepresentation <- zoo
       }
     
-   if(is.null(names)) names <- c(t(outer(serIDs, select, paste, sep=".")))
-   select <- con@suffix %in% select
+   if(is.null(names)) names <- c(t(outer(serIDs, quote, paste, sep=".")))
+   quote <- con@suffix %in% quote
 
    dir <- tempfile()
    dir.create(dir)
@@ -113,14 +113,14 @@ setMethod("TSget",     signature(serIDs="character", con="TSzipConnection"),
    	    stop("Error converting  data to numeric.", data)
       
       d <- matrix(zzz, NROW(zz), NCOL(zz)-1 )
-      #d <- zoo(d[, select], order.by=dates)
-      #d <- as.tis(zoo(d[, select], order.by=dates))
-      #d <- timeSeries(d[, select], charvec=dates)
-      #d <- TSrepresentation(d[, select], dates)
+      #d <- zoo(d[, quote], order.by=dates)
+      #d <- as.tis(zoo(d[, quote], order.by=dates))
+      #d <- timeSeries(d[, quote], charvec=dates)
+      #d <- TSrepresentation(d[, quote], dates)
       if (mode(TSrepresentation) == "character") d <- 
-	 if (TSrepresentation == "tis") as.tis(zoo(d[, select], order.by=dates))
-	 else                do.call(TSrepresentation, list(d[, select], dates))
-      else d <- TSrepresentation(d[, select], dates)
+	 if (TSrepresentation == "tis") as.tis(zoo(d[, quote], order.by=dates))
+	 else                do.call(TSrepresentation, list(d[, quote], dates))
+      else d <- TSrepresentation(d[, quote], dates)
   
       mat <- tbind(mat,d)
       }

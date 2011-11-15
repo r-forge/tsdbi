@@ -23,7 +23,7 @@ require("timeSeries")
   TSrefperiod(z) 
   TSdescription(z) 
 
-  z <- TSget(c("AD", "CD"), pit, select="Close")
+  z <- TSget(c("AD", "CD"), pit, quote="Close")
 
   zz <- window(z, start=as.timeDate("2007-01-01"), end=end(z))
   zz <- window(z, start="2007-01-01", end=end(z))
