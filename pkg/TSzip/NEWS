@@ -8,6 +8,8 @@ Changes in TSzip version 2011.11-2
    o	renamed TSget argument 'select' to 'quote' for consistency with
    	TShistQuote.
 
+   o	added tfOnePlotPNG tests.
+
 Changes in TSzip version 2011.11-1
 
    o	updated maintainer email address.
