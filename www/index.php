@@ -56,6 +56,9 @@ SDMX data, both locally and over the Internet.
 databases. 
 
 <P>
+<b><i>TSdbi</i></b> uses the NAMESPACE and methods from package <i>DBI</i>.
+
+<P>
 The general <a href=status.php><b>status</b> of the packages is here</a>.
 
 <!-------------------------------- END OF CONTENTS ------------------->
