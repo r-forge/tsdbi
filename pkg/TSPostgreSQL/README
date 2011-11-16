@@ -1,0 +1,24 @@
+A PostgreSQLserver installation is needed, but that is not covered by 
+these instruction. The server does not need to be on the local client machine.
+
+TSPostgreSQL depends on a working installation os RPostgreSQL, which needs
+to find appropriate drivers. On Ubuntu / Debian this is accomplished by
+installing libpq-dev.
+
+On Windows:
+
+(email on r-sig-db@r-project.org November 11, 2011
+from Tomoaki NISHIYAM)
+
+  I wrote an instruction to install on windows in rpostgresql wiki.
+  For 32 bit version:
+  http://code.google.com/p/rpostgresql/wiki/WindowsInstall32
+  and for 64 bit version:
+  http://code.google.com/p/rpostgresql/wiki/WindowsInstall64
+
+  Note that this was written with very few experience and may contain errors.
+  So, please let me know if you find something incorrect, not working, 
+  or missing.
+-- 
+Tomoaki NISHIYAMA
+
