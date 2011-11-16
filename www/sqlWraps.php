@@ -31,7 +31,6 @@ the structure provided.)
 There is a not very well tested mechanism for handling series name 
 changes (by an alias).
 <P>
-<b><i>TSdbi</i></b> uses the NAMESPACE and methods from package <i>DBI</i>.
 <b><i>TSMySQL</i></b> is a wrapper for package <i>RMySQL</i>.
 <b><i>TSPostgreSQL</i></b> is a wrapper for package <i>RPostgreSQL</i>.
 <b><i>TSSQLite</i></b> is a wrapper for package <i>RSQLite</i>.
