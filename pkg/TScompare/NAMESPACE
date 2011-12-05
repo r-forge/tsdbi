@@ -3,6 +3,8 @@ importFrom("tframe","tfplot")
 
 export(
    "TScompare",
+   "doubleCheck",
+   "tfDetails",
    "AllIds",
    "AllPanels",
    "AllVintages")
