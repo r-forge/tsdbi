@@ -150,7 +150,7 @@ setMethod("TSvintages",
    signature(con="TSodbcConnection"),
    definition=function(con) {
      if(!con@hasVintages) NULL else   
-     dbGetQuery(con,"SELECT  DISTINCT(vintage) FROM  vintages;" )$vintage
+     sort(dbGetQuery(con,"SELECT  DISTINCT(vintage) FROM  vintages;" )$vintage)
      } )
 
 setMethod("dropTStable", 
