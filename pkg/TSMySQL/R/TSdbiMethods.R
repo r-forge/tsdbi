@@ -94,7 +94,7 @@ setMethod("TSvintages",
    signature(con="TSMySQLConnection"),
    definition=function(con) {
      if(!con@hasVintages) NULL else   
-     dbGetQuery(con,"SELECT  DISTINCT(vintage) FROM  vintages;" )$vintage
+     sort(dbGetQuery(con,"SELECT  DISTINCT(vintage) FROM  vintages;" )$vintage)
      } )
 
 # this method will generally not be needed by users, but is used in the test

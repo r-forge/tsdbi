@@ -273,7 +273,7 @@ setMethod("TSexists",
 setMethod("TSvintages",  
    signature(con="TSfameConnection"), 
    definition= function(con){
-     if(!con@hasVintages) NULL else names(con@dbname)
+     if(!con@hasVintages) NULL else sort(names(con@dbname))
      } ) 
 
 ######## a utility ###########################
