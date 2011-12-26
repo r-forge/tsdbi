@@ -1,3 +1,15 @@
+From: Duncan Temple Lang <duncan@wald.ucdavis.edu>
+To: r-help@r-project.org
+Subject: Re: [R] Custom XML Readers
+In addition to the general tools of the XML package,
+I also had code that read documents with a similar structure
+to the ones Andy illustrated. I put them and simple examples
+of using them at the bottom of
+   http://www.omegahat.org/RSXML/
+page.
+  D.
+
+
 test  to ask Duncan
 
 require("RCurl")
