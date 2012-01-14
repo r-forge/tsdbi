@@ -1,9 +1,9 @@
 <HTML>
 <TITLE>TSdbi</TITLE></a>
-<?php  require("forgeBar.php") ; ?>
 <hr>
 <?php require("header.php") ; ?>
 <hr>
+<?php  require("forgeBar.php") ; ?>
 <table width=100% ALIGN=CENTER CELLPADDING=5 border=0>
 <?php require("navigate.php") ; ?>
 <!-------------------- START OF CONTENTS -------------------------->
