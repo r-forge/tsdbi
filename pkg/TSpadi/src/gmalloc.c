@@ -1,6 +1,8 @@
 #include <malloc.h>
 #include "define.h"
 
+extern void error();
+
 export size_t ngmalloced = 0;
 
 #define STAMP "GMALLOC!"
@@ -30,7 +32,15 @@ export char *grealloc PARAM2(char *, p, size_t, n)
 #endif
 
   if (!p || strncmp(STAMP, q, STAMP_SIZE) || !ngmalloced) 
-    abort();
+   error("error in gmalloc"); 
+/*  above will fail for non-R-client use.
+Somthing like this would be better, but it is seen as an abort by R check.
+#ifdef PADI_CLIENT
+    error("error in gmalloc"); 
+#else
+    abort(); 
+#endif
+*/
 
   if (!(p = realloc(q,n + STAMP_SIZE)))
     return NULL;
@@ -47,8 +57,15 @@ export char *gfree PARAM1(char *, p)
   return p;
 #else
   if (!p || strncmp(STAMP, q, STAMP_SIZE) || !ngmalloced) 
-    abort();
-
+   error("error in gmalloc"); 
+/*  above will fail for non-R-client use.
+Somthing like this would be better, but it is seen as an abort by R check.
+#ifdef PADI_CLIENT
+    error("error in gmalloc"); 
+#else
+    abort(); 
+#endif
+*/
   free(q);
   ngmalloced--;
   return (char *) NULL;

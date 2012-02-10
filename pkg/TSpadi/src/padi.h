@@ -107,7 +107,10 @@ import PadiString_t Padi_EMPTY_STR;
 import PadiStatus_t PadiInitialize PROTO1(PadiInitArg_tp, object);
 import PadiStatus_t PadiTerminate PROTO1(PadiTermArg_tp, object);
 import char * PadiStatus PROTO1(int, status);
-import void PadiError PROTO4(FILE *, fp, PadiString_t, source, PadiStatus_t, status, int, severity);
+/* import void PadiError PROTO4(FILE *, fp, PadiString_t, source, PadiStatus_t, status, int, severity); */
+import void PadiError(FILE *fp, PadiString_t source, PadiStatus_t status, int severity);
+import void PadiErrorR(PadiString_t source, PadiStatus_t status, int severity);
+
 import void PadiFreeResult PROTO1(PadiResult_tp, result);
 import PadiInfoResult_tp PadiGetInfo PROTO2(PadiServer_tp, server, PadiInfoArg_tp, object);
 import PadiSeriesResult_tp PadiGetSeries PROTO2(PadiServer_tp, server, PadiRangeArg_tp, range);

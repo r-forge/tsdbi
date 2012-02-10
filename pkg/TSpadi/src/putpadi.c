@@ -1,6 +1,7 @@
 /*UD
- * SccsID: @(#)putpadi.c	1.5		12/1/95 BOC
  * File:   putpadi.c
+ * minor modifications by Paul Gilbert, Feb. 2012, to eliminate calls to 
+ *   abort and to stdout, which are considered an error R 2.15.0 checks. 
  * Author: Hope Pioro
  * Date  : Sept 95
  *
@@ -21,6 +22,16 @@
  * will call specialized malloc() and free() funtions. In the case of SPLUS, 
  * you must also use -DSPLUS. This will call S_alloc instead. (see makefile)
 */
+
+#if defined(FAME_SVC)
+#define PADI_MAIN
+#define PADI_SVC
+#elif defined(FS_SVC)
+#define PADI_MAIN
+#define PADI_SVC
+#else
+#define PADI_CLIENT
+#endif
 
 /*IN*/
 #define _GNU_SOURCE
@@ -152,7 +163,11 @@ int   *timeout;		/* max time to wait for reply (seconds) */
     if (!(new_series.series.data.data_val = (PadiPrecision_t *) malloc(nwrite * sizeof(PadiPrecision_t))))
     {
 	sprintf(log_buf, "%s (%s)", app_name, server.name);
+#ifdef PADI_CLIENT
+	PadiErrorR(log_buf, Padi_OUT_OF_MEMORY, Padi_FATAL);
+#else
 	PadiError(stdout, log_buf, Padi_OUT_OF_MEMORY, Padi_FATAL);
+#endif
     }
     vector = (PadiPrecision_t *) (new_series.series.data.data_val);
     for (i = 0; i < nwrite; i++)
@@ -170,7 +185,11 @@ int   *timeout;		/* max time to wait for reply (seconds) */
     {
 
 	sprintf(log_buf, "%s PutPadi(%s)", app_name, object_name);
+#ifdef PADI_CLIENT
+	PadiErrorR(log_buf, Padi_OUT_OF_MEMORY, Padi_FATAL);
+#else
 	PadiError(stdout, log_buf, Padi_OUT_OF_MEMORY, Padi_FATAL);
+#endif
     }
 
     if (result->status)
