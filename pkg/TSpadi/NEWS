@@ -1,3 +1,10 @@
+Note
+
+   o	This package is largely superseded by other TS* packages and I no 
+   	longer have the ability to test it as extensively as previously. 
+	(Tests now use only the simple file based server with a few series
+	and not the Fame server with an extensive database.)
+
 See also
 
    o	See also NEWS in the TSdbi package.
@@ -5,6 +12,10 @@ See also
 Known BUGS
 
    o	Probably does not build on Windows or Mac.
+
+Changes in TSpadi version 2012.2-1
+
+   o	Eliminated calls to abort and to stdout.
 
 Changes in TSpadi version 2011.11-1
 
