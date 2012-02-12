@@ -10,21 +10,17 @@ testequaltf <- function(s1, s2) {
     }
 
 TScompare <- function(ids, con1, con2, na.rm=FALSE, fuzz=1e-14) {
-	if(2 != NCOL(ids)) stop("ids must have 2 columns.")
+	#would be good to check if the cons are still both alive (not timed out)
+	if(1 == NCOL(ids)) ids <- cbind(ids, ids)
+	if(2 != NCOL(ids)) stop("ids must not have more than 2 columns.")
 	rw <- rv <- rep(NA, NROW(ids))
 	na1 <- na2 <- NULL
 	for (i in 1:NROW(ids)){
 	   s1 <- try(TSget(ids[i,1], con1), silent=TRUE)
+	   if (inherits(s1, "try-error")) na1 <- c(na1, ids[i,1])
 	   s2 <- try(TSget(ids[i,2], con2), silent=TRUE)
-	   if (inherits(s1, "try-error")) {
-	      na1 <- c(na1, ids[i,1])
-	      rw[i] <- rv[i] <- NA
-	      }
-	   else if (inherits(s2, "try-error")) {
-	      na2 <- c(na2, ids[i,2])
-	      rw[i] <- rv[i] <- NA
-	      }
-	   else {
+	   if (inherits(s2, "try-error")) na2 <- c(na2, ids[i,2])
+	   if ((!inherits(s1, "try-error")) & (!inherits(s2, "try-error"))) {
 	      if(na.rm) {
 		   s1 <- trimNA(s1)
 		   s2 <- trimNA(s2)
@@ -131,13 +127,13 @@ tfDetails <- function(x, con1=x$con1, con2=x$con2, na.rm=FALSE) {
 	r[!rw,]
 	}
 
-tfplot.TScompare  <- function(x, con1=x$con1, con2=x$con2, diff=FALSE, 
-    valueExceptionsOnly=FALSE, ...){
+tfplot.TScompare  <- function(x, con1=x$con1, con2=x$con2, diff=FALSE, ...){
 	# if the con has expired default will fail
 	v <- x$value
 	v[is.na(v)] <- FALSE
 	ids <- x$ids[!(v & x$window),]
-	for (i in 1:NROW(ids)){
+	if(0 == NROW(ids)) message("No differences to plot.")
+	else for (i in 1:NROW(ids)){
 	   if(diff) tfplot(TSget(ids[i,1], con1) - TSget(ids[i,2], con2),
 	                   Title=ids[i,1])
 	   else     tfplot(TSget(ids[i,1], con1),  TSget(ids[i,2], con2),
@@ -146,15 +142,33 @@ tfplot.TScompare  <- function(x, con1=x$con1, con2=x$con2, diff=FALSE,
 	invisible(x)
 	}
 
-AllIds <- function(con)dbGetQuery(con, "select distinct id from Meta;")$id
+AllIds <- function(con, vintage=getOption("TSvintage")){
+  if (is.null(vintage)) Q <- "select distinct id from Meta;" 
+  else {
+    if( vintage == "current") vintage <- dbGetQuery(con,
+         "select vintage from vintageAlias where alias = 'current';")$vintage
+    Q <- paste(
+       "select distinct id from Meta where vintage = '", vintage, "';", sep="")
+    }
+  dbGetQuery(con,Q)$id 
+  }
 
-AllPanels <- function(con){
-	if(con@hasPanels)
-	     dbGetQuery(con, "select distinct panel from Meta;")$panel
-	else NULL }
+AllPanels <- function(con){	
+  if(!con@hasPanels) NULL
+  else {
+  if (is.null(vintage)) Q <- "select distinct panel from Meta;" 
+  else {
+    if( vintage == "current") vintage <- dbGetQuery(con,
+         "select vintage from vintageAlias where alias = 'current';")$vintage
+    Q <- paste(
+       "select distinct panel from Meta where vintage = '", vintage, "';", sep="")
+    }
+  dbGetQuery(con, Q)$panel
+  }
+  }
 
 
 AllVintages <- function(con){
-	if(con@hasVintages)
-	     dbGetQuery(con, "select distinct vintage from Meta;")$vintage
-	else NULL }
+  if(!con@hasVintages) NULL
+  else dbGetQuery(con, "select distinct vintage from Meta;")$vintage
+  }
