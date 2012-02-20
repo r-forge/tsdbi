@@ -13,6 +13,10 @@ Known BUGS
 
    o	Probably does not build on Windows or Mac.
 
+Changes in TSpadi version 2012.2-2
+
+   o	Fixed src/Makefile to find R.h.
+
 Changes in TSpadi version 2012.2-1
 
    o	Eliminated calls to abort and to stdout.

@@ -5,10 +5,10 @@
  Sys.info()
 
    require("stats" )   #,      warn.conflicts=FALSE)
-   require("EvalEst" )   #,    warn.conflicts=FALSE)
+   #require("EvalEst" )   #,    warn.conflicts=FALSE)
    require("TSpadi" )   #, warn.conflicts=FALSE)
-   require("monitor" )   #, warn.conflicts=FALSE)
- DSEversion()
+   #require("monitor" )   #, warn.conflicts=FALSE)
+   #DSEversion()
 
 #   A TS PADI server is necessary for these tests.
 

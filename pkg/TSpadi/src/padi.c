@@ -28,6 +28,9 @@
 #endif
 #endif
 
+#define R_NO_REMAP
+#include <R.h>
+ 
 #include <string.h>
 #include <signal.h>
 #include <sys/types.h>
@@ -1172,7 +1175,7 @@ export void PadiErrorR(PadiString_t source, PadiStatus_t status, int severity)
   PadiTermArg_t termobject;
   string_t s;
   time_t ltime;
-  int n;
+  /*int n;*/
 
  
   switch(severity) {

@@ -10,6 +10,7 @@ else
 endif
 
 #PKG_CFLAGS = -ansi -pedantic -I$(PADI_HOME)/include 
+PKG_CFLAGS = -I$(R_HOME)/include
 
 #PKG_CPPFLAGS = -DGMALLOC -trigraphs -undef
 PKG_CPPFLAGS = -DGMALLOC -trigraphs
