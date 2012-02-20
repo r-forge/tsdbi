@@ -1,7 +1,7 @@
 # R CMD SHLIB padi.c getpadi.c putpadi.c padiutil.c channel.c rpcx_xdr.c gmalloc.c
 # WALL is good for testing, but rpcgen puts some unused variables in
 #   the code it generates, and those cause lots of warning messages.
-# WALL=-Wall
+#WALL=-Wall
 
 #VPATH=../exec
 
@@ -23,9 +23,17 @@ OTHEROBJECTS = $(OTHERSRC:.c=.o)
 all: rpcx.h padi.so ../exec/padi_simple_svc ../exec/getpwuid  ../exec/x11arima \
         ../exec/getpadi ../exec/putpadi ../exec/objectinfo
 
+$(PKGNAME).so: $(SRC) rpcx.h
+	$(R_HOME)/bin/R CMD SHLIB  $(SRC)
 
-$(PKGNAME).so: $(OBJS) rpcx.h
-	$(R_HOME)/bin/R CMD SHLIB  $(OBJS)
+#$(PKGNAME).so: $(OBJS) rpcx.h
+#	$(R_HOME)/bin/R CMD SHLIB  $(OBJS)
+
+#R_INCLUDE_DIR=$(R_HOME)lib/R/include $(R_HOME)/bin/R CMD SHLIB  $(OBJS)
+#$(R_HOME)/bin/R CMD SHLIB  $(PKG_CFLAGS) $(OBJS)
+#R CMD SHLIB  $(OBJS)
+#gcc -fPIC   -c -o padi.o padi.c
+
 
 #$(PKGNAME).so: $(OBJS) rpcx.h
 #	$(CC) -shared $(LD_LIBS) -o $(PKGNAME).so $(OBJS)
