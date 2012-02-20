@@ -1,3 +1,11 @@
+# It might be possible to incorporate this into Makevars, so normal R build
+#  is used for compiling the .so and pieces for it. In theory that might be
+#  more portable. This would require putting $(SHLIB) in the default target
+#  However, R then tries to compile fame_svc.c, 
+#  which fails unless fame headers are available, and there are
+#  several problems with rpcx.x generated code. 
+#  This may require considerable work, so leave Makefile in place, 
+
 # R CMD SHLIB padi.c getpadi.c putpadi.c padiutil.c channel.c rpcx_xdr.c gmalloc.c
 # WALL is good for testing, but rpcgen puts some unused variables in
 #   the code it generates, and those cause lots of warning messages.
