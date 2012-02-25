@@ -1081,6 +1081,9 @@ export void PadiFreeResult PARAM1(PadiResult_tp, result)
   free((char *)result);
 }
 
+
+extern char* error();
+  
 /*export void PadiError PARAM4(FILE *, fp, PadiString_t, source, PadiStatus_t, status, int, severity) */
 
 export void PadiError(FILE *fp, PadiString_t source, PadiStatus_t status, int severity)
@@ -1137,13 +1140,12 @@ n = (PadiVerbose) ? 2 : 1;
 #ifndef PADI_CLIENT
  for (n = (PadiVerbose) ? 2 : 1; n--; fp = stdout) { 
     if (status)
-     fprintf(fp, "\t%s %s# %d: %s.\n", source, s, status, PadiStatus(status));
+      fprintf(fp, "\t%s %s# %d: %s.\n", source, s, status, PadiStatus(status));
     else
      fprintf(fp, "\t%s.\n", source);
   
-     fflush(fp);
+    fflush(fp);
   }
-#endif 
 
   if (severity < Padi_FATAL)
     return;
@@ -1151,7 +1153,10 @@ n = (PadiVerbose) ? 2 : 1;
    termobject.user = Padi_EMPTY_STR;
    termobject.password = Padi_EMPTY_STR;
    PadiTerminate(&termobject);
-   error(status);
+   exit(status);
+#else
+error(PadiStatus(status)); /* in fact, this routine should never be called for R client */
+#endif 
 }
 
 
@@ -1204,7 +1209,9 @@ export void PadiErrorR(PadiString_t source, PadiStatus_t status, int severity)
    termobject.user = Padi_EMPTY_STR;
    termobject.password = Padi_EMPTY_STR;
    PadiTerminate(&termobject);
-   error(status);
+   /* error(s); */
+   /* error(PadiStatus(status));*/
+   error("Padi fatal error");
 }
 
 #ifdef PADI_MAIN
