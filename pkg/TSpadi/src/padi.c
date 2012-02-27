@@ -1082,7 +1082,7 @@ export void PadiFreeResult PARAM1(PadiResult_tp, result)
 }
 
 
-extern char* error();
+extern void error();
   
 /*export void PadiError PARAM4(FILE *, fp, PadiString_t, source, PadiStatus_t, status, int, severity) */
 
