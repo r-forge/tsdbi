@@ -163,10 +163,10 @@ int   *timeout;		/* max time to wait for reply (seconds) */
     if (!(new_series.series.data.data_val = (PadiPrecision_t *) malloc(nwrite * sizeof(PadiPrecision_t))))
     {
 	sprintf(log_buf, "%s (%s)", app_name, server.name);
-#ifdef PADI_CLIENT
-	PadiErrorR(log_buf, Padi_OUT_OF_MEMORY, Padi_FATAL);
-#else
+#ifdef NOT_R_CLIENT
 	PadiError(stdout, log_buf, Padi_OUT_OF_MEMORY, Padi_FATAL);
+#else
+	PadiErrorR(log_buf, Padi_OUT_OF_MEMORY, Padi_FATAL);
 #endif
     }
     vector = (PadiPrecision_t *) (new_series.series.data.data_val);
@@ -185,10 +185,10 @@ int   *timeout;		/* max time to wait for reply (seconds) */
     {
 
 	sprintf(log_buf, "%s PutPadi(%s)", app_name, object_name);
-#ifdef PADI_CLIENT
-	PadiErrorR(log_buf, Padi_OUT_OF_MEMORY, Padi_FATAL);
-#else
+#ifdef NOT_R_CLIENT
 	PadiError(stdout, log_buf, Padi_OUT_OF_MEMORY, Padi_FATAL);
+#else
+	PadiErrorR(log_buf, Padi_OUT_OF_MEMORY, Padi_FATAL);
 #endif
     }
 

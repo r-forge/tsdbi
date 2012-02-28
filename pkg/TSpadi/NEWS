@@ -15,6 +15,8 @@ Known BUGS
 
 Changes in TSpadi version 2012.2-3
 
+   o	Reworked Makefile flags so error calls are only for R's 'error' <R.h>.
+
    o	Fixed src/padi.c to avoid implicit declaration of function error.
 
 Changes in TSpadi version 2012.2-2

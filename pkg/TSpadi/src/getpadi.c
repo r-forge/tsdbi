@@ -194,10 +194,10 @@ double *datadbl;		/* array to hold precision data */
     if (!(series_result = PadiGetSeries(&server, &range_arg)))
     {
 	sprintf(log_buf, "%s GetPadi(%s)", app_name, object_name);
-#ifdef PADI_CLIENT
-	PadiErrorR(log_buf, Padi_OUT_OF_MEMORY, Padi_FATAL); 
-#else
+#ifdef NOT_R_CLIENT
 	PadiError(stdout, log_buf, Padi_OUT_OF_MEMORY, Padi_FATAL); 
+#else
+	PadiErrorR(log_buf, Padi_OUT_OF_MEMORY, Padi_FATAL); 
 #endif
     }
 

@@ -28,7 +28,6 @@
 #endif
 #endif
 
-#define R_NO_REMAP
 #include <R.h>
  
 #include <string.h>
@@ -1082,7 +1081,9 @@ export void PadiFreeResult PARAM1(PadiResult_tp, result)
 }
 
 
-extern void error();
+#ifndef NOT_R_CLIENT
+extern void error(const char *, ...);
+#endif
   
 /*export void PadiError PARAM4(FILE *, fp, PadiString_t, source, PadiStatus_t, status, int, severity) */
 
@@ -1137,7 +1138,7 @@ export void PadiError(FILE *fp, PadiString_t source, PadiStatus_t status, int se
 
 n = (PadiVerbose) ? 2 : 1;
 
-#ifndef PADI_CLIENT
+#ifdef NOT_R_CLIENT
  for (n = (PadiVerbose) ? 2 : 1; n--; fp = stdout) { 
     if (status)
       fprintf(fp, "\t%s %s# %d: %s.\n", source, s, status, PadiStatus(status));
@@ -1160,6 +1161,7 @@ error(PadiStatus(status)); /* in fact, this routine should never be called for R
 }
 
 
+#ifndef NOT_R_CLIENT
 export void PadiErrorR(PadiString_t source, PadiStatus_t status, int severity)
 /*
 ** PADI R Error Handler 
@@ -1213,6 +1215,7 @@ export void PadiErrorR(PadiString_t source, PadiStatus_t status, int severity)
    /* error(PadiStatus(status));*/
    error("Padi fatal error");
 }
+#endif 
 
 #ifdef PADI_MAIN
 

@@ -46,10 +46,11 @@ $(PKGNAME).so: $(SRC) rpcx.h
 #$(PKGNAME).so: $(OBJS) rpcx.h
 #	$(CC) -shared $(LD_LIBS) -o $(PKGNAME).so $(OBJS)
 
+NOTR=-DNOT_R_CLIENT -DR_NO_REMAP
 
 ../exec/padi_simple_svc:  simple_svc.c $(LIBSRC)  
 	$(RM) $(notdir $@)
-	$(CC) $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DFS_SVC \
+	$(CC) $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DFS_SVC $(NOTR)\
 	    simple_svc.c $(LIBSRC)  $(LD_LIBS) -o padi_simple_svc
 	mv padi_simple_svc ../exec
 
@@ -57,20 +58,29 @@ $(PKGNAME).so: $(SRC) rpcx.h
 #fame_svc:	fame_svc.c plus fame hli
 #	echo not yet
 
+# gcc -E gives pre-processor output, useful for debugging.
+
 ../exec/getpadi: getpadi.c $(LIBSRC) rpcx.h
-	$(CC) $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DMAIN $(LD_LIBS) $< $(LIBSRC) -o $@
+	@#$(CC) -E $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DMAIN $(NOTR) \
+	@#    $(LD_LIBS) $< $(LIBSRC) >getpadi.preOut
+	$(CC) $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DMAIN $(NOTR) \
+	    $(LD_LIBS) $< $(LIBSRC) -o $@
 
 ../exec/putpadi: putpadi.c $(LIBSRC) rpcx.h
-	$(CC) $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DMAIN $(LD_LIBS) $< $(LIBSRC) -o $@
+	$(CC) $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DMAIN $(NOTR) \
+	    $(LD_LIBS) $< $(LIBSRC) -o $@
 
 ../exec/objectinfo: objectinfo.c $(LIBSRC) rpcx.h
-	$(CC) $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DMAIN $(LD_LIBS) $< $(LIBSRC) -o $@
+	$(CC) $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DMAIN $(NOTR) \
+	    $(LD_LIBS) $< $(LIBSRC) -o $@
 
 ../exec/getpwuid: getpwuid.c
-	$(CC) $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DMAIN $(LD_LIBS)  $< gmalloc.c -o $@
+	$(CC) $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DMAIN $(NOTR) \
+	    $(LD_LIBS)  $< gmalloc.c -o $@
 
 ../exec/x11arima: getpadi.c $(LIBSRC) rpcx.h
-	$(CC) $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DMAIN -DX11ARIMA $(LD_LIBS) $< $(LIBSRC) -o $@
+	$(CC) $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DMAIN $(NOTR) \
+	   -DX11ARIMA  $(LD_LIBS) $< $(LIBSRC) -o $@
 
 	
 rpcx_clnt.c  rpcx_svc.c  rpcx_xdr.c:	rpcx.h
