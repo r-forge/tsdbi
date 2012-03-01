@@ -1,6 +1,8 @@
-/*UD
- * SccsID: @(#)getinfo.c	1.6		12/1/95 BOC
- * File:   getinfo.c
+/*
+ *
+** Small changes to avoid abort and writing to stdout, disallowed in 
+** R-2.14.2. Copyright P.Gilbert 2012
+**
  * Author: Hope Pioro
  * Date  : Feb 96
  * cleanup of some warnings P.Gilbert 2009

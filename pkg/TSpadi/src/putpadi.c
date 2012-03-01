@@ -1,7 +1,6 @@
-/*UD
- * File:   putpadi.c
- * minor modifications by Paul Gilbert, Feb. 2012, to eliminate calls to 
- *   abort and to stdout, which are considered an error R 2.15.0 checks. 
+/*
+ *
+ *
  * Author: Hope Pioro
  * Date  : Sept 95
  *
