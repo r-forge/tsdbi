@@ -13,17 +13,13 @@ Known BUGS
 
    o	Probably does not build on Windows or Mac.
 
-Changes in TSpadi version 2012.2-3
+Changes in TSpadi version 2012.3-1
 
    o	Reworked Makefile flags so error calls are only for R's 'error' <R.h>.
 
    o	Fixed src/padi.c to avoid implicit declaration of function error.
 
-Changes in TSpadi version 2012.2-2
-
    o	Fixed src/Makefile to find R.h.
-
-Changes in TSpadi version 2012.2-1
 
    o	Eliminated calls to abort and to stdout.
 

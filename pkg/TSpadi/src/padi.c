@@ -1,6 +1,9 @@
 /*  
 ** Protocol for Application -- Database Interface
 **
+** Small changes to avoid abort and writing to stdout, disallowed in 
+** R-2.14.2. Copyright P.Gilbert 2012
+**
 ** Copyright 1995, 1996  Bank of Canada.
 **
 ** The user of this software has the right to use, reproduce and distribute it.

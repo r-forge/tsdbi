@@ -1,7 +1,8 @@
-/*UD
- * File:   getpadi.c
- * minor modifications by Paul Gilbert, Feb. 2012, to eliminate calls to 
- *   abort and to stdout, which are considered an error R 2.15.0 checks. 
+/*
+ *
+** Small changes to avoid abort and writing to stdout, disallowed in 
+** R-2.14.2. Copyright P.Gilbert 2012
+ *
  * Author: Hope Pioro
  * Date  : Sept 95
  *  Minor changes to remove compiler warnings. P. Gilbert, Nov 2009.

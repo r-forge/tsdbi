@@ -3,6 +3,11 @@
 **
 ** Simple Server Functions
 **
+** Small changes to avoid abort and writing to stdout, disallowed in 
+** R-2.14.2. Copyright P.Gilbert 2012
+**
+** cleanup of some warnings P.Gilbert 2009.
+**
 ** Copyright 1995, 1996, 2009  Bank of Canada.
 **
 ** The user of this software has the right to use, reproduce and distribute it.
@@ -10,10 +15,7 @@
 ** fitness for any particular purpose. The software is distributed by the Bank
 ** of Canada solely on an "as is" basis. By using the software, user agrees to 
 ** accept the entire risk of using this software.
-**
-**
-** cleanup of some warnings P.Gilbert 2009
-*/
+ */
 
 #define _GNU_SOURCE
 #include <stdio.h>

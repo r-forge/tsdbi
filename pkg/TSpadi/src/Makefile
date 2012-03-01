@@ -59,10 +59,10 @@ NOTR=-DNOT_R_CLIENT -DR_NO_REMAP
 #	echo not yet
 
 # gcc -E gives pre-processor output, useful for debugging.
+#$(CC) -E $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DMAIN $(NOTR) 
+#    $(LD_LIBS) $< $(LIBSRC) >getpadi.preOut
 
 ../exec/getpadi: getpadi.c $(LIBSRC) rpcx.h
-	@#$(CC) -E $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DMAIN $(NOTR) \
-	@#    $(LD_LIBS) $< $(LIBSRC) >getpadi.preOut
 	$(CC) $(WALL) $(PKG_CFLAGS) $(PKG_CPPFLAGS) -DMAIN $(NOTR) \
 	    $(LD_LIBS) $< $(LIBSRC) -o $@
 
