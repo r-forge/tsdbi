@@ -1,7 +1,7 @@
 service1 <- Sys.getenv("_R_CHECK_HAVE_MYSQL_")
 service2 <- Sys.getenv("_R_CHECK_HAVE_PADI_")
 
-save.image("etsCheck0.RData")
+# save.image("etsCheck0.RData")
 
 if(!identical(as.logical(service1), TRUE) |
    !identical(as.logical(service2), TRUE)) {
@@ -50,7 +50,7 @@ if(!identical(as.logical(service1), TRUE) |
         ids13 <- ids[20001:30000,]
         ids15 <- ids[40001:50000,]
 
-        save.image("etsCheck0b.RData")
+        #save.image("etsCheck0b.RData")
         # This had errors because zoo tf returned by sql causes failure when 
 	#  compare with ts tf returned by padi for weekly data: 
 	#    Error in if (tf[3] != fr) stop("frequencies must be that same.") :
@@ -61,7 +61,7 @@ if(!identical(as.logical(service1), TRUE) |
         eq5   <- TScompare(ids15, con1, con2, na.rm=FALSE) #warnings to check
         print(summary(eq5))
 
-        save.image("etsCheck0c.RData")
+        #save.image("etsCheck0c.RData")
 	}
 
       ids <- ids[1:10000,] # nice to do all, but too slow for regular build
