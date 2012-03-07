@@ -17,10 +17,12 @@ if(require("RMySQL") ) {
 if(require("RSQLite") ) {
 
   m <- dbDriver("SQLite")
-  con <- dbConnect(m, dbname="test") # no user/passwd/host
+  f <- tempfile()
+  con <- dbConnect(m, dbname=f) # no user/passwd/host
   dbListTables(con) 
 
   cat("**************        disconnecting SQLite test\n")
   dbDisconnect(con)
+  unlink(f)
   #  dbUnloadDriver(m) complains about open connections.
   } else  warning("RSQLite not available. Skipping tests.")
