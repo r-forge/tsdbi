@@ -1,6 +1,3 @@
-#   Copyright 2007-2011 Bank of Canada.
-#   Copyright 2012      Paul Gilbert.
-
 testequaltf <- function(s1, s2) {
     #r <- try(all( c(earliestEnd(s1) == earliestEnd(s2), 
     #                latestStart(s1) == latestStart(s2))), silent=TRUE)
