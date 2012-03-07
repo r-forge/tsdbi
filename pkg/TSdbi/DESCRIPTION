@@ -1,5 +1,5 @@
 Package: TSdbi
-Version: 2011.11-2
+Version: 2012.03-1
 Title: Time Series Database Interface
 Description: TSdbi provides a common interface to time series databases. The
 	objective is to define a standard interface so users can retrieve time 
@@ -15,7 +15,7 @@ Depends: R (>= 2.8.0), methods, tframe (>= 2008.5-1)
 Imports: methods, DBI
 Suggests: zoo, tseries, tis, tframePlus
 BuildVignettes: false
-License: GPL-2 | file LICENSE
+License: GPL-2
 Author: Paul Gilbert <pgilbert.ttv9z@ncf.ca>
 Maintainer: Paul Gilbert <pgilbert.ttv9z@ncf.ca>
 URL: http://tsdbi.r-forge.r-project.org/

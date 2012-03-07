@@ -1,3 +1,6 @@
+#   Copyright 2007-2011 Bank of Canada.
+#   Copyright 2012      Paul Gilbert.
+   
 #setClassUnion("OptionalPOSIXct",   c("POSIXct",   "NULL"))
 # bug work around
 setClassUnion("OptionalPOSIXct",   c("POSIXct",   "logical"))
