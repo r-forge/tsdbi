@@ -1,10 +1,11 @@
 PREREQ_PACS=TSdbi
 OPTIONAL_PREREQ=src/*.[chx]
 
-include ../Makevars
+#  ../Makevars goes up real path not sym link, so
+QC=${shell cd ../ ; pwd}
 
-default:	$(DEFAULT)
+include $(QC)/Makevars 
 
-PACCLEAN= simple.server.log.* zot*.db 
+default: $(DEFAULT)
 
-include ../Makerules
+include $(QC)/Makerules

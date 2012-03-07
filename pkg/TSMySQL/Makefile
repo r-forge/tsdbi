@@ -1,7 +1,10 @@
 PREREQ_PACS=TSdbi TShistQuote
 
-include ../Makevars
+#  ../Makevars goes up real path not sym link, so
+QC=${shell cd ../ ; pwd}
 
-default:	$(DEFAULT)
+include $(QC)/Makevars 
 
-include ../Makerules
+default: $(DEFAULT)
+
+include $(QC)/Makerules
