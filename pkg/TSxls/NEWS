@@ -7,6 +7,10 @@ Known BUGS
    o	TSrepresentaion is specified in TSconnect rather than TSget.
 
 
+Changes in TSxls version 2012.3-1
+
+   o	no real changes, but bumping version for new CRAN suitability check.
+
 Changes in TSxls version 2011.11-1
 
    o	updated maintainer email address.
