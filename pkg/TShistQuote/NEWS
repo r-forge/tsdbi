@@ -7,6 +7,10 @@ Known BUGS
    o	None for the moment.
 
 
+Changes in tframe version 2011.11-2
+
+   o	no real changes, but bumping version for new CRAN suitability check.
+
 Changes in TShistQuote version 2011.11-1
 
    o	updated maintainer email address.
