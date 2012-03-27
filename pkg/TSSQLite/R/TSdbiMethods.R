@@ -6,6 +6,9 @@
 
 setClass("TSSQLiteConnection", contains=c("SQLiteConnection","conType", "TSdb")) 
 
+#setAs("TSSQLiteConnection", "integer", 
+#  def=getMethod("coerce", c("dbObjectId","integer"))) 
+
 setMethod("print", "TSSQLiteConnection", function(x, ...) {
     print(x@TSdb)
     })

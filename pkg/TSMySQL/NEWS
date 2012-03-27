@@ -3,6 +3,11 @@ See also
    o	See also NEWS in the TSdbi package.
 
 
+Changes in TSMySQL version 2012.3-1
+
+   o	added setAs() to avoid note about ambiguity when coercing from 
+   	TSMySQLConnection to integer.
+
 Changes in TSMySQL version 2011.11-1
 
    o	updated maintainer email address.

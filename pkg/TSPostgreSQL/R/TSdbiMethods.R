@@ -2,6 +2,9 @@
 setClass("TSPostgreSQLConnection", 
    contains=c("PostgreSQLConnection", "conType", "TSdb")) 
 
+setAs("TSPostgreSQLConnection", "integer", 
+  def=getMethod("coerce", c("dbObjectId","integer"))) 
+
 #setMethod("print", "TSPostgreSQLConnection", function(x, ...) {
 #   print(x@TSdb)
 #   })
