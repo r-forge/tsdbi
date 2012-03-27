@@ -3,6 +3,11 @@ See also
    o	See also NEWS in the TSdbi package.
 
 
+Changes in TSPostgreSQL version 2012.3-1
+
+   o	added setAs() to avoid note about ambiguity when coercing from 
+   	TSPostgreSQLConnection to integer.
+
 Changes in TSPostgreSQL version 2011.11-1
 
    o	updated maintainer email address.

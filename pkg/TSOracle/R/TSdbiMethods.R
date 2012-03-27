@@ -10,6 +10,9 @@
 # or 
 setClass("TSOraConnection", contains=c("OraConnection", "conType", "TSdb"))
 
+setAs("TSOraConnection", "integer", 
+  def=getMethod("coerce", c("dbObjectId","integer"))) 
+
 # in which case we need 
 #new("TSOraConnection" , con, drv="Oracle", dbname=dbname, 
 #  	       hasVintages=dbExistsTable(con, "vintages"), 

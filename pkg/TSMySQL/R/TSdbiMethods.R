@@ -15,6 +15,9 @@
 # or 
 setClass("TSMySQLConnection", contains=c("MySQLConnection", "conType", "TSdb"))
 
+setAs("TSMySQLConnection", "integer", 
+  def=getMethod("coerce", c("dbObjectId","integer"))) 
+
 # in which case we need 
 #new("TSMySQLConnection" , con, drv="MySQL", dbname=dbname, 
 #  	       hasVintages=dbExistsTable(con, "vintages"), 

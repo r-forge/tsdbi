@@ -4,6 +4,10 @@ See also
 
 
 
+Changes in TSSQLite version 2012.3-1
+
+   o	no real changes, but bumping version for new CRAN suitability check.
+
 Changes in TSSQLite version 2011.11-1
 
    o	updated maintainer email address.
