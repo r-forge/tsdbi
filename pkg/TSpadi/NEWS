@@ -13,6 +13,10 @@ Known BUGS
 
    o	Probably does not build on Windows or Mac.
 
+Changes in TSpadi version 2012.3-2
+
+   o	no real changes, but bumping version for new CRAN suitability check.
+
 Changes in TSpadi version 2012.3-1
 
    o	Reworked Makefile flags so error calls are only for R's 'error' <R.h>.
