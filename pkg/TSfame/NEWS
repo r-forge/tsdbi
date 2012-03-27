@@ -10,6 +10,10 @@ Known BUGS
    o	Warning messages about "may be a Fame Server path" coming from the fame
 	package in the case of a remote servers (cannot be suppressed).
 
+Changes in tframe version 2012.3-1
+
+   o	no real changes, but bumping version for new CRAN suitability check.
+
 Changes in TSfame version 2011.11-1
 
    o	updated maintainer email address.
