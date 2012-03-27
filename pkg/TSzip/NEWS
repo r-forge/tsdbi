@@ -3,6 +3,10 @@ See also
    o	See also NEWS in the TSdbi package.
 
 
+Changes in TSzip version 2012.3-1
+
+   o	no real changes, but bumping version for new CRAN suitability check.
+
 Changes in TSzip version 2011.11-2
 
    o	renamed TSget argument 'select' to 'quote' for consistency with
