@@ -7,6 +7,10 @@ Known BUGS
    o	Can only return default or zoo time series representation.
 
 
+Changes in tframe version 2012.3-1
+
+   o	no real changes, but bumping version for new CRAN suitability check.
+
 Changes in TSgetSymbol version 2011.11-1
 
    o	updated maintainer email address.
