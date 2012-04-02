@@ -80,21 +80,33 @@ setMethod("TSdates",
 setMethod("TSget",     signature(serIDs="character", con="TSgetSymbolConnection"),
    definition=function(serIDs, con, TSrepresentation=options()$TSrepresentation,
        tf=NULL, start=tfstart(tf), end=tfend(tf),
-       names=serIDs, quiet=TRUE, repeat.try=3, ...){ 
-    if (is.null(TSrepresentation)) TSrepresentation <- "ts"
+       names=serIDs, quote = if (con@dbname == "yahoo") "Close" else NULL, 
+       quiet=TRUE, repeat.try=3, ...){ 
+
+    if (is.null(TSrepresentation)) {
+       default <- TRUE
+       TSrepresentation <- "zoo"
+       }
+    else default <- FALSE
+    
+    if (! TSrepresentation %in% c("ts", "its", "zoo", "xts", "timeSeries"))
+       stop(TSrepresentation, " time series class not supported.")
     mat <- desc <- NULL
     # recycle serIDs and quote to matching lengths
     # argument 'quote' ignored for provider 'oanda'
-    # if (con@dbname == "yahoo") {
-       # if (length(quote) < length(serIDs))
-       #     quote  <- rep(quote,  length.out=length(serIDs))
-       # if (length(quote) > length(serIDs))
-       #     serIDs <- rep(serIDs, length.out=length(quote))
-       # }
+    # if quote is null then HLOC will be retained
+    if (con@dbname == "yahoo" && !is.null(quote)) {
+        if (length(quote) < length(serIDs))
+            quote  <- rep(quote,  length.out=length(serIDs))
+        if (length(quote) > length(serIDs))
+            serIDs <- rep(serIDs, length.out=length(quote))
+        }
     
     #getSymbols BUG workaround. Set this as zoo otherwise periodicity is wrong
     #   (and frequency does not work either). Then convert below
-    args <- list(src = con@dbname, return.class="zoo",
+    #args <- list(src = con@dbname, return.class="zoo",
+    #             auto.assign=FALSE)
+    args <- list(src = con@dbname, return.class=TSrepresentation,
                  auto.assign=FALSE)
     
     #args <- if (is.null(start) & is.null(end)) append(args, list(...))
@@ -111,15 +123,17 @@ setMethod("TSget",     signature(serIDs="character", con="TSgetSymbolConnection"
        if (inherits(r , "try-error")) stop("series not retrieved:", r)
        if (is.character(r)) stop("series not retrieved:", r)
        #TSrefperiod(r) <- quote[i]
+       if (!is.null(quote)) 
+          r <- r[, paste(toupper(serIDs[i]),".", quote[i], sep="")]
        mat <- tbind(mat, r)
-       desc <- c(desc, paste(serIDs[i], collapse=" "))
+       desc <- c(desc, paste(serIDs[i], quote[i], collapse=" "))
        }
     #if (NCOL(mat) != length(serIDs)) stop("Error retrieving series", serIDs)
     #  yahoo connections return high, low , ... 
     if (NCOL(mat) != length(serIDs)) names <- seriesNames(mat) 
     # getSymbols BUG workaround
     st <- as.POSIXlt(start(mat)) #POSIXlt as return for zoo
-    if (TSrepresentation  %in% c( "ts", "default")) {
+    if (default) {
         if(periodicity(mat)$scale == "monthly")
 	   mat <- ts(mat, frequency=12,start=c(1900+st$year, 1+st$mon))
         else if(periodicity(mat)$scale == "quarterly")
@@ -127,12 +141,16 @@ setMethod("TSget",     signature(serIDs="character", con="TSgetSymbolConnection"
         else if(periodicity(mat)$scale == "yearly")  
 	   mat <- ts(mat, frequency=1, start=c(1900+st$year, 1))
 	}
-    mat <- tfwindow(mat, tf=tf, start=start, end=end)
-    
-#    if (! TSrepresentation  %in% c( "zoo", "default")){
-#      require("tframePlus")
-#      mat <- changeTSrepresentation(mat, TSrepresentation)
-#      }
+
+    # BUG in tfwindow when mat is zoo with POSIXct and start is eg"2011-01-03"
+    #   next should work , but does not
+    # mat <- tfwindow(mat, tf=tf, start=start, end=end)
+    if (inherits(mat, "ts"))
+       mat <- tfwindow(mat, tf=tf, start=start, end=end)
+    else if (inherits(mat, "zoo")) {
+       if(!is.null(start)) mat <- window(mat, start=as.POSIXct(start))
+       if(!is.null(end))   mat <- window(mat, end=as.POSIXct(end))
+       }
 
     seriesNames(mat) <- names
     TSmeta(mat) <- new("TSmeta", serIDs=serIDs,  dbname=con@dbname, 
@@ -143,7 +161,7 @@ setMethod("TSget",     signature(serIDs="character", con="TSgetSymbolConnection"
 	TSlabel=desc, 
 	TSsource= (if("yahoo" == con@dbname) "yahoo" 
 	      else if("FRED" == con@dbname) "Federal Reserve Bank of St. Louis"
-	      else "unspecified" )
+	      else con@dbname )
 	) 
     mat
     } 

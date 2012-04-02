@@ -20,6 +20,7 @@
     \S4method{TSget}{character,TSgetSymbolConnection}(
 	serIDs, con, TSrepresentation = options()$TSrepresentation, 
 	tf = NULL, start = tfstart(tf), end = tfend(tf), names=serIDs, 
+	quote = if (con@dbname == "yahoo") "Close" else NULL, 
 	quiet = TRUE, repeat.try=3, ...)
     \S4method{TSconnect}{getSymbolDriver,character}(
 	drv, dbname, user="", password = "", host="", ...)
@@ -51,6 +52,7 @@
     \item{end}{time frame for trimming data, passed to tfwindow.}
     \item{TSrepresentation}{time representation for returned series. 
           (See \code{TSget} in package \pkg{TSdbi}.)}
+    \item{quote}{reference item (e.g. ''Close''). See details.}
     \item{quiet}{logical to suppress progress report.}
     \item{repeat.try}{integer number of times to attempt retrieval before giving
           up.}
@@ -61,16 +63,25 @@
 }
 \value{Depends.}
 \details{
-These functions interface to the FRED database using \code{getSymbols} from the 
-\pkg{quantmod} package. 
-\code{TSget} is just a wrapper to \code{getSymbols}. No 
-extra functionality is provided, only an interface that is consistent 
-with \pkg{TSdbi}. The \pkg{TSdbi} function argument \code{serId} is passed as the series to return,
+These functions interface to web database (e.g. FRED) using \code{getSymbols} 
+from the \pkg{quantmod} package. 
+\code{TSget} is just a wrapper to \code{getSymbols}. 
+No extra functionality is provided, only an interface that is consistent 
+with \pkg{TSdbi}. The \pkg{TSdbi} function argument \code{serId} is passed 
+as the series to return,
 \code{dbname} is mapped to \code{getSymbols} argument \code{src}, and
-\code{TSrepresentation} to \code{return.class}. The \code{getSymbols} argument \code{auto.assign} is set to \code{FALSE} and the series is returned for assignment by the user, as with other \code{TSget} database interfaces. 
-(See \code{TSget} in \pkg{TSdbi} for
+\code{TSrepresentation} to \code{return.class}. The \code{getSymbols} 
+argument \code{auto.assign} is set to \code{FALSE} and the series is 
+returned for assignment by the user, as with other \code{TSget} 
+database interfaces. (See \code{TSget} in \pkg{TSdbi} for
 more details on how this works.)
 
+The argument \code{quote} with default{"Close"} for \code{dbname="yahoo"},
+and \code{NULL} otherwsie, is provided to allow
+automatically extracting part of the multivariate series returned by
+\code{getSymbols}. It can be set to any of \code{"Open", "High", "Low", 
+"Close", "Volume", "Adjusted"}. If it is set to \code{NULL} then all 
+will be returned. 
 
 \pkg{TSgetSymbol} does not support writing data to the source.
 
