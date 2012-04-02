@@ -1,5 +1,5 @@
 Package: TSdbi
-Version: 2012.3-1
+Version: 2012.4-1
 Title: Time Series Database Interface
 Description: TSdbi provides a common interface to time series databases. The
 	objective is to define a standard interface so users can retrieve time 
@@ -9,7 +9,9 @@ Description: TSdbi provides a common interface to time series databases. The
 	table design, so users needing to set up a time series database 
 	have a reasonably complete way to do this easily. The interface 
 	provides for a variety of options with respect to the representation 
-	of time series in R. There is also a (not yet well tested) mechanism to
+	of time series in R. The interface, and the SQL implementations, also
+	handle vintages of time series data (sometime called editions or 
+	realtime data). There is also a (not yet well tested) mechanism to
 	handle multilingual data documentation.
 Depends: R (>= 2.8.0), methods, tframe (>= 2008.5-1)
 Imports: methods, DBI
