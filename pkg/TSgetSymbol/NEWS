@@ -2,27 +2,32 @@ See also
 
    o	See also NEWS in the TSdbi package.
 
-Known BUGS
 
-   o	Can only return default or zoo time series representation.
+Changes in TSgetSymbol version 2012.4-1
 
+   o	Added argument quote to TSget for consistency with TShistQuote.
 
-Changes in tframe version 2012.3-1
+   o	Converted "default" to internally use zoo and convert to ts 
+   	when appropriate.
 
-   o	no real changes, but bumping version for new CRAN suitability check.
+   o	Converted to using getSymbols return.class, and added checks that
+   	TSrepresentation specification is supported by getSymbols.
+
+   o	Changed TSget to return con@dbname for TSsources in cases where it was
+   	previously set to "unspecified".
 
 Changes in TSgetSymbol version 2011.11-1
 
-   o	updated maintainer email address.
+   o	Updated maintainer email address.
 
-   o	fixed faulty conversion from zoo to ts.
+   o	Fixed faulty conversion from zoo to ts.
 
-   o	fixed vignette to use monthly rather than weekly M2. (Binding a weekly
+   o	Fixed vignette to use monthly rather than weekly M2. (Binding a weekly
    	and monthly series together caused problems.)
 
-   o	removed yahoo connection test in TSconnect as it causes more problems
+   o	Removed yahoo connection test in TSconnect as it causes more problems
    	than it likely prevents.
 
 Changes in TSgetSymbol version 2010.11-1
 
-   o	first release
+   o	First release
