@@ -45,6 +45,7 @@ Once the connection is established, data can be read from it with the same
 functions as for other \pkg{TSdbi} packages.
 \begin{Scode}{results=verbatim,fig=TRUE}
   z <- TSget("INDU", con)
+  require("tfplot")
   tfplot(z, graphs.per.page=3)
 
   z <- TSget(c("EURUSD", "GBPUSD"), con)

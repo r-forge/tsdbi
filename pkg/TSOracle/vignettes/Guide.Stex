@@ -114,6 +114,7 @@ And now more examples:
  TSget("matc1", con)
  TSget("matc2", con)
  TSget(c("matc1","matc2"), con)
+ require("tfplot")
  tfplot(z+1, TSget(c("matc1","matc2"), con), 
           lty=c("solid", "dashed"), col=c("black", "red"))
 \end{Scode}

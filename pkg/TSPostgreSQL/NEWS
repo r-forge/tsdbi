@@ -3,7 +3,9 @@ See also
    o	See also NEWS in the TSdbi package.
 
 
-Changes in TSPostgreSQL version 2012.3-1
+Changes in TSPostgreSQL version 2012.4-1
+
+   o	Added tfplot to Suggests in DESCRIPTION.
 
    o	added setAs() to avoid note about ambiguity when coercing from 
    	TSPostgreSQLConnection to integer.

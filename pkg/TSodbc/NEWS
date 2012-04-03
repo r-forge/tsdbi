@@ -9,10 +9,11 @@ Known BUGS
 	so it is necessary to have a properly defined ~/.odbc.ini  file.
 
 
-Changes in TSodbc version 2012.3-1
+Changes in TSodbc version 2012.4-1
 
-   o	no real changes, but bumping version for new CRAN suitability check.
+   o	Added tfplot to Suggests in DESCRIPTION.
 
+ 
 Changes in TSodbc version 2011.11-1
 
    o	updated maintainer email address.

@@ -2,6 +2,7 @@
 if(identical(as.logical(Sys.getenv("_R_CHECK_HAVE_FAME_")), TRUE)) {
 
 require("TSfame")
+require("tfplot")
 
 cat("**************  vintage  examples with fame Server\n")
 

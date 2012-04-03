@@ -4,6 +4,7 @@
 
 cat("************** Bank of Canada sdmx   ******************************\n")
 require("TSsdmx")
+require("tfplot")
 
 con <- TSconnect("sdmx", dbname="BoC") 
 

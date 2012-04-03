@@ -88,6 +88,7 @@ and \code{TSget} in \pkg{TSdbi} for more details.
 \code{\link[tframe]{tfwindow}}
 }
 \examples{
+  require("tfplot")
   # data from http://pitrading.com/
   # par(ask=TRUE) # to pause between pages
   con <- TSconnect("zip", dbname="http://pitrading.com/free_eod_data")

@@ -5,6 +5,8 @@ See also
 
 Changes in TSgetSymbol version 2012.4-1
 
+   o	Added tfplot to Suggests in DESCRIPTION.
+ 
    o	Added argument quote to TSget for consistency with TShistQuote.
 
    o	Converted "default" to internally use zoo and convert to ts 

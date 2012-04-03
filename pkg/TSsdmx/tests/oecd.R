@@ -394,6 +394,7 @@ htmlTreeParse(h$value(), asText=TRUE, trim=TRUE)$children
 
 cat("************** TSsdmx  Examples ******************************\n")
 require("TSsdmx")
+require("tfplot")
 
 if(FALSE) {
 

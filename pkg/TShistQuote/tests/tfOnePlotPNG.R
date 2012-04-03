@@ -1,4 +1,5 @@
 require("TShistQuote")  
+require("tfplot")  
 
 yahoo <- TSconnect("histQuote", dbname="yahoo") 
 oanda <- TSconnect("histQuote", dbname="oanda") 

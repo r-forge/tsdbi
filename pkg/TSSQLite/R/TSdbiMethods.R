@@ -1,8 +1,3 @@
-#.onLoad <- function(library, section) {
-#   require("methods")
-#   require("TSdbi")
-#   require("RSQLite")
-#   }
 
 setClass("TSSQLiteConnection", contains=c("SQLiteConnection","conType", "TSdb")) 
 

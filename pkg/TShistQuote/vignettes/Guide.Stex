@@ -40,6 +40,7 @@ extra functionality, only an interface that is consistent with \pkg{TSdbi}.
 \end{Scode}
 
 \begin{Scode}{results=verbatim,fig=TRUE}
+  require("tfplot")
   tfplot(x)
   TSrefperiod(x) 
   TSdescription(x) 

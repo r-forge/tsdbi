@@ -42,6 +42,7 @@ A connection can be used to get data from the Federal Reserve Bank of St.Louis. 
   plot(x)
 \end{Scode}
 \begin{Scode}
+  require("tfplot")
   tfplot(x)
   TSrefperiod(x) 
   TSdescription(x) 

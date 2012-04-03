@@ -83,7 +83,8 @@ see the vignette distributed with this package for more complete examples.
 \code{\link[TSdbi]{TSput}}
 }
 \examples{
-    con <- try(TSconnect(dbDriver("Oracle"), dbname="test"))
+   require("tfplot")
+   con <- try(TSconnect(dbDriver("Oracle"), dbname="test"))
     if(! inherits(con, "try-error")) {
       z <- ts(rnorm(100), start=c(1975,1), frequency=12)
       seriesNames(z) <- "random1"

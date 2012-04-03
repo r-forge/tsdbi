@@ -3,6 +3,7 @@
 
 cat("************** ECB sdmx   ******************************\n")
 require("TSsdmx")
+require("tfplot")
 
 con <- TSconnect("sdmx", dbname="ECB")
 

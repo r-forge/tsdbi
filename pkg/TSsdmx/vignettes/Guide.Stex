@@ -52,6 +52,7 @@ A connection is established and data retrieved by
 \begin{Scode}{results=verbatim,fig=TRUE}
   ecb <- TSconnect("sdmx", dbname="ECB")
   x <- TSget("122.ICP.M.U2.N.000000.4.ANR", ecb)
+  require("tfplot")
   tfplot(x)
   TSrefperiod(x) 
   TSdescription(x) 

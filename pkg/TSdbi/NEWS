@@ -11,6 +11,8 @@ Known BUGS
 
 Changes in TSdbi version 2012.4-1
 
+   o	Added tfplot to Suggests in DESCRIPTION.
+
    o	Changed TSexists() to return a logical vector in the case when
    	vintage is a vector.
 

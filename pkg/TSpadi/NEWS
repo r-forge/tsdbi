@@ -13,9 +13,10 @@ Known BUGS
 
    o	Probably does not build on Windows or Mac.
 
-Changes in TSpadi version 2012.3-2
+Changes in TSpadi version 2012.4-1
 
-   o	no real changes, but bumping version for new CRAN suitability check.
+   o	Added tfplot to Suggests in DESCRIPTION.
+
 
 Changes in TSpadi version 2012.3-1
 
