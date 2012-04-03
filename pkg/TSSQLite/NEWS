@@ -4,9 +4,9 @@ See also
 
 
 
-Changes in TSSQLite version 2012.3-1
+Changes in TSSQLite version 2012.4-1
 
-   o	no real changes, but bumping version for new CRAN suitability check.
+   o	Added tfplot to Suggests in DESCRIPTION.
 
 Changes in TSSQLite version 2011.11-1
 

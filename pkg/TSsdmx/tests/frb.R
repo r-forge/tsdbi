@@ -1,5 +1,6 @@
 # Status:  Working, but finding series identifiers is difficult and the
 #    mneumonics are obscure. Needs documentation.
+require("tfplot")
 
 
 #Go through all the steps and at the end there is a link for automated download

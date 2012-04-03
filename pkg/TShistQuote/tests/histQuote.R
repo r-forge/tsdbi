@@ -1,4 +1,5 @@
 require("TShistQuote")
+require("tfplot")
 cat("************** TShistQuote  Examples ******************************\n")
 
 con <- TSconnect("histQuote", dbname="yahoo") 

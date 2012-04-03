@@ -95,6 +95,7 @@ file causes an error building the vignette.
   print(start(z))
   print(end(z))
    
+  require("tfplot")
   tfplot(TSget(serIDs="V122646", conets))
   }
 \end{Scode}

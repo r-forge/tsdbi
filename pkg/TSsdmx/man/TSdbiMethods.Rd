@@ -82,6 +82,7 @@ See the package vignette for additional examples.
 \code{\link[tframe]{tfwindow}},
 }
 \examples{
+  require("tfplot")
   if (require("TSsdmx")){
     con <- try(TSconnect("sdmx", dbname="OECD"))
     if(! inherits(con, "try-error")) {

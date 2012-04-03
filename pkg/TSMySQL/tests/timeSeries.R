@@ -1,4 +1,5 @@
 service <- Sys.getenv("_R_CHECK_HAVE_MYSQL_")
+require("tfplot")
 
 if(identical(as.logical(service), TRUE)) {
 

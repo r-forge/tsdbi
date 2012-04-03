@@ -93,6 +93,7 @@ See the package vignette for additional examples.
 }
 \examples{
     require("tseries")
+    require("tfplot")
     con <- TSconnect("histQuote", dbname="yahoo") 
     x <- TSget("^ftse", con)
     tfplot(x)

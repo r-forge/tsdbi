@@ -184,7 +184,8 @@ the \pkg{TSfame} Guide vingette.
 \code{\link[fame]{getfame}}
 }
 \examples{
-    con <- try(TSconnect(dbDriver("fame"), dbname="test.db"))
+   require("tfplot")
+   con <- try(TSconnect(dbDriver("fame"), dbname="test.db"))
     if(! inherits(con, "try-error")) {
       z <- ts(rnorm(100), start=c(1975,1), frequency=12)
       seriesNames(z) <- "random1"

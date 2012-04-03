@@ -1,5 +1,6 @@
 require("TSzip")
 require("xts")
+require("tfplot")
 
 pit <- TSconnect("zip", dbname="http://pitrading.com/free_eod_data")
 

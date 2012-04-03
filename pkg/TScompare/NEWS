@@ -1,6 +1,8 @@
-Changes in TScompare version 2012.3-1
+Changes in TScompare version 2012.4-1
 
    o	still not released (just on R-forge).
+
+   o	Added tfplot to Suggests in DESCRIPTION.
 
    o	ongoing cleanup.
 

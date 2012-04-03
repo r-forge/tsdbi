@@ -1,4 +1,5 @@
 # compare two databases on the same server
+require("tfplot")
 
 service1 <- Sys.getenv("_R_CHECK_HAVE_MYSQL_")
 

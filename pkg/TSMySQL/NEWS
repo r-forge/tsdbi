@@ -3,14 +3,19 @@ See also
    o	See also NEWS in the TSdbi package.
 
 
+
+Changes in TSMySQL version 2012.4-1
+
+   o	Added tfplot to Suggests in DESCRIPTION.
+
 Changes in TSMySQL version 2012.3-1
 
-   o	added setAs() to avoid note about ambiguity when coercing from 
+   o	Added setAs() to avoid note about ambiguity when coercing from 
    	TSMySQLConnection to integer.
 
 Changes in TSMySQL version 2011.11-1
 
-   o	updated maintainer email address.
+   o	Updated maintainer email address.
 
 Changes in TSMySQL version 2011.8-2
 

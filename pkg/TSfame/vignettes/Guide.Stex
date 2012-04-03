@@ -96,6 +96,7 @@ And now more examples:
  z <- ts(matrix(rnorm(200),100,2), start=c(1995,1), frequency=12)
   seriesNames(z) <- c("mat2c1", "mat2c2")
  TSreplace(z, con)
+ require("tfplot")
  tfplot(z+1, TSget(c("mat2c1","mat2c2"), con),
            lty=c("solid", "dashed"), col=c("black", "red"))
 \end{Scode}
