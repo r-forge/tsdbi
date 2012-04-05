@@ -2,8 +2,7 @@ Package: TScompare
 Version: 2012.4-1
 Title:  Time Series Database Comparison
 Description: Utilities for comparing the equality of series on two databases.
-Depends: R (>= 2.10.0), methods, DBI, TSdbi (>= 2011.11-1), tframe, tframePlus, zoo
-Imports: TSdbi (>= 2011.11-1), tframe, tfplot
+Depends: R (>= 2.10.0), methods, DBI, TSdbi (>= 2011.11-1), tframe, tfplot, tframePlus, zoo
 Enhances: TSMySQL, TSSQLite, TSPostgreSQL, TSodbc, TSfame, TSpadi, TShistQuote, TSgetSymbol
 BuildVignettes: false
 License: GPL-2
