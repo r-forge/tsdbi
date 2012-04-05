@@ -2,8 +2,7 @@ Package: TSSQLite
 Version: 2012.4-1
 Title: Time Series Database Interface extentions for SQLite
 Description: TSSQLite provides a SQLite interface for TSdbi.
-Depends: R (>= 2.8.0), methods, tframe, tframePlus, TSdbi (>= 2011.8-1), RSQLite
-Imports: methods, DBI, TSdbi (>= 2011.11-1), RSQLite 
+Depends: R (>= 2.8.0), methods, tframe, tframePlus, DBI, TSdbi (>= 2011.8-1), RSQLite 
 Suggests: zoo, tseries, tfplot, TShistQuote (>= 2010.5-1)
 Enhances: TSdbi
 BuildVignettes: false

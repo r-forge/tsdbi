@@ -4,7 +4,6 @@ Title:  Time Series Database Interface extension to connect with SDMX
 Description: Provides methods for generics in the TSdbi package to 
 	retrieve data with SDMX, in particular from the ECB and OECD database.
 Depends: R (>= 2.8.0), methods, DBI, TSdbi (>= 2011.11-1), RCurl, XML, tframe, tframePlus
-Imports: methods, DBI, TSdbi (>= 2011.6-1)
 Enhances: TSdbi
 Suggests: tfplot
 BuildVignettes: false
