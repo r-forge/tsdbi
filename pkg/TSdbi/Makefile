@@ -1,7 +1,3 @@
-# These are required, but  the system installed versions should usually work.
-# (As long as the installed version is not hidden during testing.)
-PREREQ_PACS=tframe tfplot tframePlus
-
 #  ../Makevars goes up real path not sym link, so
 QC=${shell cd ../ ; pwd}
 

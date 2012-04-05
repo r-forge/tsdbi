@@ -1,5 +1,3 @@
-PREREQ_PACS=TSdbi TShistQuote
-
 #  ../Makevars goes up real path not sym link, so
 QC=${shell cd ../ ; pwd}
 
