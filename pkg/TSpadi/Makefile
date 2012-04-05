@@ -1,4 +1,3 @@
-PREREQ_PACS=TSdbi
 OPTIONAL_PREREQ=src/*.[chx]
 
 #  ../Makevars goes up real path not sym link, so
