@@ -5,6 +5,9 @@
 
 #http://epp.eurostat.ec.europa.eu/portal/page/portal/short_term_business_statistics/data/database
 
+#extraction tools
+#http://epp.eurostat.ec.europa.eu/portal/page/portal/help/first_visit/extraction_tools
+
 #http://epp.eurostat.ec.europa.eu/portal/page/portal/eurostat/home
 
 #http://epp.eurostat.ec.europa.eu/portal/page/portal/statistics/search_database
