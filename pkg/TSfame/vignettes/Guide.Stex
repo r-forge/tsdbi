@@ -5,12 +5,17 @@
 \begin{document}
 \maketitle
 %\VignetteIndexEntry{TSfame Guide}
-\SweaveOpts{eval=TRUE,echo=TRUE,results=hide,fig=FALSE}
+%\SweaveOpts{eval=TRUE,echo=TRUE,results=hide,fig=FALSE}
+\SweaveOpts{eval=FALSE,echo=TRUE,results=hide,fig=FALSE}
 %\SweaveOpts{eval=TRUE,echo=TRUE,results=verbatim,fig=TRUE}
 \begin{Scode}{echo=FALSE,results=hide}
  options(continue="  ")
  options(warn=1)
 \end{Scode}
+
+WARNING: The code in this vignette is no longer being run to generate the
+vignette, since I no longer have access to Fame. The pdf version of the Guide,
+circulated with the package, was generated previously.
 
 \section{Introduction}
 The code from the vignette that generates this guide can 
