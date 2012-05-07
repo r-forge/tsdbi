@@ -22,7 +22,6 @@ m <- dbDriver("PostgreSQL") # note that this is needed in sourced files.
    if ("" == host) host  <- "localhost"  #Sys.info()["nodename"] 
    if ("" != user) {
        passwd  <- Sys.getenv("POSTGRES_PASSWD")
-       if ("" == passwd)   passwd <- NULL
        #  See  ?"dbConnect-methods"
        con <- dbConnect(m, dbname=dbname,
           user=user, password=passwd, host=host)  

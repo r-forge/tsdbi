@@ -51,10 +51,7 @@ determined by the following logic:
    host    <- Sys.getenv("POSTGRES_HOST")
    if ("" == host) host  <- Sys.getenv("PGHOST")
    if ("" == host) host  <- "localhost"  #Sys.info()["nodename"] 
-   if ("" != user) {
-       passwd  <- Sys.getenv("POSTGRES_PASSWD")
-       if ("" == passwd)   passwd <- NULL
-      }
+   if ("" != user) passwd  <- Sys.getenv("POSTGRES_PASSWD")
 \end{Scode}
 
 
