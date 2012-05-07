@@ -3,10 +3,14 @@ See also
    o	See also NEWS in the TSdbi package.
 
 
+Changes in TSPostgreSQL version 2012.5-1
+
+   o	Fixed passing of empty password to be "" rather than NULL, as NULL is
+   	now flagged as an error by RPostgreSQL.
+
 Changes in TSPostgreSQL version 2012.4-1
 
    o	Added tfplot to Suggests in DESCRIPTION.
-
    o	added setAs() to avoid note about ambiguity when coercing from 
    	TSPostgreSQLConnection to integer.
 
