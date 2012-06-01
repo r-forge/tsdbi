@@ -344,107 +344,11 @@ Then check the saved version:
   dbDisconnect(Oanda)
 \end{Scode}
 
+\subsection{Examples Using TSdbi with ets}
 
-\subsection{Examples  Using TSdbi with ets}
-
-These examples use a database called "ets" which is available at the Bank
-of Canada.
-This set of examples illustrates how the programs might be used if a larger
-database is available. Typically a large database would be installed using
-database scripts directly rather than from R with \code{TSput} or
-\code{TSreplace}. 
-
-The following are wrapped in \code{if (!inherits(conets, "try-error"))} so that
-the vignette will build even when the database is not available. This seems to
-require an explicit call to \code{print()}, but that is not usually needed to
-display results below. Another artifact of this is that results printed in the
-if block do not display until the end of the block.
-
-\begin{Scode}{results=verbatim,fig=TRUE}
-  m <- dbDriver("ODBC")
-  conets <-  try(if ("" == user) TSconnect(m, dbname="ets") else
-    TSconnect(m, dbname="ets", uid=user, pwd=passwd))
-  if (!inherits(conets, "try-error")) {
-  
-  options(TSconnection=conets)
-
-  print(TSmeta(TSget("M.SDR.CCUSMA02.ST")))
-
-  EXCH.IDs <- t(matrix(c(
- 	"M.SDR.CCUSMA02.ST",	 "SDR/USD exchange rate",
- 	"M.CAN.CCUSMA02.ST",	 "CAN/USD exchange rate",
- 	"M.MEX.CCUSMA02.ST",	 "MEX/USD exchange rate",
- 	"M.JPN.CCUSMA02.ST",	 "JPN/USD exchange rate",
- 	"M.EMU.CCUSMA02.ST",	 "Euro/USD exchange rate",
- 	"M.OTO.CCUSMA02.ST",	 "OECD /USD exchange rate",
- 	"M.G7M.CCUSMA02.ST",	 "G7   /USD exchange rate",
- 	"M.E15.CCUSMA02.ST",	 "Euro 15. /USD exchange rate"
-	), 2, 8))
-
-  print(TSdates(EXCH.IDs[,1]))
-  z <- TSdates(EXCH.IDs[,1])
-  print(start(z))
-  print(end(z))
-   
-  tfplot(TSget(serIDs="V122646", conets))
-  }
-\end{Scode}
-
-\begin{Scode}{results=verbatim,fig=TRUE}
-if (!inherits(conets, "try-error")) {
-  print(TSdescription(TSget("V122646", TSdescription=TRUE)))
-  print(TSdescription("V122646"))
-
-  print(TSdoc(TSget("V122646", TSdoc=TRUE)))
-  print(TSdoc("V122646"))
-
-  tfplot(TSget("V122646", names="V122646", conets))
-  }
-\end{Scode}
-
-\begin{Scode}{results=verbatim,fig=TRUE}
-if (!inherits(conets, "try-error")) {
-  z <- TSget("V122646", TSdescription=TRUE)
-  tfplot(z, Title=strsplit(TSdescription(z), ","))
-  }
-\end{Scode}
-
-\begin{Scode}{results=verbatim,fig=TRUE}
-if (!inherits(conets, "try-error")) {
-  z <- TSget("SDSP500", TSdescription=TRUE)
-  tfplot(z, Title=TSdescription(z))
-  plot(z)
-  }
-\end{Scode}
-
-\begin{Scode}{results=verbatim,fig=TRUE}
-if (!inherits(conets, "try-error")) {
-  z <- TSget(c("DSP500","SDSP500"), TSdescription=TRUE)
-  tfplot(z, xlab=TSdescription(z))
-  }
-\end{Scode}
-
-\begin{Scode}{results=verbatim,fig=TRUE}
-if (!inherits(conets, "try-error")) {
-  plot(z)
-  }
-\end{Scode}
-
-\begin{Scode}{results=verbatim,fig=TRUE}
-if (!inherits(conets, "try-error")) {
-  ETSgdp    <- annualizedGrowth(aggregate(TSget("V1992067"),
-                   nfrequency=4,FUN=mean), lag=4, names="GDP Y/Y Growth")
-  tfplot(ETSgdp)
-  }  # end if !try-error
-\end{Scode}
-  
-\begin{Scode}{results=hide}
-  if (!inherits(conets, "try-error")) {
-  #dbDisconnect(conets)
-  dbDisconnect(options()$TSconnection)
-  options(TSconnection=NULL)
-  }  # end if try-error
-\end{Scode}
+A more complete set of examples will be available as a vignette in the package
+tenetatively called \code{TSdata}. This should include examples from a more
+extensive database of economic time series.
 
 \section{Examples Using DBI and direct SQL Queries}
 
