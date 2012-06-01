@@ -9,6 +9,11 @@ Known BUGS
 	so it is necessary to have a properly defined ~/.odbc.ini  file.
 
 
+Changes in TSodbc version 2012.5-1
+
+   o	Minor tweaks for vignette check on CRAN.
+
+
 Changes in TSodbc version 2012.4-1
 
    o	Added tfplot to Suggests in DESCRIPTION.
