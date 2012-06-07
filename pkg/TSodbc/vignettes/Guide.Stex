@@ -346,8 +346,8 @@ Then check the saved version:
 
 \subsection{Examples Using TSdbi with ets}
 
-A more complete set of examples will be available as a vignette in the package
-tenetatively called \code{TSdata}. This should include examples from a more
+A more complete set of examples will be available as a vignette in a package
+tentatively called \code{TSdata}. This should include examples from a more
 extensive database of economic time series.
 
 \section{Examples Using DBI and direct SQL Queries}
