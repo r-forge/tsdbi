@@ -15,6 +15,14 @@ TSrefperiod(x)
 if ("Close" != TSrefperiod(x)) stop("TSrefperiod error, test 1.") 
 TSdescription(x) 
 
+# Next produces warnings when yahoo messes up dates and puts the previous 
+# previous day's dates on holidays: "some methods for zoo objects do not 
+# work if the index entries in order.by are not unique" 
+# The warnings can be suppressed
+#  x2 <- suppressWarnings( TSget("^gspc", con))
+# but an error will occur further below when two series are retrieved and
+# zoo is used to merge them.
+
 x2 <- TSget("^gspc", con)
 tfplot(x2)
 plot(x2)
