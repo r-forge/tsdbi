@@ -3,7 +3,7 @@ Version: 2012.5-1
 Title: Time Series Database Interface extensions for ODBC
 Description: TSodbc provides an ODBC interface for TSdbi.
 Depends: R (>= 2.8.0), methods, tframe, tframePlus, TSdbi (>= 2011.11-1), DBI, RODBC
-Imports: methods, TSdbi (>= 2011.6-1), DBI, RODBC (>= 0.6-0) 
+Imports: methods, DBI, RODBC (>= 0.6-0) 
 Suggests: zoo, tseries, tfplot, TShistQuote
 Enhances: TSdbi
 BuildVignettes: false
