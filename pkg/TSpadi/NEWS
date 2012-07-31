@@ -13,6 +13,13 @@ Known BUGS
 
    o	Probably does not build on Windows or Mac.
 
+Changes in TSpadi version 2012.8-1
+
+   o	Fixed reference to old package padi in .C call.
+
+   o	Removed import of methods and DBI in DESCRIPTION, since these are
+   	already specified as dependencies.
+
 Changes in TSpadi version 2012.4-1
 
    o	Added tfplot to Suggests in DESCRIPTION.

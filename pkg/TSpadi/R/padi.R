@@ -116,8 +116,8 @@ checkPADIserver <-function(server=PADIserver(),
                as.integer(10),double(1), as.integer(1),
                msg=paste(rep(" ",120), collapse=""), # error message buffer
                buffsz=as.integer(120),      # size of error message buffer
-               as.integer(timeout),  # wait before generating error
-	       PACKAGE="padi")$msg
+               as.integer(timeout)  # wait before generating error
+	       )$msg
 
  if (!is.na(charmatch("missing object name", msg))) return(TRUE)
  # cat(msg) # usually want F from below, but not see the msg
@@ -211,8 +211,8 @@ getpadi.default <-function(series,server=PADIserver(), dbname="",
                as.integer(arsize),    # max. no. of observations (size of data)
                msg=paste(rep(" ",buffsz), collapse=""), # error message buffer
                buffsz=as.integer(buffsz),    # size of error message buffer
-               as.integer(timeout),  # wait before generating error
-	       PACKAGE="padi")
+               as.integer(timeout)  # wait before generating error
+	       )
 
         if (ns$buffsz > 0) 
           {if (stop.on.error) stop(paste("Error getting series ",series[i],
@@ -346,8 +346,8 @@ putpadi.default <-function(data,  server=PADIserver(), dbname="",
                data=as.double(data[,i]), # data in double precision
                msg=paste(rep(" ",buffsz), collapse=""),
                buffsz=as.integer(buffsz),
-               as.integer(timeout),  # wait before generating error
-	       PACKAGE="padi")
+               as.integer(timeout)  # wait before generating error
+	       )
          if (ns$buffsz > 0) 
            {if (stop.on.error)
                stop(paste("Error writing series: ",series[i],
