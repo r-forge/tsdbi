@@ -67,6 +67,26 @@ It does not provide
 extra functionality, only an interface that is consistent with \pkg{TSdbi}.
 \pkg{TSgetSymbol} does not support writing data.
 
+\subsection{Examples  Using TSjson with Statistics Canada}
+
+\pkg{TSjson} provides an interface that is consistent with \pkg{TSdbi} for 
+using json objects returned by some servers, or passed by servers that provide
+a proxy interface to other databases. 
+\pkg{TSjson} does not support writing data to the database.
+
+\begin{Scode}
+require("TSjson")
+require("tfplot")
+
+# user/passwd host from file ~/.TSjson.cfg
+con <- TSconnect("json", dbname="statcan")
+
+# quarterly
+x <- TSget("v498086", con)
+tfplot(x)
+\end{Scode}
+
+
 \subsection{Examples  Using TSgetSymbol with FRED}
 
 A connection can be used to get data from the Federal Reserve Bank of St.Louis. (Look at http://research.stlouisfed.org/fred2/ to find series identifiers.)
