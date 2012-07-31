@@ -1,5 +1,5 @@
 Package: TSjson
-Version: 2012.7-1
+Version: 2012.8-1
 Title:  TSdbi extension for JSON objects from databases 
 Description: Provides methods for generics in the TSdbi package to 
 	retrieve data from databases returning series as json objects. 

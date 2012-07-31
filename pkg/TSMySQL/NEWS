@@ -3,6 +3,10 @@ See also
    o	See also NEWS in the TSdbi package.
 
 
+Changes in TSMySQL version 2012.8-1
+
+   o	Modified Title in DESCRIPTION file so TSdbi packages will be more
+   	clearly related on CRAN listing.
 
 Changes in TSMySQL version 2012.4-1
 

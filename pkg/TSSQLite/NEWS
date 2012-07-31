@@ -4,7 +4,10 @@ See also
 
 
 
-Changes in TSSQLite version 2012.1-1
+Changes in TSSQLite version 2012.8-1
+
+   o	Modified Title in DESCRIPTION file so TSdbi packages will be more
+   	clearly related on CRAN listing.
 
    o	Fixed spelling error in DESCRIPTION file.
 
