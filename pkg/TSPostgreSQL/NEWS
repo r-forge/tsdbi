@@ -3,6 +3,11 @@ See also
    o	See also NEWS in the TSdbi package.
 
 
+Changes in TSPostgreSQL version 2012.8-1
+
+   o	Modified Title in DESCRIPTION file so TSdbi packages will be more
+   	clearly related on CRAN listing.
+
 Changes in TSPostgreSQL version 2012.5-1
 
    o	Fixed passing of empty password to be "" rather than NULL, as NULL is

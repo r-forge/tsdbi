@@ -1,6 +1,6 @@
 Package: TSsdmx
-Version: 2012.4-1
-Title:  Time Series Database Interface extension to connect with SDMX
+Version: 2012.8-1
+Title:  TSdbi extension to connect with SDMX
 Description: Provides methods for generics in the TSdbi package to 
 	retrieve data with SDMX, in particular from the ECB and OECD database.
 Depends: R (>= 2.8.0), methods, DBI, TSdbi (>= 2011.11-1), RCurl, XML, tframe, tframePlus

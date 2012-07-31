@@ -15,6 +15,9 @@ Known BUGS
 
 Changes in TSpadi version 2012.8-1
 
+   o	Modified Title in DESCRIPTION file so TSdbi packages will be more
+   	clearly related on CRAN listing.
+
    o	Fixed reference to old package padi in .C call.
 
    o	Removed import of methods and DBI in DESCRIPTION, since these are

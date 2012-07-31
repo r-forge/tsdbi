@@ -7,6 +7,11 @@ Known BUGS
    o	None for the moment.
 
 
+Changes in TShistQuote version 2012.8-1
+
+   o	Modified Title in DESCRIPTION file so TSdbi packages will be more
+   	clearly related on CRAN listing.
+
 Changes in TShistQuote version 2012.4-1
 
    o	Added tfplot to Suggests in DESCRIPTION.
