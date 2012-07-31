@@ -4,6 +4,10 @@ See also
 
 
 
+Changes in TSSQLite version 2012.1-1
+
+   o	Fixed spelling error in DESCRIPTION file.
+
 Changes in TSSQLite version 2012.4-1
 
    o	Added tfplot to Suggests in DESCRIPTION.
