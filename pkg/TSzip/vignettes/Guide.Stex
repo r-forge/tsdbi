@@ -1,7 +1,7 @@
 \documentclass[english]{article}
 \newcommand{\code}{\emph}
 \newcommand{\pkg}{\textsl}
-\title{Time Series Database Interface: TSzip for Interface to zipped csv file}
+\title{Time Series Database Interface: TSzip Extensions}
 \begin{document}
 \maketitle
 %\VignetteIndexEntry{TSzip Guide}
@@ -12,64 +12,12 @@
 \end{Scode}
 
 \section{Introduction}
-The code from the vignette that generates this guide can 
-be loaded into an editor with \emph{edit(vignette("TSzip"))}.
-This uses the default editor, which can be changed using \emph{options()}.
-It should be possible to view the pdf version of the guide for this 
-package with \emph{print(vignette("TSzip"))}.
-
-Once R is started, the functions in this package are made available with
-
-\begin{Scode}
-library("TSzip")  
-\end{Scode}
-This will also load required packages \pkg{TSdbi}, \pkg{DBI}, 
-\pkg{methods}, \pkg{tframePlus}, and \pkg{zoo}.
-
-\pkg{TSzip} provides methods for the \pkg{TSdbi} interface, allowing the 
-use of zipped files that can be read by \code{read.table} as if each file is a
-database series (or group of series such as high, low, open, close, for a
-stock). The \code{dbname} is a directory or \code{url}. 
-\pkg{TSzip} does not support writing data to the database. 
-
-\subsection{Examples using $\Pi$trading data}
-
-The following retrieves zipped files 
-from \code{http://pitrading.com/free\_market\_data.htm} which 
-provides some end of day data free of charge. (Disclaimer: This site is used as an example. Other than using this free data, I have no association with the company.) 
-\begin{Scode}{results=verbatim}
- con <- TSconnect("zip", dbname="http://pitrading.com/free_eod_data")
-\end{Scode}
-
-Once the connection is established, data can be read from it with the same
-functions as for other \pkg{TSdbi} packages.
-\begin{Scode}{results=verbatim,fig=TRUE}
-  z <- TSget("INDU", con)
-  require("tfplot")
-  tfplot(z, graphs.per.page=3)
-
-  z <- TSget(c("EURUSD", "GBPUSD"), con)
-  tfplot(z, graphs.per.page=3)
-
-  z <- TSget(c("EURUSD", "GBPUSD"), con, select="Close")
-  tfplot(z, Title="EURUSD and GBPUSD closing values from pitrading", start="1995-01-01")
- 
-  TSrefperiod(z) 
-  TSdescription(z) 
-\end{Scode}
-
-It is also possible to specify a connection to be used as the default, so
-it is then not necessary to specify the \code{con} when the default is used: 
-
-\begin{Scode}{results=verbatim,fig=TRUE}
-  options(TSconnection=con)
-  tfplot(TSget(serIDs="INDU", select="High"),
-         TSget(serIDs="INDU", select="Low"),
-	 Title="INDU High and Low", 
-	 ylab="Dow Jones Index", 
-	 start="1997-01-01")
-\end{Scode}
-
-See the \pkg{TSdbi} vignette for additional details on using other features of
-the \pkg{TSdbi} interface.
+The package \pkg{TSzip} provides methods for generics in the package 
+\pkg{TSdbi}. A complete vignette, illustrating the general functionality of all
+\pkg{TSdbi} extension packages is provided in the vignette 
+with package \pkg{TSdata}. 
+Installing that package requires that most of the \pkg{TS*}
+packages are available, which will not be necessary for most users, so it may
+be easier to get the pdf version of the vignette from CRAN at 
+\url{http://cran.r-project.org/web/packages/TSdata/index.html}.
 \end{document}

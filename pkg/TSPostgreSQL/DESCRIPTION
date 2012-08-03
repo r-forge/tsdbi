@@ -3,7 +3,7 @@ Version: 2012.8-1
 Title: TSdbi extensions for PostgreSQL
 Description: TSPostgreSQL provides a PostgreSQL interface for TSdbi.
 Depends: R (>= 2.8.0), methods, tframe, tframePlus, DBI, TSdbi (>= 2011.11-1), RPostgreSQL
-Suggests: zoo, tseries, TShistQuote, tfplot
+Suggests: zoo, tseries, tfplot
 Enhances: TSdbi
 BuildVignettes: false
 License: GPL-2

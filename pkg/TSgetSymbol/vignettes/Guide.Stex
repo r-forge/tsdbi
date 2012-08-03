@@ -1,104 +1,23 @@
 \documentclass[english]{article}
 \newcommand{\code}{\emph}
 \newcommand{\pkg}{\textsl}
-\title{Time Series Database Interface: TSgetSymbol wrapper to getSymbols}
+\title{Time Series Database Interface: TSgetSymbol Extensions}
 \begin{document}
 \maketitle
 %\VignetteIndexEntry{TSgetSymbol Guide}
-%\SweaveOpts{eval=TRUE,echo=TRUE,results=hide,fig=FALSE}
-\SweaveOpts{eval=TRUE,echo=TRUE,results=verbatim,fig=TRUE}
-%
-\begin{Scode}{echo=FALSE,results=hide,fig=FALSE}
+\SweaveOpts{eval=TRUE,echo=TRUE,results=hide,fig=FALSE}
+%\SweaveOpts{eval=TRUE,echo=TRUE,results=verbatim,fig=TRUE}
+\begin{Scode}{echo=FALSE,results=hide}
  options(continue="  ")
 \end{Scode}
-%
+
 \section{Introduction}
-The code from the vignette that generates this guide can 
-be loaded into an editor with \emph{edit(vignette("TSgetSymbol"))}.
-This uses the default editor, which can be changed using \emph{options()}.
-It should be possible to view the pdf version of the guide for this 
-package with \emph{print(vignette("TSgetSymbol"))}.
-
-Once R is started, the functions in this package are made available with
-
-\begin{Scode}{fig=FALSE}
-library("TSgetSymbol")  
-\end{Scode}
-This will also load required packages \pkg{TSdbi}, \pkg{DBI}, 
-\pkg{methods}, \pkg{tframePlus}, \pkg{zoo}, and \pkg{quantmod}.
-
-\pkg{TSgetSymbol} is just a wrapper to \code{getSymbols} in \pkg{quantmod}. 
-It does not provide
-extra functionality, only an interface that is consistent with \pkg{TSdbi}.
-\pkg{TSgetSymbol} does not support writing data.
-
-\subsection{Examples  Using TSgetSymbol with FRED}
-
-A connection can be used to get data from the Federal Reserve Bank of St.Louis. (Look at http://research.stlouisfed.org/fred2/ to find series identifiers.)
-
-\begin{Scode}
-  con <- TSconnect("getSymbol", dbname="FRED") 
-  x <- TSget("M2", con)
-  plot(x)
-\end{Scode}
-\begin{Scode}
-  require("tfplot")
-  tfplot(x)
-  TSrefperiod(x) 
-  TSdescription(x) 
-\end{Scode}
-
-It is also possible to specify a connection to be used as the default:
-
-\begin{Scode}
-  options(TSconnection=con)
-  tfOnePlot(percentChange(TSget(serIDs="M2"), lag=52), 
-    Title = "Running commentary, blah, blah, blah", 
-    subtitle="Broad Money (M2)",
-    ylab= "y/y percent change*",
-    source="Source: Federal Reserve Bank of St.Louis (M2)",
-    footnoteLeft = "seasonally adjusted data",
-    footnoteRight = "* approximated by 52 week growth",
-    lastObs = TRUE )
-\end{Scode}
-
-It is also possible to return multiple series, but beware that the FRED 
-series called M2 is a weekly series, whereas CPIAUCNS is monthly. Binding
-together series of different frequency may fail, or produce strange results.
-
-\begin{Scode}
-  x <- TSget(c("CPIAUCNS","M2SL"), con)
-  tfplot(x, 
-    Title = "Running commentary, blah, blah, blah", 
-    subtitle=c("Consumer Price Index for All Urban Consumers: All Items", "Broad Money"),
-    ylab= c("Index 1982-84=100", "Billions of dollars"),
-    source= c("Data Source: Federal Reserve Bank of St.Louis (CPIAUCNS)",
-              "Data Source: Federal Reserve Bank of St.Louis (M2SL)"),
-    footnoteLeft  = c("not seasonally adjusted",  "seasonally adjusted"),
-    footnoteRight = paste("Extracted:", date()),
-    lastObs = TRUE )
-  TSdescription(x) 
-\end{Scode}
-
-
-\begin{Scode}{results=verbatim,fig=FALSE}
-  TSdates(c("CPIAUCNS","M2SL"), con) # note default start
-\end{Scode}
-
-The folowing connects to yahoo and loads Ford. 
-This is a multivariate time series with open, close, etc.
-Set \code{par(ask=TRUE)} here if you want to stop and prompt for <Return>
-between pages in the graphics output.
-
-\begin{Scode}
-  yahoo <- TSconnect("getSymbol", dbname="yahoo") 
-  x <- TSget("F", con=yahoo)
-  plot(x)
-\end{Scode}
-
-\begin{Scode}
-  tfplot(x, graphs.per.page=3)
-\end{Scode}
-
-See the \pkg{TSdbi} vignette for additional details.
+The package \pkg{TSgetSymbol} provides methods for generics in the package 
+\pkg{TSdbi}. A complete vignette, illustrating the general functionality of all
+\pkg{TSdbi} extension packages is provided in the vignette 
+with package \pkg{TSdata}. 
+Installing that package requires that most of the \pkg{TS*}
+packages are available, which will not be necessary for most users, so it may
+be easier to get the pdf version of the vignette from CRAN at 
+\url{http://cran.r-project.org/web/packages/TSdata/index.html}.
 \end{document}

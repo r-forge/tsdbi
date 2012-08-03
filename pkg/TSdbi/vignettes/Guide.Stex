@@ -15,15 +15,25 @@ library("TSdbi")
 \end{Scode}
 
 The TSdbi package provides the common parts of an interface to time series
-databases. To use this package it is necessary to also have one of the database
-specific packages, such as  TShistQuote, TSMySQL, TSSQLite, TSPostgreSQL, 
+databases. To use this package it is necessary to also have one of the 
+extension packages, such as  TShistQuote, TSMySQL, TSSQLite, TSPostgreSQL, 
 TSodbc, TSfame, or TSpadi. 
-More extensive vignette examples, which will be interesting from a
-user's perspective,  are provided in each of those packages. 
-(The vignettes are
-similar, but do not build without one of the database specific packages.) The
-documentation below is intended for an administrator who needs to set up
-an SQL version of the database.
+
+A complete vignette, illustrating the general functionality of all
+\pkg{TSdbi} extension packages is provided in the vignette 
+with package \pkg{TSdata}. 
+Installing that package requires that most of the \pkg{TS*}
+packages are available, which will not be necessary for most users, so it may
+be easier to get the pdf version of the vignette from CRAN at 
+\url{http://cran.r-project.org/web/packages/TSdata/index.html}.
+
+\section{SQL setup}
+
+The documentation below is intended for an administrator who needs to set up
+an SQL version of the database. For many users this will not be necessary,
+as extensions other than the SQL ones will not require this setup (and the SQL
+ones setup a test database automatically).
+
 
 The \textsl{TSdbi} interface works with some databases that are not SQL, 
 but for SQL databases the instructions below, and the examples in the database
