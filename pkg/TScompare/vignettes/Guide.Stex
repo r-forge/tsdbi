@@ -1,7 +1,7 @@
 \documentclass[english]{article}
 \newcommand{\code}{\emph}
 \newcommand{\pkg}{\textsl}
-\title{Utilities to Compare Time Series on Different Databases (for equality)}
+\title{Time Series Database Interface: TScompare Extensions}
 \begin{document}
 \maketitle
 %\VignetteIndexEntry{TScompare Guide}
@@ -12,116 +12,12 @@
 \end{Scode}
 
 \section{Introduction}
-The code from the vignette that generates this guide can 
-be loaded into an editor with \emph{edit(vignette("TScompare"))}.
-This uses the default editor, which can be changed using \emph{options()}.
-It should be possible to view the pdf version of the guide for this 
-package with \emph{print(vignette("TScompare"))}.
-
-Once R is started, the functions in this package are made available with
-
-\begin{Scode}
-library("TScompare")  
-\end{Scode}
-This will also load required packages \pkg{TSdbi}, \pkg{DBI}, 
-\pkg{methods}, \pkg{tframePlus}, \pkg{zoo}, and \pkg{tseries}.
-
-The main purpose of this package is to compare pairs of series on two database.
-These sereis might have the same name, but for generality the main function, \code{TScompare}, is set up to use name pairs. The pairs to compare are indicated by a matrix of strings with two columns. Alternately, it would be possible to compare pairs on the same database but, other than for testing or demonstration purposes, this would not make sense unless the names are different. 
-
-The connections are established using other TSdbi packages such as TSMySQL, TSpadi, etc. It will be necessary to establish two database connections, so it will also be necessary to load the database specific packages. In this vignette, examples will use \pkg{TShistQuote},  \pkg{TSMySQL} and \pkg{TSSQLite}. 
-
-\begin{Scode}
-library("TShistQuote")  
-library("TSMySQL")  
-library("TSSQLite")  
-\end{Scode}
-
-
-\subsection{Examples using constructed database}
-
-To provide simple examples, \pkg{TShistQuote} is used to extract some series from the web and save them on local databases. First local MySQL andSQLite test databases are created. The next small section of code determines the username and password, or sets them to an empty string if they are to be taken from a configuration file, and sets up the databases. See the vignettes for \pkg{TSMySQL} and \pkg{TSSQLite} for more details and other options to set the username and password.  
-
-\begin{Scode}{results=hide}
-  user    <- Sys.getenv("MYSQL_USER")
-  if ("" != user) {
-      host    <- Sys.getenv("MYSQL_HOST")
-      if ("" == host)	  host <- Sys.info()["nodename"] 
-      passwd  <- Sys.getenv("MYSQL_PASSWD")
-      if ("" == passwd)   passwd <- NULL
-     }
-  con <-  if ("" == user) dbConnect("MySQL", dbname="test") else
-    dbConnect("MySQL", dbname="test", username=user, password=passwd, host=host)
-
-  source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
-  dbDisconnect(con)
-\end{Scode}
-
-\begin{Scode}{results=hide}
-con <- dbConnect("SQLite", dbname="test") 
-source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
-dbDisconnect(con)
-\end{Scode}
-
-Now a TS connection to the database is established.
-
-\begin{Scode}{results=hide}
-  con1 <-  if ("" == user) TSconnect("MySQL", dbname="test") else
-    TSconnect("MySQL", dbname="test", username=user, password=passwd, host=host)
-
-  con2 <- TSconnect("SQLite", dbname="test") 
-\end{Scode} 
-
-Next a connection to yahoo is used to get some series and write them to the local test database. (See the vignette for \pkg{TShistQuote} for more examples of reading series from the web.) \code{TSreplace} is used because \code{TSput} will fail if the series already exisits.
-
-\begin{Scode}{results=verbatim}
-  yahoo <- TSconnect("histQuote", dbname="yahoo") 
-  x <- TSget("^ftse", yahoo)
-  TSreplace(x, serIDs="ftse", Table="B", con=con1)
-  TSreplace(x, serIDs="ftse", Table="B", con=con2)
-
-  x <- TSget("^gspc", yahoo)
-  TSreplace(x,  serIDs="gspc", Table="B", con=con1)
-  TSreplace(x,  serIDs="gspc", Table="B", con=con2)
-
-  x <- TSget("ibm", con=yahoo, quote = c("Close", "Vol"))
-  TSreplace(x, serIDs=c("ibmClose", "ibmVol"), Table="B", con=con1)
-  TSreplace(x, serIDs=c("ibmC",     "ibmV"),   Table="B", con=con2)
-\end{Scode}
-
-Now to do a comparison
-
-\begin{Scode}{results=verbatim}
-  ids <- AllIds(con1)
-  print(ids)
-\end{Scode}
-
-If the second database has the same names then ids can be made into a 
-matrix with identical columns. 
-
-\begin{Scode}{results=verbatim}
-  ids <- cbind(ids, ids)
-
-  eq   <- TScompare(ids, con1, con2, na.rm=FALSE)
-  print(summary(eq))
-
-  eqrm <- TScompare(ids, con1, con2, na.rm=TRUE)
-  print(summary(eqrm))
-\end{Scode}
-
-Since names are not identical the above indicates discrepancies, which 
-are resolves by indicating the corresponding name pairs.
-
-\begin{Scode}{results=verbatim}
-  ids <- matrix(c("ftse","gspc","ibmClose", "ibmVol",
-                  "ftse","gspc","ibmC", "ibmV"),4,2)
-
-  ids
-  eq   <- TScompare(ids, con1, con2, na.rm=FALSE)
-  print(summary(eq))
-
-  eqrm <- TScompare(ids, con1, con2, na.rm=TRUE)
-  print(summary(eqrm))
-\end{Scode}
-
+The package \pkg{TScompare} provides methods for generics in the package 
+\pkg{TSdbi}. A complete vignette, illustrating the general functionality of all
+\pkg{TSdbi} extension packages is provided in the vignette 
+with package \pkg{TSdata}. 
+Installing that package requires that most of the \pkg{TS*}
+packages are available, which will not be necessary for most users, so it may
+be easier to get the pdf version of the vignette from CRAN at 
+\url{http://cran.r-project.org/web/packages/TSdata/index.html}.
 \end{document}
