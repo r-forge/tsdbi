@@ -3,10 +3,11 @@
 \usepackage{natbib}
 \newcommand{\code}{\emph}
 \newcommand{\pkg}{\textsl}
-\title{Time Series Database Interface Illustrations}
+\newcommand{\proglang}{\textsl}
+\title{Time Series Database Interface (TSdbi) Illustrations}
 \begin{document}
 \maketitle
-%\VignetteIndexEntry{TSdata Guide}
+%\VignetteIndexEntry{Guide: TSdbi Interface Illustrations}
 \SweaveOpts{eval=TRUE,echo=TRUE,results=hide,fig=FALSE}
 %\SweaveOpts{eval=TRUE,echo=TRUE,results=verbatim,fig=TRUE}
 \begin{Scode}{echo=FALSE,results=hide}
@@ -19,7 +20,8 @@ NEEDS LOT OF CLEANUP
 \section{Introduction}
 \label{sec:Intro}
 %%
-This vignette illustrates the various R \citep{R} \pkg{TSdbi} packages using time series 
+This vignette illustrates the various \proglang{R} \citep{R} \pkg{TSdbi} 
+packages using time series 
 data from several sources. The main purpose of \pkg{TSdbi} is to provide a
 common \emph{API}, so simplicity of changing the data source is a primary
 feature. 
