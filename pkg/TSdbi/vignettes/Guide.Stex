@@ -1,5 +1,8 @@
 \documentclass[english]{article}
+\usepackage{url}
+\title{Time Series Database Interface (TSdbi)}
 \begin{document}
+\maketitle
 
 %\VignetteIndexEntry{TSdbi Guide}
 \SweaveOpts{eval=TRUE,echo=TRUE,results=hide,fig=FALSE}

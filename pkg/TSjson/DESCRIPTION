@@ -10,7 +10,7 @@ Description: Provides methods for generics in the TSdbi package to
 Depends: R (>= 2.14.0), methods, DBI, TSdbi (>= 2011.11-1), tframe (>= 2011.11-1), tframePlus, zoo, RCurl, RJSONIO
 Suggests: tfplot
 Enhances: TSdbi
-BuildVignettes: false
+BuildVignettes: true
 License: GPL-2
 Author: Paul Gilbert <pgilbert.ttv9z@ncf.ca>
 Maintainer: Paul Gilbert <pgilbert.ttv9z@ncf.ca>

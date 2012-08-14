@@ -6,7 +6,7 @@ Description: Provides methods for generics in the TSdbi package to
 Depends: R (>= 2.8.0), methods, DBI, TSdbi (>= 2011.11-1), RCurl, XML, tframe, tframePlus
 Enhances: TSdbi
 Suggests: tfplot
-BuildVignettes: false
+BuildVignettes: true
 License: GPL-2
 Copyright: 2007-2011 Bank of Canada.  2012 Paul Gilbert.
 Author: Paul Gilbert <pgilbert.ttv9z@ncf.ca>

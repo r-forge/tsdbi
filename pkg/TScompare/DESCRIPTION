@@ -4,7 +4,7 @@ Title:  TSdbi Comparison
 Description: Utilities for comparing the equality of series on two databases.
 Depends: R (>= 2.10.0), methods, DBI, TSdbi (>= 2011.11-1), tframe, tfplot, tframePlus, zoo
 Enhances: TSMySQL, TSSQLite, TSPostgreSQL, TSodbc, TSfame, TSpadi, TShistQuote, TSgetSymbol
-BuildVignettes: false
+BuildVignettes: true
 License: GPL-2
 Copyright: 2007-2011 Bank of Canada.  2012 Paul Gilbert.
 Author: Paul Gilbert <pgilbert.ttv9z@ncf.ca>
