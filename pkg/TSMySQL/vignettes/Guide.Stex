@@ -1,10 +1,11 @@
+\documentclass[english]{article}
+\usepackage{url}
 \newcommand{\pkg}{\textsl}
 \title{Time Series Database Interface: TSMySQL Extensions}
 \begin{document}
 \maketitle
 %\VignetteIndexEntry{TSMySQL Guide}
 
-\section{Introduction}
 The package \pkg{TSMySQL} provides methods for generics in the package 
 \pkg{TSdbi}. A complete vignette, illustrating the general functionality of all
 \pkg{TSdbi} extension packages is provided in the vignette 
@@ -14,7 +15,7 @@ packages are available, which will not be necessary for most users, so it may
 be easier to get the pdf version of the vignette from CRAN at 
 \url{http://cran.r-project.org/web/packages/TSdata/index.html}.
 
-The MySQL  user, password, and hostname should be set in MySQL client
+The MySQL  user, password, and hostname should be set in the MySQL client
 configuration file
 (.my.cnf) before starting R. Alternatively, this information can be set with
 environment variables  MYSQL\_USER, MYSQL\_PASSWD and MYSQL\_HOST.

@@ -1,4 +1,5 @@
 \documentclass[english]{article}
+\usepackage{url}
 \newcommand{\code}{\emph}
 \newcommand{\pkg}{\textsl}
 \title{Time Series Database Interface: TSzip Extensions}

@@ -16,7 +16,7 @@ Description: TSdbi provides a common interface to time series databases. The
 Depends: R (>= 2.8.0), methods, tframe (>= 2008.5-1)
 Imports: methods, DBI
 Suggests: zoo, tseries, tis, tfplot, tframePlus
-BuildVignettes: false
+BuildVignettes: true
 License: GPL-2
 Copyright: 2007-2011 Bank of Canada.  2012 Paul Gilbert.
 Author: Paul Gilbert <pgilbert.ttv9z@ncf.ca>
