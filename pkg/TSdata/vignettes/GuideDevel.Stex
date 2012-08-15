@@ -5,12 +5,14 @@
 \begin{document}
 \maketitle
 %\VignetteIndexEntry{TSdata Guide}
-\SweaveOpts{eval=TRUE,echo=TRUE,results=hide,fig=FALSE}
+\SweaveOpts{eval=FALSE,echo=TRUE,results=hide,fig=FALSE}
 %\SweaveOpts{eval=TRUE,echo=TRUE,results=verbatim,fig=TRUE}
 \begin{Scode}{echo=FALSE,results=hide}
  options(continue="  ")
 \end{Scode}
 
+This vignette has sketches of packages in development. These do not work and the
+example code is not run!
 
 \section{TSjson (with Statistics Canada)}
 
@@ -29,15 +31,6 @@ con <- TSconnect("json", dbname="statcan")
 # quarterly
 x <- TSget("v498086", con)
 tfplot(x)
-\end{Scode}
-
-\section{Examples Using Web Data}
-
-\begin{Scode}
-
- con <-  if ("" == user) TSconnect("Oracle", dbname="test") else
-    TSconnect("Oracle", dbname="test", username=user, password=passwd, host=host)
-
 \end{Scode}
 
 \end{document}

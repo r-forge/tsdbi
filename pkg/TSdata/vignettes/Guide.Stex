@@ -16,6 +16,8 @@
 
 
 NEEDS LOT OF CLEANUP
+ADD EXAMPLES FROM CHICAGO
+ADD VINTAGES
 %%
 \section{Introduction}
 \label{sec:Intro}
@@ -26,7 +28,7 @@ data from several sources. The main purpose of \pkg{TSdbi} is to provide a
 common \emph{API}, so simplicity of changing the data source is a primary
 feature. 
 The vignette also illustrates some simple time series
-manipulation and plotting using packages tframe and tfplot.
+manipulation and plotting using packages \pkg{tframe} and \pkg{tfplot}.
 
 To generate this vignette requires most of the \pkg{TS*} packages, but typically
 users will only need one, or a few of these packages. For example, a time series
@@ -35,8 +37,8 @@ On the other hand, several packages can be used to pull data from
 various Internet sources, so a user might use several of these.
 
 It should be possible to view the pdf version of this guide for this 
-package with \emph{print(vignette("TSdata"))}, or get the pdf file
-directly from CRAN at 
+package with \emph{print(vignette("Guide", package="TSdata"))}, or get 
+the pdf file directly from CRAN at 
 \url{\http://cran.at.r-project.org/web/packages/TSdata/index.html} 
 Many parts
 of the vignette can be run by loading the appropriate packages, but some
@@ -66,10 +68,11 @@ These packages get data and also support writing data to the database.
 See Section \ref{appdx:B} and the vignette in package \pkg{TSdbi} for more explanation 
 of the underlying database tables, and for bulk loading of
 data into a database.
-
-Section \ref{sec:MoreExamples} illustrates fetching data from the web and 
+The section illustrates writing artificial data to the database, and also
+fetching data from the web and 
 loading it into a local database. It also provides more examples of \pkg{TSdbi}
 functionality and of using and graphing series.
+
 Section \ref{sec:etsExamples} provides more examples using a more extensively
 populated database that has been previously constructed.
 
@@ -121,7 +124,7 @@ changes will be needed if the names of the variables change.)
 \subsection{\pkg{TShistQuote} and \pkg{TSgetSymbol}}
 %%
 Packages \pkg{TShistQuote} and \pkg{TSgetSymbol}  provide mechanisms to retrieve
-historical quote data from various sources 
+historical quote data from various sources. 
 \pkg{TShistQuote} is a wrapper to \code{get.hist.quote} in package
 \pkg{tseries} \citep{tseries}. A connection to Yahoo Finance is established, and data 
 retrieved and plotted by
@@ -135,7 +138,7 @@ retrieved and plotted by
 \end{Scode}
 
 Package \pkg{TSgetSymbol} is a wrapper to \code{getSymbols} in package
-\pkg{quantmod}\citep{quantmod}. A similar connection is established by
+\pkg{quantmod} \citep{quantmod}. A similar connection is established by
 
 \begin{Scode}{results=verbatim,fig=TRUE}
   library("TSgetSymbol")  
@@ -160,11 +163,15 @@ and can be extracted with these utilities:
 \end{Scode}
 
 Most of the plots in this vignette will be done with the utilities in the 
-\pkg{tfplot} package, but the usual \pkg{plot} function produces slightly
+\pkg{tfplot} package, but the usual \code{plot} function produces slightly
 different results that may be preferable in some situations:
 \begin{Scode}{results=verbatim,fig=TRUE}
   plot(z)
 \end{Scode}
+
+Also, for some time series objects, the plot method has be much improved from
+the default, so if you are using these objects you may find that \code{plot} 
+provides attractive features. 
 
 \subsection{\pkg{TSgetSymbol} with FRED}
 
@@ -351,9 +358,9 @@ with the company.)
   z <- TSget("INDU", pitr)
   tfplot(z, graphs.per.page=3)
 \end{Scode}
-
+The following illustrates returning an \code{xts} \citep{xts} time series object.
 \begin{Scode}{results=verbatim,fig=TRUE}
-  z <- TSget(c("EURUSD", "GBPUSD"), pitr)
+  z <- TSget(c("EURUSD", "GBPUSD"), pitr, TSrepresentation=xts)
   tfplot(z, graphs.per.page=3)
 \end{Scode}
 
@@ -395,6 +402,7 @@ use underlying packages \pkg{RPostgreSQL} \citep{RPostgreSQL},
 structure which is set up to store time series data. 
 
 The next lines of code do some preliminary setup of the database.
+
 WARNING: running this will overwrite the ``test'' database on your server.
 
 \begin{Scode}
@@ -403,14 +411,17 @@ WARNING: running this will overwrite the ``test'' database on your server.
  source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
  dbDisconnect(con)
 \end{Scode}
+%%
+%%
+\subsection{Writing to SQL Databases}
+%%
+This subsection illustrates writing some simple artifical data to a database,
+and reading it back.
+This part of the vignette is generated using \pkg{TSMySQL}, but other backend SQL
+servers work in a similar way. See Appendix ``A'' for details of establishing
+other SQL database connections.
 
-The follow subsection illustrates
-the use of the \pkg{TSdbi} interface, which is common to all underlying
-packages,
-%%
-%%
-\subsection{Using Data from a TSdbi SQL database}
-%%
+
 The first thing to do is to establish a \code{TSdbi} connection to the database:
 
 \begin{Scode}{results=hide}
@@ -420,7 +431,10 @@ The first thing to do is to establish a \code{TSdbi} connection to the database:
 
 \code{TSconnect} uses \code{dbConnect} from the \pkg{DBI} package, but checks that the
 database has expected tables, and checks for additional features. (It cannot
-be used before the tables are created, as done in the previous section.)
+be used before the tables are created, as was done above.)
+
+The follow illustrates the use of the \pkg{TSdbi} interface, which is 
+common to all extension packages.
 
 This puts a series called \code{vec}  on the database and then reads is back
  
@@ -431,38 +445,21 @@ This puts a series called \code{vec}  on the database and then reads is back
  TSput( z, con)
  z <- TSget("vec", con)
 \end{Scode}
-If the series is printed it is seen to be a "ts" time series with some extra
+Note that the series name(s) and not the \proglang{R} variable name 
+(in this case, \code{vec} not \code{z}) are used on the database. 
+If the retrieved series is printed it is seen to be a ``ts'' time series with some extra
 attributes.
 
 \code{TSput} fails if the series already exists on the \code{con}, 
 so the above example checks and deletes the series if it already exists. 
 \code{TSreplace} does not fail if the series does
 not yet exist, so examples below use it instead. Several plots below show
-original data and the data retrieved after it is written to the database. One is
+original data and the data retrieved after it is written to the database. 
+Below in the plot, one is
 added to the original data so that both lines are visible.
 
-And now more examples:
-
-\begin{Scode}{results=verbatim,fig=TRUE}
- z <- ts(matrix(rnorm(20),10,2), start=c(1990,1), frequency=1)
- seriesNames(z) <- c("matc1", "matc2")
- TSreplace(z, con)
- TSget("matc1", con)
- TSget("matc2", con)
- TSget(c("matc1","matc2"), con)
- require("tfplot")
- tfplot(z+1, TSget(c("matc1","matc2"), con), 
-          lty=c("solid", "dashed"), col=c("black", "red"))
-\end{Scode}
-
-\begin{Scode}{results=verbatim,fig=TRUE}
- z <- ts(matrix(rnorm(20),10,2), start=c(1990,1), frequency=4)
-  seriesNames(z) <- c("matc1", "matc2")
- TSreplace(z, con)
- TSget(c("matc1","matc2"), con)
- tfplot(z+1, TSget(c("matc1","matc2"), con),
-          lty=c("solid", "dashed"), col=c("black", "red"))
-\end{Scode}
+The \proglang{R} variable can contain multiple series of the same frequency. 
+They are stored separately on the database.
 
 \begin{Scode}{results=verbatim,fig=TRUE}
  z <- ts(matrix(rnorm(200),100,2), start=c(1995,1), frequency=12)
@@ -481,19 +478,7 @@ not much information has been added for these examples.
  TSdescription("vec", con)
  TSdoc("vec", con)
 \end{Scode}
-Below are examples that make more use of \code{TSdescription} and code{TSdoc}.
-
-Often it is convenient to set the default connection:
-\begin{Scode}
- options(TSconnection=con)
-\end{Scode}
-and then the \code{con} specification can be omitted from the function calls
-unless another connection is needed. The \code{con} can still be specified, and
-some examples below do specify it, just to illustrate the alternative syntax.
-\begin{Scode}{results=verbatim}
- z <- TSget("mat2c1") 
- TSmeta("mat2c1")
-\end{Scode}
+Below are examples that make more use of \code{TSdescription} and \code{TSdoc}.
 
 Data documentation can be in two forms, a description specified by 
 \code{TSdescription}
@@ -507,7 +492,7 @@ with \code{TSget} only if this is specified with the logical arguments
 \code{TSdescription} and \code{TSdoc}. They can also be retrieved directly from the
 database with the functions \code{TSdescription} and \code{TSdoc}.
 
-\begin{Scode}{results=verbatim,fig=TRUE}
+\begin{Scode}{results=verbatim}
  z <- ts(matrix(rnorm(10),10,1), start=c(1990,1), frequency=1)
  TSreplace(z, serIDs="Series1", con) 
  zz <- TSget("Series1", con)
@@ -522,42 +507,16 @@ database with the functions \code{TSdescription} and \code{TSdoc}.
 
  TSdescription("Series1", con)
  TSdoc("Series1", con)
-
- z <- ts(rnorm(10), start=c(1990,1), frequency=1)
- seriesNames(z) <- "vec"
- TSreplace(z, con)
- zz <- TSget("vec", con)
-
- z <- ts(matrix(rnorm(20),10,2), start=c(1990,1), frequency=1)
- seriesNames(z) <- c("matc1", "matc2")
- TSreplace(z, con) 
- tfplot(z+1, TSget(c("matc1","matc2"), con),
-           lty=c("solid", "dashed"), col=c("black", "red"))
-
-\end{Scode}
-
-\begin{Scode}{results=verbatim,fig=TRUE}
- z <- ts(matrix(rnorm(20),10,2), start=c(1990,1), frequency=4)
- seriesNames(z) <- c("matc1", "matc2")
- TSreplace(z, con)
- tfplot(z+1, TSget(c("matc1","matc2"), con),
-           lty=c("solid", "dashed"), col=c("black", "red"))
-
-\end{Scode}
-
-\begin{Scode}{results=verbatim,fig=TRUE}
- z <- ts(matrix(rnorm(200),100,2), start=c(1995,1), frequency=12)
- seriesNames(z) <- c("mat2c1", "mat2c2")
- TSreplace(z, con) 
- tfplot(z+1, TSget(c("mat2c1","mat2c2"), con),
-           lty=c("solid", "dashed"), col=c("black", "red"))
 \end{Scode}
 
 The following examples use dates and times which are not handled by \code{ts},
-so the \pkg{zoo} time representation is used.
+so the \pkg{zoo} time representation is used. It is necessary to specify the
+table where the data should be stored in cases where it is difficult to
+determine the periodicity of the data. See Appendix ``B'' for details of the
+specific tables.
 
 \begin{Scode}{results=verbatim,fig=TRUE}
-require("zoo") 
+ require("zoo") 
 
  z <- zoo(matrix(rnorm(200),100,2), as.Date("1990-01-01") + 0:99)
   seriesNames(z) <- c("zooc1", "zooc2")
@@ -580,8 +539,7 @@ require("zoo")
  #dbUnloadDriver(m)
 \end{Scode}
 %%
-\section{Examples Using SQL Time series Databases}
-\label{sec:MoreExamples}
+\subsection{Examples Using SQL Databases}
 %%
 This section illustrates fetching data from the web  and loading it into the
 database. This would be a very slow way to load a database, but provides
@@ -590,7 +548,7 @@ examples of different kinds of time series data. The fetching is done with
 Fetching data can fail due to lack of an Internet connection or delays, which
 will cause the generation of this vignette to fail. 
 
-The vignette is generated using \pkg{TSPostgreSQL}, but other backend SQL
+This part of the vignette is generated using \pkg{TSPostgreSQL}, but other backend SQL
 servers work in a similar way. See Appendix ``A'' for details of establishing
 other SQL database connections.
 
@@ -605,8 +563,8 @@ Now connect to the web server and fetch data:
 
 \begin{Scode}{results=verbatim}
   require("TShistQuote")
-  Yahoo <- TSconnect("histQuote", dbname="yahoo") 
-  x <- TSget("^gspc", quote = "Close", con=Yahoo)
+  yahoo <- TSconnect("histQuote", dbname="yahoo") 
+  x <- TSget("^gspc", quote = "Close", con=yahoo)
 \end{Scode}
 
 Then write the data to the local server, specifying table B for business day 
@@ -628,7 +586,7 @@ and check the saved version:
 \end{Scode}
 
 \begin{Scode}{results=verbatim,fig=TRUE}
-   x <- TSget("ibm", quote = c("Close", "Vol"), con=Yahoo)
+   x <- TSget("ibm", quote = c("Close", "Vol"), con=yahoo)
    TSreplace(x, serIDs=c("ibm.Cl", "ibm.Vol"),  con=con, Table="B",
               TSdescription.=c("IBM Close","IBM  Volume"),
 	      TSdoc.= paste(c(
@@ -642,72 +600,8 @@ and check the saved version:
    tfplot(z, xlab = TSdoc(z), Title = TSdescription(z))
    tfplot(z, Title="IBM", start="2007-01-01")
 \end{Scode}
-
-Oanda has maximum of 500 days, so the start date is specified here so as to
-not exceed that.
-
-\begin{Scode}{results=verbatim}
-   Oanda <- TSconnect("histQuote", dbname="oanda") 
-   x <- TSget("EUR/USD", start=Sys.Date() - 495, con=Oanda)
-   TSreplace(x, serIDs="EUR/USD", Table="D", con=con)
-\end{Scode}
-
-Then check the saved version:
-
-\begin{Scode}{results=verbatim,fig=TRUE}
-   z <- TSget(serIDs="EUR/USD",TSlabel=TRUE, TSdescription=TRUE,  con=con)
-   tfplot(z, Title = TSdescription(z), ylab=TSlabel(z))
-#   tfplot(z, Title = "EUR/USD", start="2007-01-01")
-#   tfplot(z, Title = "EUR/USD", start="2007-03-01")
-#   tfplot(z, Title = "EUR/USD", start=Sys.Date()-14, end=Sys.Date(),
-#      xlab = format(Sys.Date(), "%Y"))
-# ODBC:
-#   tfplot(z, Title = "EUR/USD", start=Sys.Date() - 495)
-#   tfplot(z, Title = "EUR/USD", start=Sys.Date() - 100)
-#   tfplot(z, Title = "EUR/USD", start=Sys.Date()  -14, end=Sys.Date(),
-#      xlab = format(Sys.Date(), "%Y"))
-\end{Scode}
-
-\begin{Scode}{results=hide}
-  dbDisconnect(con)
-  dbDisconnect(Yahoo)
-  dbDisconnect(Oanda)
-\end{Scode}
 %%
-\section{Examples Using TSdbi with ets}
-\label{sec:etsExamples}
-%%
-\begin{Scode}{results=verbatim,fig=TRUE}
-  con <- TSconnect("histQuote", dbname="yahoo") 
-  x <- TSget("^ftse", con)
-  plot(x)
-\end{Scode}
-
-\begin{Scode}{results=verbatim,fig=TRUE}
-  require("tfplot")
-  tfplot(x)
-  TSrefperiod(x) 
-  TSdescription(x) 
-\end{Scode}
-
-It is also possible to specify a connection to be used as the default:
-
-\begin{Scode}{results=verbatim,fig=TRUE}
-  options(TSconnection=con)
-  tfplot(TSget(serIDs="^ftse"))
-\end{Scode}
-
-\begin{Scode}{results=verbatim,fig=TRUE}
-  x2 <- TSget("^gspc", con)
-  tfplot(x2)
-\end{Scode}
-
-\begin{Scode}{results=verbatim,fig=TRUE}
-  plot(x2)
-  TSdescription(x2) 
-\end{Scode}
-
-%% this is causing problems because arounf July 2012 Yahoo began frequently
+%% this is causing problems because around July 2012 Yahoo began frequently
 %% having dupicate data on the final day (seems to be partial data for the 
 %% next day?), which causes zoo the complain. Hopefully Yahoo bug will be fixed.
 %%\begin{Scode}{results=verbatim,fig=TRUE}
@@ -737,45 +631,38 @@ It is also possible to specify a connection to be used as the default:
 %%  tfplot(x, Title=TSdoc(x), xlab = TSlabel(x), start="2007-01-01")
 %%\end{Scode}
 
+
 Oanda has maximum of 500 days, so the start date is specified here so as to
 not exceed that.
 
-\begin{Scode}{results=verbatim,fig=TRUE}
-  conO <- TSconnect("histQuote", dbname="oanda") 
-  z <- TSget("EUR/USD", conO, start=Sys.Date() - 495)
-  tfplot(z)
+\begin{Scode}{results=verbatim}
+   Oanda <- TSconnect("histQuote", dbname="oanda") 
+   x <- TSget("EUR/USD", start=Sys.Date() - 495, con=Oanda)
+   TSreplace(x, serIDs="EUR/USD", Table="D", con=con)
 \end{Scode}
 
-\begin{Scode}{results=verbatim,fig=TRUE}
-  tfplot(z, Title = "EUR/USD")
-\end{Scode}
+Then check the saved version:
 
 \begin{Scode}{results=verbatim,fig=TRUE}
-  tfplot(z, Title = "EUR/USD", start="2007-01-01")
+   z <- TSget(serIDs="EUR/USD",TSlabel=TRUE, TSdescription=TRUE,  con=con)
+   tfplot(z, Title = TSdescription(z), ylab=TSlabel(z), start="2007-03-01")
 \end{Scode}
 
-\begin{Scode}{results=verbatim,fig=TRUE}
-  tfplot(z, Title = "EUR/USD", start="2007-03-01")
-\end{Scode}
-
-\begin{Scode}{results=verbatim,fig=TRUE}
-  tfplot(z, Title = "EUR/USD", start=Sys.Date()-14, end=Sys.Date(),
-     xlab = format(Sys.Date(), "%Y"))
-  TSdates(c("^ftse","^gspc", "ibm"), con) # note default start
-\end{Scode}
-\begin{Scode}
-  detach(package:TSPostgreSQL)
-  detach(package:RPostgreSQL)
+\begin{Scode}{results=hide}
+  dbDisconnect(con)
+  dbDisconnect(yahoo)
+  dbDisconnect(Oanda)
 \end{Scode}
 %%
 %%
-\subsection{More Examples Using TSdbi}
+\section{More Extensive Examples}
+\label{sec:etsExamples}
 %%
-These examples use a database which has been called "ets". It has already been
+These examples use a database which has been called ``ets''. It has already been
 populated with several series from various sources, so
 this set of examples illustrates how the programs might be used with a large
 ``inhouse'' database. Typically a large database would be installed using
-database scripts directly rather than from R with \code{TSput} or
+database scripts directly rather than from \proglang{R} with \code{TSput} or
 \code{TSreplace}. 
 
 The following uses \pkg{TSMySQL} but, other than the initial connection,
@@ -788,7 +675,7 @@ regarding the details of other connections.)
   
   options(TSconnection=ets)
 
-  print(TSmeta(TSget("M.SDR.CCUSMA02.ST")))
+  TSmeta(TSget("M.SDR.CCUSMA02.ST"))
 
   EXCH.IDs <- t(matrix(c(
  	"M.SDR.CCUSMA02.ST",	 "SDR/USD exchange rate",
@@ -801,20 +688,17 @@ regarding the details of other connections.)
  	"M.E15.CCUSMA02.ST",	 "Euro 15. /USD exchange rate"
 	), 2, 8))
 
-  print(TSdates(EXCH.IDs[,1]))
+  TSdates(EXCH.IDs[,1])
   z <- TSdates(EXCH.IDs[,1])
-  print(start(z))
-  print(end(z))
-   
   tfplot(TSget(serIDs="V122646", ets))
 \end{Scode}
 
 \begin{Scode}{results=verbatim,fig=TRUE}
-  print(TSdescription(TSget("V122646", TSdescription=TRUE)))
-  print(TSdescription("V122646"))
+  TSdescription(TSget("V122646", TSdescription=TRUE))
+  TSdescription("V122646")
 
-  print(TSdoc(TSget("V122646", TSdoc=TRUE)))
-  print(TSdoc("V122646"))
+  TSdoc(TSget("V122646", TSdoc=TRUE))
+  TSdoc("V122646")
 
   tfplot(TSget("V122646", names="V122646", ets))
 \end{Scode}
@@ -858,15 +742,7 @@ regarding the details of other connections.)
 \section{Comparing Time Series Databases}
 \label{sec:Comparing}
 %%
-Once R is started, the functions in this package are made available with
-
-\begin{Scode}
-library("TScompare")  
-\end{Scode}
-This will also load required packages \pkg{TSdbi}, \pkg{DBI}, 
-\pkg{methods}, \pkg{tframePlus}, \pkg{zoo}, and \pkg{tseries}.
-
-The main purpose of this package is to compare pairs of series on two database.
+The purpose of package \pkg{TScompare} is to compare pairs of series on two database.
 These series might have the same name, but for generality the main function, 
 \code{TScompare}, is set up to use name pairs. The pairs to compare are 
 indicated by a matrix of strings with two columns. Alternately, it would be 
@@ -881,6 +757,7 @@ In this vignette, examples will use \pkg{TShistQuote},  \pkg{TSMySQL}
 and \pkg{TSSQLite}. 
 
 \begin{Scode}
+library("TScompare")  
 library("TShistQuote")  
 library("TSMySQL")  
 library("TSSQLite")  
@@ -905,7 +782,10 @@ Now TS connections to the databases are established.
   con2 <- TSconnect("SQLite", dbname="test") 
 \end{Scode} 
 
-Next a connection to yahoo is used to get some series and write them to the local test database. (See the vignette for \pkg{TShistQuote} for more examples of reading series from the web.) \code{TSreplace} is used because \code{TSput} will fail if the series already exisits.
+Next a connection to yahoo is used to get some series and write them to the 
+local test database. (See the vignette for \pkg{TShistQuote} for more examples 
+of reading series from the web.) \code{TSreplace} is used because \code{TSput} 
+will fail if the series already exisits.
 
 \begin{Scode}{results=verbatim}
   yahoo <- TSconnect("histQuote", dbname="yahoo") 
@@ -922,11 +802,11 @@ Next a connection to yahoo is used to get some series and write them to the loca
   TSreplace(x, serIDs=c("ibmC",     "ibmV"),   Table="B", con=con2)
 \end{Scode}
 
-Now to do a comparison
+Now to do a comparison:
 
 \begin{Scode}{results=verbatim}
   ids <- AllIds(con1)
-  print(ids)
+  ids
 \end{Scode}
 
 If the second database has the same names then ids can be made into a 
@@ -936,10 +816,10 @@ matrix with identical columns.
   ids <- cbind(ids, ids)
 
   eq   <- TScompare(ids, con1, con2, na.rm=FALSE)
-  print(summary(eq))
+  summary(eq)
 
   eqrm <- TScompare(ids, con1, con2, na.rm=TRUE)
-  print(summary(eqrm))
+  summary(eqrm)
 \end{Scode}
 
 Since names are not identical the above indicates discrepancies, which 
@@ -951,10 +831,10 @@ are resolves by indicating the corresponding name pairs.
 
   ids
   eq   <- TScompare(ids, con1, con2, na.rm=FALSE)
-  print(summary(eq))
+  summary(eq)
 
   eqrm <- TScompare(ids, con1, con2, na.rm=TRUE)
-  print(summary(eqrm))
+  summary(eqrm)
 \end{Scode}
 
 While it may not be necessary to \code{detach} packages, the following prevents
@@ -1003,28 +883,29 @@ the tables to exist already.
 WARNING: running these example will overwrite tables in the
 ``test'' database on the server.
 
+
 The database setup might typically be done by an administrator, rather than 
 by an end user. Here it is done using a small script \code{CreateTables.TSsql} 
 distributed with the \pkg{TSdbi} package. 
 A more detailed description of the
 instructions for building the database tables is given in the vignette 
 for the \pkg{TSdbi} package. Those instruction show how to build the database
-using database utilites rather than R, which might be the way a
+using database utilites rather than \proglang{R}, which might be the way a
 system administrator would build the database.
 
 In many cases there are two or more ways to pass information like the 
 \code{username}, \code{password}, and \code{server} or \code{host}. One
 mechanism is that this information is specified in a configuration file in the
 user's home directory. The database driver then reads this information and it is
-not part of the user's R session. 
+not part of the user's \proglang{R} session. 
 (Often this is considered the most secure way.) 
 Another way is that environment variables are set, and the database driver uses
 these. Again, this is not part of the user's R session.
 Still another way is that the user passes this information in the call to
-\code{TSconnect} in their R session. In this case the character strings are
+\code{TSconnect} in their \proglang{R} session. In this case the character strings are
 visible in the R session, and possibly recorded in the user's R scripts, thus
 this is typically not considered to be very secure. A modification, which is only
-a little bit better, is for the user's R scripts to read the information from
+a little bit better, is for the user's \proglang{R} scripts to read the information from
 environment variables using, for example:  
 \begin{Scode}
    user <- Sys.getenv("MYSQL_USER")
@@ -1380,6 +1261,42 @@ instructions for building the database tables is given in the vignette
 for the \pkg{TSdbi} package. Those instruction show how to build the database
 using database utilites rather than R, which might be the way a
 system administrator would build the database.
+
+The database tables are shown in the Table below.
+The \textsl{Meta} table is used for storing meta data about series, such as a
+description and longer documentation, and also
+includes an indication of what table the series data is stored in. To retrieve
+series it is not necessary to know which table the series is in, since this can
+be found on the \textsl{Meta} table. Putting data on the database may require 
+specifying the table, 
+if it cannot be determined from the R representation of the series.
+
+\begin{table}
+\caption{Data Tables}
+\label{tab:tables}
+\begin{center}
+\begin{tabular}{ll}
+\hline
+Table & Contents \\
+\hline
+Meta  & meta data and index to series data tables \\
+A     & annual data \\
+Q     & quarterly data \\
+M     & monthly data \\
+S     & semiannual data \\
+W     & weekly data \\
+D     & daily data \\
+B     & business data \\
+U     & minutely data \\
+I     & irregular data with a date \\
+T     & irregular data with a date and time \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+In addition, there will be tables ''vintages'' and ''panels'' if those features
+are used.
 
 The following is done with dbConnect in place of a TSconnect, since they
 are direct SQL queries and do not require the TSdbi structure.
