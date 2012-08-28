@@ -1027,7 +1027,9 @@ warnings later about objects being masked:
 %%
 The ODBC  user, password, hostname, etc, should be set in ODBC client
 configuration file in the user's home directory (.odbc.ini in Linux) 
-before starting R. An example of this file is provided below.
+before starting R. An example of this file is provided below. It will also
+be necessary to have the appropriate driver installed on the system
+(Postgresql in the example below).
 Alternatively, it should be possible to set this information with
 environment variables  ODBC\_USER, ODBC\_PASSWD and ODBC\_DATABASE. 
 However, the 
@@ -1109,7 +1111,20 @@ FakeOidIndex            = No
 ConnSettings            =
 \end{verbatim}
 
-\end{Scode}
+The above depends on the driver tag ``Postgresql'' being defined in the
+file /etc/odbcinst.ini, to give the actual driver file location. That file might
+have something like
+
+\begin{verbatim}
+[PostgreSQL]
+Description		= PostgreSQL ODBC driver (Unicode version)
+Driver          = /usr/lib/x86_64-linux-gnu/odbc/psqlodbcw.so
+Setup           = /usr/lib/x86_64-linux-gnu/odbc/libodbcpsqlS.so
+Debug		= 0
+CommLog		= 1
+UsageCount	= 1
+\end{verbatim}
+
 %%
 %%
 \subsection{TSOracle Connection Details}
