@@ -8,6 +8,10 @@ Changes in TSgetSymbol version 2012.8-1
    o	Modified Title in DESCRIPTION file so TSdbi packages will be more
    	clearly related on CRAN listing.
 
+   o	Modified argument quote to TSget so retrieval from Yahoo defaults to
+   	return Open, High, Low, Close, Volume, Adjusted, as was documented
+	some places but not other. Adjusted documentation for consistency.
+
 Changes in TSgetSymbol version 2012.4-1
 
    o	Added tfplot to Suggests in DESCRIPTION.

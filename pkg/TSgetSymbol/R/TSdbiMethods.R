@@ -80,7 +80,7 @@ setMethod("TSdates",
 setMethod("TSget",     signature(serIDs="character", con="TSgetSymbolConnection"),
    definition=function(serIDs, con, TSrepresentation=options()$TSrepresentation,
        tf=NULL, start=tfstart(tf), end=tfend(tf),
-       names=serIDs, quote = if (con@dbname == "yahoo") "Close" else NULL, 
+       names=serIDs, quote = NULL, 
        quiet=TRUE, repeat.try=3, ...){ 
 
     if (is.null(TSrepresentation)) {
