@@ -36,9 +36,10 @@ database can be built using any one of several SQL database backends.
 On the other hand, several packages can be used to pull data from 
 various Internet sources, so a user might use several of these.
 
-It should be possible to view the pdf version of this guide for this 
-package with \emph{print(vignette("Guide", package="TSdata"))}, or get 
-the pdf file directly from CRAN at 
+If package \pkg{TSdata} is installed on your system, it should be possible 
+to view the pdf version of this guide 
+with \emph{print(vignette("Guide", package="TSdata"))}. Otherwise, consider 
+getting the pdf file directly from CRAN at 
 \url{\http://cran.at.r-project.org/web/packages/TSdata/index.html} 
 Many parts
 of the vignette can be run by loading the appropriate packages, but some
@@ -65,7 +66,7 @@ The package \pkg{TSOracle} is available on R-forge at
 in place to test it properly. (If anyone would be interested in doing this,
 please contact me, pgilbert.ttv9z@ncf.ca.)
 These packages get data and also support writing data to the database.
-See Section \ref{appdx:B} and the vignette in package \pkg{TSdbi} for more explanation 
+See Appendix ``B'' (section \ref{appdx:B}) and the vignette in package \pkg{TSdbi} for more explanation 
 of the underlying database tables, and for bulk loading of
 data into a database.
 The section illustrates writing artificial data to the database, and also
@@ -169,7 +170,7 @@ different results that may be preferable in some situations:
   plot(z)
 \end{Scode}
 
-Also, for some time series objects, the plot method has be much improved from
+Also, for some time series objects, the plot method has been much improved from
 the default, so if you are using these objects you may find that \code{plot} 
 provides attractive features. 
 
@@ -177,7 +178,7 @@ provides attractive features.
 
 Package \pkg{TSgetSymbol} can also be used to get data from the Federal Reserve 
 Bank of St.Louis, as will be illustrated here. 
-(Look at http://research.stlouisfed.org/fred/ to find series identifiers.)
+(Look at \url{http://research.stlouisfed.org/fred/) to find series identifiers.}
 
 \begin{Scode}{fig=TRUE}
   library("TSgetSymbol")  
@@ -249,13 +250,11 @@ specified. The session default is unset with
 Beware that it does not make sense to set \code{ts} as the default, because it
 is already the default for all series that can be represented as \code{ts}, and
 will not work correctly for other series.
-Other representaions are possible. See the \code{TSget} help for 
+Other representations are possible. See the \code{TSget} help for 
 more details. 
 
 The following connects to yahoo and loads the ticker symbol for Ford. 
 This is a multivariate time series with open, close, etc.
-Set \code{par(ask=TRUE)} here if you want to stop and prompt for <Return>
-between pages in the graphics output.
 
 \begin{Scode}{fig=TRUE}
   yahoo <- TSconnect("getSymbol", dbname="yahoo") 
@@ -263,9 +262,21 @@ between pages in the graphics output.
   plot(x)
 \end{Scode}
 
+In this case, \code{tfplot} displays graphs in verticle panels. 
+
 \begin{Scode}{fig=TRUE}
-  tfplot(x, graphs.per.page=3)
+  tfplot(x)
 \end{Scode}
+It is possible to specify the number of graphs on a screen or page with, 
+for example,   \code{tfplot(x, graphs.per.page=3)}. Set \code{par(ask=TRUE)} if 
+you want to stop and prompt for <Return> between pages in the graphics output.
+
+The \code{quote} argument can be used to specify that only a subset of the
+series should be returned:
+\begin{Scode}{fig=TRUE}
+  tfOnePlot(TSget("F", con=yahoo, quote=c("Open", Close")))
+\end{Scode}
+
 %%
 \subsection{TSxls}
 %%
@@ -292,6 +303,9 @@ the elements that are used: data, dates, identifiers, and series names.
 		   tsrepresentation = function(data,dates){
 		       ts(data,start=c(1959,7), frequency=12)}))
 \end{Scode}
+This also illustrates how \code{tsrepresentation} can be specified as an 
+arbitrary function to set the returned time series object representation.
+
 Beware that data is read into \pkg{R} when the connection is established, so
 changes in the spreadsheet will not be visible in \pkg{R} until a new connection
 is established.
@@ -308,35 +322,33 @@ is established.
   TSdescription(x) 
 \end{Scode}
 
-The function \code{plot} puts all series on the same graph whereas
+As already illustrated above, the function \code{plot} displays the series 
+somewhat differently than \code{tfplot}, and possibly differently depending on
+the objects time series representation.
 \code{tfplot} treats each series in the first argument as panels to be plotted.
 \begin{Scode}{results=verbatim,fig=TRUE}
   x <- TSget(c("DMAM1N", "DMAM3N", "DMABMN","DMAM1S","DMAM3S","DMABMS"), rba)
   plot(x)
 \end{Scode}
+\code{tfplot} treats each series in the first argument as a panel to be plotted.
+It is possible to specify the number of graphs on each page of the output device
+with the argument \code{graphs.per.page}. It is also possible to specify that a 
+subset of the series should be selected:
 \begin{Scode}{results=verbatim,fig=TRUE}
-  tfplot(x, Title="Australian Monetary Aggregates", graphs.per.page=3)
-  TSdescription(x) 
+  tfplot(x, Title="Australian Monetary Aggregates", select=1:3)
+\end{Scode}
+\begin{Scode}{results=verbatim,fig=TRUE}
+  tfplot(x, Title="Australian Monetary Aggregates", select=4:6)
 \end{Scode}
 
-\code{tfplot} treats subsequent time series arguments as objects that should be plot on the same panels (so the number of series in each object must be 
-the same.
+\code{tfplot} treats subsequent time series arguments as objects that should 
+be plot on the same panels (so the number of series in each object must be 
+the same).
 \begin{Scode}{results=verbatim,fig=TRUE}
   tfplot(TSget(c("DMAM1S", "DMAM3S", "DMABMS"), rba),
          TSget(c("DMAM1N", "DMAM3N", "DMABMN"), rba),
+    ylab=c("DMAM1", "DMAM3", "DMABM"),
     Title="Australian Monetary Aggregates")
-\end{Scode}
-
-It is possible to put all series on the same graph.
-\begin{Scode}{results=verbatim,fig=TRUE}
-  tfplot(TSget("DMAM1S", rba),
-         TSget("DMAM3S", rba),
-         TSget("DMABMS", rba),
-	 TSget("DMAM1N", rba),
-         TSget("DMAM3N", rba),
-         TSget("DMABMN", rba),
-    Title="Australian Monetary Aggregates")
-  TSdates(c("DMAM1N", "DMAM3N"), rba) 
 \end{Scode}
 %%
 \subsection{TSzip}
@@ -348,7 +360,7 @@ stock). The \code{dbname} is a directory or \code{url}.
 \pkg{TSzip} does not support writing data to the database. 
 
 The following retrieves zipped files 
-from \code{http://pitrading.com/free\_market\_data.htm} which 
+from \url{http://pitrading.com/free\_market\_data.htm} which 
 provides some end of day data free of charge. (Disclaimer: This site is 
 used as an example. Other than using this free data, I have no association 
 with the company.) 
@@ -358,27 +370,15 @@ with the company.)
   z <- TSget("INDU", pitr)
   tfplot(z, graphs.per.page=3)
 \end{Scode}
+
 The following illustrates returning an \code{xts} \citep{xts} time series object.
-\begin{Scode}{results=verbatim,fig=TRUE}
-  z <- TSget(c("EURUSD", "GBPUSD"), pitr, TSrepresentation=xts)
-  tfplot(z, graphs.per.page=3)
-\end{Scode}
 
 \begin{Scode}{results=verbatim,fig=TRUE}
-  z <- TSget(c("EURUSD", "GBPUSD"), pitr, quote="Close")
-  tfplot(z, Title="EURUSD and GBPUSD closing values from pitrading", 
+  z <- TSget(c("EURUSD", "GBPUSD"), pitr, quote=c("Open","Close"),
+         TSrepresentation=xts)
+  tfplot(z,
+         Title="EURUSD and GBPUSD open and closing values from pitrading", 
          start="1995-01-01")
- 
-  TSrefperiod(z) 
-  TSdescription(z) 
-\end{Scode}
-
-\begin{Scode}{results=verbatim,fig=TRUE}
-  tfplot(TSget(serIDs="INDU", quote="High", pitr),
-         TSget(serIDs="INDU", quote="Low", pitr),
-	 Title="Dow Jones High and Low", 
-	 ylab="Dow Jones (INDU) Index", 
-	 start="1997-01-01")
 \end{Scode}
 %%
 %%
@@ -401,7 +401,11 @@ use underlying packages \pkg{RPostgreSQL} \citep{RPostgreSQL},
 \pkg{RODBC} \citep{RODBC} to provide access to an SQL database with an underlying table
 structure which is set up to store time series data. 
 
-The next lines of code do some preliminary setup of the database.
+The next lines of code do some preliminary setup of the database. This uses the
+underlying database connection (\code{dbConnect}) rather than \code{TSconnect},
+because \code{TSconnect} will not recognize the database until it has been
+setup.
+
 
 WARNING: running this will overwrite the ``test'' database on your server.
 
@@ -455,7 +459,7 @@ so the above example checks and deletes the series if it already exists.
 \code{TSreplace} does not fail if the series does
 not yet exist, so examples below use it instead. Several plots below show
 original data and the data retrieved after it is written to the database. 
-Below in the plot, one is
+In the plot below, one is
 added to the original data so that both lines are visible.
 
 The \proglang{R} variable can contain multiple series of the same frequency. 
@@ -477,12 +481,14 @@ not much information has been added for these examples.
  TSdates("vec", con)
  TSdescription("vec", con)
  TSdoc("vec", con)
+ TSlabel("vec", con)
 \end{Scode}
-Below are examples that make more use of \code{TSdescription} and \code{TSdoc}.
 
-Data documentation can be in two forms, a description specified by 
-\code{TSdescription}
-or longer documentation specified by \code{TSdoc}. These can be added to the time
+Data documentation can be in three forms. A description specified by 
+\code{TSdescription},
+longer documentation specified by \code{TSdoc}, or a short label, typically
+useful on a graph, specified by \code{TSlabel}. 
+These can be added to the time
 series object, in which case they will be written to the database when
 \code{TSput} or \code{TSreplace} is used to put the series on the database. 
 Alternatively, they
@@ -526,12 +532,10 @@ specific tables.
   
 \end{Scode}
 
-\begin{Scode}{results=verbatim,fig=TRUE}
+\begin{Scode}{results=verbatim}
  z <- zoo(matrix(rnorm(200),100,2), as.Date("1990-01-01") + 0:99 * 7)
   seriesNames(z) <- c("zooWc1", "zooWc2")
  TSreplace(z, con, Table="W")
- tfplot(z+1, TSget(c("zooWc1","zooWc2"), con), col=c("black", "red"),
-    lty=c("dashed", "solid"))  
 \end{Scode}
 
 \begin{Scode}{results=hide}
@@ -1265,7 +1269,7 @@ perhaps based on something like SOAP.
 
 Code and a description of a prototype of a standard for a Time Series
 Protocol for Application - Database Interface (TS PADI) 
-may still be available at http://www.bank-banque-canada.ca/pgilbert. 
+may still be available at \url{http://www.bank-banque-canada.ca/pgilbert}. 
 The code includes a working interface to a Fame database. 
 %%
 \section{Appendix B: Underlying Database Structure and Loading Data}
