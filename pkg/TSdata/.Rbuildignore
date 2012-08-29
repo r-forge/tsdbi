@@ -7,3 +7,4 @@ inst/doc/(^|.*)\.R$
 inst/doc/(^|.*)\.log$
 inst/doc/(^|.*)\.stdout$
 (^|.*)\.ps$
+texput.log
