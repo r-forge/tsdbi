@@ -20,8 +20,7 @@
     \S4method{TSget}{character,TSgetSymbolConnection}(
 	serIDs, con, TSrepresentation = options()$TSrepresentation, 
 	tf = NULL, start = tfstart(tf), end = tfend(tf), names=serIDs, 
-	quote = if (con@dbname == "yahoo") "Close" else NULL, 
-	quiet = TRUE, repeat.try=3, ...)
+	quote = NULL, quiet = TRUE, repeat.try=3, ...)
     \S4method{TSconnect}{getSymbolDriver,character}(
 	drv, dbname, user="", password = "", host="", ...)
     \S4method{TSdates}{character,TSgetSymbolConnection}(
@@ -76,8 +75,7 @@ returned for assignment by the user, as with other \code{TSget}
 database interfaces. (See \code{TSget} in \pkg{TSdbi} for
 more details on how this works.)
 
-The argument \code{quote} with default{"Close"} for \code{dbname="yahoo"},
-and \code{NULL} otherwsie, is provided to allow
+The argument \code{quote} with default \code{NULL}, is provided to allow
 automatically extracting part of the multivariate series returned by
 \code{getSymbols}. It can be set to any of \code{"Open", "High", "Low", 
 "Close", "Volume", "Adjusted"}. If it is set to \code{NULL} then all 
