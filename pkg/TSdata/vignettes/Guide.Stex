@@ -1,22 +1,28 @@
 \documentclass[english]{article}
-\usepackage{url}
 \usepackage{natbib}
+\usepackage{url}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
 \newcommand{\code}{\emph}
 \newcommand{\pkg}{\textsl}
 \newcommand{\proglang}{\textsl}
 \title{Time Series Database Interface (TSdbi) Illustrations}
 \begin{document}
+%%\author{Paul D. Gilbert}
 \maketitle
+\tableofcontents
 %\VignetteIndexEntry{Guide: TSdbi Interface Illustrations}
 \SweaveOpts{eval=TRUE,echo=TRUE,results=hide,fig=FALSE}
 %\SweaveOpts{eval=TRUE,echo=TRUE,results=verbatim,fig=TRUE}
 \begin{Scode}{echo=FALSE,results=hide}
  options(continue="  ")
 \end{Scode}
-
-NEEDS LOT OF CLEANUP.
-ADD EXAMPLES FROM CHICAGO.
-ADD VINTAGES.
 %%
 \section{Introduction}
 \label{sec:Intro}
@@ -29,17 +35,19 @@ feature.
 The vignette also illustrates some simple time series
 manipulation and plotting using packages \pkg{tframe} and \pkg{tfplot}.
 
-To generate this vignette requires most of the \pkg{TS*} packages, but typically
+To generate this vignette requires most of the \pkg{TS*} packages, but 
 users will only need one, or a few of these packages. For example, a time series
-database can be built using any one of several SQL database backends. 
-On the other hand, several packages can be used to pull data from 
-various Internet sources, so a user might use several of these.
+database can be built with several SQL database backends, 
+but typically only one would be used. 
+On the other hand, several packages pull data from 
+various Internet sources, so several of these might be used to accommodate the
+various specifics of the sources.
 
 If package \pkg{TSdata} is installed on your system, it should be possible 
 to view the pdf version of this guide 
 with \emph{print(vignette("Guide", package="TSdata"))}. Otherwise, consider 
 getting the pdf file directly from CRAN at 
-\url{\http://cran.at.r-project.org/web/packages/TSdata/index.html} 
+\url{http://cran.at.r-project.org/web/packages/TSdata/index.html} 
 Many parts
 of the vignette can be run by loading the appropriate packages, but some
 examples use data that has been loaded into a larger database 
@@ -68,13 +76,14 @@ These packages get data and also support writing data to the database.
 See Appendix ``B'' (section \ref{appdx:B}) and the vignette in package \pkg{TSdbi} for more explanation 
 of the underlying database tables, and for bulk loading of
 data into a database.
-The section illustrates writing artificial data to the database, and also
-fetching data from the web and 
-loading it into a local database. It also provides more examples of \pkg{TSdbi}
-functionality and of using and graphing series.
+The section illustrates writing artificial data to the database. 
 
-Section \ref{sec:etsExamples} provides more examples using a more extensively
-populated database that has been previously constructed.
+Section \ref{sec:MoreExamples} provides additional examples of \pkg{TSdbi}
+functionality and of using and graphing series. 
+Subsection \ref{sec:SQLexamples} illustrates fetching data from the web and 
+loading it into a local database.
+Subsection \ref{sec:etsExamples} provides examples of how one might use a
+more extensively populated database that has been previously constructed.
 
 Section \ref{sec:Comparing} illustrates package \pkg{TScompare} for comparing 
 time series databases, and Section \ref{sec:Vintages} illustrates the use of
@@ -150,6 +159,46 @@ Package \pkg{TSgetSymbol} is a wrapper to \code{getSymbols} in package
 The data from the two connections should be  the same:
 \begin{Scode}{results=verbatim,fig=TRUE}
   tfplot(x, z, Title="^gspc from Yahoo via TSgetSymbol and TShistQuote")
+\end{Scode}
+
+Here is a second example comparing the same data through two different connection
+methods:
+\begin{Scode}{results=verbatim,fig=FALSE}
+ya1 <- TSconnect("getSymbol", dbname="yahoo")
+ya2 <- TSconnect("histQuote", dbname="yahoo")
+
+ibmC1 <- TSget("ibm", ya1, quote = "Close", start="2011-01-03")
+ibmC2 <- TSget("ibm", ya2, quote = "Close", start="2011-01-03")
+\end{Scode}
+
+The encoding of the date index vectors are of different classes 
+(Date vs POSIXct), which cause problems comparing these two objects.
+If the series observation dates are otherwise the same, which is not 
+always the case because new data is sometimes available sooner on one than the
+other, then this can be fixed by:
+
+\begin{Scode}{results=verbatim,fig=FALSE}
+tframe(ibmC2) <- tframe(ibmC1)
+\end{Scode}
+
+(If the series are not the same length then the error message will be
+``number of Tobs of observations must correspond to number of Tobs 
+indicated by tframe.'')
+The two series can then be plotted:
+\begin{Scode}{results=verbatim,fig=TRUE}
+tfplot(ibmC2, ibmC1,  
+   ylab="IBM Close",
+   Title="IBM via getSymbol and histQuote",
+   lastObs=TRUE, 
+   legend=c("via histQuote (black)", "via getSymbol (red)"),
+   source="Source: Yahoo")
+\end{Scode}
+
+Or the difference (zero) can be plotted:
+\begin{Scode}{results=verbatim,fig=TRUE}
+tfplot(ibmC2 - ibmC1,  
+   ylab="IBM Close",
+   Title="Difference between IBM via getSymbol and histQuote")
 \end{Scode}
 
 A certain amount of meta data can be returned with the time series object 
@@ -272,10 +321,11 @@ Set \code{par(ask=TRUE)} if
 you want to stop and prompt for <Return> between pages in the graphics output.
 
 The \code{quote} argument can be used to specify that only a subset of the
-series should be returned:
+market data should be returned:
 \begin{Scode}{fig=TRUE}
   tfOnePlot(TSget("F", con=yahoo, quote=c("Open", "Close")),
-     Title="Ford from Yahoo;  Open (black); Close (red)")
+     Title="Ford from Yahoo;  Open (black); Close (red)",
+     ylab="Price")
 \end{Scode}
 
 %%
@@ -344,9 +394,10 @@ subset of the series should be selected:
   tfplot(x, Title="Australian Monetary Aggregates", series=4:6)
 \end{Scode}
 
-\code{tfplot} treats subsequent time series arguments as objects that should 
-be plot on the same panels (so the number of series in each object must be 
-the same).
+\code{tfplot} takes additional time series objects as arguments. Series in the
+first argument are plotted in separate panels. Series in subsequent time series
+objects will be plotted respectively on the same panels as the first, 
+so the number of series in each object must be the same.
 \begin{Scode}{results=verbatim,fig=TRUE}
   tfplot(TSget(c("DMAM1S", "DMAM3S", "DMABMS"), rba),
          TSget(c("DMAM1N", "DMAM3N", "DMABMN"), rba),
@@ -381,7 +432,7 @@ The following illustrates returning an \code{xts} \citep{xts} time series object
   tfplot(z,
          Title="EURUSD and GBPUSD open and closing values from pitrading", 
          start="1995-01-01",
-         par=list(omi=c(0.1,0.3,0.3,0.1),mar=c(4.1,3.1,0.6,0.1)))
+         par=list(omi=c(0.1,0.3,0.1,0.1),mar=c(2.1,3.1,1.0,0.1)))
 \end{Scode}
 
 The default behaviour of printed graphs above is improved by adjusting graphics 
@@ -552,7 +603,11 @@ specific tables.
  #dbUnloadDriver(m)
 \end{Scode}
 %%
+\section{More Examples}
+\label{sec:MoreExamples}
+%%
 \subsection{Examples Using SQL Databases}
+\label{sec:SQLexamples}
 %%
 This section illustrates fetching data from the web  and loading it into the
 database. This would be a very slow way to load a database, but provides
@@ -668,13 +723,13 @@ Then check the saved version:
 \end{Scode}
 %%
 %%
-\section{More Extensive Examples}
+\subsection{``Inhouse'' Database Examples}
 \label{sec:etsExamples}
 %%
 These examples use a database which has been called ``ets''. It has already been
-populated with several series from various sources, so
-this set of examples illustrates how the programs might be used with a large
-``inhouse'' database. Typically a large database would be installed using
+populated with some series from various sources, so
+the examples illustrate how a large ``inhouse'' database might be used. 
+Typically a large database would be installed using
 database scripts directly rather than from \proglang{R} with \code{TSput} or
 \code{TSreplace}. 
 
@@ -682,15 +737,18 @@ The following uses \pkg{TSMySQL} but, other than the initial connection,
 everything should remain the same if another database is used. (See Appendix A
 regarding the details of other connections.)
 
-\begin{Scode}{results=verbatim,fig=TRUE}
+First, establish a connection to the database, and make it the default.
+\begin{Scode}{results=verbatim,fig=FALSE}
   library("TSMySQL")
   ets <-  TSconnect("MySQL", dbname="ets") 
-  
   options(TSconnection=ets)
+\end{Scode}
 
-  TSmeta(TSget("M.SDR.CCUSMA02.ST"))
-
-  EXCH.IDs <- t(matrix(c(
+Often one needs to check if data is available or has been updated.
+This defines a list of series ids, with more explanatory names, 
+and checks availability:
+\begin{Scode}{results=verbatim,fig=FALSE}
+  EXCH.IDs <- matrix(c(
  	"M.SDR.CCUSMA02.ST",	 "SDR/USD exchange rate",
  	"M.CAN.CCUSMA02.ST",	 "CAN/USD exchange rate",
  	"M.MEX.CCUSMA02.ST",	 "MEX/USD exchange rate",
@@ -699,48 +757,39 @@ regarding the details of other connections.)
  	"M.OTO.CCUSMA02.ST",	 "OECD /USD exchange rate",
  	"M.G7M.CCUSMA02.ST",	 "G7   /USD exchange rate",
  	"M.E15.CCUSMA02.ST",	 "Euro 15. /USD exchange rate"
-	), 2, 8))
+	), 2, 8)
 
-  TSdates(EXCH.IDs[,1])
-  z <- TSdates(EXCH.IDs[,1])
-  tfplot(TSget(serIDs="V122646", ets))
+  TSdates(EXCH.IDs[1,])
 \end{Scode}
 
+The following examples illustrate using metadata in the graph.
 \begin{Scode}{results=verbatim,fig=TRUE}
-  TSdescription(TSget("V122646", TSdescription=TRUE))
-  TSdescription("V122646")
-
-  TSdoc(TSget("V122646", TSdoc=TRUE))
-  TSdoc("V122646")
-
-  tfplot(TSget("V122646", names="V122646", ets))
-\end{Scode}
-
-\begin{Scode}{results=verbatim,fig=TRUE}
-  z <- TSget("V122646", TSdescription=TRUE)
+  z <- TSget("V122646", TSdescription=TRUE, TSsource=TRUE, TSdoc=TRUE,
+              TSlabel=TRUE )
   tfplot(z, Title=strsplit(TSdescription(z), ","))
 \end{Scode}
 
-\begin{Scode}{results=verbatim,fig=TRUE}
-  z <- TSget("SDSP500", TSdescription=TRUE)
-  tfplot(z, Title=TSdescription(z))
-  plot(z)
+Some metadata fields in my example database are empty. If they were available,
+this step would not be necssary. The missing meta data can be put into 
+the returned object by:
+\begin{Scode}{results=verbatim}
+  TSsource(z) <- "Bank of Canada"
+  TSlabel(z) <- "Short-Term Business Credit"
 \end{Scode}
 
+With this, more of the meta data can be indicated on the graph:
 \begin{Scode}{results=verbatim,fig=TRUE}
-  z <- TSget(c("DSP500","SDSP500"), TSdescription=TRUE)
-  tfplot(z, xlab=TSdescription(z))
+  tfplot(ytoypc(z), ylab="Year-over-Year Growth",
+    Title=TSlabel(z),
+    source=paste(TSseriesIDs(z), "from", TSsource(z)),
+    lastObs=TRUE, 
+    footnote=TSdescription(z))
 \end{Scode}
 
-\begin{Scode}{results=verbatim,fig=TRUE}
-  plot(z)
-\end{Scode}
-
-\begin{Scode}{results=verbatim,fig=TRUE}
-  ETSgdp    <- annualizedGrowth(aggregate(TSget("V1992067"),
-                   nfrequency=4,FUN=mean), lag=4, names="GDP Y/Y Growth")
-  tfplot(ETSgdp)
-\end{Scode}
+%%\begin{Scode}{results=verbatim,fig=TRUE}
+%%  z <- TSget(c("DSP500","SDSP500"), TSdescription=TRUE)
+%%  tfplot(z, xlab=TSdescription(z))
+%%\end{Scode}
   
 \begin{Scode}
   dbDisconnect(ets)
@@ -751,6 +800,18 @@ regarding the details of other connections.)
   detach(package:TSMySQL)
   detach(package:RMySQL)
 \end{Scode}
+%%
+%%\section{Fancy Graphs with data from several sources}
+%%\label{sec:Fancy}
+%%
+%% do this with Can and US using cansim and FRED
+%%\begin{Scode}{results=verbatim,fig=TRUE}
+%%  ETSgdp    <- annualizedGrowth(aggregate(TSget("V1992067", cansim),
+%%                  nfrequency=4,FUN=mean), lag=4, names="GDP Y/Y Growth")
+%%  tfplot(ETSgdp)
+%%\end{Scode}
+%%
+%%
 %%
 \section{Comparing Time Series Databases}
 \label{sec:Comparing}
@@ -862,10 +923,54 @@ warnings later about objects being masked:
 \section{Vintages of Realtime Data}
 \label{sec:Vintages}
 %%
-A simple mechanism for accessing vintages of data stored in 
-different Fame databases is available. Suppose the vintages are stored in files
+Data vintages, or ``realtime data'' are snapshots of data that was available at
+at different points in time. The most obvious feature of earlier snapshots is
+that the series end earlier. However, the reason for retaining vintages is that
+data is often revised so, for some observations,
+earlier vintages have different data. Typically most revisions happen for the
+most recent periods, but this is often the data of most interest for forcasting
+and poicy decisions, so the revision records are valuable for understanding the
+implications of differences between early and revised releases of the data.
+A simple mechanism for accessing vintages of data is available in several
+\pkg{TS*} packages. This is illustrated here with an SQL database that has been
+set up with vintage support.
+
+First establish a connection to th database and get
+a vector of the available vintages:
+\begin{Scode}{results=verbatim,fig=FALSE}
+require("TSMySQL") 
+require("tfplot") 
+ets <- TSconnect("MySQL",dbname="etsv") 
+v  <- TSvintages(ets)
+\end{Scode}
+
+The following checks if a certain variable (Consumer Credit -- V122707) is
+available in the different vintages. (V numbers replaced B numbers circa 2003, 
+so the V numbers do not exist in older vintages. This could be supported by
+implementing aliases, but that has not been done here.)
+\begin{Scode}{results=verbatim,fig=FALSE}
+ve <- TSexists("V122707", vintage=v, con=ets)
+\end{Scode}
+
+A temporary problem with the db loading of some vintages is fixed by
+\begin{Scode}{results=verbatim,fig=FALSE}
+ve[224:length(ve)] <- FALSE 
+\end{Scode}
+
+The vintages can them be retrieved and plotted by
+\begin{Scode}{results=verbatim,fig=TRUE}
+CC <- TSget(serIDs="V122707", con=ets, vintage=v[ve])#BUG this is throwing a warning
+
+tfOnePlot(ytoypc(CC), start=c(2000,1), 
+   ylab="Consumer Credit (V122707) y/y Growth",
+   Title=paste("Vintages", v[ve][1], "to",  v[ve][189]),
+   lastObs=TRUE, source="Source: Bank of Canada")
+\end{Scode}
+
+With package \pkg{TSfame} vintages are supported if the vintages are 
+stored in files
 with names like ``etsmfacansim\_20110513.db''. Then the vintages can be accessed 
-as illustrated by the following examples:
+as follows:
 
 \begin{Scode}{eval=FALSE}
   dbs <- paste("ets /path/to/etsmfacansim_", c(
@@ -877,6 +982,26 @@ as illustrated by the following examples:
   z <- TSget("V122646", con=conetsV, vintage=c("2011-05-13", "2006-05-26"))
   dbDisconnect(conetsV)
 \end{Scode}
+
+(The above example should work, but beware that I am no longer testing it
+because I no longer have Fame access.)
+
+The package \pkg{googleVis} can be used to produce a plot that is very useful
+for examining vintage more closely, and finding outliers and other 
+data problems. The names are used in the legend of this next plot, so
+set series names. (Otherwise they get reset to y/y % ch ... which
+is messy to read.)
+
+\begin{Scode}{eval=FALSE,fig=FALSE}
+require("googleVis") 
+tfVisPlot(ytoypc(CC, names=seriesNames(CC)), start=c(2006,1),
+    options=list(title="Vintages of Consumer Credit (V122707) y/y Growth"))
+\end{Scode}
+
+This will produce a graph in your web browser. It is not reproduced here.
+(And beware that it may not be very fast.)
+Pointing your mouse at the legend of this plot will highlight that vintage, and
+pointing at the graph will give information about the source of a data point.
 %%
 %%
 %%
