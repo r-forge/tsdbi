@@ -173,17 +173,12 @@ ibmC2 <- TSget("ibm", ya2, quote = "Close", start="2011-01-03")
 
 The encoding of the date index vectors are of different classes 
 (Date vs POSIXct), which cause problems comparing these two objects.
-If the series observation dates are otherwise the same, which is not 
-always the case because new data is sometimes available sooner on one than the
-other, then this can be fixed by:
+This can be fixed by:
 
 \begin{Scode}{results=verbatim,fig=FALSE}
-tframe(ibmC2) <- tframe(ibmC1)
+tframe(ibmC1) <- as.Date(tframe(ibmC1))
 \end{Scode}
 
-(If the series are not the same length then the error message will be
-``number of Tobs of observations must correspond to number of Tobs 
-indicated by tframe.'')
 The two series can then be plotted:
 \begin{Scode}{results=verbatim,fig=TRUE}
 tfplot(ibmC2, ibmC1,  
@@ -194,12 +189,16 @@ tfplot(ibmC2, ibmC1,
    source="Source: Yahoo")
 \end{Scode}
 
-Or the difference (zero) can be plotted:
-\begin{Scode}{results=verbatim,fig=TRUE}
-tfplot(ibmC2 - ibmC1,  
-   ylab="IBM Close",
-   Title="Difference between IBM via getSymbol and histQuote")
+Or the difference can used to check equality:
+\begin{Scode}{results=verbatim}
+max(abs(ibmC2 - ibmC1))
 \end{Scode}
+
+Note that the above does not catch a difference in length, which occurs if new
+data has been release on one connection and not the other. 
+(At some point Yahoo, was releasing partial data early, and these connection are
+correcting differently for this. So, at some times of day, the last available
+data point is not the same on these two connections.)
 
 A certain amount of meta data can be returned with the time series object 
 and can be extracted with these utilities:
@@ -599,8 +598,10 @@ specific tables.
 \end{Scode}
 
 \begin{Scode}{results=hide}
- dbDisconnect(con)
- #dbUnloadDriver(m)
+  dbDisconnect(con)
+  #dbUnloadDriver(m)
+  detach(package:TSMySQL)
+  detach(package:RMySQL)
 \end{Scode}
 %%
 \section{More Examples}
@@ -720,6 +721,8 @@ Then check the saved version:
   dbDisconnect(con)
   dbDisconnect(yahoo)
   dbDisconnect(Oanda)
+  detach(package:TSPostgreSQL)
+  detach(package:RPostgreSQL)
 \end{Scode}
 %%
 %%
