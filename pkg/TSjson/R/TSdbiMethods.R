@@ -89,19 +89,27 @@ setMethod("TSget",     signature(serIDs="character", con="TSjsonConnection"),
        TSrepresentation=getOption("TSrepresentation"),
        tf=NULL, start=tfstart(tf), end=tfend(tf),
        names=serIDs, 
-       TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE, TSsource=TRUE, ...){ 
+       TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE, TSsource=TRUE,
+       quiet=TRUE, repeat.try=3, ...){ 
        
   if(is.null(TSrepresentation)) TSrepresentation <- "default"
-
+  if(is.null(repeat.try)) repeat.try <- 5
+  
   url <- con@url
   
   mat <- desc <- doc <- label <- source <-  rp <- NULL
 
   for (i in seq(length(serIDs))) {
-    rr <- fromJSON(getURL(paste(url, serIDs[i], sep="")))
+    qq <- paste(url, serIDs[i], sep="")
+    for (rpt in seq(repeat.try)) {
+	   rr <- try(fromJSON(getURL(qq)), silent=quiet)
+	   if (!inherits(rr , "try-error")) break
+	   }
 
+    if(inherits(rr , "try-error") )
+       stop("Series retrieval failed. Server ", con@host, "not responding or returning unrecognized object.")
     if(0==length(rr))
-       stop("Series retrieval failed. Series ",i," may not exist at ", con@host)
+       stop("Series retrieval failed. Series ",serIDs[i]," may not exist at ", con@host)
 
     fr <- rr$freq
     st <- rr$start
@@ -113,7 +121,7 @@ setMethod("TSget",     signature(serIDs="character", con="TSjsonConnection"),
     mat <- tbind(mat, r)
     if(TSdescription) desc <- c(desc,   rr$shortdesc ) 
     if(TSdoc)     doc      <- c(doc,    rr$desc ) 
-    if(TSlabel)   label    <- c(label,  rr$mnem )
+    if(TSlabel)   label    <- c(label,  serIDs[i] )
     if(TSsource)  source   <- c(source, rr$source )
     }
 
