@@ -21,6 +21,7 @@
     \S4method{TSget}{character,TSjsonConnection}(
 	serIDs, con, TSrepresentation = options()$TSrepresentation, 
 	tf = NULL, start = tfstart(tf), end = tfend(tf), names=serIDs, 
+        TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE, TSsource=TRUE,
 	quiet = TRUE, repeat.try=3, ...)
     \S4method{TSconnect}{jsonDriver,character}(
 	drv, dbname, user="", password = "", host="", ...)
@@ -52,6 +53,10 @@
     \item{end}{time frame for trimming data, passed to tfwindow.}
     \item{TSrepresentation}{time representation for returned series. 
           (See \code{TSget} in package \pkg{TSdbi}.)}
+    \item{TSdescription}{logical to indicate if description shouod be retrieved.}
+    \item{TSdoc}{logical to indicate if documentation shouod be retrieved.}
+    \item{TSlabel}{logical to indicate if label shouod be retrieved.}
+    \item{TSsource}{logical to indicate if source information shouod be retrieved.}
     \item{quiet}{logical to suppress progress report.}
     \item{repeat.try}{integer number of times to attempt retrieval before giving
           up.}
