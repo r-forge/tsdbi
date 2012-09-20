@@ -45,7 +45,7 @@ various specifics of the sources.
 
 If package \pkg{TSdata} is installed on your system, it should be possible 
 to view the pdf version of this guide 
-with \emph{print(vignette("Guide", package="TSdata"))}. Otherwise, consider 
+with \emph{vignette("Guide", package="TSdata")}. Otherwise, consider 
 getting the pdf file directly from CRAN at 
 \url{http://cran.at.r-project.org/web/packages/TSdata/index.html} 
 Many parts
@@ -764,6 +764,8 @@ and checks availability:
 
   TSdates(EXCH.IDs[1,])
 \end{Scode}
+
+(The available data in this test data set is fairly old.)
 
 The following examples illustrate using metadata in the graph.
 \begin{Scode}{results=verbatim,fig=TRUE}
