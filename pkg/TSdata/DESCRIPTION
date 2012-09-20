@@ -8,7 +8,7 @@ Depends: R (>= 2.8.0), tframe, tfplot, tframePlus(>= 2012.8-1), TSdbi
 Suggests: TSPostgreSQL, TSMySQL, TSSQLite, TSodbc, TSgetSymbol, TShistQuote,
 	TSfame, TSpadi, TSxls, TSzip, TScompare, zoo, tseries, its
 Enhances: TSdbi
-BuildVignettes: true
+BuildVignettes: false
 License: GPL-2
 Copyright: 2012 Paul Gilbert.
 Author: Paul Gilbert <pgilbert.ttv9z@ncf.ca>

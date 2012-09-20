@@ -1,7 +1,7 @@
 \documentclass[english]{article}
 \newcommand{\code}{\emph}
 \newcommand{\pkg}{\textsl}
-\title{Time Series Database Interface Illustrations (packages in Development}
+\title{Time Series Database Interface Illustrations (packages in Development)}
 \begin{document}
 \maketitle
 %\VignetteIndexEntry{TSdata Guide}
