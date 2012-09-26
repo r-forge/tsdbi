@@ -18,7 +18,7 @@ setMethod("dbDisconnect", signature(conn="TSjsonConnection"),
      definition=function(conn,...) TRUE)
 #######     end kludges   ######
 
-setMethod("TSconnect",   signature(drv="jsonDriver", dbname="ANY"),
+setMethod("TSconnect",   signature(drv="jsonDriver", dbname="character"),
   definition= function(drv, dbname, user=NULL, password=NULL, host=NULL, ...){
    if (is.null(dbname)) stop("dbname must be specified")
    # if other values are not specified get defaults from file or system variables
@@ -39,8 +39,9 @@ setMethod("TSconnect",   signature(drv="jsonDriver", dbname="ANY"),
    if (is.null(password)) password <-r$password
    if (is.null(host)) host <- r$host
    
-   url <- paste("http://", user, ":", password, "@", host, "/", sep="")
-   #dbname,
+   if (dbname == "cansim") dbname <- "scapi/default/get.json"
+   
+   url <- paste("http://", user, ":", password, "@", host, "/", dbname, "/", sep="")
   
    # there could be a better connection test mechanism 
    #if(inherits(con, "try-error")) 
@@ -112,10 +113,15 @@ setMethod("TSget",     signature(serIDs="character", con="TSjsonConnection"),
        stop("Series retrieval failed. Series ",serIDs[i]," may not exist at ", con@host)
 
     fr <- rr$freq
+    if("Error" == fr) stop("frequency not yet supported.")
+    if(52 == fr) warning("weekly frequency not yet supported correctly. Dates may be wrong")
+    # NOTE 52 should not be ts() below
     st <- rr$start
+    x  <- rr$x
+    if(is.list(x)) x <- unlist(x) #this seems necessary sometimes
     r <-  if((TSrepresentation=="default" | TSrepresentation=="ts")
-             && fr %in% c(1,4,12,2)) ts(rr$x, start=st, frequency=fr) 
-	     else zoo(rr$x, start=st, frequency=fr)
+             && fr %in% c(1,4,12,2, 52)) ts(x, start=st, frequency=fr) 
+	     else zoo(x, start=st, frequency=fr)
        #r <- zoo(c(r[[1]]), order.by=as.Date(ti(r[[1]])), frequency=frequency(r[[1]]))
 
     mat <- tbind(mat, r)
@@ -150,25 +156,23 @@ setMethod("TSget",     signature(serIDs="character", con="TSjsonConnection"),
 } )
 
 
-
 #setMethod("TSput",     signature(x="ANY", serIDs="character", con="TSjsonConnection"),
 #   definition= function(x, serIDs=seriesNames(data), con, ...)   
 #    "TSput for TSjson connection not supported." )
 
 setMethod("TSdescription",   signature(x="character", con="TSjsonConnection"),
-   definition= function(x, con=getOption("TSconnection"), ...)
-        "TSdescription for TSjson connection not supported." )
-
+   definition= function(x, con=getOption("TSconnection"), ...){
+        TSdescription(TSget(serIDs=x, con=con, TSdescription=TRUE ))})
 
 setMethod("TSdoc",   signature(x="character", con="TSjsonConnection"),
-   definition= function(x, con=getOption("TSconnection"), ...)
-        "TSdoc for TSjson connection not supported." )
+   definition= function(x, con=getOption("TSconnection"), ...){
+        TSdoc(TSget(serIDs=x, con=con, TSdoc=TRUE ))})
 
 setMethod("TSlabel",   signature(x="character", con="TSjsonConnection"),
-   definition= function(x, con=getOption("TSconnection"), ...)
-        "TSlabel for TSjson connection not supported." )
+   definition= function(x, con=getOption("TSconnection"), ...){
+        TSlabel(TSget(serIDs=x, con=con, TSlabel=TRUE ))})
 
 setMethod("TSsource",   signature(x="character", con="TSjsonConnection"),
-   definition= function(x, con=getOption("TSconnection"), ...)
-        "TSsource for TSjson connection not supported." )
+   definition= function(x, con=getOption("TSconnection"), ...){
+        TSsource(TSget(serIDs=x, con=con, TSsource=TRUE ))})
 

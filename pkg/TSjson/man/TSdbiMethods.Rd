@@ -19,12 +19,13 @@
 \usage{
      jsonCall() 
     \S4method{TSget}{character,TSjsonConnection}(
-	serIDs, con, TSrepresentation = options()$TSrepresentation, 
+	serIDs, con=getOption("TSconnection"), 
+	TSrepresentation=getOption("TSrepresentation"), 
 	tf = NULL, start = tfstart(tf), end = tfend(tf), names=serIDs, 
         TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE, TSsource=TRUE,
 	quiet = TRUE, repeat.try=3, ...)
     \S4method{TSconnect}{jsonDriver,character}(
-	drv, dbname, user="", password = "", host="", ...)
+	drv, dbname, user=NULL, password = NULL, host=NULL, ...)
     \S4method{TSdates}{character,TSjsonConnection}(
 	serIDs, con, vintage=NULL, panel=NULL, ... )  
     \S4method{TSdescription}{character,TSjsonConnection}(x, con, ... )  
@@ -68,16 +69,28 @@
 \value{Depends.}
 \details{
 These functions interface to databases that provide time series data as a simple
-json object. The database can be a proxy portal to the real database, simply
-providing an intermediate server with a programmable API, while that server
-contacts the real server, automatically providing appropriate button clicks.
+json  object (JavaScript Object Notation). The database can be a proxy portal 
+to the real database, simply providing an intermediate server supporting a 
+programmable API. The intermediate proxy server then
+contacts the real server, automatically providing appropriate button clicks
+to a web interface at the real data source, and retrieves and relays the data.
 
-\code{TSget} is just a wrapper to \code{jsonCall} provides an interface that is consistent 
-with \pkg{TSdbi}. The \pkg{TSdbi} function argument \code{serId} is passed as the series to return,
-The \code{user} \code{passwd} \code{host} can be specified in the argument. If
-they are \code{NULL} then they will be determined by environment variables or 
-from file \code{~/.TSjson.cfg}
-\code{dbname} is reserved for future use. 
+\code{TSget} is a wrapper for \code{jsonCall} to provide an interface that 
+is consistent with \pkg{TSdbi}. The \pkg{TSdbi} function argument \code{serId} 
+specifies the series to return.
+The \code{user}, \code{password}, and \code{host}, can be specified in the 
+argument. If specified as \code{NULL} (the default) then they will be 
+determined by reading a file \code{~/.TSjson.cfg} which should have a single
+line with three fields: user  password  host. If the file does not
+exist then environment variables "TSJSONUSER", "TSJSONPASSWORD", 
+and "TSJSONHOST" will be used.
+
+\code{dbname} specifies a recognized database (e.g "cansim") which is expanded
+to an appropriate string to find the database. For unrecognized databases the
+value of \code{dbname} is simply appended to the URL specification, allowing for
+arbitrary database host. (But, of course, the value returned by the host must be
+a time series in the recognized format in order for this to work. The URL
+specification is expanded to \code{"http://user:password@host/dbname/serID"}.
 
 \pkg{TSjson} does not support writing data to the source.
 
@@ -94,12 +107,15 @@ additional examples.
 \code{\link[tframe]{tfwindow}},
 }
 \examples{
-  if (require("TSjson")){
-    con <- try(TSconnect("json", dbname="statcan"))
-    if(! inherits(con, "try-error")) {
-        x <- TSget("v498086", con)
-        tfplot(x)
-       }
-    }
-  }
+  require("TSjson")
+  con <- TSconnect("json", dbname="cansim")
+
+  TSdates(c("v498086", "v498087","V122746", "v687341", "V36610", "v141"), con)
+ 
+  TSdescription(c("v687341", "v687342"), con)
+
+  x <- TSget("v498086", con)
+  require("tfplot")
+  tfplot(x)
+}
 \keyword{ts}
