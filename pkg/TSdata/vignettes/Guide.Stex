@@ -12,14 +12,21 @@
 \newcommand{\code}{\emph}
 \newcommand{\pkg}{\textsl}
 \newcommand{\proglang}{\textsl}
-\title{Time Series Database Interface (TSdbi) Illustrations}
-\begin{document}
-%%\author{Paul D. Gilbert}
-\maketitle
-\tableofcontents
-%\VignetteIndexEntry{Guide: TSdbi Interface Illustrations}
-\SweaveOpts{eval=TRUE,echo=TRUE,results=hide,fig=FALSE}
+%% If the size of graphs is not set, the default is 6x6. 
+%%  4x7 works well for graphs with a single panel, 
+%%  but needs to be over-ridden for multi-panel graphs.
+\SweaveOpts{eval=TRUE,echo=TRUE,results=hide,fig=FALSE,width=7.0,height=4}
 %\SweaveOpts{eval=TRUE,echo=TRUE,results=verbatim,fig=TRUE}
+%\VignetteIndexEntry{Guide: TSdbi Interface Illustrations}
+\begin{document}
+\begin{titlepage}
+\begin{center}
+{\huge Time Series Database Interface (TSdbi) Illustrations}\\[0.75cm]
+{\Large Paul D. Gilbert}\\[0.2cm]
+{\Large \today}\\[0.5cm]
+\end{center}
+\tableofcontents
+\end{titlepage}
 \begin{Scode}{echo=FALSE,results=hide}
  options(continue="  ")
 \end{Scode}
@@ -257,7 +264,7 @@ will not be used. To unset the default
 It is also possible to return multiple series, but they should all be of the
 same frequency. (The FRED series called M2 is a weekly series). 
 
-\begin{Scode}{fig=TRUE}
+\begin{Scode}{fig=TRUE,height=8}
   x <- TSget(c("CPIAUCNS","M2SL"), fred)
   tfplot(x, 
     Title = "Running commentary, blah, blah, blah", 
@@ -302,7 +309,7 @@ more details.
 
 The following connects to yahoo and loads the ticker symbol for Ford. 
 This is a multivariate time series with open, close, etc.
-\begin{Scode}{fig=TRUE}
+\begin{Scode}{fig=TRUE,height=8}
   yahoo <- TSconnect("getSymbol", dbname="yahoo") 
   x <- TSget("F", con=yahoo)
   plot(x)
@@ -310,7 +317,7 @@ This is a multivariate time series with open, close, etc.
 
 In this case, \code{tfplot} displays graphs in verticle panels. However, six
 panels do not fit on a page, so only the first three are displayed with:
-\begin{Scode}{fig=TRUE}
+\begin{Scode}{fig=TRUE,height=12}
   tfplot(x,series=1:3)
 \end{Scode}
 
@@ -367,7 +374,7 @@ is established.
   tfplot(x)
 \end{Scode}
 
-\begin{Scode}{results=verbatim,fig=TRUE}
+\begin{Scode}{results=verbatim,fig=TRUE,height=8}
   x <- TSget(c("DMAM1N", "DMAM3N"), rba)
   tfplot(x)
   TSdescription(x) 
@@ -377,7 +384,7 @@ As already illustrated above, the function \code{plot} displays the series
 somewhat differently than \code{tfplot}, and possibly differently depending on
 the objects time series representation.
 \code{tfplot} treats each series in the first argument as panels to be plotted.
-\begin{Scode}{results=verbatim,fig=TRUE}
+\begin{Scode}{results=verbatim,fig=TRUE,height=8}
   x <- TSget(c("DMAM1N", "DMAM3N", "DMABMN","DMAM1S","DMAM3S","DMABMS"), rba)
   plot(x)
 \end{Scode}
@@ -386,10 +393,10 @@ the objects time series representation.
 It is possible to specify the number of graphs on each page of the output device
 with the argument \code{graphs.per.page}. It is also possible to specify that a 
 subset of the series should be selected:
-\begin{Scode}{results=verbatim,fig=TRUE}
+\begin{Scode}{results=verbatim,fig=TRUE,height=12}
   tfplot(x, Title="Australian Monetary Aggregates", series=1:3)
 \end{Scode}
-\begin{Scode}{results=verbatim,fig=TRUE}
+\begin{Scode}{results=verbatim,fig=TRUE,height=12}
   tfplot(x, Title="Australian Monetary Aggregates", series=4:6)
 \end{Scode}
 
@@ -397,7 +404,7 @@ subset of the series should be selected:
 first argument are plotted in separate panels. Series in subsequent time series
 objects will be plotted respectively on the same panels as the first, 
 so the number of series in each object must be the same.
-\begin{Scode}{results=verbatim,fig=TRUE}
+\begin{Scode}{results=verbatim,fig=TRUE,height=8}
   tfplot(TSget(c("DMAM1S", "DMAM3S", "DMABMS"), rba),
          TSget(c("DMAM1N", "DMAM3N", "DMABMN"), rba),
     ylab=c("DMAM1", "DMAM3", "DMABM"),
@@ -417,7 +424,7 @@ from \url{http://pitrading.com/free\_market\_data.htm} which
 provides some end of day data free of charge. (Disclaimer: This site is 
 used as an example. Other than using this free data, I have no association 
 with the company.) 
-\begin{Scode}{results=verbatim,fig=TRUE}
+\begin{Scode}{results=verbatim,fig=TRUE,height=8}
   library("TSzip")  
   pitr <- TSconnect("zip", dbname="http://pitrading.com/free_eod_data")
   z <- TSget("INDU", pitr)
@@ -425,7 +432,7 @@ with the company.)
 \end{Scode}
 
 The following illustrates returning an \code{xts} \citep{xts} time series object.
-\begin{Scode}{results=verbatim,fig=TRUE}
+\begin{Scode}{results=verbatim,fig=TRUE,height=8}
   z <- TSget(c("EURUSD", "GBPUSD"), pitr, quote=c("Open","Close"),
          TSrepresentation=xts)
   tfplot(z,
@@ -524,7 +531,7 @@ added to the original data so that both lines are visible.
 The \proglang{R} variable can contain multiple series of the same frequency. 
 They are stored separately on the database.
 
-\begin{Scode}{results=verbatim,fig=TRUE}
+\begin{Scode}{results=verbatim,fig=TRUE,height=8}
  z <- ts(matrix(rnorm(200),100,2), start=c(1995,1), frequency=12)
   seriesNames(z) <- c("mat2c1", "mat2c2")
  TSreplace(z, con)
@@ -580,7 +587,7 @@ table where the data should be stored in cases where it is difficult to
 determine the periodicity of the data. See Appendix ``B'' for details of the
 specific tables.
 
-\begin{Scode}{results=verbatim,fig=TRUE}
+\begin{Scode}{results=verbatim,fig=TRUE,height=8}
  require("zoo") 
 
  z <- zoo(matrix(rnorm(200),100,2), as.Date("1990-01-01") + 0:99)
@@ -654,7 +661,7 @@ and check the saved version:
   tfplot(TSget(serIDs="gspc", con=con))
 \end{Scode}
 
-\begin{Scode}{results=verbatim,fig=TRUE}
+\begin{Scode}{results=verbatim,fig=TRUE,height=8}
    x <- TSget("ibm", quote = c("Close", "Vol"), con=yahoo)
    TSreplace(x, serIDs=c("ibm.Cl", "ibm.Vol"),  con=con, Table="B",
               TSdescription.=c("IBM Close","IBM  Volume"),
@@ -673,12 +680,12 @@ and check the saved version:
 %% this is causing problems because around July 2012 Yahoo began frequently
 %% having dupicate data on the final day (seems to be partial data for the 
 %% next day?), which causes zoo the complain. Hopefully Yahoo bug will be fixed.
-%%\begin{Scode}{results=verbatim,fig=TRUE}
+%%\begin{Scode}{results=verbatim,fig=TRUE,height=8}
 %%  x <- TSget(c("^ftse","^gspc"), con)
 %%  plot(x)
 %%\end{Scode}
 %%
-%%\begin{Scode}{results=verbatim,fig=TRUE}
+%%\begin{Scode}{results=verbatim,fig=TRUE,height=8}
 %%  tfplot(x)
 %%  TSdescription(x) 
 %%\end{Scode}
@@ -688,7 +695,7 @@ and check the saved version:
 %%  tfplot(x)
 %%\end{Scode}
 %%
-%%\begin{Scode}{results=verbatim,fig=TRUE}
+%%\begin{Scode}{results=verbatim,fig=TRUE,height=8}
 %%  tfplot(x, xlab = TSdescription(x))
 %%\end{Scode}
 %%
@@ -1068,8 +1075,6 @@ tables that expected by \code{TSconnect}.
 \begin{Scode}{results=hide}
  library("TSMySQL")
  con <-  dbConnect("MySQL", dbname="test") 
- #con <- dbConnect("MySQL", dbname="test", username=user, password=passwd, host=host)
-
  source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
  dbDisconnect(con)
 \end{Scode}
@@ -1077,8 +1082,16 @@ tables that expected by \code{TSconnect}.
 Now a TSdbi connection to the database is established.
 \begin{Scode}{results=hide}
   con  <-  TSconnect("MySQL", dbname="test")
-  #con <-  TSconnect("MySQL", dbname="test", username=user, password=passwd, host=host)
 \end{Scode} 
+
+Another alternative is to pass the user/password information in the arguments to
+the connection function:
+\begin{Scode}{results=hide,eval=FALSE}
+con <-  TSconnect("MySQL", dbname="test", username=user, password=passwd, host=host)
+\end{Scode} 
+
+This is may be cumbersome to change, and is generally considered to be less
+secure.
 
 While it may not be necessary to \code{detach} packages, the following prevents
 warnings later about objects being masked:
@@ -1115,8 +1128,6 @@ tables that expected by \code{TSconnect}.
 \begin{Scode}{results=hide}
   library("TSPostgreSQL")
   con  <- dbConnect("PostgreSQL", dbname="test", host=host)
-  #con <- dbConnect("PostgreSQL", dbname="test", user=user, password=passwd, host=host)
-
   source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
   dbDisconnect(con)
 \end{Scode}
@@ -1124,8 +1135,16 @@ tables that expected by \code{TSconnect}.
 Now a TSdbi connection to the database is established.
 \begin{Scode}{results=hide}
   con  <-  TSconnect("PostgreSQL", dbname="test", host=host)
-  #con <-  TSconnect("PostgreSQL", dbname="test", user=user, password=passwd, host=host)
 \end{Scode} 
+
+Another alternative is to pass the user/password information in the arguments to
+the connection function:
+\begin{Scode}{results=hide,eval=FALSE}
+  con <-  TSconnect("PostgreSQL", dbname="test", user=user, password=passwd, host=host)
+\end{Scode} 
+
+This is may be cumbersome to change, and is generally considered to be less
+secure.
 
 While it may not be necessary to \code{detach} packages, the following prevents
 warnings later about objects being masked:
@@ -1185,7 +1204,6 @@ connection, after which a \code{TSconnect} connection can be used:
 \begin{Scode}{results=hide}
 library("TSodbc")
 con <-  odbcConnect(dsn="test") 
-#con <-      odbcConnect(dsn="test", uid=user, pwd=passwd)
 if(con == -1) stop("error establishing ODBC connection.") 
 source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
 odbcClose(channel=con)
@@ -1194,8 +1212,17 @@ odbcClose(channel=con)
 Now a TSdbi connection to the database is established.
 \begin{Scode}{results=hide}
   con  <-  TSconnect("ODBC", dbname="test")
-  #con  <-  TSconnect("ODBC", dbname="test", uid=user, pwd=passwd)
 \end{Scode} 
+
+Another alternative is to pass the user/password information in the arguments to
+the connection function:
+\begin{Scode}{results=hide,eval=FALSE}
+con  <-  TSconnect("ODBC", dbname="test", uid=user, pwd=passwd)
+\end{Scode} 
+
+This is may be cumbersome to change, and is generally considered to be less
+secure.
+
 
 While it may not be necessary to \code{detach} packages, the following prevents
 warnings later about objects being masked:
@@ -1286,8 +1313,6 @@ tables that expected by \code{TSconnect}.
 \begin{Scode}{eval=FALSE}
  library("TSOracle")
  con  <- dbConnect("Oracle", dbname="test") 
- #con <- dbConnect("Oracle", dbname="test", username=user, password=passwd, host=host)
-
  source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
  dbDisconnect(con)
 \end{Scode}
@@ -1296,9 +1321,7 @@ tables that expected by \code{TSconnect}.
 Now a TSdbi connection to the database is established.
 \begin{Scode}{eval=FALSE}
   con  <-  TSconnect("Oracle", dbname="test")
-  #con <-  TSconnect("Oracle", dbname="test", username=user, password=passwd, host=host)
 \end{Scode} 
-
 
 While it may not be necessary to \code{detach} packages, the following prevents
 warnings later about objects being masked:
@@ -1378,8 +1401,12 @@ to \code{TSconnect}.
 
 \begin{Scode}{eval=FALSE}
   library("TSpadi")    
-  #con <- TSconnect("padi", dbname="ets", username=user, password=passwd, host=host)
   con <- TSconnect("padi", dbname="ets") # pass user/passwd/host in .padi.cfg
+\end{Scode}
+
+Another alternative is
+\begin{Scode}{eval=FALSE}
+  con <- TSconnect("padi", dbname="ets", username=user, password=passwd, host=host)
 \end{Scode}
 
 While \pkg{TSpadi} does not require Fame on the R clients, there is 
@@ -1526,8 +1553,6 @@ dbDisconnect(con)
 \end{Scode}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%\bibliographystyle{apa-boc}
-%%\bibliographystyle{plainnat}
 \bibliographystyle{apalike}
 %%abbrv    apalike  plain    unsrt alpha ieeetr siam newapa
 \setlength{\bibsep}{3pt}
