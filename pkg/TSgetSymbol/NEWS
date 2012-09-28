@@ -12,6 +12,8 @@ Changes in TSgetSymbol version 2012.8-1
    	return Open, High, Low, Close, Volume, Adjusted, as was documented
 	some places but not other. Adjusted documentation for consistency.
 
+   o	Fixed bug matching "^" in series names when quote was specified.
+
 Changes in TSgetSymbol version 2012.4-1
 
    o	Added tfplot to Suggests in DESCRIPTION.

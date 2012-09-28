@@ -78,7 +78,8 @@ setMethod("TSdates",
 #trace("TSget", browser, exit=browser, signature = c(serIDs="character", #con="TSgetSymbolConnection"))
 
 setMethod("TSget",     signature(serIDs="character", con="TSgetSymbolConnection"),
-   definition=function(serIDs, con, TSrepresentation=options()$TSrepresentation,
+   definition=
+TSget <-   function(serIDs, con, TSrepresentation=options()$TSrepresentation,
        tf=NULL, start=tfstart(tf), end=tfend(tf),
        names=serIDs, quote = NULL, 
        quiet=TRUE, repeat.try=3, ...){ 
@@ -123,8 +124,10 @@ setMethod("TSget",     signature(serIDs="character", con="TSgetSymbolConnection"
        if (inherits(r , "try-error")) stop("series not retrieved:", r)
        if (is.character(r)) stop("series not retrieved:", r)
        #TSrefperiod(r) <- quote[i]
-       if (!is.null(quote)) 
-          r <- r[, paste(toupper(serIDs[i]),".", quote[i], sep="")]
+       if (!is.null(quote)){
+          id <- toupper(sub("^", "", serIDs[i], fixed=TRUE))
+	  r <- r[, paste(id,".", quote[i], sep="")]
+	  }
        mat <- tbind(mat, r)
        desc <- c(desc, paste(serIDs[i], quote[i], collapse=" "))
        }
