@@ -91,8 +91,44 @@ TSdates("v141", con)
 # weekly NOT WORKING PROPERLY
 #x <- fromJSON(getURL("http://{url}/V36610"),nullValue=NA) 
 BoCbal <- TSget("V36610", con)
+##the csv data file looks like
+#Legend:
+#v36610,"Table 176-0009: Bank of Canada, assets and liabilities, Wednesdays; Canada; Total assets (x 1,000,000)"
+#Weekly,v36610
+#Jan 01 1980,
+#Jan 08 1980,
+#...
+#Nov 25 1980,
+#Dec 02 1980,16495
+#Dec 09 1980,16680
+#...
+#Sep 11 2012,71937
+#Sep 18 2012,72027
+
 seriesNames(BoCbal) <- "Bank of Canada - Assets and Liabilities"
 tfplot(BoCbal)
 
 # mixed
 TSdates(c("v498086", "v498087","V122746", "v687341", "V36610", "v141"), con)
+
+# daily FAILS
+#OverNightFin <-  TSget("v39050", con)
+#the csv data file looks like
+#Legend:
+#v39050,"Table 176-0048: Bank of Canada, money market and other interest rates, daily; Canada; Overnight money market financing"
+#Daily,v39050
+#Jan 01 1991,
+#Jan 02 1991,
+#Jan 03 1991,
+#...
+#Dec 23 1997,4.34
+#Dec 24 1997,4.36
+#Dec 25 1997,..
+#Dec 26 1997,..
+#Dec 27 1997,0.00
+#Dec 28 1997,0.00
+#...
+#Sep 23 2012,0.00
+#Sep 24 2012,1.00
+#Sep 25 2012,
+#tfplot(OverNightFin)
