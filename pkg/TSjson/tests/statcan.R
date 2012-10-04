@@ -9,6 +9,7 @@ require("tfplot")
 
 
 # user/passwd/host from file ~/.TSjson.cfg
+#con <- TSconnect("json", dbname="proxy-cansim")
 con <- TSconnect("json", dbname="cansim")
 
 # quarterly
@@ -78,13 +79,10 @@ tfplot(ytoypc(x),
 TSdates(c("v687341", "v687342"), con)
 TSdescription(c("v687341", "v687342"), con)
 
-# semi- annual FAILS
-#  freq is coming back as "Error"
-#x <- fromJSON(getURL("http://{url}/v141")) 
-#x <- fromJSON(getURL("http://user:passwd@url/db/default/get.json/v141")) 
-#x <- TSget("v141", con)
-#seriesNames(x) <- "Footwear production - Canada; Work and utility-type boots and shoes"
-#tfplot(x)
+# semi- annualmay still fail on proxy
+x <- TSget("v141", con)
+seriesNames(x) <- "Footwear production - Canada; Work and utility-type boots and shoes"
+tfplot(x)
 
 TSdates("v141", con)
 
