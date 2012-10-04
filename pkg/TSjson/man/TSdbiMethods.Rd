@@ -13,7 +13,7 @@
 \alias{jsonDriver-class}
 \alias{TSjsonConnection-class}
 
-\title{Wrap getURL and fromJSON to implement methods for TSdbi Generics}
+\title{Use fromJSON to implement methods for TSdbi Generics}
 \description{Get a time series data from databases exporting series as json 
   objects. In particular, proxies to other databases such as Statisics Canada.}
 \usage{

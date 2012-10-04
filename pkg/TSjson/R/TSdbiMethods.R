@@ -10,7 +10,7 @@ json <- function() {
 # require("DBI") for this
 setClass("TSjsonConnection", contains=c("DBIConnection", "conType","TSdb"),
    representation(user="character", password="character", host="character",
-                  url="character") )
+                  url="character", proxy="logical") )
 
 ####### some kludges to make this look like DBI. ######
 # this does nothing but prevent errors if it is called. 
@@ -20,37 +20,47 @@ setMethod("dbDisconnect", signature(conn="TSjsonConnection"),
 
 setMethod("TSconnect",   signature(drv="jsonDriver", dbname="character"),
   definition= function(drv, dbname, user=NULL, password=NULL, host=NULL, ...){
-   if (is.null(dbname)) stop("dbname must be specified")
-   # if other values are not specified get defaults from file or system variables
+ if (is.null(dbname)) stop("dbname must be specified")
+ # if other values are not specified get defaults from file or system variables
+
+ if (dbname == "proxy-cansim") {
+   dbname <- "scapi/default/get.json"
+   
    f <- paste(Sys.getenv("HOME"),"/.TSjson.cfg", sep="")
    if (file.exists(f)) {
-       f <- scan(f, what="") # parse a file for user password host
-       r <- list(user=f[1],        # f[2+seq(length(f))[f=="user"]],
-                 password = f[2] , # f[2+seq(length(f))[f=="password"]],
-                 host     = f[3]   #f[2+seq(length(f))[f=="host"]]
+       f <- scan(f, what="") # parse a file for [proxy-cansim] user password host
+       # only proxy-cansim supported for now
+       r <- list(user=f[2],        
+                 password = f[3] , 
+                 host     = f[4]   
 		 )
       }
-   else {
-       r <- list(user=      Sys.getenv()["TSJSONUSER"],
-                 password = Sys.getenv()["TSJSONPASSWORD"],
-                 host     = Sys.getenv()["TSJSONHOST"])
-      }
+   else  r <- list(user=      Sys.getenv()["TSJSONUSER"],
+                   password = Sys.getenv()["TSJSONPASSWORD"],
+                   host     = Sys.getenv()["TSJSONHOST"])
+    
    if (is.null(user)) user <- r$user
    if (is.null(password)) password <-r$password
    if (is.null(host)) host <- r$host
+   url <- paste("http://",user,":",password,"@",host,"/",dbname,"/", sep="")
+   proxy <- TRUE
+   } else
+
+ if (dbname == "cansim") {
+   user <- password <- host  <- ""
+   # this is not really a url in this case, but the .py has the url+
+   url <-  paste(path.package("TSjson"), "/exec/cansimGet.py ", sep = "")
+   proxy <- FALSE
+   }
+
+ # there could be a better connection test mechanism 
+ #if(inherits(con, "try-error")) 
+ #      stop("Could not establish TSjsonConnection to ",  dbname)
    
-   if (dbname == "cansim") dbname <- "scapi/default/get.json"
-   
-   url <- paste("http://", user, ":", password, "@", host, "/", dbname, "/", sep="")
-  
-   # there could be a better connection test mechanism 
-   #if(inherits(con, "try-error")) 
-   #      stop("Could not establish TSjsonConnection to ",  dbname)
-   
-   new("TSjsonConnection", drv="json", dbname=dbname,
+ new("TSjsonConnection", drv="json", dbname=dbname,
         hasVintages=FALSE, hasPanels=FALSE, 
-	user=user, password=password, host=host, url=url ) 
-   } )
+	user=user, password=password, host=host, url=url, proxy=proxy ) 
+ } )
 
 
 setMethod("TSdates",
@@ -60,7 +70,7 @@ setMethod("TSdates",
    # This requires retrieving series individually so they are not truncated.
    r <- av <- st <- en <- tb <- NULL
    for (i in 1:length(serIDs))
-     {r <- try(TSget(serIDs[i], con), silent = TRUE)
+     {r <- try(TSget(serIDs[i], con, quiet=TRUE), silent = TRUE)
 
       if(inherits(r, "try-error") ) {
         av <- c(av, FALSE)
@@ -96,33 +106,49 @@ setMethod("TSget",     signature(serIDs="character", con="TSjsonConnection"),
   if(is.null(TSrepresentation)) TSrepresentation <- "default"
   if(is.null(repeat.try)) repeat.try <- 5
   
-  url <- con@url
-  
+  url <- con@url 
+
   mat <- desc <- doc <- label <- source <-  rp <- NULL
 
   for (i in seq(length(serIDs))) {
     qq <- paste(url, serIDs[i], sep="")
     for (rpt in seq(repeat.try)) {
-	   rr <- try(fromJSON(getURL(qq)), silent=quiet)
+	   if(con@proxy) rr <- try(getURL(qq), silent=quiet)
+	   else          rr <- try(system(qq, intern=TRUE), silent=quiet)
 	   if (!inherits(rr , "try-error")) break
 	   }
 
-    if(inherits(rr , "try-error") )
-       stop("Series retrieval failed. Server ", con@host, "not responding or returning unrecognized object.")
+    if(inherits(rr , "try-error") ) # after repeating
+       if(con@proxy)
+          stop("Series retrieval failed. Server ", con@host, "not responding.")
+       else          
+          stop("system command did not execute properly.")
+
+    # there may also be attr(rr,"errmsg") available
+    if ((!is.null(attr(rr,"status"))) && (0 !=  attr(rr,"status")) ) 
+       stop("Series retrieval failed. Series ",serIDs[i], " may not exist.")
+
+    rr <-  try(fromJSON(rr, asText=TRUE), silent=quiet)
+    if(inherits(rr , "try-error") ) 
+       stop("Conversion from JSON failed, server returning unrecognized object.")
+
     if(0==length(rr))
-       stop("Series retrieval failed. Series ",serIDs[i]," may not exist at ", con@host)
+       stop("Series retrieval failed. Series ",serIDs[i], " may not exist.")
 
     fr <- rr$freq
     if("Error" == fr) stop("frequency not yet supported.")
-    if(52 == fr) warning("weekly frequency not yet supported correctly. Dates may be wrong")
+    if(52 == fr) 
+      warning("weekly frequency not yet supported correctly. Dates may be wrong")
     # NOTE 52 should not be ts() below
     st <- rr$start
     x  <- rr$x
+    
     if(is.list(x)) x <- unlist(x) #this seems necessary sometimes
-    r <-  if((TSrepresentation=="default" | TSrepresentation=="ts")
-             && fr %in% c(1,4,12,2, 52)) ts(x, start=st, frequency=fr) 
-	     else zoo(x, start=st, frequency=fr)
-       #r <- zoo(c(r[[1]]), order.by=as.Date(ti(r[[1]])), frequency=frequency(r[[1]]))
+    
+    if((TSrepresentation=="default" | TSrepresentation=="ts") 
+           && fr %in% c(1,4,12,2))
+	 r <-   ts(x, start=st, frequency=fr) 
+    else r <-  zoo(x, order.by=as.Date(rr$dates, format='%b %d %Y'))
 
     mat <- tbind(mat, r)
     if(TSdescription) desc <- c(desc,   rr$shortdesc ) 
