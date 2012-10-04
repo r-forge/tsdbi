@@ -17,11 +17,11 @@
 %%  but needs to be over-ridden for multi-panel graphs.
 \SweaveOpts{eval=TRUE,echo=TRUE,results=hide,fig=FALSE,width=7.0,height=4}
 %\SweaveOpts{eval=TRUE,echo=TRUE,results=verbatim,fig=TRUE}
-%\VignetteIndexEntry{Guide: TSdbi Interface Illustrations}
+%\VignetteIndexEntry{Time Series Database Interface (TSdbi) Guide and Illustrations}
 \begin{document}
 \begin{titlepage}
 \begin{center}
-{\huge Time Series Database Interface (TSdbi) Illustrations}\\[0.75cm]
+{\huge Time Series Database Interface (TSdbi) Guide and Illustrations}\\[0.75cm]
 {\Large Paul D. Gilbert}\\[0.2cm]
 {\Large \today}\\[0.5cm]
 \end{center}

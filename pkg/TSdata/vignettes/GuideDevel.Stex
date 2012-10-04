@@ -1,10 +1,10 @@
 \documentclass[english]{article}
 \newcommand{\code}{\emph}
 \newcommand{\pkg}{\textsl}
-\title{Time Series Database Interface Illustrations (packages in Development)}
+\title{TSdbi Guide to Development Work in Progress}
 \begin{document}
 \maketitle
-%\VignetteIndexEntry{TSdata Guide}
+%\VignetteIndexEntry{TSdbi Guide to Development Work in Progress}
 \SweaveOpts{eval=FALSE,echo=TRUE,results=hide,fig=FALSE}
 %\SweaveOpts{eval=TRUE,echo=TRUE,results=verbatim,fig=TRUE}
 \begin{Scode}{echo=FALSE,results=hide}
