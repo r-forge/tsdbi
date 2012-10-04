@@ -2,7 +2,12 @@ See also
 
    o	See also NEWS in the TSdbi package.
 
+Changes in TSdata version 2012.10-1
+
+   o	copied Stex vignette files to inst/doc so CRAN processing puts them
+   	on the web page..
+
+
 Changes in TSdata version 2012.8-1
 
    o	first release.
-
