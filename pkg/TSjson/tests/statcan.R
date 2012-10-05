@@ -14,7 +14,6 @@ con <- TSconnect("json", dbname="cansim")
 
 # quarterly
 
-#x <- fromJSON(getURL("http://{url}/v498086")) 
 x <- TSget("v498086", con)
 tfplot(x)
 
@@ -66,7 +65,6 @@ tfplot(ytoypc(resMorg), annualizedGrowth(resMorg),
 
 # annual 
 
-#x <- fromJSON(getURL("http://{url}/v687341")) 
 x <- TSget("v687341", con)
 seriesNames(x) <- "Canadian GDP Growth"
 tfplot(ytoypc(x),
@@ -79,7 +77,7 @@ tfplot(ytoypc(x),
 TSdates(c("v687341", "v687342"), con)
 TSdescription(c("v687341", "v687342"), con)
 
-# semi- annualmay still fail on proxy
+# semi- annual
 x <- TSget("v141", con)
 seriesNames(x) <- "Footwear production - Canada; Work and utility-type boots and shoes"
 tfplot(x)

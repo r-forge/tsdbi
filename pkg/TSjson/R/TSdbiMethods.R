@@ -112,34 +112,43 @@ setMethod("TSget",     signature(serIDs="character", con="TSjsonConnection"),
 
   for (i in seq(length(serIDs))) {
     qq <- paste(url, serIDs[i], sep="")
-    for (rpt in seq(repeat.try)) {
-	   if(con@proxy) rr <- try(getURL(qq), silent=quiet)
-	   else          rr <- try(system(qq, intern=TRUE), silent=quiet)
-	   if (!inherits(rr , "try-error")) break
-	   }
+    
+    if(con@proxy){
+       for (rpt in seq(repeat.try)) {
+   	      rr <- try(getURL(qq), silent=quiet)
+   	      if (!inherits(rr , "try-error")) break
+   	      }
 
-    if(inherits(rr , "try-error") ) # after repeating
-       if(con@proxy)
-          stop("Series retrieval failed. Server ", con@host, "not responding.")
-       else          
-          stop("system command did not execute properly.")
+       if(inherits(rr , "try-error") ) stop(# after repeating
+ 	    "Series retrieval failed. Server ", con@host, "not responding.")
 
-    # there may also be attr(rr,"errmsg") available
-    if ((!is.null(attr(rr,"status"))) && (0 !=  attr(rr,"status")) ) 
-       stop("Series retrieval failed. Series ",serIDs[i], " may not exist.")
+       # there may also be attr(rr,"errmsg") available
+       if ((!is.null(attr(rr,"status"))) && (0 !=  attr(rr,"status")) ) 
+   	  stop("Series retrieval failed. Series ",serIDs[i], " may not exist.")
 
-    rr <-  try(fromJSON(rr, asText=TRUE), silent=quiet)
-    if(inherits(rr , "try-error") ) 
-       stop("Conversion from JSON failed, server returning unrecognized object.")
+       rr <-  try(fromJSON(rr, asText=TRUE), silent=quiet)
+       if(inherits(rr , "try-error") ) stop(
+   	   "Conversion from JSON failed, server returning unrecognized object.")
+       } 
+    else {#!con@proxy
+       for (rpt in seq(repeat.try)) {
+   	    rr <- fromJSON(pipe(qq), asText=TRUE)
+   	   #rr <- try(fromJSON(pipe(qq), asText=TRUE), silent=quiet)
+   	   #rr <- try(system(qq, intern=TRUE), silent=quiet)
+   	    if (!inherits(rr , "try-error")) break
+   	    }
+       if(inherits(rr , "try-error") ) # after repeating
+   	  stop("system command or fromJSON did not execute properly.")
+       # this is for system()
+       # if ((!is.null(attr(rr,"status"))) && (0 !=  attr(rr,"status")) ) stop( 
+       #   "Series retrieval failed. Series ",serIDs[i], " may not exist.")
+       }
 
     if(0==length(rr))
        stop("Series retrieval failed. Series ",serIDs[i], " may not exist.")
 
     fr <- rr$freq
-    if("Error" == fr) stop("frequency not yet supported.")
-    if(52 == fr) 
-      warning("weekly frequency not yet supported correctly. Dates may be wrong")
-    # NOTE 52 should not be ts() below
+    if("Error" == fr) stop("frequency not recognized.")
     st <- rr$start
     x  <- rr$x
     

@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # eg
 #    cansimGet.py v498086
+#    ./cansimGet.py V36610
+#    ./cansimGet.py V39050
 # or
 #    python  cansimGet.py v498086
 
@@ -102,6 +104,9 @@ def get(mnem):
        
        if xi == "":
             x.append(None)
+       elif xi == "..":
+            x.append(None)
+	    # check this bad data point with statcan or BoC
        else:
             x.append(float(xi))
     
