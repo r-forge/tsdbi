@@ -132,9 +132,10 @@ setMethod("TSget",     signature(serIDs="character", con="TSjsonConnection"),
        } 
     else {#!con@proxy
        for (rpt in seq(repeat.try)) {
-   	    rr <- fromJSON(pipe(qq), asText=TRUE)
-   	   #rr <- try(fromJSON(pipe(qq), asText=TRUE), silent=quiet)
-   	   #rr <- try(system(qq, intern=TRUE), silent=quiet)
+   	    rr <- fromJSON(pcon <- pipe(qq), asText=TRUE)
+   	   #rr <- try(fromJSON(pcon <- pipe(qq), asText=TRUE), silent=quiet)
+   	    close(pcon)
+	   #rr <- try(system(qq, intern=TRUE), silent=quiet)
    	    if (!inherits(rr , "try-error")) break
    	    }
        if(inherits(rr , "try-error") ) # after repeating
