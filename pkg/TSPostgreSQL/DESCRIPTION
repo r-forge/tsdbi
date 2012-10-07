@@ -1,5 +1,5 @@
 Package: TSPostgreSQL
-Version: 2012.8-1
+Version: 2012.10-1
 Title: TSdbi extensions for PostgreSQL
 Description: TSPostgreSQL provides a PostgreSQL interface for TSdbi.
 	Comprehensive examples of all the TS* packages is provided in the
