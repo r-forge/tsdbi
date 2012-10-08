@@ -1,4 +1,5 @@
 #  ../Makevars goes up real path not sym link, so
+NOTPARALLEL=TSodbc  TSdata TScompare
 QC=${shell cd ../ ; pwd}
 
 include $(QC)/Makevars 
