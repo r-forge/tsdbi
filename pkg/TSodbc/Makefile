@@ -1,5 +1,5 @@
 # odbc can be accessing one of these db servers, so
-NOTPARALLEL=TSMySQL TSPostgreSQL 
+NOTPARALLEL=TSPostgreSQL TSdata TScompare
 
 #  ../Makevars goes up real path not sym link, so
 QC=${shell cd ../ ; pwd}
