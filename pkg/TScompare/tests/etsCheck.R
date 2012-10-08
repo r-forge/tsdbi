@@ -1,3 +1,5 @@
+if (FALSE){# disable until padi can be replaced by json
+
 service1 <- Sys.getenv("_R_CHECK_HAVE_MYSQL_")
 service2 <- Sys.getenv("_R_CHECK_HAVE_PADI_")
 
@@ -75,4 +77,5 @@ if(!identical(as.logical(service1), TRUE) |
       dbDisconnect(con1)
       #dbDisconnect(con2)
       }
+}
 }

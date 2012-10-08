@@ -3,9 +3,8 @@ testequaltf <- function(s1, s2) {
     #                latestStart(s1) == latestStart(s2))), silent=TRUE)
     r <- try(all(c(tfend(s1) == tfend(s2), tfstart(s1) == tfstart(s2))), 
              silent=TRUE)
-    if (inherits(r, "try-error")) r <- FALSE # so includes failed as well as unequal
-    # failure may be because of different tf representations, 
-    #     eg. zoo from sql vs ts from padi for weekly.
+    if (inherits(r, "try-error")) r <- FALSE #includes failed as well as unequal
+    # failure may be because of different time representations, 
     r
     }
 
