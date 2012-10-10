@@ -1,6 +1,3 @@
-#  TScompare may need one of these
-NOTPARALLEL=TSodbc TSMySQL TSSQLite TSPostgreSQL TSdata
-
 #  ../Makevars goes up real path not sym link, so
 QC=${shell cd ../ ; pwd}
 
