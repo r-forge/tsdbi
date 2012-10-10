@@ -10,6 +10,10 @@ Known BUGS
    o	Warning messages about "may be a Fame Server path" coming from the fame
 	package in the case of a remote servers (cannot be suppressed).
 
+Changes in TSfame version 2012.10-1
+
+   o	Remove duplication of Imports and Depends in DESCRIPTION file.
+
 Changes in TSfame version 2012.8-1
 
    o	Modified Title in DESCRIPTION file so TSdbi packages will be more
