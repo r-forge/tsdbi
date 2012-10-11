@@ -6,3 +6,4 @@ include $(QC)/Makevars
 default: $(DEFAULT)
 
 include $(QC)/Makerules
+.NOTPARALLEL: $(TESTS:%=$(FLAGS)/tests/%)
