@@ -21,20 +21,28 @@ def get(mnem):
     import mechanize, re, csv, urllib2
     # Open search form
     response = mechanize.urlopen("http://www5.statcan.gc.ca/cansim/home-accueil?lang=eng")
-    
+    if not response: return dict(error="URL not responding.", mnem=mnem)
+
     #mnem=request.args[0]
     # Find form
     forms = mechanize.ParseResponse(response, backwards_compat=False)
     form = forms[0]
     form.set_value(mnem, name="pattern", kind="text")
     request2 = form.click()
-    
+
     response2 = mechanize.urlopen(request2)
+    if not response2: 
+        return dict(error="Form navigation step 2 failed.", mnem=mnem)
     forms = mechanize.ParseResponse(response2, backwards_compat=False)
     form = forms[0]
-    request3 = form.click(id="a08Sbm")
-    
+    try: 
+        request3 = form.click(id="a08Sbm")
+    except: 
+        return dict(error="Series not found.", mnem=mnem)
+
     response3 = mechanize.urlopen(request3)
+    if not response3:
+        return dict(error="Form navigation step 3 failed.", mnem=mnem)
     forms = mechanize.ParseResponse(response3, backwards_compat=False)
     form = forms[0]
     
@@ -53,13 +61,18 @@ def get(mnem):
     request4 = form.click(label="Retrieve now")
     
     response4 = mechanize.urlopen(request4)
-    csv_search = re.search('http://www5.statcan.gc.ca/cansim/results/cansim.[0-9]*\.csv', response4.read())
+    if not response4:
+        return dict(error="Form navigation step 4 failed.", mnem=mnem)
     
-    if csv_search:
-        f_url = csv_search.group()
+    csv_search = re.search('http://www5.statcan.gc.ca/cansim/results/cansim.[0-9]*\.csv', response4.read())
+    if not csv_search:
+        return dict(error="File to download not found.", mnem=mnem)
+    
+    f_url = csv_search.group()
     
     f = urllib2.urlopen(f_url)
-    
+    if not f: return dict(error="Retrieving file failed.", mnem=mnem)
+   
     a = []
     for l in f.readlines():
         a.append(l)

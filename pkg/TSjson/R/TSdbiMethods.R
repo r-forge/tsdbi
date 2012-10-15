@@ -136,11 +136,13 @@ setMethod("TSget",     signature(serIDs="character", con="TSjsonConnection"),
    	   #rr <- try(fromJSON(pcon <- pipe(qq), asText=TRUE), silent=quiet)
    	    close(pcon)
 	   #rr <- try(system(qq, intern=TRUE), silent=quiet)
-   	    if (!inherits(rr , "try-error")) break
+	    if ((!inherits(rr , "try-error")) && (is.null(rr$error))) break
    	    }
-       if(inherits(rr , "try-error") ) # after repeating
+       if(inherits(rr , "try-error")) # after repeating
    	  stop("system command or fromJSON did not execute properly.")
-       # this is for system()
+       else if(!is.null(rr$error)) stop("error retrieving series: ", rr$error)
+       
+       # this is for system() rather than pipe()
        # if ((!is.null(attr(rr,"status"))) && (0 !=  attr(rr,"status")) ) stop( 
        #   "Series retrieval failed. Series ",serIDs[i], " may not exist.")
        }
@@ -158,7 +160,11 @@ setMethod("TSget",     signature(serIDs="character", con="TSjsonConnection"),
     if((TSrepresentation=="default" | TSrepresentation=="ts") 
            && fr %in% c(1,4,12,2))
 	 r <-   ts(x, start=st, frequency=fr) 
-    else r <-  zoo(x, order.by=as.Date(rr$dates, format='%b %d %Y'))
+    else {
+         require("tframePlus")
+	 require("zoo")
+	 r <-  zoo(x, order.by=as.Date(rr$dates, format='%b %d %Y'))
+	 }
 
     mat <- tbind(mat, r)
     if(TSdescription) desc <- c(desc,   rr$shortdesc ) 
@@ -173,7 +179,7 @@ setMethod("TSget",     signature(serIDs="character", con="TSjsonConnection"),
 
   if( (!is.null(rp)) && !all(is.na(rp)) ) TSrefperiod(mat) <- rp      
 
-  if (! TSrepresentation  %in% c( "zoo", "default", "tis")){
+  if (! TSrepresentation  %in% c( "zoo", "default")){
       require("tframePlus")
       mat <- changeTSrepresentation(mat, TSrepresentation)
       }

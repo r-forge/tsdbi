@@ -37,11 +37,11 @@ tfplot(ytoypc(TSget(c("v498086", "v498087"), con)))
 TSdates(c("V122746", "V122747"), con)
 
 resMorg <- TSget("V122746", con, TSdescription=TRUE, TSdoc=TRUE, TSlabel=TRUE)
-TSdescription(x)
-TSdoc(x)
-TSlabel(x)
-TSseriesIDs(x)
-TSsource(x)
+TSdescription(resMorg)
+TSdoc(resMorg)
+TSlabel(resMorg)
+TSseriesIDs(resMorg)
+TSsource(resMorg)
 seriesNames(resMorg) <- "Residential Mortgage Credit (SA)"
 
 tfplot(ytoypc(resMorg), 
