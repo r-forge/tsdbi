@@ -13,9 +13,10 @@
 \alias{jsonDriver-class}
 \alias{TSjsonConnection-class}
 
-\title{Use fromJSON to implement methods for TSdbi Generics}
-\description{Get a time series data from databases exporting series as json 
-  objects. In particular, proxies to other databases such as Statisics Canada.}
+\title{TSdbi methods to importing time series from web sources via JSON}
+\description{Get time series data from web data sources, importing them using 
+  Javascript object notation. Direct connections or a proxy connection are
+  possible. (Only Statistics Canada connections are currently supported.)}
 \usage{
      jsonCall() 
     \S4method{TSget}{character,TSjsonConnection}(
@@ -68,37 +69,54 @@
 }
 \value{Depends.}
 \details{
-These functions interface to databases that provide time series data as a simple
-json  object (JavaScript Object Notation). The database can be a proxy portal 
-to the real database, simply providing an intermediate server supporting a 
-programmable API. The intermediate proxy server then
-contacts the real server, automatically providing appropriate button clicks
-to a web interface at the real data source, and retrieves and relays the data.
+These functions interface to web time series databases and import data using
+simple JavaScript Object Notation (JSON). 
+The web source can be a proxy portal to the real database, 
+simply providing an intermediate server that contacts the real server. 
+The proxy retrieves and relays the data. This can be convenient in some cases,
+for example, when all the necessary \code{Python} cannot be installed on the 
+client machine. 
 
-\code{TSget} is a wrapper for \code{jsonCall} to provide an interface that 
-is consistent with \pkg{TSdbi}. The \pkg{TSdbi} function argument \code{serId} 
-specifies the series to return.
-The \code{user}, \code{password}, and \code{host}, can be specified in the 
-argument. If specified as \code{NULL} (the default) then they will be 
-determined by reading a file \code{~/.TSjson.cfg} which should have a single
-line with three fields: user  password  host. If the file does not
-exist then environment variables "TSJSONUSER", "TSJSONPASSWORD", 
-and "TSJSONHOST" will be used.
-
+The function \code{TSconnect} establishes the source of the web data, and
+whether a proxy server will be used or not. Argument
 \code{dbname} specifies a recognized database (e.g "cansim") which is expanded
-to an appropriate string to find the database. For unrecognized databases the
+to an appropriate string to find the database. 
+
+If a proxy server is to be used, the \code{dbname} should specify the proxy
+server, for example, \code{dbname="proxy-cansim"}. In this case credentials will be
+needed.
+The \code{user}, \code{password}, and \code{host}, can be specified as 
+arguments. If specified as \code{NULL} (the default) then they will be 
+determined by reading a file \code{~/.TSjson.cfg} which should have a
+line with four fields: 
+
+[proxy-cansim] user  password  host
+
+The first field should match the \code{dbname} specification.
+Currently only a single line is supported, starting with "[proxy-cansim]", 
+but the format is intended for extension to support proxies to 
+different web databases. 
+
+If the file does not exist then environment variables "TSJSONUSER", 
+"TSJSONPASSWORD", and "TSJSONHOST" will be used.
+
+For unrecognized databases specified in \code{dbname}, the
 value of \code{dbname} is simply appended to the URL specification, allowing for
-arbitrary database host. (But, of course, the value returned by the host must be
-a time series in the recognized format in order for this to work. The URL
-specification is expanded to \code{"http://user:password@host/dbname/serID"}.
+an arbitrary database host. (But the value returned by the host must
+be a time series in the recognized format in order for this to work. The URL
+specification is expanded using other arguments
+to \code{"http://user:password@host/dbname/serID"}.
+
+\code{TSget} calls \code{Python} code to extract the data. The \code{Python} 
+code returns a simple JSON format which is decoded by \code{fromJSON}.
+The \code{TSget} function argument \code{serId} specifies the series to return.
 
 \pkg{TSjson} does not support writing data to the source.
 
 The classes \code{jsonDriver} and \code{TSjsonConnection} extend classes
 \code{DBIDriver} and  \code{DBIConnection} in the DBI package.
 
-See the package vignette or the vignette for package \pkg{TSdata} for 
-additional examples.
+See the vignette for package \pkg{TSdata} for  additional examples.
 }
 
 \seealso{ 
