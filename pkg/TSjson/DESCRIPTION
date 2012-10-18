@@ -1,12 +1,10 @@
 Package: TSjson
 Version: 2012.10-1
-Title:  TSdbi extension for JSON objects from databases 
+Title:  TSdbi extension for importing time series from web sources via JSON 
 Description: Provides methods for generics in the TSdbi package to 
-	retrieve data from databases returning series as json objects. 
-	In particular, TSjson can be used to contact proxies servers set up to 
-	provide a programmable API as an intermediate to other database
-	servers that have only browser based access implemented (such as 
-	Statistics Canada).
+	retrieve data from web data sources, importing them using Javascript 
+	object notation. Direct connections or a proxy connection are
+	possible. (Only Statistics Canada connections are currently supported.)
 	Comprehensive examples of all the TS* packages is provided in the
 	vignette Guide.pdf with the TSdata package.
 Depends: R (>= 2.14.0), methods, DBI, TSdbi (>= 2012.8-1), tframe (>= 2011.11-1), RJSONIO (>= 1.0-0)
