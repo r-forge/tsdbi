@@ -157,7 +157,15 @@ setMethod("TSget",     signature(serIDs="character", con="TSjsonConnection"),
     st <- rr$start
     x  <- rr$x
     
-    if(is.list(x)) x <- unlist(x) #this seems necessary sometimes
+    #this is necessary sometimes. unlist(x) would be ok but missing
+    # values (py None are translated to json null and then as null
+    # in the R list) get truncated out with unlist(x)
+    if(is.list(x)) {
+        na <- unlist(lapply(x, is.null))
+	z <- unlist(x)
+	x <- rep(NA, length(na)) 
+	x[!na] <- z 
+	}
     
     if((TSrepresentation=="default" | TSrepresentation=="ts") 
            && fr %in% c(1,4,12,2))
