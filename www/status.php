@@ -12,19 +12,25 @@
 <P>
 The general status of the packages is as follows: <i>TSgetSymbol</i>, 
 <i>TShistQuote</i>, <i>TSxls</i>, <i>TSzip</i> <i>TSMySQL</i>, 
-<i>TSPostgreSQL</i>, <i>TSSQLite</i>, <i>TSodbc</i> work and are actively 
+<i>TSPostgreSQL</i>, <i>TSSQLite</i>, <i>TSodbc</i>, <i>TScompare</i>, 
+and <i>TSdata</i> work and are actively 
 tested. 
 <P>
-<i>TSOracle</i> may work, but I have no mechanism to test it.
+<i>TSjson</i> works but further testing is being done before it is released.
+It is currently only implemented for connection to Statistics Canada.
 <P>
-<i>TSfame</i> works (as of 2011) but I no longer have access to Fame to test 
+<i>TSOracle</i> may work, but I have no mechanism to test it. (Volunteers 
+please contact the project administrator.)
+<P>
+<i>TSfame</i> worked (in 2011) but I no longer have access to Fame to test 
 it. (Also, the <i>fame</i> package, which <i>TSfame</i> uses, requires
-purchasing the Fame API driver to build. 
+purchasing the Fame API driver to build completely. 
 I have never tested this in Windows, but it should work.)
-<i>TSpadi</i> works (as of 2011) but I no longer have access to Fame to 
+<P>
+<i>TSpadi</i> worked (in 2011) but I no longer have access to Fame to 
 test it, and it is largely superceded by <i>TSfame</i>.
 <P>
-<i>TSsdmx</i> is on hold pending release of an SDMX package.
+<i>TSsdmx</i> is still experimental.
 
 <P>See the R-forge packages or source code repository
 for more specific details about current versions and ongoing changes.

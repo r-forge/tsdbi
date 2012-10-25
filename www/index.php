@@ -10,26 +10,28 @@
 <BODY BGCOLOR="#FFFFFF">
 <hr>
 <b><i>TSdbi</i></b> is the base package in a group of packages,
-that provide a common interface (API) to time series databases. 
+that provide a common interface (API) to time series sources and databases. 
 That is, you specify the connection, and after that all of your R code 
 syntax can be the same, and does not depend on the specifics of the 
-underlying mechanism. These packages are almost all wrappers for other 
-packages. The main benefits of the TS* packages are that they provide a 
-common interface, and a 
-mechanism for returning a specified time series representation. 
-(For example, the <i>fame</i> package returns <i>tis</i> series, 
-but <i>TSfame</i> handles conversion and allows the possibility of 
-returning other representations like <i>zoo</i> series.) 
+underlying mechanism. Many of these packages are wrappers for other 
+packages. The main benefits of the TS* packages are that they provide both a 
+common interface and a 
+mechanism for specifying the time series representation to be returned. 
 <a href=otherFeatures.php>Other features</a> include the ability to handle
 vintages of data (sometimes called "realtime data") and panels of time series.
 
-<P>Guide vignettes with the packages on CRAN provide examples. 
+<P>The package <i>TSdata</i> contains (only) a vignette which is a general guide 
+to all the packages. <i>TSdata</i> is difficult to install because it requires
+working versions of most of the other packages. It will generally be easier just
+to get the vignette from the 
+<a href="http://cran.at.r-project.org/web/packages/TSdata/vignettes/Guide.pdf">TSdata vignette on CRAN</a>. Of course, that only discusses released packages.
 
 <P>
 Several of the packages pull <a href=webWraps.php>
-<b>data from the Internet</b>.</a> This includes
-<i>TSgetSymbol</i>, <i>TShistQuote</i>, <i>TSxls</i>, <i>TSzip</i> 
-and <i>TSsdmx</i>.
+<b>data from the Internet</b>.</a> This includes <i>TSgetSymbol</i>, <i>TShistQuote</i>, 
+<i>TSjson</i>, <i>TSxls</i>, <i>TSzip</i> and <i>TSsdmx</i>.
+Of these, <i>TSsdmx</i> 
+(in development) should eventually provide the most general mechanism.
 
 <P>
 Other packages provide a mechanism for 
@@ -44,12 +46,11 @@ time series from SQL databases that contain sequential data but were built
 for purposes other than storing time series data.
 
 <P>
-Some packages act as a <b>database wrapper</b> to extend the API to existing 
-time series database interfaces. These include <i>TSfame</i>, which is a wrapper to the
-<i>fame</i> R package, which is an interface to Fame databases. <i>TSpadi</i>
+Some packages act as wrappers to convert the API of existing 
+time series (database) interfaces. These include <i>TSfame</i>, which is a wrapper to the
+<i>fame</i> R package that is an interface to Fame databases. <i>TSpadi</i>
 (deprecated) is also a mechanism to interface to Fame and possibly other 
-database. <i>TSsdmx</i> (in development) will provide mechanism to interface to
-SDMX data, both locally and over the Internet.
+database. 
 
 <P>
 <i>TScompare</i> provides a way to compare large numbers of series on different

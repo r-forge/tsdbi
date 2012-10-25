@@ -6,6 +6,7 @@
 CRAN Packages
 <ul>
 <li><a href="http://cran.at.r-project.org/web/packages/TSdbi/index.html">TSdbi</a>
+<li><a href="http://cran.at.r-project.org/web/packages/TSdata/index.html">TSdata</a>
 <li><a href="http://cran.at.r-project.org/web/packages/TSMySQL/index.html">TSMySQL</a>
 <li><a href="http://cran.at.r-project.org/web/packages/TSPostgreSQL/index.html">TSPostgreSQL</a>
 <li><a href="http://cran.at.r-project.org/web/packages/TSSQLite/index.html">TSSQLite</a>
@@ -16,6 +17,7 @@ CRAN Packages
 <li><a href="http://cran.at.r-project.org/web/packages/TSxls/index.html">TSxls</a>
 <li><a href="http://cran.at.r-project.org/web/packages/TSzip/index.html">TSzip</a>
 <li><a href="http://cran.at.r-project.org/web/packages/TSpadi/index.html">TSpadi</a>
+<li><a href="http://cran.at.r-project.org/web/packages/TScompare/index.html">TScompare</a>
 </ul>
 
 Related Packages
