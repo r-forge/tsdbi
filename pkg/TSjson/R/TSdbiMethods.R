@@ -133,7 +133,10 @@ setMethod("TSget",     signature(serIDs="character", con="TSjsonConnection"),
     else {#!con@proxy
        for (rpt in seq(repeat.try)) {
 	    #rr <- try(system(qq, intern=TRUE), silent=quiet)
-   	    rr <- fromJSON(pcon <- pipe(qq), asText=TRUE)
+   	    #fromJSON in RJSONIO:
+	    rr <- fromJSON(pcon <- pipe(qq), asText=TRUE)
+  	    #fromJSON in rjson (requires change of Depends:):
+	    #rr <- fromJSON(readLines(pcon <- pipe(qq)))
    	    close(pcon)
 	    if ((!inherits(rr , "try-error"))){
 	       if(is.atomic(rr)) stop(rr, "\n rr is atomic. DEBUG py.")
@@ -161,7 +164,8 @@ setMethod("TSget",     signature(serIDs="character", con="TSjsonConnection"),
     # values (py None are translated to json null and then as null
     # in the R list) get truncated out with unlist(x)
     if(is.list(x)) {
-        na <- unlist(lapply(x, is.null))
+        #warning("need to unlist fromJSON x result.")
+	na <- unlist(lapply(x, is.null))
 	z <- unlist(x)
 	x <- rep(NA, length(na)) 
 	x[!na] <- z 
