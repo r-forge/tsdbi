@@ -1,0 +1,16 @@
+Package: TSbbg
+Version: 2012.10-1
+Title: TSdbi extensions for bbg
+Description: TSbbg provides an Rbbg interface for TSdbi to access Bloomberg.
+	TSbbg is unassociated with Bloomberg. A Bloomberg terminal and their
+	(commercial) software is necessary for this interface to work.
+	Comprehensive examples of all the TS* packages is provided in the
+	vignette Guide.pdf with the TSdata package.
+Depends: R (>= 2.8.0), methods, Rbbg, tframe, tframePlus(>= 2011.8-1), TSdbi (>= 2011.11-1), DBI, zoo
+Suggests: tseries, tfplot
+Enhances: TSdbi
+BuildVignettes: true
+License: GPL-2
+Author: Paul Gilbert <pgilbert.ttv9z@ncf.ca>
+Maintainer: Paul Gilbert <pgilbert.ttv9z@ncf.ca>
+URL: http://tsdbi.r-forge.r-project.org/
