@@ -2,6 +2,11 @@
 #  r <- bdh(con, serIDs[i], fld="PX_LAST", sdate="20020101")
 #  failure tested by zero length result is probably not good.
 
+#  showClass("jobjRef")
+#  showClass("TSbbgConnection")
+#  Rbbg manual
+#  http://findata.org/rbloomberg/rbloomberg-manual-0-4-144.pdf
+
 setClass("bbgDriver", representation("DBIDriver", Id = "character")) 
 
 bbg <- function() {
@@ -10,8 +15,9 @@ bbg <- function() {
   new("bbgDriver", Id = drv)
   }
 
-# require("DBI") for this
-setClass("TSbbgConnection", contains=c("jobjRef", "conType", "TSdb"))
+# for this require("DBI") ; require("TSdbi")
+setClass("TSbbgConnection",  representation(jcon="jobjRef"),
+          contains=c("conType", "TSdb"))
 
 ####### some kludges to make this look like DBI. ######
 # these do nothing, but prevents error messages
@@ -42,7 +48,7 @@ setMethod("TSconnect",   signature(drv="bbgDriver", dbname="missing"),
         con <- try(blpConnect(verbose=FALSE))
 	if(inherits(con, "try-error") )
            stop("Could not establish TSbbgConnection.")
-	new("TSbbgConnection" , con, drv="bbg", dbname="not used", 
+	new("TSbbgConnection" , jcon=con, drv="bbg", dbname="not used", 
   	       hasVintages=FALSE, hasPanels  =FALSE) 
 	})
 
@@ -113,7 +119,8 @@ TSget <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation"),
 
   mat <- desc <- doc <- label <- source <-  rp <- NULL
 
-  # Use bar() if the start or end has a time as well as date, otherwise bdh()
+  # Use bar() if the start or end has a time as well as date, eg, ticker data,
+  #    otherwise bdh(), eg daily data like open, close.
   # This can be a bit tricky because start and end may be passed as
   #   char strings or as Date POSIXt objects. POSIXt dates with no time
   #   are represented as midnight UTC (POSIXlt $hour $min and $sec all 0).
@@ -126,7 +133,7 @@ TSget <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation"),
 
   barCall <- !all(0 == c(start$hour, start$min, start$sec, end$hour, end$min, end$sec))
 
-  if(barCall) {
+  if(barCall) {# has a time as well as date, eg, ticker data
      start <- as.character(start)
      if( is.null(end))  stop("An end must be specified for bar() calls.")  
      else end  <- as.character(end)
@@ -142,20 +149,58 @@ TSget <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation"),
     #  may need try around this
     # old code has fld,sdate="20020101" but new version seems to have fields, start_date
     # start must be supplied, end can be NULL
-    if(barCall) cat("barCall")
-    else        cat("NOT barCall")
 
-    if(barCall) 
-        r <- bar(con@con, serIDs[i], field=quote[i], 
+    if(barCall)  { # has a time as well as date, eg, ticker data
+       cat("barCall\n")
+       #bar(conn, "RYA ID Equity", "TRADE", 
+       #     "2010-09-21 09:00:00.000", "2010-09-21 15:00:00.000", "60")
+       # for debugging
+       r <- bar(con@jcon, "RYA ID Equity", "TRADE", 
+                "2010-09-21 09:00:00.000", 
+		"2010-09-21 15:00:00.000", "60")
+       cat(" barCall try2\n")       
+       r <- bar(con@jcon, "RYA ID Equity", field="TRADE", 
+                start_date_time="2010-09-21 09:00:00.000", 
+		end_date_time="2010-09-21 15:00:00.000", interval="60")
+	cat(" barCall serIDs[i]\n")       
+	cat(" barCall quote[i]\n")       
+	cat(" barCall start\n")       
+	cat(" barCall end\n")       
+	cat(" barCall try3\n")       
+       r <- bar(con@jcon, serIDs[i], field="TRADE", 
+                start_date_time="2010-09-21 09:00:00.000", 
+		end_date_time="2010-09-21 15:00:00.000", interval="60")
+	cat(" barCall try4\n")       
+       r <- bar(con@jcon, serIDs[i], field=quote[i], 
+                start_date_time="2010-09-21 09:00:00.000", 
+		end_date_time="2010-09-21 15:00:00.000", interval="60")
+	cat(" barCall try5\n")       
+       r <- bar(con@jcon, serIDs[i], field=quote[i], 
+                start_date_time=start, 
+		end_date_time="2010-09-21 15:00:00.000", interval="60")
+	cat(" barCall try6\n")       
+       r <- bar(con@jcon, serIDs[i], field=quote[i], 
+                start_date_time=start, 
+		end_date_time=end, interval="60")
+	cat(" barCall try7\n")       
+       r <- bar(con@jcon, serIDs[i], field=quote[i], 
+                start_date_time=start, 
+		end_date_time=end, interval=interval)
+	cat(" barCall try8\n")       
+       r <- bar(con@jcon, serIDs[i], field=quote[i], 
                 start_date_time=start, end_date_time=end, interval=interval)
-    else 
-        r <- bdh(con@con, serIDs[i], field=quote[i], 
-	        start_date=start,      end_date=end)
- 
+        }
+    else {
+       r <- bdh(con@jcon, serIDs[i], field=quote[i],
+                  start_date=start, end_date=end)
+        }
       
     if(0==length(r))
        stop("bbg retrieval failed. Series ", serIDs[i]," may not exist.")
-    r <- zoo(x$fld, order.by=if (c) as.POSIXct(x$date) else as.Date(x$date))
+    
+    print(str(r))
+    r <- zoo(r$fld, order.by=if (barCall) as.POSIXct(r$date) else as.Date(r$date))
+    
     if((TSrepresentation=="default" | TSrepresentation=="ts")
              && frequency(r) %in% c(1,4,12,2)) r <-  as.ts(r) 
     mat <- tbind(mat, r)
@@ -202,7 +247,7 @@ setMethod("TSput",     signature(x="ANY", serIDs="character", con="TSbbgConnecti
 
 setMethod("TSdescription",   signature(x="character", con="TSbbgConnection"),
    definition= function(x, con=getOption("TSconnection"), ...){
-     r <- try(bdp(con@con, serIDs, c("NAME","LAST_UPDATE_DT","TIME")))
+     r <- try(bdp(con@jcon, serIDs, c("NAME","LAST_UPDATE_DT","TIME")))
      if (inherits(r, "try-error")) stop("Series (probably) does not exist.")
      #if (is.null(r)) stop("Series (probably) does not exist.")
      #if(is.null(r) || is.na(r)|| ("NA" == r)) NA else r 
@@ -210,7 +255,7 @@ setMethod("TSdescription",   signature(x="character", con="TSbbgConnection"),
 
 setMethod("TSdoc",   signature(x="character", con="TSbbgConnection"),
    definition= function(x, con=getOption("TSconnection"), ...){
-     r <- try(bdp(con@con, serIDs, c("NAME","LAST_UPDATE_DT","TIME")))
+     r <- try(bdp(con@jcon, serIDs, c("NAME","LAST_UPDATE_DT","TIME")))
      if (inherits(r, "try-error")) stop("Series (probably) does not exist.")
      #if (is.null(r)) stop("Series (probably) does not exist.")
      #if(is.null(r) || is.na(r)|| ("NA" == r)) NA else r 
@@ -238,7 +283,7 @@ setMethod("TSexists",
                       vintage=NULL, panel=NULL, ...){
    op <- options(warn=-1)
    on.exit(options(op))
-   x <-  try(bdp(con@con, serIDs, c("NAME","LAST_UPDATE_DT","TIME")))
+   x <-  try(bdp(con@jcon, serIDs, c("NAME","LAST_UPDATE_DT","TIME")))
    ok <- ! inherits(x, "try-error")
    new("logicalId",  !is.null(ok), 
        TSid=new("TSid", serIDs=serIDs, dbname=con@dbname, 
