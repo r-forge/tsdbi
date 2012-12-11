@@ -1,6 +1,6 @@
 Package: TSbbg
-Version: 2012.10-1
-Title: TSdbi extensions for bbg
+Version: 2012.12-1
+Title: TSdbi extensions for Rbbg
 Description: TSbbg provides an Rbbg interface for TSdbi to access Bloomberg.
 	TSbbg is unassociated with Bloomberg. A Bloomberg terminal and their
 	(commercial) software is necessary for this interface to work.
