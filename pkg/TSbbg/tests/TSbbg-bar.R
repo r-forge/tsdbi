@@ -23,16 +23,24 @@ cat("*******  ticker example\n")
 #asks.510 <- bar(conn, ticker, "ASK", start.time, end.time, "510")
 #sum(asks.1$numEvents) == sum(asks.510$numEvents) ## TRUE
 
+# ticker data at high frequency is not available historically.
+# The retention period depends on interval.
+
+ st <- as.POSIXlt(Sys.Date() - 2) # two days ago
+ if(6 == st$wday )st <- as.POSIXlt(Sys.Date() - 3)# change Saturday to Friday
+ if(7 == st$wday )st <- as.POSIXlt(Sys.Date() - 1) # change Sunday to Monday
+  
+ st <- st + 8*3600  # 8am
+ 
  x <- TSget("AGS BB Equity", con, quote="TRADE", 
-       start="2011-09-12 08:00:00.000", 
-       end=as.POSIXct("2011-09-12 16:30:00.000"), interval="510")
+       start=format.POSIXct(st,   "%Y-%m-%d %H:%M:%OS3"), 
+       end=format.POSIXct(st + 8.5*3600,   "%Y-%m-%d %H:%M:%OS3"), #4:30pm 
+       interval="510")
 
  x <- TSget("AGS BB Equity", con, quote="BID",
-       start=as.POSIXct("2011-09-12 08:00:00.000"), 
-       end = as.POSIXct("2011-09-12 16:30:00.000"), interval="1")
+          start=st,  end = st + 3600, interval="1") # 8:00-9:00
 
  x <- TSget("AGS BB Equity", con, quote="ASK",
-       start="2011-09-12 08:00:00.000", 
-       end=  "2011-09-12 16:30:00.000", interval="1")
+          start=st,  end= st + 3600 , interval="1") # 8:00-9:00
 
 } else  cat("Rbbg not available. Skipping tests.")

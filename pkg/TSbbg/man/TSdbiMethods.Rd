@@ -1,8 +1,6 @@
 \name{TSdbiMethods}
 \alias{TSconnect,bbgDriver,character-method}
 \alias{TSget,character,TSbbgConnection-method}
-\alias{TSput,ANY,character,TSbbgConnection-method}
-\alias{TSdelete,character,TSbbgConnection-method}
 \alias{TSdoc,character,TSbbgConnection-method}
 \alias{TSdescription,character,TSbbgConnection-method}
 \alias{TSlabel,character,TSbbgConnection-method}
@@ -23,7 +21,7 @@
 \alias{bbgDriver-class}
 
 \title{TSdbi bbg Methods}
-\description{Methods for TSdbi bbg time series dtabase connection.}
+\description{Methods for TSdbi bbg time series database connection to Bloomberg.}
 \usage{
     \S4method{TSconnect}{bbgDriver,character}(drv, dbname=NULL, ...)
 
@@ -32,15 +30,9 @@
 	tf = NULL, start = tfstart(tf), end = tfend(tf), names = NULL,
 	TSdescription = FALSE, TSdoc = FALSE, TSlabel=FALSE, TSsource=TRUE, ...)
 
-    \S4method{TSput}{ANY,character,TSbbgConnection}(x, serIDs=seriesNames(x), 
-	con, TSdescription.=TSdescription(x), 
-	TSdoc.=TSdoc(x), TSlabel.=NULL, TSsource.=NULL, warn = TRUE, ...)
-
     \S4method{TSdates}{character,TSbbgConnection}(serIDs, con, ...)
 
     \S4method{TSexists}{character,TSbbgConnection}(serIDs, con, ...)
-
-    \S4method{TSdelete}{character,TSbbgConnection}(serIDs, con, ...)
 
     \S4method{TSdescription}{character,TSbbgConnection}(x, con, ...)
 
@@ -72,18 +64,12 @@
     \item{end}{Optional end date to use for truncating data. (See \code{tfwindow}.)}
     \item{TSdescription}{TRUE or FALSE indicating whether description 
        should be extracted}
-    \item{TSdescription.}{Description to put on the database.}
     \item{TSdoc}{TRUE or FALSE indicating whether documentation 
        should be extracted.}
-    \item{TSdoc.}{Documentation to put on the database.}
     \item{TSlabel}{For compatibility with other TS packages. Not supported in
         bbg}
-    \item{TSlabel.}{For compatibility with other TS packages. Not supported in
-        bbg}
-    \item{TSsource}{For compatibility with other TS packages. Not supported in
-        bbg}
-    \item{TSsource.}{For compatibility with other TS packages. Not supported in
-        bbg}
+    \item{TSsource}{If TRUE (default) TSsource in the result is set to
+        "Bloomberg".}
     \item{warn}{Logical indicating if warning messages should be suppressed.} 
    \item{...}{Arguments passed to other methods.}
 }
@@ -105,12 +91,11 @@ using \code{bdh}.
 \examples{
  require("tfplot")
  con <- TSconnect("bbg")
-  x  <- TSget("USCRWTIC Index", con)
-
-  start(x)
-  end(x)
+ x  <- TSget("USCRWTIC Index", con, start="2001-01-01")
+ start(x)
+ end(x)
   
-  tfplot(x)
+ tfplot(x)
 }
 \keyword{ts}
 

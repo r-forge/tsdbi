@@ -14,9 +14,7 @@ exportClasses(
 ## S4 methods
 exportMethods(
    "TSconnect",
-#   "TSget",
-   "TSput",
-   "TSdelete",
+   "TSget",
    "TSdescription",
    "TSdoc",
    "TSlabel",

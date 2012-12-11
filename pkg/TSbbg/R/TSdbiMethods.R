@@ -4,8 +4,6 @@
 
 #  showClass("jobjRef")
 #  showClass("TSbbgConnection")
-#  Rbbg manual
-#  http://findata.org/rbloomberg/rbloomberg-manual-0-4-144.pdf
 
 setClass("bbgDriver", representation("DBIDriver", Id = "character")) 
 
@@ -90,7 +88,7 @@ setMethod("TSdates",
    
 TSget <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation"),
        tf=NULL, start=tfstart(tf), end=tfend(tf), names=NULL, quote = "Close", 
-       TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE, TSsource="Bloomberg",
+       TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE, TSsource=TRUE,
        vintage=NULL, ...)
 { # ... arguments unused
   if(!is.null(vintage)) stop("TSbbgConnection does not support vintages.")
@@ -125,18 +123,25 @@ TSget <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation"),
   #   char strings or as Date POSIXt objects. POSIXt dates with no time
   #   are represented as midnight UTC (POSIXlt $hour $min and $sec all 0).
   #  So, the strategy here is to convert to POSIXlt and check if these are 0.
-  
+
   if(is.null(start)) stop("A start must be specified.")
   else start <- as.POSIXlt(start)
+
+print(str(start))
 
   if( !is.null(end))   end <- as.POSIXlt(end)
 
   barCall <- !all(0 == c(start$hour, start$min, start$sec, end$hour, end$min, end$sec))
 
   if(barCall) {# has a time as well as date, eg, ticker data
-     start <- as.character(start)
+     # Note that retention period for intra-day data varies, with older data 
+     # only available at longer intervals. Tick data is only available about
+     # 10days, 240min intervals up to 6 months.
+     start   <-   format.POSIXlt(start, "%Y-%m-%d %H:%M:%OS3")
+    
      if( is.null(end))  stop("An end must be specified for bar() calls.")  
-     else end  <- as.character(end)
+     else end  <- format.POSIXlt(end,   "%Y-%m-%d %H:%M:%OS3")
+     
      if(is.null(list(...)$interval)) stop("interval must be specified.")
      else interval <- list(...)$interval
      }
@@ -152,62 +157,55 @@ TSget <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation"),
 
     if(barCall)  { # has a time as well as date, eg, ticker data
        cat("barCall\n")
-       #bar(conn, "RYA ID Equity", "TRADE", 
-       #     "2010-09-21 09:00:00.000", "2010-09-21 15:00:00.000", "60")
+       # data at 60 min interval is available for 6 months.
+       #bar(bbgcon, "RYA ID Equity", "TRADE",
+       #        "2012-11-20 09:00:00.000", "2012-11-20 15:00:00.000", "60")
+       # fields returned by TRADE are 
+       #    time, open, high, low, close, numEvents, volume
+       
        # for debugging
-       r <- bar(con@jcon, "RYA ID Equity", "TRADE", 
-                "2010-09-21 09:00:00.000", 
-		"2010-09-21 15:00:00.000", "60")
-       cat(" barCall try2\n")       
-       r <- bar(con@jcon, "RYA ID Equity", field="TRADE", 
-                start_date_time="2010-09-21 09:00:00.000", 
-		end_date_time="2010-09-21 15:00:00.000", interval="60")
-	cat(" barCall serIDs[i]\n")       
-	cat(" barCall quote[i]\n")       
-	cat(" barCall start\n")       
-	cat(" barCall end\n")       
-	cat(" barCall try3\n")       
-       r <- bar(con@jcon, serIDs[i], field="TRADE", 
-                start_date_time="2010-09-21 09:00:00.000", 
-		end_date_time="2010-09-21 15:00:00.000", interval="60")
-	cat(" barCall try4\n")       
-       r <- bar(con@jcon, serIDs[i], field=quote[i], 
-                start_date_time="2010-09-21 09:00:00.000", 
-		end_date_time="2010-09-21 15:00:00.000", interval="60")
-	cat(" barCall try5\n")       
-       r <- bar(con@jcon, serIDs[i], field=quote[i], 
-                start_date_time=start, 
-		end_date_time="2010-09-21 15:00:00.000", interval="60")
-	cat(" barCall try6\n")       
-       r <- bar(con@jcon, serIDs[i], field=quote[i], 
-                start_date_time=start, 
-		end_date_time=end, interval="60")
+   print(str(r))
 	cat(" barCall try7\n")       
-       r <- bar(con@jcon, serIDs[i], field=quote[i], 
+        cat(" barCall interval=", interval, "\n")       
+       r <- try(bar(con@jcon, serIDs[i], field=quote[i], 
                 start_date_time=start, 
-		end_date_time=end, interval=interval)
-	cat(" barCall try8\n")       
-       r <- bar(con@jcon, serIDs[i], field=quote[i], 
-                start_date_time=start, end_date_time=end, interval=interval)
-        }
+		end_date_time=end, interval=interval))
+   print(str(r))
+       if (toupper(quote) == "TRADE") quote <- c(
+	  "open", "high", "low", "close", "numEvents", "volume")
+
+   print(str(quote))
+   print(tolower(quote))
+   print(names(r))
+       r <- zoo(r[, tolower(quote)], 
+         order.by=as.POSIXlt(r$time, format='%Y-%m-%dT%H:%M:%S'))
+       }
     else {
-       r <- bdh(con@jcon, serIDs[i], field=quote[i],
-                  start_date=start, end_date=end)
-        }
+       r <- try(bdh(con@jcon, serIDs[i], field=quote[i],
+                  start_date=start, end_date=end))
+      if (inherits(r, "try-error")){ 
+	  print(str(r))
+	  stop("Series (probably) does not exist.")
+	  }
+      if(0==length(r)){
+	  print(str(r))
+          stop("bbg retrieval failed. Series '", serIDs[i],"' may not exist.")
+	  }
+       r <- zoo(r$fld, order.by=as.Date(r$date))
+       }
       
-    if(0==length(r))
-       stop("bbg retrieval failed. Series ", serIDs[i]," may not exist.")
-    
-    print(str(r))
-    r <- zoo(r$fld, order.by=if (barCall) as.POSIXct(r$date) else as.Date(r$date))
-    
-    if((TSrepresentation=="default" | TSrepresentation=="ts")
-             && frequency(r) %in% c(1,4,12,2)) r <-  as.ts(r) 
+    fr <- try( frequency(r), silent=TRUE )  
+    print(str(TSrepresentation))
+    print(str(fr))
+    if ((! inherits(fr, "try-error")) && !is.null(fr)){ 
+       if((TSrepresentation=="default" | TSrepresentation=="ts")
+             && fr %in% c(1,4,12,2)) r <-  as.ts(r) 
+       }
     mat <- tbind(mat, r)
     #if(TSdescription) desc <- c(desc,   TSdescription(serIDs[i],con) ) 
     #if(TSdoc)     doc      <- c(doc,    TSdoc(serIDs[i],con) ) 
     #if(TSlabel)   label    <- c(label,  NA) #TSlabel(serIDs[i],con) )
-    if(TSsource)  source   <- c(source, "bbg db") #could be better
+    if(TSsource)  source   <- c(source, "Bloomberg") #could be better
     }
 
   if (NCOL(mat) != length(serIDs)) stop("Error retrieving series", serIDs) 

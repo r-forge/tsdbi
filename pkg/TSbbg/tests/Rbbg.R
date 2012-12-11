@@ -13,7 +13,7 @@ cat("**************        connecting Bloomberg\n")
   conn <-  try(blpConnect(verbose=FALSE))
 
   if(inherits(conn, "try-error") ) 
-      stop("Could not establish TSbbgConnection.")
+      stop("Could not establish blpConnect connection.")
 
 cat("**************        extractin from Bloomberg\n")
 
