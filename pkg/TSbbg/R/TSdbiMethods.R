@@ -164,7 +164,6 @@ print(str(start))
        #    time, open, high, low, close, numEvents, volume
        
        # for debugging
-   print(str(r))
 	cat(" barCall try7\n")       
         cat(" barCall interval=", interval, "\n")       
        r <- try(bar(con@jcon, serIDs[i], field=quote[i], 
@@ -198,11 +197,17 @@ print(str(start))
     print(str(TSrepresentation))
     print(str(fr))
     if ((! inherits(fr, "try-error")) && !is.null(fr)){ 
+ cat(" trying as.ts() fr is\n")       
+ print(str(fr))
+
        if((TSrepresentation=="default" | TSrepresentation=="ts")
              && fr %in% c(1,4,12,2)) r <-  as.ts(r) 
        }
+ cat(" trying tbind() fr is\n")       
+ print(str(r))
     mat <- tbind(mat, r)
-    #if(TSdescription) desc <- c(desc,   TSdescription(serIDs[i],con) ) 
+  print(str(mat))
+   #if(TSdescription) desc <- c(desc,   TSdescription(serIDs[i],con) ) 
     #if(TSdoc)     doc      <- c(doc,    TSdoc(serIDs[i],con) ) 
     #if(TSlabel)   label    <- c(label,  NA) #TSlabel(serIDs[i],con) )
     if(TSsource)  source   <- c(source, "Bloomberg") #could be better
@@ -210,6 +215,8 @@ print(str(start))
 
   if (NCOL(mat) != length(serIDs)) stop("Error retrieving series", serIDs) 
 
+cat(" trying tfwindow\n")       
+ print(str(mat))
   mat <- tfwindow(mat, tf=tf, start=start, end=end)
 
   #if( (!is.null(rp)) && !all(is.na(rp)) ) TSrefperiod(mat) <- rp      
