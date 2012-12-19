@@ -58,10 +58,12 @@ setMethod("TSconnect",   signature(drv="xlsDriver", dbname="character"),
 
    #   Blank rows seem to be skipped, so result is compressed
 
-   # translate cell letters to numbers MAKE LONGER
+   # translate cell letter range to number indices
    jmap <- function(cols){ 
-        charmatch(sub(":[A-Z]*","",cols), LETTERS):
-        charmatch(sub("[A-Z]*:","",cols), LETTERS) 
+	st <- unlist(strsplit(sub(":[A-Z]*","",cols),""))
+	en <- unlist(strsplit(sub("[A-Z]*:","",cols),""))
+	sum(  charmatch(st, LETTERS) * 26^c(0:(length(st)-1))):
+	  sum(charmatch(en, LETTERS) * 26^c(0:(length(en)-1)))
 	}
 
    ids   <- z[map$ids$i,  jmap(map$ids$j)] 
