@@ -21,7 +21,7 @@
 	serIDs, con, TSrepresentation = options()$TSrepresentation, 
 	tf = NULL, start = tfstart(tf), end = tfend(tf), names=serIDs, ...)
     \S4method{TSconnect}{xlsDriver,character}( drv, dbname, 
-       map=list(ids, data, dates, names=NULL, description=NULL,
+       map=list(ids, data, dates, names=NULL, description=NULL, sheet=1,
          tsrepresentation = function(data,dates){zoo(data, as.Date(dates))}),
 	  ...)
     \S4method{TSdates}{character,TSxlsConnection}(
@@ -43,6 +43,8 @@
         database (not supported by this database).}
     \item{x}{time series data(TSput), or 
       identifiers for series on the database (TSdoc and TSdescription).}
+    \item{sheet}{optional integer to indicate the sheet of the workbook
+      to use default=1).}
     \item{names}{optional character vector to use for series names in the R
     object.}
     \item{drv}{a database driver object.}
