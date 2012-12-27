@@ -9,10 +9,11 @@ Known BUGS
 
 Changes in TSxls version 2012.12-1
 
-   o	Add ability to specify a workbook sheet (default=1). 
+   o	Add ability to specify a workbook sheet (default=1), suggested 
+   	by Austin Lund.
 
    o	Modified cell indexing to allow for letter cell indicators longer than
-   	a single letter. 
+   	a single letter (bug indicate by Austin Lund). 
 
 Changes in TSxls version 2012.8-1
 
