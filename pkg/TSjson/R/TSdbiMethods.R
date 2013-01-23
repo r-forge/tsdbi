@@ -44,14 +44,14 @@ setMethod("TSconnect",   signature(drv="jsonDriver", dbname="character"),
    if (is.null(host)) host <- r$host
    url <- paste("http://",user,":",password,"@",host,"/",dbname,"/", sep="")
    proxy <- TRUE
-   } else
-
- if (dbname == "cansim") {
+   }
+ else if (dbname == "cansim") {
    user <- password <- host  <- ""
    # this is not really a url in this case, but the .py has the url+
    url <-  paste(path.package("TSjson"), "/exec/cansimGet.py ", sep = "")
    proxy <- FALSE
    }
+ else stop("dbname ", dbname, " not supported.")
 
  # there could be a better connection test mechanism 
  #if(inherits(con, "try-error")) 
