@@ -134,9 +134,9 @@ setMethod("TSget",     signature(serIDs="character", con="TSjsonConnection"),
        for (rpt in seq(repeat.try)) {
 	    #rr <- try(system(qq, intern=TRUE), silent=quiet)
    	    #fromJSON in RJSONIO:
-	    rr <- fromJSON(pcon <- pipe(qq), asText=TRUE)
+	    #rr <- fromJSON(pcon <- pipe(qq), asText=TRUE)
   	    #fromJSON in rjson (requires change of Depends:):
-	    #rr <- fromJSON(readLines(pcon <- pipe(qq)))
+	    rr <- fromJSON(readLines(pcon <- pipe(qq)))
    	    close(pcon)
 	    if ((!inherits(rr , "try-error"))){
 	       if(is.atomic(rr)) stop(rr, "\n rr is atomic. DEBUG py.")
