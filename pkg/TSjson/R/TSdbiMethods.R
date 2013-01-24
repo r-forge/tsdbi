@@ -48,7 +48,10 @@ setMethod("TSconnect",   signature(drv="jsonDriver", dbname="character"),
  else if (dbname == "cansim") {
    user <- password <- host  <- ""
    # this is not really a url in this case, but the .py has the url+
-   url <-  paste(path.package("TSjson"), "/exec/cansimGet.py ", sep = "")
+   # shQuote() for path name spaces in Windows
+   url <- shQuote(paste(path.package("TSjson"), "/exec/cansimGet.py", sep=""))
+   # specifying python is for Windows. Script works with or without in linux
+   url <- paste("python ",url) 
    proxy <- FALSE
    }
  else stop("dbname ", dbname, " not supported.")
@@ -111,7 +114,7 @@ setMethod("TSget",     signature(serIDs="character", con="TSjsonConnection"),
   mat <- desc <- doc <- label <- source <-  rp <- NULL
 
   for (i in seq(length(serIDs))) {
-    qq <- paste(url, serIDs[i], sep="")
+    qq <- paste(url, serIDs[i], sep=" ")
     
     if(con@proxy){
        for (rpt in seq(repeat.try)) {
