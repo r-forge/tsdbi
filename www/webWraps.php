@@ -27,8 +27,8 @@ data from pitrading.com (no affiliation).
 <P>
 <b><i>TSjson</i></b> gets time series data from the 
 source, and imports it to R using Javascript object notation (JSON). 
-Fetching the data is done
-using a script with <i>Python mechanize</i> to click through web pages to get a 
+Fetching the data is done using a script with <i>Python mechanize</i> to 
+automatically click through web pages to get a 
 file to downloaded. It does not use a real API to the data server (although it
 could if the server implements support). For this reason <i>TSjson</i> should be
 considered a temporary solution, until the data server implements a proper API. 
@@ -42,7 +42,7 @@ source. The first calls a <i>Python</i> script distributed with the package.
 This requires that the R client machine can run  <i>Python</i> and has several 
 <i>Python</i> modules installed (mechanize, sys, json, re, csv, urllib2), which
 all seem to be installed with 
-<a href="http://wwwsearch.sourceforge.net/mechanize>python-mechanize</a>.
+<a href=http://wwwsearch.sourceforge.net/mechanize>python-mechanize</a>.
 On most systems, including Windows, install can be 
 done by going to the directory of the unzipped package that contains the
 file setup.py and at the command prompt running  "python setup.py install". 
