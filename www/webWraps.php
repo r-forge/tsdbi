@@ -29,19 +29,28 @@ data from pitrading.com (no affiliation).
 source, and imports it to R using Javascript object notation (JSON). 
 Fetching the data is done
 using a script with <i>Python mechanize</i> to click through web pages to get a 
-file to downloaded. It does not use a really API to the data server (although it
+file to downloaded. It does not use a real API to the data server (although it
 could if the server implements support). For this reason <i>TSjson</i> should be
 considered a temporary solution, until the data server implements a proper API. 
 The <i>Python</i> scripts are not generic, there needs to be a customized script
 for a specific site. Currently, only a Statistics Canada connection is supported.
 If you would like to work on a connection to another site, please contact the 
 package maintainer.
-
-<P><i>TSjson</i> package supports two mechanisms for contacting the web data 
+<P>
+<i>TSjson</i> package supports two mechanisms for contacting the web data 
 source. The first calls a <i>Python</i> script distributed with the package. 
 This requires that the R client machine can run  <i>Python</i> and has several 
-<i>Python</i> modules installed (sys, json, mechanize, re, csv, urllib2). 
-Since that may be difficult on some systems, or in some environments, a second
+<i>Python</i> modules installed (mechanize, sys, json, re, csv, urllib2), which
+all seem to be installed with 
+<a href="http://wwwsearch.sourceforge.net/mechanize>python-mechanize</a>.
+On most systems, including Windows, install can be 
+done by going to the directory of the unzipped package that contains the
+file setup.py and at the command prompt running  "python setup.py install". 
+It will also be necessary have python on your PATH so the program can be found.
+(On many Linux systems these modules are available with the debian package
+<i>python-mechanize</i>.)
+<P>
+Since installing software may be difficult in some environments, a second
 mechanism uses an intermediate proxy portal to the real web source data server.
 The proxy retrieves and relays the data. This requires setting up an HTTP server
 somewhere on the Internet, which must have <i>Python</i> and the modules installed,
