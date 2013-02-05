@@ -21,12 +21,14 @@ setMethod("dbDisconnect", signature(conn="TSxlsConnection"),
 #######     end kludges   ######
 
 setMethod("TSconnect",   signature(drv="xlsDriver", dbname="character"),
-  definition=function(drv, dbname, 
+  definition= function(drv, dbname, 
      map=list(ids, data, dates, names=NULL, description=NULL, sheet=1,
               tsrepresentation = function(data,dates){
 		       zoo(data, as.Date(dates))}), ...){
    #  user / password / host  for future consideration
    if (is.null(dbname)) stop("dbname must be specified")
+
+   sheet <- if (is.null(map$sheet)) 1 else map$sheet
 
    if (file.exists(dbname)) {
       file <- dbname
@@ -50,7 +52,7 @@ setMethod("TSconnect",   signature(drv="xlsDriver", dbname="character"),
    zz <- try(read.xls(file, sheet=sheet, verbose=FALSE),  silent=TRUE)
                    #method=c("csv","tsv","tab"), perl="perl")
    if(inherits(zz, "try-error")) 
-         stop("Could read not spreedsheet ",  dbname, zz)
+         stop("Could not read spreedsheet ",  dbname, zz)
 
    #NB The first line provides data frame names, so rows are shifted. 
    #   This fixes so matrix corresponds to spreadsheet cells
