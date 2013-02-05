@@ -60,8 +60,8 @@
     \item{names}{Optional character vector to use for series names. Defaults to
        serIDs.}
     \item{tf}{Optional tframe to use for truncating data. (See \code{tfwindow}.)}
-    \item{start}{Optional start date to use for truncating data. (See \code{tfwindow}.)}
-    \item{end}{Optional end date to use for truncating data. (See \code{tfwindow}.)}
+    \item{start}{Optional start date to use for truncating data.)}
+    \item{end}{Optional end date to use for truncating data.)}
     \item{TSdescription}{TRUE or FALSE indicating whether description 
        should be extracted}
     \item{TSdoc}{TRUE or FALSE indicating whether documentation 
@@ -81,8 +81,10 @@ examples.
 
 This package provides a wrapper to the \pkg{Rbbg} package to provide a 
 \pkg{TSdbi} API for users. Function \code{TSConnect} establishes a connection
-using \code{blpConnect} from \pkg{Rbbg} and \code{TSget} retrieves data
-using \code{bdh}.
+using \code{blpConnect} from \pkg{Rbbg}. \code{TSget} retrieves data
+using \code{bdh} if \code{start} is a date with no time or using \code{bar} if
+\code{start} has a date with a time.  Bothe \code{start} and \code{end} can be
+either date/time  objects or character strings.
 }
 
 \seealso{ 
@@ -94,8 +96,15 @@ using \code{bdh}.
  x  <- TSget("USCRWTIC Index", con, start="2001-01-01")
  start(x)
  end(x)
-  
+ 
+ x  <- TSget("USCRWTIC Index", con, start=as.Date("2001-01-01")) 
  tfplot(x)
+ 
+ x <- TSget("RYA ID Equity", con, quote="TRADE", 
+            start= "2012-11-20 09:00:00.000", 
+	     end = "2012-11-20 15:00:00.000", interval="60")
+
+  tfplot(x)
 }
 \keyword{ts}
 
