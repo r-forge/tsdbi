@@ -3,6 +3,11 @@ See also
    o	See also NEWS in the TSdbi package.
 
 
+Changes in TSgetSymbol version 2013.2-1
+
+   o	Removed work around for bug in getSymbol, as the bug was fixed and
+   	the work around no longer works.
+
 Changes in TSgetSymbol version 2012.8-1
 
    o	Modified Title in DESCRIPTION file so TSdbi packages will be more
