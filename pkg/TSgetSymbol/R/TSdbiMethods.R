@@ -78,8 +78,7 @@ setMethod("TSdates",
 #trace("TSget", browser, exit=browser, signature = c(serIDs="character", #con="TSgetSymbolConnection"))
 
 setMethod("TSget",     signature(serIDs="character", con="TSgetSymbolConnection"),
-   definition=
-TSget <-   function(serIDs, con, TSrepresentation=options()$TSrepresentation,
+   definition= function(serIDs, con, TSrepresentation=options()$TSrepresentation,
        tf=NULL, start=tfstart(tf), end=tfend(tf),
        names=serIDs, quote = NULL, 
        quiet=TRUE, repeat.try=3, ...){ 
@@ -134,7 +133,7 @@ TSget <-   function(serIDs, con, TSrepresentation=options()$TSrepresentation,
     #if (NCOL(mat) != length(serIDs)) stop("Error retrieving series", serIDs)
     #  yahoo connections return high, low , ... 
     if (NCOL(mat) != length(serIDs)) names <- seriesNames(mat) 
-    # getSymbols BUG workaround
+    
     st <- as.POSIXlt(start(mat)) #POSIXlt as return for zoo
     if (default) {
         if(periodicity(mat)$scale == "monthly")
@@ -145,15 +144,7 @@ TSget <-   function(serIDs, con, TSrepresentation=options()$TSrepresentation,
 	   mat <- ts(mat, frequency=1, start=c(1900+st$year, 1))
 	}
 
-    # BUG in tfwindow when mat is zoo with POSIXct and start is eg"2011-01-03"
-    #   next should work , but does not
-    # mat <- tfwindow(mat, tf=tf, start=start, end=end)
-    if (inherits(mat, "ts"))
-       mat <- tfwindow(mat, tf=tf, start=start, end=end)
-    else if (inherits(mat, "zoo")) {
-       if(!is.null(start)) mat <- window(mat, start=as.POSIXct(start))
-       if(!is.null(end))   mat <- window(mat, end=as.POSIXct(end))
-       }
+    mat <- tfwindow(mat, tf=tf, start=start, end=end)
 
     seriesNames(mat) <- names
     TSmeta(mat) <- new("TSmeta", serIDs=serIDs,  dbname=con@dbname, 
