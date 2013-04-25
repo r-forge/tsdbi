@@ -1,5 +1,5 @@
 Package: TSjson
-Version: 2013.1-1
+Version: 2013.4-1
 Title:  TSdbi extension for importing time series from web sources via JSON 
 Description: Provides methods for generics in the TSdbi package to 
 	retrieve data from web data sources, importing them using Javascript 
@@ -15,4 +15,5 @@ BuildVignettes: true
 License: GPL-2
 Author: Paul Gilbert <pgilbert.ttv9z@ncf.ca>
 Maintainer: Paul Gilbert <pgilbert.ttv9z@ncf.ca>
+Copyright: 2013 Paul Gilbert
 URL: http://tsdbi.r-forge.r-project.org/
