@@ -10,7 +10,7 @@ Description: Provides methods for generics in the TSdbi package to
 Depends: R (>= 2.14.0), methods, DBI, TSdbi (>= 2012.8-1), tframe (>= 2011.11-1), rjson
 Suggests: tfplot, tframePlus, zoo
 Enhances: TSdbi
-SystemRequirements: python and modules sys,json,mechanize,re,csv,urllib2
+SystemRequirements: python, python-sys, python-json, python-mechanize, python-re, python-csv, python-urllib2
 BuildVignettes: FALSE
 License: GPL-2
 Author: Paul Gilbert <pgilbert.ttv9z@ncf.ca>
