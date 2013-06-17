@@ -80,5 +80,8 @@ if(!identical(as.logical(Sys.getenv("_R_CHECK_HAVE_MYSQL_")), TRUE)) {
    cat("*** Disconnecting.\n")
    dbDisconnect(con1)
    dbDisconnect(con2)
- 
+
+   # cleanup file created by SQLLite in 0serviceCheck.R
+   unlink("test")
+
 }

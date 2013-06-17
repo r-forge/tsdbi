@@ -48,6 +48,8 @@ if(!identical(as.logical(Sys.getenv("_R_CHECK_HAVE_MYSQL_")), TRUE)) {
    cat("* WARNING: THIS OVERWRITES TABLES IN TEST DATABASE ON RSQLite SERVER\n")
    cat("*******************************************************************\n")
 
+   # need to cleanup file "test" created by SQLLite but it is 
+   # used in guideCheck.R, so cleanup there.
    con <- try(dbConnect("SQLite", dbname="test")) # no user/passwd/host
    if (inherits(con, "try-error"))
            stop("dbConnect to SQLite db test failed./n")
@@ -90,5 +92,4 @@ if(!identical(as.logical(Sys.getenv("_R_CHECK_HAVE_MYSQL_")), TRUE)) {
   
    dbDisconnect(con1)
    dbDisconnect(con2)
- 
 }
