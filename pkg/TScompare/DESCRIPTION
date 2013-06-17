@@ -1,5 +1,5 @@
 Package: TScompare
-Version: 2013.3-1
+Version: 2013.6-1
 Title:  TSdbi Comparison
 Description: Utilities for comparing the equality of series on two databases.
 	Comprehensive examples of all the TS* packages is provided in the
