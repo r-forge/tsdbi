@@ -3,6 +3,11 @@ See also
    o	See also NEWS in the TSdbi package.
 
 
+Changes in TSMySQL version 2013.8-1
+
+   o	Fixed bug when replacing muliple series: if not all existed then none
+   	where deleted before putting new versions in place.
+
 Changes in TSMySQL version 2012.8-1
 
    o	Modified Title in DESCRIPTION file so TSdbi packages will be more
