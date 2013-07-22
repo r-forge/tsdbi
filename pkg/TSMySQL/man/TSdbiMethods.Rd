@@ -95,8 +95,7 @@ see the vignette distributed with this package for more complete examples.
       z <- ts(matrix(rnorm(100),50,2), start=c(1975,1), frequency=4)
       seriesNames(z) <- c("random2","random3")
       if(TSexists("random2", con) |
-         TSexists("random3", con) ) TSreplace(z, con) else
-      TSput(z, con)
+         TSexists("random3", con) ) TSreplace(z, con) else TSput(z, con)
       z2 <- TSget("random2", con)
       tfplot(z2)
       TSdates("D1", con)
