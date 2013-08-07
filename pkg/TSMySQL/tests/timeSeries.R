@@ -39,6 +39,10 @@ if(inherits(con, "try-error")) stop("Cannot connect to TS MySQL database.")
 
   tfplot(z, start="1991-01-01", Title="Test")
 
+cat("**************        remove test tables\n")
+
+removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
+
 cat("**************        disconnecting test\n")
 dbDisconnect(con)
 

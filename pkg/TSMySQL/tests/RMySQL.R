@@ -9,7 +9,7 @@ cat("**************************************************************\n")
 cat("* WARNING: THIS OVERWRITES TABLES IN TEST DATABASE ON SERVER**\n")
 cat("**************************************************************\n")
 
-m <- dbDriver("MySQL") # note that this is needed in sourced files.
+ m <- dbDriver("MySQL") # note that this is needed in sourced files.
 
 ###### This is to set up tables. Otherwise use TSconnect#########
    dbname   <- Sys.getenv("MYSQL_DATABASE")
@@ -29,7 +29,12 @@ m <- dbDriver("MySQL") # note that this is needed in sourced files.
        dbConnect(m, dbname=dbname) # pass user/passwd/host in ~/.my.cnf
 
 dbListTables(con) 
-source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
+
+#source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
+
+removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
+createTSdbTables(con, index=FALSE)
+
 dbListTables(con) 
 dbDisconnect(con)
 ##################################################################
