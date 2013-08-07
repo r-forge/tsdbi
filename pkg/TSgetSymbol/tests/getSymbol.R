@@ -19,6 +19,12 @@ tfplot(x2)
 plot(x2)
 TSdescription(x2) 
 
+# weekly with date
+xW <- TSget(c("M2"), con)
+plot(xW)
+tfplot(xW)
+TSdescription(xW) 
+
 x <- TSget(c("CPIAUCNS","M2"), con)
 #x <- TSget(c("CPIAUCNS","M2"), con, TSrepresentation="timeSeries")
 #if("timeSeries" != class(x)) stop("timeSeries class object not returned.")
@@ -47,3 +53,18 @@ yahoo <- TSconnect("getSymbol", dbname="yahoo")
 x <- TSget("F", con=yahoo)
 plot(x)
 tfplot(x)
+
+# test start and end passed to yahoo
+x <- TSget(c("DELL","HP","AAPL"), start="2013-07-29", end="2013-07-30",
+            con=yahoo)
+seriesNames(x)
+start(x)
+end(x)
+
+# test start and end passed using tfwindow for non-yahoo
+xW <- TSget(c("M2"), start=as.Date("2013-01-01"), 
+                       end=as.Date("2013-07-30"), con)
+tfplot(xW)
+TSdescription(xW) 
+start(xW)
+end(xW)
