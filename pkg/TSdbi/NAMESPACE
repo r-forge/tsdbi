@@ -12,7 +12,9 @@ export(
   "TSseriesIDs",
   "TScon",
   "TSextractionDate",
-  "TSquery"
+  "TSquery",
+  "createTSdbTables",
+  "removeTSdbTables"
   )
 
 ## S4 Classes

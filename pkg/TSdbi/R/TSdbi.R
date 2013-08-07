@@ -603,9 +603,11 @@ setGeneric("TSreplace",  valueClass="logicalId",
       if(missing(con) & (!missing(serIDs)) && is(serIDs, "DBIConnection")) 
 	     return(TSreplace(x, serIDs=seriesNames(x), con=serIDs,
 	             vintage=vintage, panel=panel, ...))
-      if(TSexists(serIDs=serIDs, con=con, vintage=vintage, panel=panel,...))
-         TSdelete(serIDs=serIDs, con=con, vintage=vintage, panel=panel, ...)
-         TSput(x, serIDs=serIDs, con=con, vintage=vintage, panel=panel, ...) 
+      for (s in serIDs) {
+        if(TSexists(serIDs=s, con=con, vintage=vintage, panel=panel,...))
+           TSdelete(serIDs=s, con=con, vintage=vintage, panel=panel, ...)
+	} 
+      TSput(x, serIDs=serIDs, con=con, vintage=vintage, panel=panel, ...)
    })
 
 
@@ -1016,3 +1018,198 @@ setMethod("TSvintages",
        if(is.null(con)) stop("NULL con is not allowed. See ?TSvintages.")
        else stop("con class ", class(con), 
        " is not supported. (Check this is a TSdbi connection, not a raw DBI connection.)")} )
+
+
+
+createTSdbTables <- function(con, index=FALSE){
+ Texists <- function(a){
+    if(dbExistsTable(con,a)) {
+        warning("table ",a," exists. Not replacing it."); return(TRUE)}
+    if(dbExistsTable(con,toupper(a))) {
+        warning("table ",toupper(a)," exists. Not replacing it."); return(TRUE)}
+    if(dbExistsTable(con,tolower(a))) {
+        warning("table ",tolower(a)," exists. Not replacing it."); return(TRUE)}
+    FALSE
+    }
+  
+ if (!Texists("Meta")) {
+  # Set up Metadata table  Meta.  
+  dbGetQuery(con, "create table Meta (
+     id 	 VARCHAR(40) NOT NULL,
+     tbl	 CHAR(1), 
+     refperiod   VARCHAR(10) default NULL,
+     description   TEXT,
+     documentation     TEXT
+     );")
+  dbGetQuery(con, "CREATE UNIQUE INDEX Metaindex_id ON Meta (id);")
+  dbGetQuery(con, "CREATE INDEX Metaindex_tbl ON Meta (tbl);")
+  }
+  
+ if (!Texists("A")) {
+  # Set up annual table  A.
+  dbGetQuery(con, "create table A (
+     id 	VARCHAR(40),
+     year	INT,
+     v    double precision DEFAULT  NULL
+     );")
+  if (index) dbGetQuery(con, "CREATE INDEX Aindex_id     ON A (id);")
+  if (index) dbGetQuery(con, "CREATE INDEX Aindex_year   ON A (year);")
+  }
+  
+ if (!Texists("B")) {
+  # Set up business table  B . 
+  dbGetQuery(con, "create table B (
+     id 	VARCHAR(40),
+     date	DATE,
+     period	INT,
+     v    double precision DEFAULT  NULL
+     );")
+  if (index) dbGetQuery(con, "CREATE INDEX Bindex_id     ON B (id);")
+  if (index) dbGetQuery(con, "CREATE INDEX Bindex_date   ON B (date);")
+  if (index) dbGetQuery(con, "CREATE INDEX Bindex_period ON B (period);")
+  }
+  
+ if (!Texists("D")) {
+  # Set up daily table  D .  
+  dbGetQuery(con, "create table D (
+     id 	VARCHAR(40),
+     date	DATE,
+     period	INT,
+     v    double precision DEFAULT  NULL
+     );")
+  if (index) dbGetQuery(con, "CREATE INDEX Dindex_id     ON D (id);")
+  if (index) dbGetQuery(con, "CREATE INDEX Dindex_date   ON D (date);")
+  if (index) dbGetQuery(con, "CREATE INDEX Dindex_period ON D (period);")
+  }
+  
+ if (!Texists("M")) {
+  # Set up monthly table  M.
+  dbGetQuery(con, "create table M (
+     id 	VARCHAR(40),
+     year	INT,
+     period	INT,  
+     v    double precision DEFAULT  NULL
+     );")
+  if (index) dbGetQuery(con, "CREATE INDEX Mindex_id     ON M (id);")
+  if (index) dbGetQuery(con, "CREATE INDEX Mindex_year   ON M (year);")
+  if (index) dbGetQuery(con, "CREATE INDEX Mindex_period ON M (period);")
+  }
+  
+ if (!Texists("U")) {
+  # Set up minutely table  U .
+  # tz not tested yet. Not sure about period.  
+  dbGetQuery(con, "create table U (
+     id 	VARCHAR(40),
+     date	TIMESTAMP,
+     tz 	VARCHAR(4),    
+     period	INT,	     
+     v    double precision DEFAULT  NULL
+     );")
+  if (index) dbGetQuery(con, "CREATE INDEX Uindex_id     ON U (id);")
+  if (index) dbGetQuery(con, "CREATE INDEX Uindex_date   ON U (date);")
+  if (index) dbGetQuery(con, "CREATE INDEX Uindex_period ON U (period);")
+  }
+  
+ if (!Texists("Q")) {
+  # Set up quarterly table  Q.
+  dbGetQuery(con, "create table Q (
+     id 	VARCHAR(40),
+     year	INT,
+     period	INT,  
+     v    double precision DEFAULT  NULL
+     );")
+  if (index) dbGetQuery(con, "CREATE INDEX Qindex_id     ON Q (id);")
+  if (index) dbGetQuery(con, "CREATE INDEX Qindex_year   ON Q (year);")
+  if (index) dbGetQuery(con, "CREATE INDEX Qindex_period ON Q (period);")
+  }
+  
+ if (!Texists("S")) {
+  # Set up semiannual table  S .
+  dbGetQuery(con, "create table S (
+     id 	VARCHAR(40),
+     year	INT,
+     period	INT,  
+     v    double precision DEFAULT  NULL
+     );")
+  if (index) dbGetQuery(con, "CREATE INDEX Sindex_id     ON S (id);")
+  if (index) dbGetQuery(con, "CREATE INDEX Sindex_year   ON S (year);")
+  if (index) dbGetQuery(con, "CREATE INDEX Sindex_period ON S (period);")
+  }
+  
+ if (!Texists("W")) {
+  # Set up weekly table  W .
+  dbGetQuery(con, "create table W (
+     id 	VARCHAR(40),
+     date	DATE,
+     period	INT,  
+     v    double precision DEFAULT  NULL
+     );")
+  if (index) dbGetQuery(con, "CREATE INDEX Windex_id     ON W (id);")
+  if (index) dbGetQuery(con, "CREATE INDEX Windex_date   ON W (date);")
+  if (index) dbGetQuery(con, "CREATE INDEX Windex_period ON W (period);")
+  }
+  
+ if (!Texists("I")) {
+  # Set up irregular date table  I .
+  dbGetQuery(con, "create table I (
+     id 	VARCHAR(40),
+     date	DATE,
+   v    double precision DEFAULT  NULL
+   );")
+  if (index) dbGetQuery(con, "CREATE INDEX Iindex_id     ON I (id);")
+  if (index) dbGetQuery(con, "CREATE INDEX Iindex_date   ON I (date);")
+  }
+  
+ if (!Texists("T")) {
+  # Set up irregular date-time table  T .
+  # IT WOULD BE NICE TO HAVE TZ HERE TOO
+  dbGetQuery(con, "create table T (
+     id    VARCHAR(40),
+     date  TIMESTAMP,
+     v     double precision DEFAULT  NULL
+     );")
+  if (index) dbGetQuery(con, "CREATE INDEX Tindex_id   ON T (id);")
+  if (index) dbGetQuery(con, "CREATE INDEX Tindex_date ON T (date);")
+  }
+    
+  #  This is generic sql way to get table info. (eg. table A )
+  #   but it requires read privileges on INFORMATION_SCHEMA.Columns
+  #   which the user may not have.
+  #
+  #if( "SQLiteConnection" != class(con)) { #SQLite does not seem to support this
+  #  z <- try(
+  #  dbGetQuery(con, "SELECT COLUMN_NAME, COLUMN_DEFAULT, COLLATION_NAME, DATA_TYPE,
+  #	   CHARACTER_SET_NAME, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION
+  #	      FROM INFORMATION_SCHEMA.Columns WHERE table_name='A' ;"), silent=TRUE )
+   # if(inherits(z, "try-error")) cat(
+  #    "INFORMATION_SCHEMA query problem. (User may not have permission.)\n")
+  #  else print(z)
+  # }
+
+  cat("   tables:\n")
+  dbListTables(con)
+  }
+   
+removeTSdbTables <- function(con, yesIknowWhatIamDoing=FALSE){
+  if(!yesIknowWhatIamDoing) 
+       stop("You need to know what you are doing before using this function!!")
+    
+  # Note: The  method "dropTStable" works around the
+  # problem that different db engines treat capitalized table names differently.
+  # e.g. MySQL uses table name Meta while Posgresql conver, yes, yesIknowWhatIamDoing=TRUEIknowWhatIamDoing=TRUEts to meta.
+
+  dropTStable(con, "Meta", yesIknowWhatIamDoing=TRUE)   
+  dropTStable(con, "A", yesIknowWhatIamDoing=TRUE)
+  dropTStable(con, "B", yesIknowWhatIamDoing=TRUE)
+  dropTStable(con, "D", yesIknowWhatIamDoing=TRUE)
+  dropTStable(con, "M", yesIknowWhatIamDoing=TRUE)
+  dropTStable(con, "U", yesIknowWhatIamDoing=TRUE)
+  dropTStable(con, "Q", yesIknowWhatIamDoing=TRUE)
+  dropTStable(con, "S", yesIknowWhatIamDoing=TRUE)
+  dropTStable(con, "W", yesIknowWhatIamDoing=TRUE)
+  dropTStable(con, "I", yesIknowWhatIamDoing=TRUE)
+  dropTStable(con, "T", yesIknowWhatIamDoing=TRUE)
+  invisible(TRUE)
+  }
+  
+   
