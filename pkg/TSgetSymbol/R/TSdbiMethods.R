@@ -102,17 +102,15 @@ setMethod("TSget",     signature(serIDs="character", con="TSgetSymbolConnection"
             serIDs <- rep(serIDs, length.out=length(quote))
         }
     
-    #getSymbols BUG workaround. Set this as zoo otherwise periodicity is wrong
-    #   (and frequency does not work either). Then convert below
-    #args <- list(src = con@dbname, return.class="zoo",
-    #             auto.assign=FALSE)
     args <- list(src = con@dbname, return.class=TSrepresentation,
                  auto.assign=FALSE)
     
-    #args <- if (is.null(start) & is.null(end)) append(args, list(...))
-    #        else if (is.null(start)  ) append(args, list(end=end, ...))
-    #        else if (is.null(end)  )   append(args, list(start=start, ...))
-    #        else         append(args, list(start=start, end=end, ...) )
+    if (con@dbname == "yahoo" )
+       args <- if (is.null(start) & is.null(end)) append(args, list(...))
+            else if (is.null(start)  ) append(args, list(to=end, ...))
+            else if (is.null(end)  )   append(args, list(from=start, ...))
+            else         append(args, list(from=start, to=end, ...) )
+
     for (i in seq(length(serIDs))) {
        argsi <- append(list(serIDs[i]),  args)
        for (rpt in seq(repeat.try)) {
@@ -144,7 +142,8 @@ setMethod("TSget",     signature(serIDs="character", con="TSgetSymbolConnection"
 	   mat <- ts(mat, frequency=1, start=c(1900+st$year, 1))
 	}
 
-    mat <- tfwindow(mat, tf=tf, start=start, end=end)
+    if (con@dbname != "yahoo" )
+        mat <- tfwindow(mat, tf=tf, start=start, end=end)
 
     seriesNames(mat) <- names
     TSmeta(mat) <- new("TSmeta", serIDs=serIDs,  dbname=con@dbname, 
