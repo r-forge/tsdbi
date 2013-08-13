@@ -1011,6 +1011,9 @@ are resolves by indicating the corresponding name pairs:
 While it may not be necessary to \code{detach} packages, the following prevents
 warnings later about objects being masked:
 \begin{Scode}
+  dbDisconnect(con1)
+  dbDisconnect(con2)
+  dbDisconnect(yahoo)
   detach(package:TSMySQL)
   detach(package:RMySQL)
   detach(package:TSSQLite)
@@ -1022,6 +1025,8 @@ warnings later about objects being masked:
 \section{Vintages of Realtime Data}
 \label{sec:Vintages}
 %%
+Examples in the section have been disabled pending availability of different dataset.
+
 Data vintages, or ``realtime data'' are snapshots of data that was available
 at different points in time. The most obvious feature of earlier snapshots is
 that the series end earlier. However, the reason for retaining vintages is that
@@ -1036,7 +1041,7 @@ set up with vintage support.
 
 First establish a connection to th database and get
 a vector of the available vintages:
-\begin{Scode}{results=verbatim,fig=FALSE}
+\begin{Scode}{eval=FALSE,results=verbatim,fig=FALSE}
 require("TSMySQL") 
 require("tfplot") 
 ets <- TSconnect("MySQL",dbname="etsv") 
@@ -1047,17 +1052,17 @@ The following checks if a certain variable (Consumer Credit -- V122707) is
 available in the different vintages. (V numbers replaced B numbers circa 2003, 
 so the V numbers do not exist in older vintages. This could be supported by
 implementing aliases, but that has not been done here.)
-\begin{Scode}{results=verbatim,fig=FALSE}
+\begin{Scode}{eval=FALSE,results=verbatim,fig=FALSE}
 ve <- TSexists("V122707", vintage=v, con=ets)
 \end{Scode}
 
 %A temporary problem with the db loading of some vintages is fixed by
-\begin{Scode}{results=hide,fig=FALSE}
+\begin{Scode}{eval=FALSE,results=hide,fig=FALSE}
 ve[224:length(ve)] <- FALSE 
 \end{Scode}
 
 The vintages can them be retrieved and plotted by
-\begin{Scode}{results=verbatim,fig=TRUE}
+\begin{Scode}{eval=FALSE,results=verbatim,fig=TRUE}
 CC <- TSget(serIDs="V122707", con=ets, vintage=v[ve])
 
 tfOnePlot(ytoypc(CC), start=c(2000,1), 
@@ -1103,6 +1108,11 @@ This will produce a graph in your web browser. It is not reproduced here.
 Pointing your mouse at the legend of this plot will highlight the corresponding
 vintage, and
 pointing at the graph will give information about the source of a data point.
+\begin{eval=FALSE,Scode}
+  dbDisconnect(ets)
+  detach(package:TSMySQL)
+  detach(package:RMySQL)
+\end{Scode}
 %%
 %%
 %%
@@ -1658,6 +1668,8 @@ other SQL engines.
   dbGetQuery(con, paste(
    "SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION",
  "FROM INFORMATION_SCHEMA.Columns WHERE TABLE_SCHEMA='test' AND table_name='M';"))
+
+  dbDisconnect(con)
 \end{Scode}
 
 %%
