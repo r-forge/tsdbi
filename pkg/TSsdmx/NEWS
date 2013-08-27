@@ -7,6 +7,10 @@ Known BUGS
    o	None for the moment.
 
 
+Changes in TSsdmx version 2013.8-2
+
+   o	Adjusted Depends and Imports in DESCRIPTION.
+
 Changes in TSsdmx version 2012.8-1
 
    o	Modified Title in DESCRIPTION file so TSdbi packages will be more
