@@ -1,8 +1,12 @@
 import(methods)  
 import(DBI)      
 import(TSdbi)
+import("tframe")
 import(RMySQL) ## this should not all be needed, but parts for setClass "TSMySQLConnection"
 ##importClassesFrom("RMySQL","MySQLConnection")
+
+## many function from TSdbi need to be visible to the user, so it is indicated
+## using Depends: in NAMESPACE rather than importing and exporting here.
 
 ## S4 Classes
 exportClasses(
