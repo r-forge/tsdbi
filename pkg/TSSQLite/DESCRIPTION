@@ -7,7 +7,6 @@ Description: TSSQLite provides a SQLite interface for TSdbi.
 Depends: R (>= 2.8.0), TSdbi (>= 2011.11-1)
 Imports: methods, DBI, tframe, tframePlus, RSQLite
 Suggests: zoo, tseries, tfplot
-Enhances: TSdbi
 BuildVignettes: true
 License: GPL-2
 Copyright: 2007-2011 Bank of Canada.  2012 Paul Gilbert.
