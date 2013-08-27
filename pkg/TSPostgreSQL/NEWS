@@ -3,6 +3,10 @@ See also
    o	See also NEWS in the TSdbi package.
 
 
+Changes in TSPostgreSQL version 2013.8-2
+
+   o	Adjusted Depends and Imports in DESCRIPTION.
+
 Changes in TSPostgreSQL version 2012.10-1
 
    o	a test to record mechanism for determining server, etc.
