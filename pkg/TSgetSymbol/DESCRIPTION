@@ -7,12 +7,12 @@ Description: Provides methods for generics in the TSdbi package to
 	Comprehensive examples of all the TS* packages is provided in the
 	vignette Guide.pdf with the TSdata package.
 Depends: R (>= 2.8.0), TSdbi (>= 2011.11-1), quantmod (>= 0.4-0)
-Imports: methods, DBI, zoo, tframe (>= 2011.11-1)
-Suggests: tfplot, tframePlus
+Imports: methods, DBI, zoo, tframe (>= 2011.11-1), tframePlus
+Suggests: tfplot
 Enhances: TSdbi
 BuildVignettes: true
 License: GPL-2
-Copyright: 2007-2011 Bank of Canada.  2012 Paul Gilbert.
+Copyright: 2007-2011 Bank of Canada.  2012-2013 Paul Gilbert.
 Author: Paul Gilbert <pgilbert.ttv9z@ncf.ca>
 Maintainer: Paul Gilbert <pgilbert.ttv9z@ncf.ca>
 URL: http://tsdbi.r-forge.r-project.org/
