@@ -1,10 +1,11 @@
 Package: TSSQLite
-Version: 2012.8-1
+Version: 2013.8-2
 Title: TSdbi extensions for SQLite
 Description: TSSQLite provides a SQLite interface for TSdbi.
 	Comprehensive examples of all the TS* packages is provided in the
 	vignette Guide.pdf with the TSdata package.
-Depends: R (>= 2.8.0), methods, tframe, tframePlus, DBI, TSdbi (>= 2011.8-1), RSQLite 
+Depends: R (>= 2.8.0), TSdbi (>= 2011.8-1)
+Imports: methods, DBI, tframe, tframePlus, RSQLite
 Suggests: zoo, tseries, tfplot
 Enhances: TSdbi
 BuildVignettes: true

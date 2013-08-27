@@ -1,7 +1,8 @@
 import(methods)  
 import(DBI)      
 import(TSdbi)
-##import(RSQLite)
+import(tframe)
+import(tframePlus)
 import(RSQLite) ## this should not all be needed, but parts for setClass "TSSQLiteConnection"
 ##importClassesFrom("RSQLite","SQLiteConnection")
 
