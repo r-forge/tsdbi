@@ -1,10 +1,12 @@
 import("methods")  
 import("DBI")      
-import("tframe")
 import("TSdbi")
-#importClassesFrom("DBI",..)
+
+import("tframe")
+import("tframePlus")
+
 #importFrom("quantmod", "getSymbols") #need more than this
-#import("quantmod") # problem with show, need to leave in Depends
+#import("quantmod") # problem with show exported by quantmod, need to leave in Depends
 
 export("getSymbol")
 
