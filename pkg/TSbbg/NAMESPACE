@@ -1,7 +1,12 @@
 import(methods)  
 import(DBI)      
 import(TSdbi)
-#import(bbg) 
+
+import(tframe)
+import(tframePlus)
+
+import(zoo) 
+import(Rbbg) 
 
 export("bbg")
 
