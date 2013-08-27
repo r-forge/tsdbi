@@ -46,6 +46,8 @@ con <- if ("" != user)
 if(inherits(con, "try-error")) stop("CreateTables did not work.")
 
 source(system.file("TSsql/Populate.TSsql", package = "TSdbi"))
+require("zoo")
+require("tframePlus")
 source(system.file("TSsql/TSdbi.TSsql", package = "TSdbi"))
 source(system.file("TSsql/dbGetQuery.TSsql", package = "TSdbi"))
 source(system.file("TSsql/HistQuote.TSsql", package = "TSdbi"))
