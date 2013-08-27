@@ -1,8 +1,12 @@
 import("methods")  
 import("DBI")      
-import("tframe")
 import("TSdbi")
-#importClassesFrom("DBI",..)
+
+import("tframe")
+import("tframePlus")
+
+import("RCurl")
+import("XML")
 
 export("sdmx")
 
