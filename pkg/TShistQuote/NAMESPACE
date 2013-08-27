@@ -1,9 +1,14 @@
 import("methods")  
 import("DBI")      
 import("tframe")
+import("tframePlus")
 import("TSdbi")
 #importClassesFrom("DBI",..)
 
+## many function from TSdbi need to be visible to the user, so it is indicated
+## using Depends: in NAMESPACE rather than importing and exporting here.
+
+import("tseries")
 export("histQuote")
 
 ## S4 Classes

@@ -31,7 +31,7 @@ TSdescription(x2)
 
 options(TSconnection=con)
 
-x <- TSget(c("^ftse","^gspc"))
+x <- TSget(c("^ftse","^gspc"), con=con)
 plot(x)
 tfplot(x)
 if (! all(TSrefperiod(x) %in% "Close")) stop("TSrefperiod error, test 3.")
