@@ -1,6 +1,7 @@
 #  The real tests are in the database specific packages
 
 require("TSdbi")
+require("tframe")
 
 z <- ts(1:10)
 
