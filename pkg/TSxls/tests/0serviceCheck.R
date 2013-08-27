@@ -6,7 +6,7 @@ Sys.info()
 
 if(identical(as.logical(service), TRUE)) {
    require("TSxls") 
-   if( ! "XLSX" %in% xlsFormats()) stop("Perl libraries are not available." )
+   if( ! "XLSX" %in% gdata::xlsFormats()) stop("Perl libraries are not available." )
  }else {
    cat("Perl libraries not available. Skipping tests.\n")
    cat("_R_CHECK_HAVE_PERLCSVXS_ setting ", service, "\n")

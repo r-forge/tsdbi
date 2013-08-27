@@ -60,6 +60,8 @@ require("tfplot")
 
   z <- TSget("DMACN", con2)
 
+  require("zoo")
+  
   con3 <- TSconnect(drv="xls", dbname=testfile,
           map=list(ids  =list(i=11,     j="B:Q"), 
 	           data =list(i=12:627, j="B:Q"), 
