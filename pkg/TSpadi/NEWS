@@ -1,4 +1,6 @@
 Requested that this package be moved to the CRAN archives on 2013-03-26.
+Continuing small changes for consistency with other TS* packages and 
+changes in R, but testing is not being done.
 
 Known problems:
 
