@@ -3,6 +3,8 @@ import("DBI")
 import("tframe")
 import("TSdbi")
 #importClassesFrom("DBI",..)
+#importFrom("quantmod", "getSymbols") #need more than this
+#import("quantmod") # problem with show, need to leave in Depends
 
 export("getSymbol")
 
