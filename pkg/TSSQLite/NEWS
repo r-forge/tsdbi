@@ -4,6 +4,10 @@ See also
 
 
 
+Changes in TSSQLite version 2013.8-2
+
+   o	Adjusted Depends and Imports in DESCRIPTION.
+
 Changes in TSSQLite version 2012.8-1
 
    o	Modified Title in DESCRIPTION file so TSdbi packages will be more
