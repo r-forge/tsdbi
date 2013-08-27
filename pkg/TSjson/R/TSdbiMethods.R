@@ -136,9 +136,9 @@ setMethod("TSget",     signature(serIDs="character", con="TSjsonConnection"),
     else {#!con@proxy
        for (rpt in seq(repeat.try)) {
 	    #rr <- try(system(qq, intern=TRUE), silent=quiet)
-   	    #fromJSON in RJSONIO:
+   	    #fromJSON in RJSONIO (requires change of Imports: and NAMESPACE):
 	    #rr <- fromJSON(pcon <- pipe(qq), asText=TRUE)
-  	    #fromJSON in rjson (requires change of Depends:):
+  	    #fromJSON in rjson:
 	    rr <- fromJSON(readLines(pcon <- pipe(qq)))
    	    close(pcon)
 	    if ((!inherits(rr , "try-error"))){
