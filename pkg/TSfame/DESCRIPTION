@@ -4,8 +4,9 @@ Title: TSdbi extensions for fame
 Description: TSfame provides a fame interface for TSdbi.
 	Comprehensive examples of all the TS* packages is provided in the
 	vignette Guide.pdf with the TSdata package.
-Depends: R (>= 2.8.0), methods, tframe, tframePlus(>= 2011.8-1), TSdbi (>= 2011.11-1), DBI, fame (>= 2.12), tis, zoo
-Suggests: tseries, tfplot
+Depends: R (>= 2.8.0), TSdbi (>= 2011.11-1)
+Imports: methods, DBI, tframe, tframePlus(>= 2011.8-1), fame (>= 2.12), tis
+Suggests: tseries, tfplot, zoo
 Enhances: TSdbi
 BuildVignettes: true
 License: GPL-2

@@ -1,7 +1,11 @@
-import(methods)  
-import(DBI)      
-import(TSdbi)
-#import(fame) 
+import("methods")  
+import("DBI")      
+import("TSdbi")
+import("tframe")
+import("tframePlus")
+
+import("tis") 
+import("fame") 
 
 export("fame")
 export("fameServer")
@@ -29,7 +33,3 @@ exportMethods(
    "dbDisconnect",
    "dbUnloadDriver"
    )
-
-
-import("tframe")
-import("tframePlus")
