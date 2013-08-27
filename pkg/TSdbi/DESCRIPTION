@@ -1,5 +1,5 @@
 Package: TSdbi
-Version: 2013.8-1
+Version: 2013.8-2
 Title: TSdbi (Time Series Database Interface)
 Description: TSdbi provides a common interface to time series databases. The
 	objective is to define a standard interface so users can retrieve time 
@@ -15,8 +15,8 @@ Description: TSdbi provides a common interface to time series databases. The
 	handle multilingual data documentation.
 	Comprehensive examples of all the TS* packages is provided in the
 	vignette Guide.pdf with the TSdata package.
-Depends: R (>= 2.8.0), tframe (>= 2008.5-1)
-Imports: methods, DBI
+Depends: R (>= 2.8.0)
+Imports: methods, DBI, tframe (>= 2008.5-1)
 Suggests: zoo, tseries, tis, tfplot, tframePlus
 BuildVignettes: true
 License: GPL-2
