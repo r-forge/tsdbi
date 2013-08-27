@@ -1,5 +1,6 @@
 require("TSgetSymbol")
 require("tfplot")
+require("tframePlus")
 cat("************** TSgetSymbol  Examples ******************************\n")
 
 con <- TSconnect("getSymbol", dbname="FRED") 

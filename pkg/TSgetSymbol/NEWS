@@ -2,7 +2,7 @@ See also
 
    o	See also NEWS in the TSdbi package.
 
-Changes in TSgetSymbol version 2013.8-1
+Changes in TSgetSymbol version 2013.8-2
 
    o	Added passing of start and end (from and to) to getSymbols call
    	to yahoo.

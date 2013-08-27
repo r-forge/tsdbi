@@ -23,7 +23,7 @@ setMethod("TSconnect",   signature(drv="getSymbolDriver", dbname="character"),
    if (is.null(dbname)) stop("dbname must be specified")
    if (dbname == "FRED") {
       #there could be a better test
-      con <- try(quantmod:::getSymbols('CPIAUCNS',src='FRED'), silent = TRUE)
+      con <- try(quantmod::getSymbols('CPIAUCNS',src='FRED'), silent = TRUE)
       if(inherits(con, "try-error")) 
          stop("Could not establish TSgetSymbolConnection to ",  dbname)
       #close(con)
@@ -31,7 +31,7 @@ setMethod("TSconnect",   signature(drv="getSymbolDriver", dbname="character"),
    else if (dbname == "yahoo") {
       #this breaks if the symbol disappears, so it is more trouble than value
       # a better test would be good
-      #con <- try(quantmod:::getSymbols('QQQQ',src='yahoo'), silent = TRUE)
+      #con <- try(quantmod::getSymbols('QQQQ',src='yahoo'), silent = TRUE)
       #if(inherits(con, "try-error")) 
       #   stop("Could not establish TSgetSymbolConnection to ",  dbname)
       ##close(con)
@@ -114,7 +114,7 @@ setMethod("TSget",     signature(serIDs="character", con="TSgetSymbolConnection"
     for (i in seq(length(serIDs))) {
        argsi <- append(list(serIDs[i]),  args)
        for (rpt in seq(repeat.try)) {
-           # quantmod:::getSymbols
+           # quantmod::getSymbols
            r <- try(do.call("getSymbols", argsi), silent=quiet)
 	   if (!inherits(r , "try-error")) break
 	   }
