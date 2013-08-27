@@ -104,7 +104,6 @@ setMethod("TSget",     signature(serIDs="character", con="TShistQuoteConnection"
 	   }
        if (inherits(r , "try-error")) stop(r)
        if (is.character(r)) stop(r)
-       TSrefperiod(r) <- quote[i]
        mat <- tbind(mat, r)
        desc <- c(desc, paste(serIDs[i], quote[i], collapse=" "))
        }
@@ -118,6 +117,7 @@ setMethod("TSget",     signature(serIDs="character", con="TShistQuoteConnection"
       mat <- changeTSrepresentation(mat, TSrepresentation)
       }
 
+    if(all(quote == quote[1])) TSrefperiod(mat) <- quote[1]
     seriesNames(mat) <- names
     TSmeta(mat) <- new("TSmeta", serIDs=serIDs,  dbname=con@dbname, 
         hasVintages=con@hasVintages, hasPanels=con@hasPanels,
