@@ -1,8 +1,11 @@
 import("methods")  
 import("DBI")      
 import("tframe")
+import("tframePlus")
 import("TSdbi")
 #importClassesFrom("DBI",..)
+
+import("gdata")
 
 export("xls")
 
