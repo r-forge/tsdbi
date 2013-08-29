@@ -74,7 +74,7 @@
 \value{depends.}
 \details{
 These are MySQL methods for \pkg{TSdbi}. See the \pkg{TSdbi} for details and
-see the vignette distributed with this package for more complete examples.
+see the vignette distributed with package \pkg{TSdata} for more complete examples.
 }
 
 \seealso{ 
