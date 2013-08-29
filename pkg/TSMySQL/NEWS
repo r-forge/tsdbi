@@ -7,8 +7,12 @@ Changes in TSMySQL version 2013.8-2
 
    o	Adjusted Depends and Imports in DESCRIPTION.
 
+   o	Functions createTSdbTables() and removeTSdbTables() from TSdbi are now
+   	used in tests and examples so that test database tables are cleaned 
+	up (removed).
+
    o	Fixed bug when replacing muliple series: if not all existed then none
-   	where deleted before putting new versions in place.
+   	where deleted before putting new versions in place. (Fix is in TSdbi.)
 
 Changes in TSMySQL version 2012.8-1
 
