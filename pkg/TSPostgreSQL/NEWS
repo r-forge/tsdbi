@@ -7,6 +7,10 @@ Changes in TSPostgreSQL version 2013.8-2
 
    o	Adjusted Depends and Imports in DESCRIPTION.
 
+   o	Functions createTSdbTables() and removeTSdbTables() from TSdbi are now
+   	used in tests and examples so that test database tables are cleaned 
+	up (removed).
+
 Changes in TSPostgreSQL version 2012.10-1
 
    o	a test to record mechanism for determining server, etc.

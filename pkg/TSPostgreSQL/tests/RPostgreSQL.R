@@ -34,7 +34,11 @@ m <- dbDriver("PostgreSQL") # note that this is needed in sourced files.
        }
 
 dbListTables(con) 
-source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
+
+#source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
+removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
+createTSdbTables(con, index=FALSE)
+
 dbListTables(con) 
 dbDisconnect(con)
 ##################################################################
@@ -53,6 +57,7 @@ source(system.file("TSsql/dbGetQuery.TSsql", package = "TSdbi"))
 source(system.file("TSsql/HistQuote.TSsql", package = "TSdbi"))
 
 cat("**************        disconnecting test\n")
+removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
 dbDisconnect(con)
 dbUnloadDriver(m)
 
