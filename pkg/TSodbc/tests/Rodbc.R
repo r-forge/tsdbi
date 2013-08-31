@@ -9,8 +9,6 @@ cat("**************************************************************\n")
 cat("* WARNING: THIS OVERWRITES TABLES IN TEST DATABASE ON SERVER**\n")
 cat("**************************************************************\n")
 
-m <- dbDriver("ODBC") # note that this is needed in sourced files.
-
 ###### This is to set up tables. Otherwise use TSconnect#########
   # This will fail if ODBC support is not installed or set up on the system 
   # with a message like:  [RODBC] ERROR: state IM002, code 0, 
@@ -32,7 +30,10 @@ m <- dbDriver("ODBC") # note that this is needed in sourced files.
        con <- odbcConnect(dsn=dbname) # pass user/passwd/host in ~/.odbc.ini
 
 #dbListTables(con) 
-source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
+#source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
+removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
+createTSdbTables(con, index=FALSE)
+
 #dbListTables(con) 
 dbDisconnect(con)
 ##################################################################
@@ -43,6 +44,8 @@ con <- if ("" != user)
 
 if(inherits(con, "try-error")) cat("CreateTables did not work.\n")
  else {
+
+   m <- "ODBC" # this is needed in sourced files.
    source(system.file("TSsql/Populate.TSsql", package = "TSdbi"))
    cat("**********1\n")
    source(system.file("TSsql/TSdbi.TSsql", package = "TSdbi"))
@@ -50,6 +53,9 @@ if(inherits(con, "try-error")) cat("CreateTables did not work.\n")
    source(system.file("TSsql/dbGetQuery.TSsql", package = "TSdbi"))
    cat("*********3\n")
    source(system.file("TSsql/HistQuote.TSsql", package = "TSdbi"))
+
+   cat("**************        removing test database tables\n")
+   removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
 
    cat("**************        disconnecting test\n")
    dbDisconnect(con)

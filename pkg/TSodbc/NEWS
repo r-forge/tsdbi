@@ -9,6 +9,10 @@ Known BUGS
 	so it is necessary to have a properly defined ~/.odbc.ini  file.
 
 
+Changes in TSodbc version 2013.8-2
+
+   o	Adjusted Depends and Imports in DESCRIPTION.
+
 Changes in TSodbc version 2012.8-1
 
    o	Modified Title in DESCRIPTION file so TSdbi packages will be more

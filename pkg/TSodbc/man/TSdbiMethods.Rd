@@ -111,8 +111,10 @@ see the vignette distributed with this package for more complete examples.
 }
 \examples{
     require("tfplot")
-    con <- try(TSconnect(dbDriver("ODBC"), dbname="test"))
-    if(! inherits(con, "try-error")) {
+    conInit <- try(odbcConnect(dsn=="test"))
+    if(! inherits(conInit, "try-error")) {
+      createTSdbTables(conInit, index=FALSE)
+      con <- TSconnect("ODBC", dbname="test")
       z <- ts(rnorm(100), start=c(1975,1), frequency=12)
       seriesNames(z) <- "random1"
       if(TSexists("random1", con)) TSreplace(z, con) else
@@ -137,9 +139,10 @@ see the vignette distributed with this package for more complete examples.
       TSmeta("random2")
       TSdelete("random1", con)
       TSdelete("random2")
+       \dontshow{removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)} 
       dbDisconnect(con)
       }
-    con <- try(TSconnect(dbDriver("ODBC"), dbname="ets"))
+    con <- try(TSconnect("ODBC", dbname="ets"))
     if(! inherits(con, "try-error")) {
       TSmeta("B103", con)
       z1 <- TSget("B103", con)
