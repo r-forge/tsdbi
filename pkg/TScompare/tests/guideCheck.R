@@ -40,6 +40,8 @@ if(!identical(as.logical(Sys.getenv("_R_CHECK_HAVE_MYSQL_")), TRUE)) {
    yahoo <- TSconnect("histQuote", dbname="yahoo") 
    #x <- TSget("^ftse", yahoo)
    # yahoo is slow sometimes
+   require("zoo")
+   require("tframePlus")
    x <- zoo(rnorm(200), order.by=as.Date("2012-01-01") + 1:200)
    seriesNames(x) <- "ftse"
    TSreplace(x, serIDs="ftse", Table="B", con=con1)
