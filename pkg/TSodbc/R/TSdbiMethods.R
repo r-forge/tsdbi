@@ -102,7 +102,7 @@ setMethod("TSput",   signature(x="ANY", serIDs="character", con="TSodbcConnectio
        TSdescription.=TSdescription(x), TSdoc.=TSdoc(x), TSlabel.=TSlabel(x),
          TSsource.=TSsource(x),  
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
- TSdbi:::TSputSQL(x, serIDs, con, Table=Table, 
+  TSputSQL(x, serIDs, con, Table=Table, 
    TSdescription.=TSdescription., TSdoc.=TSdoc., TSlabel.=TSlabel.,
      TSsource.=TSsource., 
    vintage=vintage, panel=panel) )
@@ -113,7 +113,7 @@ setMethod("TSget",   signature(serIDs="character", con="TSodbcConnection"),
        tf=NULL, start=tfstart(tf), end=tfend(tf), names=NULL, 
        TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE, TSsource=TRUE,
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
-   TSdbi:::TSgetSQL(serIDs, con, TSrepresentation=TSrepresentation,
+   TSgetSQL(serIDs, con, TSrepresentation=TSrepresentation,
        tf=tf, start=start, end=end,
        names=names, TSdescription=TSdescription, TSdoc=TSdoc, TSlabel=TSlabel,
          TSsource=TSsource,
@@ -122,29 +122,29 @@ setMethod("TSget",   signature(serIDs="character", con="TSodbcConnection"),
 setMethod("TSdates",    signature(serIDs="character", con="TSodbcConnection"),
    definition= function(serIDs, con=getOption("TSconnection"),  
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
-      TSdbi:::TSdatesSQL(serIDs, con, vintage=vintage, panel=panel) )
+      TSdatesSQL(serIDs, con, vintage=vintage, panel=panel) )
 
 
 setMethod("TSdescription",   signature(x="character", con="TSodbcConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
-        as.character(TSdbi:::TSdescriptionSQL(x=x, con=con)) )
+        as.character(TSdescriptionSQL(x=x, con=con)) )
 
 setMethod("TSdoc",   signature(x="character", con="TSodbcConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
-        as.character(TSdbi:::TSdocSQL(x=x, con=con)) )
+        as.character(TSdocSQL(x=x, con=con)) )
 
 setMethod("TSlabel",   signature(x="character", con="TSodbcConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
-        as.character(TSdbi:::TSlabelSQL(x=x, con=con)) )
+        as.character(TSlabelSQL(x=x, con=con)) )
 
 setMethod("TSsource",   signature(x="character", con="TSodbcConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
-        TSdbi:::TSsourceSQL(x=x, con=con))
+        TSsourceSQL(x=x, con=con))
 
 setMethod("TSdelete", signature(serIDs="character", con="TSodbcConnection"),
      definition= function(serIDs, con=getOption("TSconnection"),  
      vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
-   TSdbi:::TSdeleteSQL(serIDs=serIDs, con=con, vintage=vintage, panel=panel) )
+   TSdeleteSQL(serIDs=serIDs, con=con, vintage=vintage, panel=panel) )
 
 setMethod("TSvintages", 
    signature(con="TSodbcConnection"),

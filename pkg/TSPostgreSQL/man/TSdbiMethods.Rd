@@ -78,8 +78,13 @@
 \details{
 These are PostgreSQL methods for \pkg{TSdbi}. The \dots argument to TSconnect 
 can be used to pass the
-user name and password information to \code{dbConnect}. See the \pkg{TSdbi} for details and
-see the vignette distributed with package\pkg{TSdata} for more complete examples.
+user name and password information to \code{dbConnect}. 
+See the \pkg{TSdbi} for details and see 
+the vignette distributed with package\pkg{TSdata} for more complete examples.
+Package \pkg{TSsql} is required for functions createTSdbTables() and
+removeTSdbTables().
+Typically createTSdbTables() will only be done once, and the tables
+will not be removed. These steps are done in the example below.
 }
 
 \seealso{ 
@@ -91,6 +96,7 @@ see the vignette distributed with package\pkg{TSdata} for more complete examples
     require("tfplot")
     conInit <- try(dbConnect(dbDriver("PostgreSQL"), dbname="test"))
     if(! inherits(conInit, "try-error")) {
+      require("TSsql")
       createTSdbTables(conInit, index=FALSE)
       con <- TSconnect(dbDriver("PostgreSQL"), dbname="test")
       z <- ts(rnorm(100), start=c(1975,1), frequency=12)

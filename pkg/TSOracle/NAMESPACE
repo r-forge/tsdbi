@@ -1,7 +1,9 @@
-import(methods)  
-import(DBI)      
+import("methods")  
+import("DBI")      
 import("TSdbi")
-import(ROracle) 
+import("TSsql")
+
+import("ROracle") 
 ##importClassesFrom("ROracle","OracleConnection")
 
 import("tframe")

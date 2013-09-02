@@ -1,11 +1,11 @@
 Package: TSodbc
-Version: 2013.8-2
+Version: 2013.9-1
 Title: TSdbi extensions for ODBC
 Description: TSodbc provides an ODBC interface for TSdbi.
 	Comprehensive examples of all the TS* packages is provided in the
 	vignette Guide.pdf with the TSdata package.
-Depends: R (>= 2.8.0), TSdbi (>= 2013.8-2), RODBC (>= 0.6-0)
-Imports: methods, DBI, tframe, tframePlus 
+Depends: R (>= 2.8.0), TSdbi (>= 2013.9-1), RODBC (>= 0.6-0)
+Imports: methods, DBI, tframe, tframePlus , TSsql (>= 2013.9-1)
 Suggests: zoo, tseries, tfplot
 BuildVignettes: true
 License: GPL-2

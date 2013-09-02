@@ -36,6 +36,8 @@ m <- dbDriver("PostgreSQL") # note that this is needed in sourced files.
 dbListTables(con) 
 
 #source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
+
+require("TSsql")
 removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
 createTSdbTables(con, index=FALSE)
 

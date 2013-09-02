@@ -3,6 +3,10 @@ See also
    o	See also NEWS in the TSdbi package.
 
 
+Changes in TSMySQL version 2013.9-1
+
+   o	Using TSsql split from TSdbi.
+
 Changes in TSMySQL version 2013.8-2
 
    o	Adjusted Depends and Imports in DESCRIPTION.
