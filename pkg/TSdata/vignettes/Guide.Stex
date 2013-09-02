@@ -821,85 +821,85 @@ Then check the saved version:
 \end{Scode}
 %%
 %%
-\subsection{``Inhouse'' Database Examples}
-\label{sec:etsExamples}
-%%
-These examples use a database which has been called ``ets''. It has already been
-populated with some series from various sources, so
-the examples illustrate how a large ``inhouse'' database might be used. 
-Typically a large database would be installed using
-database scripts directly rather than from \proglang{R} with \code{TSput} or
-\code{TSreplace}. 
-
-The following uses \pkg{TSMySQL} but, other than the initial connection,
-everything should remain the same if another database is used. (See Appendix A
-regarding the details of other connections.)
-
-First, establish a connection to the database, and make it the default.
-\begin{Scode}{results=verbatim,fig=FALSE}
-  library("TSMySQL")
-  ets <-  TSconnect("MySQL", dbname="ets") 
-  options(TSconnection=ets)
-\end{Scode}
-
-Often one needs to check if data is available or has been updated.
-This defines a list of series ids, with more explanatory names, 
-and checks availability:
-\begin{Scode}{results=verbatim,fig=FALSE}
-  EXCH.IDs <- matrix(c(
- 	"M.SDR.CCUSMA02.ST",	 "SDR/USD exchange rate",
- 	"M.CAN.CCUSMA02.ST",	 "CAN/USD exchange rate",
- 	"M.MEX.CCUSMA02.ST",	 "MEX/USD exchange rate",
- 	"M.JPN.CCUSMA02.ST",	 "JPN/USD exchange rate",
- 	"M.EMU.CCUSMA02.ST",	 "Euro/USD exchange rate",
- 	"M.OTO.CCUSMA02.ST",	 "OECD /USD exchange rate",
- 	"M.G7M.CCUSMA02.ST",	 "G7   /USD exchange rate",
- 	"M.E15.CCUSMA02.ST",	 "Euro 15. /USD exchange rate"
-	), 2, 8)
-
-  TSdates(EXCH.IDs[1,])
-\end{Scode}
-
-(The available data in this test data set is fairly old.)
-
-The following examples illustrate using metadata in the graph.
-\begin{Scode}{results=verbatim,fig=TRUE}
-  z <- TSget("V122646", TSdescription=TRUE, TSsource=TRUE, TSdoc=TRUE,
-              TSlabel=TRUE )
-  tfplot(z, title=strsplit(TSdescription(z), ","))
-\end{Scode}
-
-Some metadata fields in my example database are empty. If they were available,
-this step would not be necssary. The missing meta data can be put into 
-the returned object by:
-\begin{Scode}{results=verbatim}
-  TSsource(z) <- "Bank of Canada"
-  TSlabel(z) <- "Short-Term Business Credit"
-\end{Scode}
-
-With this, more of the meta data can be indicated on the graph:
-\begin{Scode}{results=verbatim,fig=TRUE}
-  tfplot(ytoypc(z), ylab="Year-over-Year Growth",
-    title=TSlabel(z),
-    source=paste(TSseriesIDs(z), "from", TSsource(z)),
-    lastObs=TRUE, 
-    footnote=TSdescription(z))
-\end{Scode}
-
-%%\begin{Scode}{results=verbatim,fig=TRUE}
-%%  z <- TSget(c("DSP500","SDSP500"), TSdescription=TRUE)
-%%  tfplot(z, xlab=TSdescription(z))
-%%\end{Scode}
-  
-\begin{Scode}
-  dbDisconnect(ets)
-  options(TSconnection=NULL)
-\end{Scode}
-
-\begin{Scode}
-  detach(package:TSMySQL)
-  detach(package:RMySQL)
-\end{Scode}
+%%%%\subsection{``Inhouse'' Database Examples}
+%%%%\label{sec:etsExamples}
+%%%%%%
+%%%%These examples use a database which has been called ``ets''. It has already been
+%%%%populated with some series from various sources, so
+%%%%the examples illustrate how a large ``inhouse'' database might be used. 
+%%%%Typically a large database would be installed using
+%%%%database scripts directly rather than from \proglang{R} with \code{TSput} or
+%%%%\code{TSreplace}. 
+%%%%
+%%%%The following uses \pkg{TSMySQL} but, other than the initial connection,
+%%%%everything should remain the same if another database is used. (See Appendix A
+%%%%regarding the details of other connections.)
+%%%%
+%%%%First, establish a connection to the database, and make it the default.
+%%%%\begin{Scode}{results=verbatim,fig=FALSE}
+%%%%  library("TSMySQL")
+%%%%  ets <-  TSconnect("MySQL", dbname="ets") 
+%%%%  options(TSconnection=ets)
+%%%%\end{Scode}
+%%%%
+%%%%Often one needs to check if data is available or has been updated.
+%%%%This defines a list of series ids, with more explanatory names, 
+%%%%and checks availability:
+%%%%\begin{Scode}{results=verbatim,fig=FALSE}
+%%%%  EXCH.IDs <- matrix(c(
+%%%%	    "M.SDR.CCUSMA02.ST",     "SDR/USD exchange rate",
+%%%%	    "M.CAN.CCUSMA02.ST",     "CAN/USD exchange rate",
+%%%%	    "M.MEX.CCUSMA02.ST",     "MEX/USD exchange rate",
+%%%%	    "M.JPN.CCUSMA02.ST",     "JPN/USD exchange rate",
+%%%%	    "M.EMU.CCUSMA02.ST",     "Euro/USD exchange rate",
+%%%%	    "M.OTO.CCUSMA02.ST",     "OECD /USD exchange rate",
+%%%%	    "M.G7M.CCUSMA02.ST",     "G7   /USD exchange rate",
+%%%%	    "M.E15.CCUSMA02.ST",     "Euro 15. /USD exchange rate"
+%%%%	    ), 2, 8)
+%%%%
+%%%%  TSdates(EXCH.IDs[1,])
+%%%%\end{Scode}
+%%%%
+%%%%(The available data in this test data set is fairly old.)
+%%%%
+%%%%The following examples illustrate using metadata in the graph.
+%%%%\begin{Scode}{results=verbatim,fig=TRUE}
+%%%%  z <- TSget("V122646", TSdescription=TRUE, TSsource=TRUE, TSdoc=TRUE,
+%%%%		  TSlabel=TRUE )
+%%%%  tfplot(z, title=strsplit(TSdescription(z), ","))
+%%%%\end{Scode}
+%%%%
+%%%%Some metadata fields in my example database are empty. If they were available,
+%%%%this step would not be necssary. The missing meta data can be put into 
+%%%%the returned object by:
+%%%%\begin{Scode}{results=verbatim}
+%%%%  TSsource(z) <- "Bank of Canada"
+%%%%  TSlabel(z) <- "Short-Term Business Credit"
+%%%%\end{Scode}
+%%%%
+%%%%With this, more of the meta data can be indicated on the graph:
+%%%%\begin{Scode}{results=verbatim,fig=TRUE}
+%%%%  tfplot(ytoypc(z), ylab="Year-over-Year Growth",
+%%%%	title=TSlabel(z),
+%%%%	source=paste(TSseriesIDs(z), "from", TSsource(z)),
+%%%%	lastObs=TRUE, 
+%%%%	footnote=TSdescription(z))
+%%%%\end{Scode}
+%%%%
+%%%%%%\begin{Scode}{results=verbatim,fig=TRUE}
+%%%%%%  z <- TSget(c("DSP500","SDSP500"), TSdescription=TRUE)
+%%%%%%  tfplot(z, xlab=TSdescription(z))
+%%%%%%\end{Scode}
+%%%%  
+%%%%\begin{Scode}
+%%%%  dbDisconnect(ets)
+%%%%  options(TSconnection=NULL)
+%%%%\end{Scode}
+%%%%
+%%%%\begin{Scode}
+%%%%  detach(package:TSMySQL)
+%%%%  detach(package:RMySQL)
+%%%%\end{Scode}
 %%
 %%\section{Fancy Graphs with data from several sources}
 %%\label{sec:Fancy}
@@ -956,8 +956,7 @@ Now TS connections to the databases are established.
 \end{Scode} 
 
 Next a connection to yahoo is used to get some series and write them to the 
-local test database. (See the vignette for \pkg{TShistQuote} for more examples 
-of reading series from the web.) \code{TSreplace} is used because \code{TSput} 
+local test database. \code{TSreplace} is used because \code{TSput} 
 will fail if the series already exisits.
 
 \begin{Scode}{results=verbatim}
@@ -1108,7 +1107,7 @@ This will produce a graph in your web browser. It is not reproduced here.
 Pointing your mouse at the legend of this plot will highlight the corresponding
 vintage, and
 pointing at the graph will give information about the source of a data point.
-\begin{eval=FALSE,Scode}
+\begin{Scode}{eval=FALSE,fig=FALSE}
   dbDisconnect(ets)
   detach(package:TSMySQL)
   detach(package:RMySQL)
