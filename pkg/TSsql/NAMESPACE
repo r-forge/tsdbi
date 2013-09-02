@@ -1,0 +1,25 @@
+import(TSdbi)  
+import(methods)  
+import(DBI)      
+#importFrom("stats", "tsp")
+import("tframe")
+importFrom("stats", "start")
+importFrom("stats", "end")
+
+## not generic
+export(
+  "TSquery",
+  "createTSdbTables",
+  "removeTSdbTables"
+  )
+
+## S4 generics
+export(
+   "dropTStable"
+   )
+
+## S4 methods
+exportMethods(
+   "dropTStable"
+   )
+

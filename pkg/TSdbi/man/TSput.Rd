@@ -101,7 +101,7 @@ Meta  for meta data
     \code{\link{TSdbi-package}},
     \code{\link{TSdates}},
     \code{\link{TSget}},
-    \code{\link{TSputSQL}},
+    \code{\link[TSsql]{TSputSQL}},
     \code{\link[DBI]{dbConnect}}
 }
 \keyword{ts}

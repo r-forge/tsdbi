@@ -1,0 +1,12 @@
+
+Changes in TSsql version 2013.9-1
+
+   o	First release (split from TSdbi).
+
+To Do
+
+   o	a mechanism for handling aliases for series names.
+
+   o	rollback meta when data put fails
+
+   o	mechanism for signaling series updates to users
