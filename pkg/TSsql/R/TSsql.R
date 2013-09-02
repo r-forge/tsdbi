@@ -606,3 +606,67 @@ removeTSdbTables <- function(con, yesIknowWhatIamDoing=FALSE){
   }
   
    
+########## internal utilities to construct WHERE and table name#########
+
+tbNm <- function(hasVintages, tbl, rV) {
+	if(hasVintages) tbl <- paste(tbl, rV, sep="_")
+	# map - to _ in table names
+	gsub("-", "_",tbl)
+	}
+
+realVintage <- function(con, vintage, serIDs) {
+   # replace alias with canonical name if necessary
+   # assuming if vintage is a vector then serIDs has already been expanded to
+   # the same length. Otherwise, vintage should be null or a scalar which is
+   # expanded to the length of serIDs. 
+   if(!con@hasVintages) return(vintage) #usually NULL in this case 
+   
+   if(is.null(vintage)) vintage <- "current"
+   else if( 1 == length(vintage)) vintage <- rep(vintage, length(serIDs))
+   
+   rV <- NULL
+   for (i in seq(length(serIDs))){
+     q <- paste("SELECT vintage  FROM vintageAlias WHERE alias ='",
+              vintage[i],"' AND id = '",serIDs[i],"';", sep="") 
+     r <- dbGetQuery(con,q )$vintage
+     # if alias result is empty check null id which applies to all series.
+     if (0== NROW(r)) {
+        q <- paste( "SELECT vintage  FROM vintageAlias WHERE alias='", 
+	            vintage[i],"' ;", sep="")
+        r <- dbGetQuery(con,q )$vintage
+        }
+     # if alias result is still empty assume vintage is already the real one.
+     if (0== NROW(r)) r <- vintage[i]
+     rV <- c(rV, r)
+     }
+   rV
+   }
+
+realPanel <- function(con, panel) {
+   # replace alias with canonical name if necessary
+   if(!con@hasPanels) return(panel) #usually NULL in this case
+   if(is.null(panel)) stop("panel must be specified")
+   for (i in seq(length(panel))){
+     q <- paste("SELECT panel  FROM panelAlias WHERE alias='",
+                panel[i],"';", sep="") 
+
+     r <- dbGetQuery(con,q )$panel
+     # if alias result is empty assume panel is already the real one.
+     if (0== NROW(r)) r <- panel[i]
+     rP <- c(rP, r)
+     }
+   rP
+   }
+
+setWhere <- function(con, serIDs, realVintage, realPanel) {
+   # serIDs must be a scale for this function
+   # Calls for Meta will pass realVintage, but data tables will set 
+   #  realVintage=NULL and append vintage to table name.
+   where <-  paste(" WHERE id = '", serIDs, "'", sep="")
+   if(!is.null(realVintage))
+      where <- paste(where, " AND vintage='", realVintage, "'", sep="")
+   if(!is.null(realPanel)) 
+      where <- paste(where, " AND panel='",   realPanel,   "'", sep="")
+   where
+   }
+

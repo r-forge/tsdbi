@@ -32,6 +32,7 @@ dbListTables(con)
 
 #source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
 
+require("TSsql")
 removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
 createTSdbTables(con, index=FALSE)
 
@@ -51,6 +52,9 @@ require("tframePlus")
 source(system.file("TSsql/TSdbi.TSsql", package = "TSdbi"))
 source(system.file("TSsql/dbGetQuery.TSsql", package = "TSdbi"))
 source(system.file("TSsql/HistQuote.TSsql", package = "TSdbi"))
+
+cat("**************        remove test tables\n")
+removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
 
 cat("**************        disconnecting test\n")
 dbDisconnect(con)

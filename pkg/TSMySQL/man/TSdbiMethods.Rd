@@ -74,7 +74,12 @@
 \value{depends.}
 \details{
 These are MySQL methods for \pkg{TSdbi}. See the \pkg{TSdbi} for details and
-see the vignette distributed with package \pkg{TSdata} for more complete examples.
+see the vignette distributed with package \pkg{TSdata} for more complete 
+examples. 
+Package \pkg{TSsql} is required for functions createTSdbTables() and
+removeTSdbTables().
+Typically createTSdbTables() will only be done once, and the tables
+will not be removed. These steps are done in the example below.
 }
 
 \seealso{ 
@@ -86,6 +91,7 @@ see the vignette distributed with package \pkg{TSdata} for more complete example
     require("tfplot")
     conInit <- try(dbConnect(dbDriver("MySQL"), dbname="test"))
     if(! inherits(conInit, "try-error")) {
+      require("TSsql")
       createTSdbTables(conInit, index=FALSE)
       con <- TSconnect(dbDriver("MySQL"), dbname="test")
       z <- ts(rnorm(100), start=c(1975,1), frequency=12)

@@ -1,8 +1,10 @@
-import(methods)  
-import(DBI)      
-import(TSdbi)
+import("methods")  
+import("DBI")      
+import("TSdbi")
+import("TSsql")
+
 import("tframe")
-import(RMySQL) ## this should not all be needed, but parts for setClass "TSMySQLConnection"
+import("RMySQL") ## this should not all be needed, but parts for setClass "TSMySQLConnection"
 ##importClassesFrom("RMySQL","MySQLConnection")
 
 ## many function from TSdbi need to be visible to the user, so it is indicated

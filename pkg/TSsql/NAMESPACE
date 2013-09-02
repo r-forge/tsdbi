@@ -9,6 +9,14 @@ importFrom("stats", "end")
 ## not generic
 export(
   "TSquery",
+  "TSdescriptionSQL",
+  "TSdocSQL",
+  "TSlabelSQL",
+  "TSsourceSQL",
+  "TSputSQL",
+  "TSdeleteSQL",
+  "TSgetSQL",
+  "TSdatesSQL",
   "createTSdbTables",
   "removeTSdbTables"
   )

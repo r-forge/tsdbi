@@ -23,9 +23,9 @@ setMethod("TSput", signature(x="ANY", serIDs="character", con="TSSQLiteConnectio
        TSdescription.=TSdescription(x), TSdoc.=TSdoc(x),   TSlabel.=TSlabel(x),
          TSsource.=TSsource(x),
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...) 
- TSdbi:::TSputSQL(x, serIDs, con, Table=Table, 
-  TSdescription.=TSdescription., TSdoc.=TSdoc., TSlabel.=TSlabel.,
-   TSsource.=TSsource.,
+  TSputSQL(x, serIDs, con, Table=Table, 
+     TSdescription.=TSdescription., TSdoc.=TSdoc., TSlabel.=TSlabel.,
+     TSsource.=TSsource.,
   vintage=vintage, panel=panel) )
 
 setMethod("TSget", signature(serIDs="character", con="TSSQLiteConnection"),
@@ -34,7 +34,7 @@ setMethod("TSget", signature(serIDs="character", con="TSSQLiteConnection"),
        tf=NULL, start=tfstart(tf), end=tfend(tf), names=NULL, 
        TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE, TSsource=TRUE,
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
-    TSdbi:::TSgetSQL(serIDs, con, TSrepresentation=TSrepresentation,
+    TSgetSQL(serIDs, con, TSrepresentation=TSrepresentation,
        tf=tf, start=start, end=end, names=names, 
        TSdescription=TSdescription, TSdoc=TSdoc, TSlabel=TSlabel,
          TSsource=TSsource,
@@ -43,29 +43,29 @@ setMethod("TSget", signature(serIDs="character", con="TSSQLiteConnection"),
 setMethod("TSdates", signature(serIDs="character", con="TSSQLiteConnection"),
    definition= function(serIDs, con=getOption("TSconnection"),  
        vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
-     TSdbi:::TSdatesSQL(serIDs, con, vintage=vintage, panel=panel) )
+     TSdatesSQL(serIDs, con, vintage=vintage, panel=panel) )
 
 
 setMethod("TSdescription",   signature(x="character", con="TSSQLiteConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
-        TSdbi:::TSdescriptionSQL(x=x, con=con) )
+        TSdescriptionSQL(x=x, con=con) )
 
 setMethod("TSdoc",   signature(x="character", con="TSSQLiteConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
-        TSdbi:::TSdocSQL(x=x, con=con) )
+        TSdocSQL(x=x, con=con) )
 
 setMethod("TSlabel",   signature(x="character", con="TSSQLiteConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
-        TSdbi:::TSlabelSQL(x=x, con=con) )
+        TSlabelSQL(x=x, con=con) )
 
 setMethod("TSsource",   signature(x="character", con="TSSQLiteConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
-        TSdbi:::TSsourceSQL(x=x, con=con) )
+        TSsourceSQL(x=x, con=con) )
 
 setMethod("TSdelete", signature(serIDs="character", con="TSSQLiteConnection"),
      definition= function(serIDs, con=getOption("TSconnection"),  
      vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
-  TSdbi:::TSdeleteSQL(serIDs=serIDs, con=con, vintage=vintage, panel=panel) )
+  TSdeleteSQL(serIDs=serIDs, con=con, vintage=vintage, panel=panel) )
 
 
 setMethod("TSvintages", 

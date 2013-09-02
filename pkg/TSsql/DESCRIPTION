@@ -12,7 +12,7 @@ Description: This package provides standard SQL query functions used by
 	Comprehensive examples of all the TS* packages is provided in the
 	vignette Guide.pdf with the TSdata package.
 Depends: R (>= 2.8.0)
-Imports: methods, DBI, tframe (>= 2008.5-1), TSdbi (>=2013.9-1)
+Imports: methods, DBI, tframe (>= 2008.5-1), TSdbi (>= 2013.9-1)
 Suggests: zoo, tseries, tis, tfplot, tframePlus
 BuildVignettes: true
 License: GPL-2
