@@ -72,7 +72,7 @@ will be used for the series names in the returned time series matrix.
 
 \code{names}, \code{TSdescription}, 
 \code{TSdoc} and\code{TSlabel} can also be specified as arguments.
-(Passed in \dots). See \code{\link{TSputSQL}} for more details.
+(Passed in \dots). See \code{\link[TSsql]{TSputSQL}} for SQL details.
 }
 
 \seealso{ 
