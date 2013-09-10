@@ -18,7 +18,12 @@ mnem = sys.argv[1]
 
 def get(mnem):
     
-    import mechanize, re, csv, urllib2
+    #if sys.version_info >= (3, 0):
+    #	import urllib.request, urllib.error
+    #else:
+    # untested in v3 urllib2 is split into urllib.request, urllib.error
+    import urllib2
+    import mechanize, re, csv
     # Open search form
     response = mechanize.urlopen("http://www5.statcan.gc.ca/cansim/home-accueil?lang=eng")
     if not response: return dict(error="URL not responding.", mnem=mnem)

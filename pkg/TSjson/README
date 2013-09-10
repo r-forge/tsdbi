@@ -1,0 +1,126 @@
+
+Package TSjson needs Python 2 and Python modules sys, json, mechanize,
+re, csv, and urllib2. The package has been tested with python 2.7.3 on
+Ubuntu Linux and Windows XP. There is no obvious reason why it should not
+work on other systems. (Please advise the package maintainer, Paul 
+Gilbert <pgilbert.ttv9z@ncf.ca> if you discover differently.) The python code
+is fairly simple and may work with small changes in Python 3 versions, but that
+has not been tested. (Module urllib2 is split into urllib.request and 
+urllib.error in python 3, so there are some changes necessary.)
+
+Python also needs to be on the path so that it can be found when run from
+the R process. Some brief instructions are provided below, but installing 
+programs will be operating system dependent, so these are not comprehensive.
+
+Instructions for installing python modules are further below.
+
+Probably not necessary for using this package, but for those interested, 
+additional information and turorials on python are available at 
+https://wiki.python.org/moin/FrontPage
+
+
+=========== Windows =====================
+
+On Windows, python can be installed by dowloading and following intructions at
+http://www.python.org/getit/
+
+Python also needs to be on the search PATH. Setting the PATH will be 
+slightly different on different versions of Windows. (See, for example, 
+ http://www.computerhope.com/issues/ch000549.htm )
+
+The steps will be roughly: 
+  -From Desktop or Start Menu, right-click My Computer and then Properties.
+  -In the System Properties window, click the Advanced tab.
+  -In the Advanced section, click the Environment Variables button.
+  -In the Environment Variables window, highlight the Path variable 
+  in the Systems Variable section and click the Edit button. Modify 
+  the path to indicate the location where python is installed. (Directories
+  in the Path are separated with a semicolon.)
+
+There should typically be a part of this environment variable string that is 
+something like  C:\Python27;  but the exact string will depend
+on the version and where it has been installed.
+
+You can check that it is being found and the version by executing
+
+ python --version
+
+at a Command Prompt. (Be sure to open this window after you set the path
+as above.)
+
+=========== Linux =====================
+
+Python is usually already installed on Linux systems. (Your system is likely
+badly broken if it is not.) You can check the version by executing
+
+ python --version
+
+in a shell. If the command is not found then you need to ensure that python is
+on your PATH. If it is not installed then the install can be done with the 
+usual system utilities. For example, on Debian based systems
+
+  sudo apt-get python
+
+or you can install it from http://www.python.org/getit/. (But it really is 
+unlikely that you will need to install python. Also, I do not think that it 
+should be necessary to upgrade or change the version of Python to use the 
+TSjson package, and I do not recommend that, because too many other things on 
+your system depend on python.)
+
+
+=========== Python modules =====================
+
+Modules sys, re, csv, json, and urllib2 are provided with the Python Standard
+Library so they will usually not need to be installed. Module mechanize will
+usually need to be installed.
+
+You can check if python modules are already installed by starting python in a
+shell or in Windows at the Command Prompt:
+
+  python
+
+and then at the python >>> prompt try to import the modules. (Python newbies
+beware that indentation is part of the python syntax and you should not put
+spaces at the beginning of the command.)
+
+>>> import sys, json, re, csv, urllib2
+>>> import mechanize
+
+then 
+
+>>> quit()
+
+to exit python.
+ 
+Installing modules can be done in a number of different ways, for example,
+using apt-get or Synaptic in some versions of Linux. The use of the python 
+program easy_install is described briefly below. Once the program easy_install 
+is installed  (see https://wiki.python.org/moin/EasyInstall, or in debian based
+systems sudo apt-get install python-setuptools), the process for 
+installing python modules is similar on different operating systems. 
+
+The easy_install program also needs to be found on your path, so add its 
+location in the same way that you added python to your path above. (In Windows, 
+easy_install.exe might be installed in C:\Python27\Scripts, in which case that
+should be on your path.)
+
+Then (in non-Windows systems you may need to prefix this with sudo)
+
+ easy_install mechanize
+ 
+
+=========== Other data sites =====================
+
+With python and modules installed you should be able to access data from
+Statistics Canada directly from you R session. The python code that makes this
+work is distributed with the source TSjson package in the file
+exec/cansimGet.py. That code can also be executed directly as a python program.
+
+The main reason for using python rather than doing this directly in R is that
+the initial query to the web site returns a link to a dynamically generated
+web page, which must be accessed in a second step. The python module mechanize 
+provides a mechanism to do this, whereas there is currently no easy
+mechanism in R.
+
+Other sites will be added over time, and you can help by sending the package 
+maintainer the details of accesss to other sites that are of interest to you.
