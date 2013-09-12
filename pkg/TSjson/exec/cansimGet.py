@@ -18,10 +18,10 @@ mnem = sys.argv[1]
 
 def get(mnem):
     
-    #if sys.version_info >= (3, 0):
-    #	import urllib.request, urllib.error
-    #else:
-    # untested in v3 urllib2 is split into urllib.request, urllib.error
+    if sys.version_info >= (3, 0): return dict( error=
+	"TSjson cansimGet.py require Python 2. Running "+ str(sys.version_info))
+    # mechanize is not (yet) available for Python 3, 
+    # Also, urllib2 is split into urllib.request, urllib.error in Python 3
     import urllib2
     import mechanize, re, csv
     # Open search form
