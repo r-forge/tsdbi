@@ -12,7 +12,7 @@ if(require("RMySQL") ) {
      dbDisconnect(con)
      } else  warning("RMySQL server error. Skipping tests.")
   dbUnloadDriver(m)
-  } else  warning("RMySQL not available. Skipping tests.")
+  } 
 
 if(require("RSQLite") ) {
 
@@ -25,4 +25,4 @@ if(require("RSQLite") ) {
   dbDisconnect(con)
   unlink(f)
   #  dbUnloadDriver(m) complains about open connections.
-  } else  warning("RSQLite not available. Skipping tests.")
+  } 
