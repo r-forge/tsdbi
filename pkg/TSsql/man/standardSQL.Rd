@@ -68,11 +68,10 @@
 \value{A time series matrix.}
 \details{
 These functions provide standard SQL queries that can be used by other packages
-such as \pkg{TSMySQL} and \pkg{TSSQLite} that provide connections. These
-functions would usually not be called directly by the user.
-
-The functions are not exported from the namespace, so they should be refered to
-with the package name (e.g. \code{TSdbi:::TSgetSQL})
+such as \pkg{TSMySQL} and \pkg{TSSQLite} that provide connections. 
+These functions would usually not be called directly by the user.
+Thus the package will typically be imported by other packages but need not be
+attached. 
 } 
 
 \seealso{ 

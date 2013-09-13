@@ -13,7 +13,7 @@ Description: This package provides standard SQL query functions used by
 	vignette Guide.pdf with the TSdata package.
 Depends: R (>= 2.8.0)
 Imports: methods, DBI, tframe (>= 2008.5-1), TSdbi (>= 2013.9-1)
-Suggests: zoo, tseries, tis, tfplot, tframePlus
+Suggests: zoo, tseries, tis, tfplot, tframePlus, RMySQL, RSQLite
 BuildVignettes: true
 License: GPL-2
 Copyright: 2007-2011 Bank of Canada.  2012-2013 Paul Gilbert.
