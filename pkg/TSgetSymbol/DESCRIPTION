@@ -1,5 +1,5 @@
 Package: TSgetSymbol
-Version: 2013.8-2
+Version: 2013.9-1
 Title:  TSdbi extension to connect with getSymbols
 Description: Provides methods for generics in the TSdbi package to 
 	retrieve data with getSymbols, in particular from the Federal Reserve
