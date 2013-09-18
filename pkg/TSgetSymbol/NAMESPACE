@@ -5,8 +5,9 @@ import("TSdbi")
 import("tframe")
 import("tframePlus")
 
-#importFrom("quantmod", "getSymbols") #need more than this
-#import("quantmod") # problem with show exported by quantmod, need to leave in Depends
+import("zoo")
+
+importFrom("quantmod", "getSymbols") #need quantmod in Depends not Imports for some reason
 
 export("getSymbol")
 
