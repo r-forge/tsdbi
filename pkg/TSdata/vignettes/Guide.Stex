@@ -89,8 +89,8 @@ Section \ref{sec:MoreExamples} provides additional examples of \pkg{TSdbi}
 functionality and of using and graphing series. 
 Subsection \ref{sec:SQLexamples} illustrates fetching data from the web and 
 loading it into a local database.
-Subsection \ref{sec:etsExamples} provides examples of how one might use a
-more extensively populated database that has been previously constructed.
+%%Subsection \ref{sec:etsExamples} provides examples of how one might use a
+%%more extensively populated database that has been previously constructed.
 
 Section \ref{sec:Comparing} illustrates package \pkg{TScompare} for comparing 
 time series databases, and Section \ref{sec:Vintages} illustrates the use of
@@ -173,7 +173,8 @@ retrieving the same data, can be done by
 
 Notice that the only difference is the library that is loaded and the name of
 the driver provided when establishing the connection. After that, the code is the
-same (and the data from the two connections should be the same). This is the
+same (and the data from the two connections should be the same, 
+other than the difference in the default start date). This is the
 coding approach one would typically follow, so that changing the data source is
 easy. However, sometimes it is interesting to compared the same data from 
 differrent sources, so here is an example where the connections are given 
@@ -347,7 +348,9 @@ subset of the market data should be returned:
 
 Package \pkg{TSjson} provides a mechanism to extract data from websites and
 pass it to \proglang{R} in JavaScript Object Notation (JSON) using package
-\pkg{RJSONIO} \citep{RJSONIO}. \pkg{TSjson} uses 
+\pkg{rjson} \citep{rjson}. Package \pkg{RJSONIO} \citep{RJSONIO} has previously
+been used to bring the data into \proglang{R} but is not the current method.
+\pkg{TSjson} uses 
 \proglang{Python} code to mechanize clicking though web pages to get a
 downloadable file. This really should be considered a temporary solution, until
 the data provider implements a true API. The current version of \pkg{TSjson}
@@ -361,7 +364,7 @@ a system with \proglang{Python} installed, and \proglang{Python} modules
 \proglang{sys, json, mechanize, re, csv} and \proglang{urllib2}. This requires
 Python 2 as not all modules are available for Python 3. Additional details 
 are provided in a README file distributed with the \pkg{TSjson} package
-and also copied into into the appendix. 
+and also copied in an appendix here. 
 Installing Python may be difficult in environments where users cannot easily
 install software, but a second method using
 a proxy server can be used. The proxy server needs \proglang{Python} and the
@@ -370,8 +373,8 @@ machine requires nothing special other than \proglang{R} and \pkg{TSjson}.
 The proxy server can be anywhere on the Internet.
 
 The following examples use the first method. More details on establishing
-connections with the second method are provided in the appendix. First,
-establish a connection
+connections with the second method are provided in the appendix section
+\ref{appdx:TSjson}. First, establish a connection
 
 \begin{Scode}
 require("TSjson")
@@ -409,8 +412,13 @@ TSdates(c("v498086", "v498087"), cansim)
 
 Or, plot more than one series:
 \begin{Scode}{fig=TRUE}
-tfplot(ytoypc(TSget(c("v498086", "v498087"), cansim)))
+ oldpar <- par(omi=c(0.1,0.1,0.1,0.1),mar=c(3.1,4.1,0.6,0.1))
+ tfplot(ytoypc(TSget(c("v498086", "v498087"), cansim)))
+ par(oldpar)
 \end{Scode}
+The default settings of \pkg{tfplot} parameters usually work fairly well for 
+interactive use. The above illustrates one way to achieve more specific control,
+which will often be necessary for generating pdf documents.
 
 The meta data can also be retrieved with the series, which will generally be
 faster than retreiving it separately, if it is needed:
@@ -506,9 +514,7 @@ stock). The \code{dbname} is a directory or \code{url}.
 
 The following retrieves zipped files 
 from \url{http://pitrading.com/free\_market\_data.htm} which 
-provides some end of day data free of charge. (Disclaimer: This site is 
-used as an example. Other than using this free data, I have no association 
-with the company.) 
+provides some end of day data free of charge. 
 \begin{Scode}{results=verbatim,fig=TRUE,height=8}
   library("TSzip")  
   pitr <- TSconnect("zip", dbname="http://pitrading.com/free_eod_data")
@@ -528,7 +534,9 @@ The following illustrates returning an \code{xts} \citep{xts} time series object
 
 The default appearance of graphs can be changed (improved) by adjusting graphics 
 device margins \code{omi} and \code{mar}. (They are set by the vector in 
-order: bottom, left, top, right.) The default behaviour is a compromise that
+order: bottom, left, top, right.) They can be set directly using \code{par()}
+or passed to \code{tfplot()} as in this example.
+The default behaviour of \code{tfplot()} is a compromise that
 usually works reasonally well for both screen and printed output.
 It is often useful to adjust these when generating \emph{pdf}
 files for publication.
@@ -557,7 +565,8 @@ table structure that is set up to store time series data.
 The next lines of code do some preliminary setup of the database. This uses the
 underlying database connection (\code{dbConnect}) rather than \code{TSconnect},
 because \code{TSconnect} will not recognize the database until it has been
-setup.
+setup. Functon \code{removeTSdbTables()} is used first to remove any existing
+tables, which would cause \code{createTSdbTables()} to fail.
 
 
 WARNING: running this will overwrite the ``test'' database on your server.
@@ -932,7 +941,7 @@ the names are different.)
 The connections are established using other \pkg{TSdbi} packages such as \pkg{TSMySQL}, 
 \pkg{TSPostgreSQL}, etc. It will be necessary to establish two database connections, 
 so it will also be necessary to load the database specific packages. 
-Examples in this vignette use \pkg{TShistQuote},  \pkg{TSMySQL} 
+Examples below use \pkg{TShistQuote},  \pkg{TSMySQL} 
 and \pkg{TSSQLite}. 
 
 \begin{Scode}
@@ -1036,7 +1045,8 @@ warnings later about objects being masked:
 \section{Vintages of Realtime Data}
 \label{sec:Vintages}
 %%
-Examples in the section have been disabled pending availability of different dataset.
+Examples in the section have been disabled pending availability of a different 
+dataset.
 
 Data vintages, or ``realtime data'' are snapshots of data that was available
 at different points in time. The most obvious feature of earlier snapshots is
@@ -1165,8 +1175,9 @@ about 1970. It is possible to trim the \code{NA} data from the beginning with
  z <- trimNA(z, endNAs=FALSE)
 \end{Scode}
 
-(\code{trimNA} will trim all series if any one of them is \code{NA}, so trimming
-the end will not be what you want if you are interested in the most recent data.)
+By default, \code{trimNA} will trim all series if any one of them is \code{NA},
+so trimming the end will not be what you want if you are interested in the 
+most recent data. Setting \code{endNAs=FALSE)} overrides the default.
 
 It is also possible to trim the data to a specified subsample with
 
@@ -1213,7 +1224,7 @@ To write the data to a .csv file
 \section{Appendix A: Connection Specific Details}
 \label{appdx:A}
 %%
-This section provides details of the different connections which are specific to
+This appendix provides details of the different connections which are specific to
 individual packages and backend databases. In order to make the examples
 complete, for the SQL versions, test databases are first created with 
 the tables expected by the 
@@ -1284,8 +1295,7 @@ the connection function would be:
 con <-  TSconnect("MySQL", dbname="test", username=user, password=passwd, host=host)
 \end{Scode} 
 
-This is may be cumbersome to change, and is generally considered to be less
-secure.
+This may be cumbersome to change, and is generally considered to be less secure.
 
 While it may not be necessary to \code{detach} packages, the following prevents
 warnings later about objects being masked:
@@ -1535,6 +1545,7 @@ warnings later about objects being masked:
 %%
 %%
 \subsection{TSjson Connection Details}
+\label{appdx:TSjson}
 %%
 The \code{TSjson} method \code{TSconnect} can establish a connection to a
 proxy server. (See the main text for directly connecting to the web data source.)
@@ -1570,7 +1581,7 @@ If the file does not exist then environment variables "TSJSONUSER",
 \subsection{TSfame Connection Details}
 %%
 I no longer have access to Fame so package \pkg{TSfame} is no longer being
-extensively tested.  
+extensively tested. (It has previously worked.)
 The code in this section of the vignette is not being run.
 Please contact the package maintainer (Paul Gilbert) if 
 you have Fame and are willing to test the package.
@@ -1731,9 +1742,10 @@ re, csv, and urllib2. The package has been tested with python 2.7.3 on
 Ubuntu Linux and Windows XP. There is no obvious reason why it should not
 work on other systems. (Please advise the package maintainer, Paul 
 Gilbert <pgilbert.ttv9z@ncf.ca> if you discover differently.) The python code
-is fairly simple and may work with small changes in Python 3 versions, but that
-has not been tested. (Module urllib2 is split into urllib.request and 
-urllib.error in python 3, so there are some changes necessary.)
+is fairly simple and may work in Python 3 versions but module mechanize,
+which does the main part that cannot be done easily in R, is not available
+for Python 3. (Also, module urllib2 is split into urllib.request and 
+urllib.error in Python 3.)
 
 Python also needs to be on the path so that it can be found when run from
 the R process. Some brief instructions are provided below, but installing 
@@ -1791,7 +1803,7 @@ usual system utilities. For example, on Debian based systems
 or you can install it from http://www.python.org/getit/. (But it really is 
 unlikely that you will need to install python. Also, I do not think that it 
 should be necessary to upgrade or change the version of Python to use the 
-TSjson package, and I do not recommend that, because too many other things on 
+ package, and I do not recommend that, because too many other things on 
 your system depend on python.)
 
 
