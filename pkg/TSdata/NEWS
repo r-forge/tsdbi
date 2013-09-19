@@ -2,6 +2,12 @@ See also
 
    o	See also NEWS in the TSdbi package.
 
+Changes in TSdata version 2013.9-1
+
+   o	Cleanup related to splitting TSsql out of TSdbi.
+
+   o	Cleanup related to Depends/Imports changes.
+
 Changes in TSdata version 2013.4-1
 
    o	removed mention of TSpadi as it has been moved to CRAN archives.
