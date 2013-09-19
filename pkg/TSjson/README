@@ -4,9 +4,10 @@ re, csv, and urllib2. The package has been tested with python 2.7.3 on
 Ubuntu Linux and Windows XP. There is no obvious reason why it should not
 work on other systems. (Please advise the package maintainer, Paul 
 Gilbert <pgilbert.ttv9z@ncf.ca> if you discover differently.) The python code
-is fairly simple and may work with small changes in Python 3 versions, but that
-has not been tested. (Module urllib2 is split into urllib.request and 
-urllib.error in python 3, so there are some changes necessary.)
+is fairly simple and may work in Python 3 versions but module mechanize,
+which does the main part that cannot be done easily in R, is not available
+for Python 3. (Also, module urllib2 is split into urllib.request and 
+urllib.error in Python 3.)
 
 Python also needs to be on the path so that it can be found when run from
 the R process. Some brief instructions are provided below, but installing 
