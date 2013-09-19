@@ -30,7 +30,7 @@ m <- dbDriver("Oracle") # note that this is needed in sourced files.
 
 dbListTables(con) 
 
-#source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
+#source(system.file("TSsql/CreateTables.TSsql", package = "TSsql"))
 require("TSsql")
 removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
 createTSdbTables(con, index=FALSE)
@@ -45,10 +45,10 @@ con <- if ("" != user)
 
 if(inherits(con, "try-error")) stop("CreateTables did not work.")
 
-source(system.file("TSsql/Populate.TSsql", package = "TSdbi"))
-source(system.file("TSsql/TSdbi.TSsql", package = "TSdbi"))
-source(system.file("TSsql/dbGetQuery.TSsql", package = "TSdbi"))
-source(system.file("TSsql/HistQuote.TSsql", package = "TSdbi"))
+source(system.file("TSsql/Populate.TSsql", package = "TSsql"))
+source(system.file("TSsql/TSdbi.TSsql", package = "TSsql"))
+source(system.file("TSsql/dbGetQuery.TSsql", package = "TSsql"))
+source(system.file("TSsql/HistQuote.TSsql", package = "TSsql"))
 
 cat("**************        remove test tables\n")
 removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
