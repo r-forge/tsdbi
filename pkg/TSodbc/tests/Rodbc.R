@@ -30,7 +30,7 @@ cat("**************************************************************\n")
        con <- odbcConnect(dsn=dbname) # pass user/passwd/host in ~/.odbc.ini
 
 #dbListTables(con) 
-#source(system.file("TSsql/CreateTables.TSsql", package = "TSdbi"))
+#source(system.file("TSsql/CreateTables.TSsql", package = "TSsql"))
 
 require("TSsql")
 removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
@@ -48,13 +48,13 @@ if(inherits(con, "try-error")) cat("CreateTables did not work.\n")
  else {
 
    m <- "ODBC" # this is needed in sourced files.
-   source(system.file("TSsql/Populate.TSsql", package = "TSdbi"))
+   source(system.file("TSsql/Populate.TSsql", package = "TSsql"))
    cat("**********1\n")
-   source(system.file("TSsql/TSdbi.TSsql", package = "TSdbi"))
+   source(system.file("TSsql/TSdbi.TSsql", package = "TSsql"))
    cat("**********2\n")
-   source(system.file("TSsql/dbGetQuery.TSsql", package = "TSdbi"))
+   source(system.file("TSsql/dbGetQuery.TSsql", package = "TSsql"))
    cat("*********3\n")
-   source(system.file("TSsql/HistQuote.TSsql", package = "TSdbi"))
+   source(system.file("TSsql/HistQuote.TSsql", package = "TSsql"))
 
    cat("**************        removing test database tables\n")
    removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)

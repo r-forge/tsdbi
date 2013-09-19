@@ -31,10 +31,10 @@ if(!identical(as.logical(Sys.getenv("_R_CHECK_HAVE_MYSQL_")), TRUE)) {
            stop("TSconnect to MySQL db test failed./n")
  
 
-   con2 <- try(TSconnect("SQLite", dbname="test")) # no user/passwd/host
+   con2 <- try(TSconnect("SQLite", dbname="TScompareSQLiteTestDB")) # no user/passwd/host
  
    if (inherits(con2, "try-error"))
-           stop("TSconnect to SQLite db test failed./n")
+           stop("TSconnect to SQLite db TScompareSQLiteTestDB failed./n")
    
    cat("*** TSconnect connections established.\n")
    yahoo <- TSconnect("histQuote", dbname="yahoo") 
@@ -79,11 +79,15 @@ if(!identical(as.logical(Sys.getenv("_R_CHECK_HAVE_MYSQL_")), TRUE)) {
    eqrm <- TScompare(ids, con1, con2, na.rm=TRUE)
    print(summary(eqrm))
 
+   cat("*** Remove TSdbi tables in MySQL test db\n")
+   require("TSsql")
+   removeTSdbTables(con1, yesIknowWhatIamDoing=TRUE)
+
    cat("*** Disconnecting.\n")
    dbDisconnect(con1)
    dbDisconnect(con2)
 
    # cleanup file created by SQLLite in 0serviceCheck.R
-   unlink("test")
+   unlink("TScompareSQLiteTestDB")
 
 }
