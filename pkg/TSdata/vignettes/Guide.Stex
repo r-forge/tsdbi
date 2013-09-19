@@ -1725,6 +1725,7 @@ dbDisconnect(con)
 \section{Appendix D: TSjson README regarding Python details }
 \label{appdx:D}
 %%
+\begin{verbatim}
 Package TSjson needs Python 2 and Python modules sys, json, mechanize,
 re, csv, and urllib2. The package has been tested with python 2.7.3 on
 Ubuntu Linux and Windows XP. There is no obvious reason why it should not
@@ -1850,6 +1851,7 @@ mechanism in R.
 
 Other sites will be added over time, and you can help by sending the package 
 maintainer the details of accesss to other sites that are of interest to you.
+\end{verbatim}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \bibliographystyle{apalike}
