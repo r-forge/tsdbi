@@ -106,9 +106,12 @@ decide they do not actually need to export the data.)
 Appendix ``A'' provides connection details specific to the different
 database sources,
 Appendix ``B'' provides more details about the structure of SQL
-databases
-and, finally, Appendix ``C'' provides some examples of SQL queries that
+databases,
+and Appendix ``C'' provides some examples of SQL queries that
 may be useful for database maintenance.
+Finally, Appendix ``D'' reproduces the README file for package \pkg{TSjson}, 
+to give details regarding installation of Python helper utilities.
+
 
 Many of the \pkg{TS*} packages are wrappers of other packages. The purpose is to
 provide a common API for interfacing with time series databases, and an easy 
@@ -121,7 +124,7 @@ reliance on these underlying features then you will be able to move from one
 data source to another much more easily.
 
 Loading a \pkg{TS*} package will also load required packages \pkg{TSdbi}, 
-\pkg{DBI} \citep{DBI}, \pkg{methods}, \pkg{tframePlus}, 
+\pkg{DBI} \citep{DBI}, \pkg{methods} \citep{methods}, \pkg{tframePlus}, 
 \pkg{zoo}, and then any underlying package that the specific \pkg{TS*} package uses.
 
 %%
@@ -411,11 +414,12 @@ TSdates(c("v498086", "v498087"), cansim)
 \end{Scode}
 
 Or, plot more than one series:
-\begin{Scode}{fig=TRUE}
+\begin{Scode}{fig=TRUE,width=7.0,height=8}
  oldpar <- par(omi=c(0.1,0.1,0.1,0.1),mar=c(3.1,4.1,0.6,0.1))
  tfplot(ytoypc(TSget(c("v498086", "v498087"), cansim)))
  par(oldpar)
 \end{Scode}
+
 The default settings of \pkg{tfplot} parameters usually work fairly well for 
 interactive use. The above illustrates one way to achieve more specific control,
 which will often be necessary for generating pdf documents.
