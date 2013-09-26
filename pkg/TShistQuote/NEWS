@@ -7,6 +7,10 @@ Known BUGS
    o	None for the moment.
 
 
+Changes in TShistQuote version 2013.9-1
+
+   o	Adjusted .Rbuildignore to omit accidental top level .png files.
+
 Changes in TShistQuote version 2013.8-2
 
    o	Adjusted Depends and Imports in DESCRIPTION.

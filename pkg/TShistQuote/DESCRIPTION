@@ -1,5 +1,5 @@
 Package: TShistQuote
-Version: 2013.8-2
+Version: 2013.9-1
 Title:  TSdbi extensions for  get.hist.quote
 Description: Provides methods for generics in the TSdbi package to 
 	retrieve data from historical quote URLs.
