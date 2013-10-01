@@ -39,11 +39,15 @@ Other packages provide a mechanism for
 This includes
 <i>TSMySQL</i>, <i>TSPostgreSQL</i>, <i>TSSQLite</i>, <i>TSodbc</i> 
 and untested <i>TSOracle</i>.
+The package <i>TSsql</i> provides the common sql part of the these packages,
+while db engine specific details are provided in the individual packages.
 If you already have a backend SQL database, and are not building the database,
-just an interface to an <b>existing database</b>, then the <i>TSdbi</i> package 
+just an interface to an <b>existing database</b>, then the <i>TSsql</i> package 
 function <i>TSquery</i> may be useful. It can be used to construct 
 time series from SQL databases that contain sequential data but were built 
-for purposes other than storing time series data.
+for purposes other than storing time series data. Other than <i>TSquery</i>,
+functions in <i>TSsql</i> are intended for internal use by the db specific
+packages. 
 
 <P>
 Some packages act as wrappers to convert the API of existing 

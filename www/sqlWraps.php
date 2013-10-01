@@ -13,7 +13,9 @@ The <b>SQL variants</b> (<i>TSPostgreSQL</i>, <i>TSMySQL</i>, <i>TSSQLite</i>,
 <i>TSodbc</i>, and untested <i>TSOracle</i>) include table structure 
 definitions for the database. 
 The database does not need to be built with R, but the table structure needs 
-to be respected for the TS* SQL variants to work.
+to be respected for the TS* SQL variants to work. Most of the underlying SQL
+is standard and thus the same for all packages. This is implemented in the
+package <i>TSsql</i>, which they all use.
 <P>
 With the SQL tables I believe series of daily frequency and lower are 
 handled fairly well. (I work mostly with monthly and quarterly data, 

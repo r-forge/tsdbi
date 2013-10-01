@@ -13,11 +13,11 @@
 The general status of the packages is as follows: <i>TSgetSymbol</i>, 
 <i>TShistQuote</i>, <i>TSxls</i>, <i>TSzip</i> <i>TSMySQL</i>, 
 <i>TSPostgreSQL</i>, <i>TSSQLite</i>, <i>TSodbc</i>, <i>TScompare</i>, 
-and <i>TSdata</i> work and are actively 
-tested. 
-<P>
-<i>TSjson</i> works but further testing is being done before it is released.
-It is currently only implemented for connection to Statistics Canada.
+and <i>TSdata</i> work and are actively tested. 
+<i>TSjson</i> works and is actively tested, but 
+currently is only implemented for a connection to Statistics Canada.
+Please contact the project administrator if you are interested in helping
+implement for other data sources.
 <P>
 <i>TSOracle</i> may work, but I have no mechanism to test it. (Volunteers 
 please contact the project administrator.)
@@ -28,7 +28,8 @@ purchasing the Fame API driver to build completely.
 I have never tested this in Windows, but it should work.)
 <P>
 <i>TSpadi</i> worked (in 2011) but I no longer have access to Fame to 
-test it, and it is largely superceded by <i>TSfame</i>.
+test it and it has been archived on CRAN. It is largely superceded 
+by <i>TSfame</i> and other packages.
 <P>
 <i>TSsdmx</i> is still experimental.
 

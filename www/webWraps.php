@@ -39,16 +39,18 @@ package maintainer.
 <P>
 <i>TSjson</i> package supports two mechanisms for contacting the web data 
 source. The first calls a <i>Python</i> script distributed with the package. 
-This requires that the R client machine can run  <i>Python</i> and has several 
+This requires that the R client machine can run  <i>Python 2</i> and has several 
 <i>Python</i> modules installed (mechanize, sys, json, re, csv, urllib2), which
-all seem to be installed with 
+are all usually in the default Python library, or installed with 
 <a href=http://wwwsearch.sourceforge.net/mechanize>python-mechanize</a>.
 On most systems, including Windows, install can be 
 done by going to the directory of the unzipped package that contains the
 file setup.py and at the command prompt running  "python setup.py install". 
 It will also be necessary have python on your PATH so the program can be found.
-(On many Linux systems these modules are available with the debian package
-<i>python-mechanize</i>.)
+On many Linux systems these modules are available with the debian package
+<i>python-mechanize</i> (sudo apt-get install python-mechanize).
+Details and more general install instructions are provided in the README file
+distributed with the package.
 <P>
 Since installing software may be difficult in some environments, a second
 mechanism uses an intermediate proxy portal to the real web source data server.
