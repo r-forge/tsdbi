@@ -6,6 +6,7 @@
 CRAN Packages
 <ul>
 <li><a href="http://cran.at.r-project.org/web/packages/TSdbi/index.html">TSdbi</a>
+<li><a href="http://cran.at.r-project.org/web/packages/TSsql/index.html">TSsql</a>
 <li><a href="http://cran.at.r-project.org/web/packages/TSdata/index.html">TSdata</a>
 <li><a href="http://cran.at.r-project.org/web/packages/TSMySQL/index.html">TSMySQL</a>
 <li><a href="http://cran.at.r-project.org/web/packages/TSPostgreSQL/index.html">TSPostgreSQL</a>
@@ -16,7 +17,7 @@ CRAN Packages
 <li><a href="http://cran.at.r-project.org/web/packages/TShistQuote/index.html">TShistQuote</a>
 <li><a href="http://cran.at.r-project.org/web/packages/TSxls/index.html">TSxls</a>
 <li><a href="http://cran.at.r-project.org/web/packages/TSzip/index.html">TSzip</a>
-<li><a href="http://cran.at.r-project.org/web/packages/TSpadi/index.html">TSpadi</a>
+<li><a href="http://cran.at.r-project.org/web/packages/TSjson/index.html">TSjson</a>
 <li><a href="http://cran.at.r-project.org/web/packages/TScompare/index.html">TScompare</a>
 </ul>
 
@@ -37,6 +38,7 @@ Related Packages
 <li><a href="http://cran.at.r-project.org/web/packages/tseries/index.html">tseries</a>
 <li><a href="http://cran.at.r-project.org/web/packages/gdata/index.html">gdata</a>
 <li><a href="http://cran.at.r-project.org/web/packages/tframe/index.html">tframe</a>
+<li><a href="http://cran.at.r-project.org/web/packages/tfplot/index.html">tfplot</a>
 <li><a href="http://cran.at.r-project.org/web/packages/tframePlus/index.html">tframePlus</a>
 </ul></font>
 
