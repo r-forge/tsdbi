@@ -7,6 +7,15 @@ Known BUGS
    o	TSrepresentaion is specified in TSconnect rather than TSget.
 
 
+Changes in TSxls version 2013.11-1
+
+   o	Added fix to avoid skipping blank lines when reading spreadsheet, so
+   	calculating row line is easier. (Suggestion by Austin Lund.)
+
+   o	Added fix to dropped dimesion for single row or column when reading 
+   	spreadsheet. (Suggestion by Austin Lund.)
+
+
 Changes in TSxls version 2013.8-2
 
    o	Adjusted Depends and Imports in DESCRIPTION.
