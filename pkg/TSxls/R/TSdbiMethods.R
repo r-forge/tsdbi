@@ -49,16 +49,14 @@ setMethod("TSconnect",   signature(drv="xlsDriver", dbname="character"),
 
    require("gdata")
 
-   zz <- try(read.xls(file, sheet=sheet, verbose=FALSE),  silent=TRUE)
-                   #method=c("csv","tsv","tab"), perl="perl")
+   zz <- try(read.xls(file, sheet=sheet, blank.lines.skip=FALSE, verbose=FALSE),
+             silent=TRUE) #method=c("csv","tsv","tab"), perl="perl")
    if(inherits(zz, "try-error")) 
          stop("Could not read spreedsheet ",  dbname, zz)
 
    #NB The first line provides data frame names, so rows are shifted. 
    #   This fixes so matrix corresponds to spreadsheet cells
    z <- rbind(names(zz), as.matrix(zz))
-
-   #   Blank rows seem to be skipped, so result is compressed
 
    # translate cell letter range to number indices
    jmap <- function(cols){ 
@@ -69,10 +67,10 @@ setMethod("TSconnect",   signature(drv="xlsDriver", dbname="character"),
 	}
 
    ids   <- z[map$ids$i,  jmap(map$ids$j)] 
-   data  <- z[map$data$i, jmap(map$data$j)]   
+   data  <- z[map$data$i, jmap(map$data$j), drop=FALSE]   
    dates <- z[map$dates$i,jmap(map$dates$j)]   
    nm    <- if(is.null(map$names)) NULL else TSxls:::combineRows(
-            z[map$names$i,jmap(map$names$j)]) 
+            z[map$names$i,jmap(map$names$j), drop=FALSE]) 
    desc  <- if(is.null(map$description)) NULL else TSxls:::combineRows(
             z[map$description$i,jmap(map$description$j)]) 
    
