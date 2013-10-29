@@ -472,10 +472,18 @@ the elements that are used: data, dates, identifiers, and series names.
 
 This also illustrates how \code{tsrepresentation} can be specified as an 
 arbitrary function to set the returned time series object representation.
+Note also that dates may display in the spreadsheet one way 
+(e.g. 02-Jan-1989), show in the spreadsheet formula box in another way
+(e.g. 1989-01-02), and import still differently 
+(e.g. 02/Jan/1989). And the format could change when the file is saved,
+possibly depending on what features are available in the spreadsheet program.
+The imported format needs to be used when tsrepresentation
+is specified. If in doubt, look at the connection slot \code{@dates} 
+(\code{rba@dates} above).
 
 Beware that data is read into \pkg{R} when the connection is established, so
 changes in the spreadsheet will not be visible in \pkg{R} until a new connection
-is established.
+is established (in contrast to other \code{TS*} packages).
 
 \begin{Scode}{results=verbatim,fig=TRUE}
   x <- TSget("DMACN", rba)
@@ -576,9 +584,10 @@ tables, which would cause \code{createTSdbTables()} to fail.
 WARNING: running this will overwrite the ``test'' database on your server.
 
 \begin{Scode}
- library("TSMySQL")
+ library("RMySQL")
  con <- dbConnect("MySQL", dbname="test") 
  require("TSsql")
+ require("TSMySQL")
  removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
  createTSdbTables(con, index=FALSE)
  dbDisconnect(con)
@@ -714,7 +723,6 @@ specific tables.
 \begin{Scode}{results=hide}
   dbDisconnect(con)
   detach(package:TSMySQL)
-  detach(package:RMySQL)
 \end{Scode}
 %%
 \section{More Examples}
@@ -836,7 +844,6 @@ Then check the saved version:
   dbDisconnect(yahoo)
   dbDisconnect(Oanda)
   detach(package:TSPostgreSQL)
-  detach(package:RPostgreSQL)
 \end{Scode}
 %%
 %%
@@ -917,7 +924,6 @@ Then check the saved version:
 %%%%
 %%%%\begin{Scode}
 %%%%  detach(package:TSMySQL)
-%%%%  detach(package:RMySQL)
 %%%%\end{Scode}
 %%
 %%\section{Fancy Graphs with data from several sources}
@@ -1039,9 +1045,7 @@ warnings later about objects being masked:
   dbDisconnect(con2)
   dbDisconnect(yahoo)
   detach(package:TSMySQL)
-  detach(package:RMySQL)
   detach(package:TSSQLite)
-  detach(package:RSQLite)
 \end{Scode}
 %%
 %%
@@ -1136,7 +1140,6 @@ pointing at the graph will give information about the source of a data point.
 \begin{Scode}{eval=FALSE,fig=FALSE}
   dbDisconnect(ets)
   detach(package:TSMySQL)
-  detach(package:RMySQL)
 \end{Scode}
 %%
 %%
@@ -1305,7 +1308,6 @@ While it may not be necessary to \code{detach} packages, the following prevents
 warnings later about objects being masked:
 \begin{Scode}
   detach(package:TSMySQL)
-  detach(package:RMySQL)
 \end{Scode}
 %%
 %%
@@ -1360,7 +1362,6 @@ While it may not be necessary to \code{detach} packages, the following prevents
 warnings later about objects being masked:
 \begin{Scode}
   detach(package:TSPostgreSQL)
-  detach(package:RPostgreSQL)
 \end{Scode}
 %%
 %%
@@ -1390,7 +1391,6 @@ While it may not be necessary to \code{detach} packages, the following prevents
 warnings later about objects being masked:
 \begin{Scode}
   detach(package:TSSQLite)
-  detach(package:RSQLite)
 \end{Scode}
 %%
 %%
@@ -1442,7 +1442,6 @@ While it may not be necessary to \code{detach} packages, the following prevents
 warnings later about objects being masked:
 \begin{Scode}
   detach(package:TSodbc)
-  detach(package:RODBC)
 \end{Scode}
 %%
 %%
@@ -1543,7 +1542,6 @@ While it may not be necessary to \code{detach} packages, the following prevents
 warnings later about objects being masked:
 \begin{Scode}{eval=FALSE}
   detach(package:TSOracle)
-  detach(package:ROracle)
 \end{Scode}
 %%
 %%
@@ -1577,7 +1575,6 @@ If the file does not exist then environment variables "TSJSONUSER",
 
 \begin{Scode}{eval=FALSE}
   detach(package:TSjson)
-  detach(package:RJSONIO)
 \end{Scode}
 %%
 %%
@@ -1612,7 +1609,6 @@ While it may not be necessary to \code{detach} packages, the following prevents
 warnings later about objects being masked:
 \begin{Scode}{eval=FALSE}
   detach(package:TSfame)
-  detach(package:fame)
 \end{Scode}
 %%
 %%
