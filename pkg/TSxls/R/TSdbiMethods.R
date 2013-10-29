@@ -69,9 +69,9 @@ setMethod("TSconnect",   signature(drv="xlsDriver", dbname="character"),
    ids   <- z[map$ids$i,  jmap(map$ids$j)] 
    data  <- z[map$data$i, jmap(map$data$j), drop=FALSE]   
    dates <- z[map$dates$i,jmap(map$dates$j)]   
-   nm    <- if(is.null(map$names)) NULL else TSxls:::combineRows(
+   nm    <- if(is.null(map$names)) NULL else combineRows(
             z[map$names$i,jmap(map$names$j), drop=FALSE]) 
-   desc  <- if(is.null(map$description)) NULL else TSxls:::combineRows(
+   desc  <- if(is.null(map$description)) NULL else combineRows(
             z[map$description$i,jmap(map$description$j)]) 
    
    #seriesInColumns=TRUE, assuming this for now
@@ -227,10 +227,11 @@ trimAllNA.default <- function(x, startNAs= TRUE, endNAs= TRUE)
 }
 
 combineRows <- function(x, i, j, setEmpty=NULL){
+  # combine rows of text when it extends over more than a line.
   x[setEmpty] <- ""
-  x <- x[i,j]
+  x <- x[i,j, drop=FALSE]
   r <- NULL
-  for (ii in seq(NROW(x))) r <- paste(r, x[ii,])
+  for (ii in seq(NROW(x))) r <- paste(r, x[ii,, drop=FALSE])
   r
   }
 

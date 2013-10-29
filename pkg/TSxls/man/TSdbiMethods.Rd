@@ -60,18 +60,32 @@
 \value{Depends.}
 \details{
 These functions interface to the spreadsheets (\code{.xls}) files. 
-\code{TSget} is just a wrapper to \code{read.xls} to provide an interface that is consistent 
-with \pkg{TSdbi}. The \pkg{TSdbi} function argument \code{serId} is passed as the series to return,
+\code{TSget} is just a wrapper to \code{read.xls} to provide an interface 
+that is consistent with \pkg{TSdbi}. 
+The \pkg{TSdbi} function argument \code{serId} is passed as the series to return,
 \code{dbname} indicates the spreadsheets file. 
-(See \code{TSget} in \pkg{TSdbi} for
-more details on how this works.)
+(See \code{TSget} in \pkg{TSdbi} for more details on how this works.)
+
+Note that the data is read into the object \code{con} when the connection is
+established, so this will not update if the source file changes (in contrast
+to other \code{TS*} packages).
+
+Note also that dates may display in the spreadsheet one way 
+(e.g. 02-Jan-1989), show in the spreadsheet formula box in another way
+(e.g. 1989-01-02), and import still differently 
+(e.g. 02/Jan/1989). And the format could change when the file is saved,
+possibly depending on what features are available in the spreadsheet program.
+The imported format needs to be used when tsrepresentation
+is specified. If in doubt, look at con@dates
+
+
 
 \pkg{TSxls} does not support writing data to the source.
 
 The classes \code{xlsDriver} and \code{TSxlsConnection} extend classes
 \code{DBIDriver} and  \code{DBIConnection} in the DBI package.
 
-See the package vignette for additional examples.
+See the vignette in package TSdata for additional examples.
 }
 
 \seealso{ 
