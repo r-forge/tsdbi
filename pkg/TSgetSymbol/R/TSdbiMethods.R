@@ -137,7 +137,7 @@ setMethod("TSget",     signature(serIDs="character", con="TSgetSymbolConnection"
         if(periodicity(mat)$scale == "monthly")
 	   mat <- ts(mat, frequency=12,start=c(1900+st$year, 1+st$mon))
         else if(periodicity(mat)$scale == "quarterly")
-	   mat <- ts(mat, frequency=4, start=c(1900+st$year, 1+(st$mon-1)/3))
+	   mat <- ts(mat, frequency=4, start=c(1900+st$year, 1+(st$mon)/3))
         else if(periodicity(mat)$scale == "yearly")  
 	   mat <- ts(mat, frequency=1, start=c(1900+st$year, 1))
 	}
