@@ -30,7 +30,3 @@ exportMethods(
    "dbDisconnect",
    "dbUnloadDriver"
    )
-
-
-import("tframe")
-import("tframePlus")
