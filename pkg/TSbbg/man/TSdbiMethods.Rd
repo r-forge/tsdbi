@@ -51,7 +51,7 @@
 \arguments{
     \item{drv}{A bbgDriver.}
     \item{dbname}{NULL, for compatability with other TS* packages.}
-    \item{con}{A dat source connection.}
+    \item{con}{A data source connection.}
     \item{serIDs}{identifiers for series to extract.}
     \item{x}{a series identifier for
        TSdescription and TSdoc or, for print, 
