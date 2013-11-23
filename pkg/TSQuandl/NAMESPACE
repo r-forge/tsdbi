@@ -1,0 +1,30 @@
+import(methods)  
+import(DBI)      
+import(TSdbi)
+
+import(tframe)
+import(tframePlus)
+
+import(zoo) 
+import(Quandl) 
+
+## S4 Classes
+exportClasses(
+   "QuandlDriver", 
+   "TSQuandlConnection"
+   )
+
+## S4 methods
+exportMethods(
+   "TSconnect",
+   "TSget",
+   "TSdescription",
+   "TSdoc",
+   "TSlabel",
+   "TSsource",
+   "TSdates",
+   "TSexists",
+   "TSvintages",
+   "dbDisconnect",
+   "dbUnloadDriver"
+   )
