@@ -33,12 +33,21 @@ setMethod("TSconnect",   signature(drv="character", dbname="missing"),
 
 setMethod("TSconnect",   signature(drv="QuandlDriver", dbname="missing"),
    definition=function(drv, dbname=NULL, ...) {
-        if (is.null(dbname)) stop("Quandl dbname must be specified.")
+        stop("Quandl dbname must be specified.")
 	})
 
 setMethod("TSconnect",   signature(drv="QuandlDriver", dbname="ANY"),
    definition=function(drv, dbname=NULL, ...) {
         if (is.null(dbname)) stop("Quandl dbname cannot be NULL.")
+        # get defaults from file  or system variables but 
+	# token can be NULL if system variable is not set, and this
+	# works up to Quandl limit. 
+   	f <- paste(Sys.getenv("HOME"),"/.Quandl", sep="")
+   	if (file.exists(f)) {
+           f <- scan(f, what="") #token but could parse for user/password/host
+           r <- list(dbname=dbname, token=f[1])
+           }
+        else  r <- list(dbname=dbname, token=Sys.getenv()["QUANDL_TOKEN"])
         new("TSQuandlConnection" , drv="Quandl", dbname=dbname, 
   	       hasVintages=FALSE, hasPanels  =FALSE) 
 	})
@@ -84,7 +93,7 @@ TSget <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation"),
        TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE, TSsource=TRUE,
        vintage=NULL, ...)
 { # ... arguments unused
-  if(!is.null(vintage)) stop("TSQuandlConnection does not support vintages.")
+  if(!is.null(vintage)) stop("TSQuandl does not support vintages yet.")
   if(any(TSdescription, TSdoc, TSlabel)) 
       stop("TSQuandlConnection does not support metadata.")
 
@@ -119,17 +128,21 @@ TSget <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation"),
      convertRep <- TRUE
      }
 
+  if (TSdescription | TSdoc | TSlabel ) meta <- TRUE
+  else  meta <- FALSE
+  metadata   <- list()
+  
   for (i in seq(length(serIDs))) {
     if (is.null(start) & is.null(end))
-      r <- Quandl::Quandl(paste0(con@dbname,"/",serIDs[i]), type=type)
+      r <- Quandl::Quandl(paste0(con@dbname,"/",serIDs[i]), type=type,meta=meta)
     else if (is.null(start))
-      r <- Quandl::Quandl(paste0(con@dbname,"/",serIDs[i]), type=type,
+      r <- Quandl::Quandl(paste0(con@dbname,"/",serIDs[i]), type=type,meta=meta,
     		end_date=end)
     else if (is.null(end))
-      r <- Quandl::Quandl(paste0(con@dbname,"/",serIDs[i]), type=type,
+      r <- Quandl::Quandl(paste0(con@dbname,"/",serIDs[i]), type=type,meta=meta,
     		start_date=start)
     else 
-      r <- Quandl::Quandl(paste0(con@dbname,"/",serIDs[i]), type=type,
+      r <- Quandl::Quandl(paste0(con@dbname,"/",serIDs[i]), type=type,meta=meta,
     		start_date=start, end_date=end)
 
     if(0==length(r)){
@@ -137,12 +150,17 @@ TSget <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation"),
         }
     
     if(!is.null(quote)) r <- r[,quote[i]]
+
+    metadata[i] <- metaData(r)
+    if(TSdescription) desc <- c(desc,   metaData(r)$description ) 
+    if(TSdoc)     doc      <- c(doc,    paste("updated", metaData(r)$updated,
+       "from", metaData(r)$source_name, metaData(r)$source_link,
+        metaData(r)$source_description))
+    if(TSlabel)   label    <- c(label,  metaData(r)$name) 
+    if(TSsource)  source   <- c(source, paste(metaData(r)$code,"via Quandl")) 
     
+    attr(r, "meta") <- NULL
     mat <- tbind(mat, r)
-   #if(TSdescription) desc <- c(desc,   TSdescription(serIDs[i],con) ) 
-    #if(TSdoc)     doc      <- c(doc,    TSdoc(serIDs[i],con) ) 
-    #if(TSlabel)   label    <- c(label,  NA) #TSlabel(serIDs[i],con) )
-    if(TSsource)  source   <- c(source, "Quandl") #could be better
     }
 
   # identifiers can be multivariate. 
@@ -192,21 +210,21 @@ setMethod("TSput",     signature(x="ANY", serIDs="character", con="TSQuandlConne
 
 setMethod("TSdescription",   signature(x="character", con="TSQuandlConnection"),
    definition= function(x, con=getOption("TSconnection"), ...){
-     r <- try(Quandl(paste0(con@dbname,"/",serIDs), meta=TRUE)))
+     r <- try(Quandl(paste0(con@dbname,"/",serIDs), meta=TRUE))
      if (inherits(r, "try-error")) stop("Series (probably) does not exist.")
-     #if (is.null(r)) stop("Series (probably) does not exist.")
-     #if(is.null(r) || is.na(r)|| ("NA" == r)) NA else r 
-     if(is.na(r)|| ("NA" == r)) NA else r })
+     if (is.null(r)) stop("Series (probably) does not exist.")
+     if(is.null(TSmeta(r)@TSdescription)) NA else TSmeta(r)@TSdescription 
+     })
 
 setMethod("TSdoc",   signature(x="character", con="TSQuandlConnection"),
    definition= function(x, con=getOption("TSconnection"), ...){
-     r <- try(bdp(con@jcon, serIDs, c("NAME","LAST_UPDATE_DT","TIME")))
+     r <- try(Quandl(paste0(con@dbname,"/",serIDs), meta=TRUE))
      if (inherits(r, "try-error")) stop("Series (probably) does not exist.")
-     #if (is.null(r)) stop("Series (probably) does not exist.")
-     #if(is.null(r) || is.na(r)|| ("NA" == r)) NA else r 
-     if(is.na(r)|| ("NA" == r)) NA else r })
+     if (is.null(r)) stop("Series (probably) does not exist.")
+     if(is.null(TSmeta(r)@TSdoc)) NA else TSmeta(r)@TSdoc
+     })
 
-#TSlabel,TSsource, get used for new("Meta", so issuing a warning is not a good idea here.
+#?? TSlabel,TSsource, get used for new("Meta", so issuing a warning is not a good idea here.
 
 setMethod("TSlabel",   signature(x="character", con="TSQuandlConnection"),
    definition= function(x, con=getOption("TSconnection"), ...) NA )
@@ -228,7 +246,7 @@ setMethod("TSexists",
                       vintage=NULL, panel=NULL, ...){
    op <- options(warn=-1)
    on.exit(options(op))
-   x <-  try(bdp(con@jcon, serIDs, c("NAME","LAST_UPDATE_DT","TIME")))
+   x <-  try(Quandl(paste0(con@dbname,"/",serIDs),, meta=FALSE))
    ok <- ! inherits(x, "try-error")
    new("logicalId",  !is.null(ok), 
        TSid=new("TSid", serIDs=serIDs, dbname=con@dbname, 
