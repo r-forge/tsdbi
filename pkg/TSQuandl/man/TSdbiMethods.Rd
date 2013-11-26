@@ -60,8 +60,8 @@
     \item{drv}{A QuandlDriver.}
     \item{dbname}{first part of Quandl identifier code (
        before '/', e.g. 'NSE').}
-    \item{con}{A data source connection for TSdbi methods.}
-    \item{conn}{A data source connection for DBI methods.}
+    \item{con}{A data source connection.}
+    \item{conn}{A data source connection.}
     \item{serIDs}{identifiers for series to extract. (Second part of Quandl
         identifier code, after  '/').}
     \item{x}{a series identifier for
@@ -91,8 +91,8 @@
 \value{depends.}
 \details{
 These are methods for \pkg{TSdbi} . See the package \pkg{TSdbi} for details 
-and see the vignette distributed with the TSdata package for more complete 
-examples.
+and see the vignette distributed with the \pkg{TSdata} package for more 
+complete examples.
 
 This package provides a wrapper to the \pkg{Quandl} package to provide a 
 \pkg{TSdbi} API for users. Function \code{TSConnect} sets the information used
@@ -104,11 +104,11 @@ The Quandl access token can be specified either [NOT WORKING: as an argument to 
 home directory, or in an environment variable 'QUANDL_TOKEN', or using the 
 \pkg{Quandl} \code{Quandl.auth()} function. This last will require the user to
 load \pkg{Quandl} in order to set it. 
-The search will be done in that order and the first none \code{NULL} value used. If no token is found then access will be tried without a token, but this will be subject to the limit imposed by Quandl.
+The search will be done in that order and the first non-\code{NULL} value used. If no token is found then access will be tried without a token, but this will be subject to the limit imposed by Quandl.
 
 The argument \code{quote} can be used to select a subset of the data requested,
-in the case a multivariate result is produced. For example, daily stock or
-stock index reults may have columns "Open", "High", "Low",  "Close", ... . 
+in the case of a multivariate dataset. For example, daily stock or
+stock index results may have columns "Open", "High", "Low",  "Close", ... . 
 The argument \code{quote} can be used to select from these.  
 Note that when argument \code{quote} is specified to select a subset of the dataset requested, capitalization is important.
 }
