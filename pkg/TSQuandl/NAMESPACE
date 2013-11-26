@@ -5,7 +5,6 @@ import(TSdbi)
 import(tframe)
 import(tframePlus)
 
-import(zoo) 
 import(Quandl) 
 
 ## S4 Classes

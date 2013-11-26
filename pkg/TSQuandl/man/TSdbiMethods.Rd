@@ -1,5 +1,8 @@
 \name{TSdbiMethods}
 \alias{TSconnect,QuandlDriver,character-method}
+\alias{TSconnect,QuandlDriver,ANY-method}
+\alias{TSconnect,QuandlDriver,missing-method}
+\alias{TSconnect,character,missing-method}
 \alias{TSget,character,TSQuandlConnection-method}
 \alias{TSdoc,character,TSQuandlConnection-method}
 \alias{TSdescription,character,TSQuandlConnection-method}
@@ -23,20 +26,25 @@
 \title{TSdbi Quandl Methods}
 \description{Methods for TSdbi Quandl time series database connection.}
 \usage{
-    \S4method{TSconnect}{QuandlDriver,character}(drv, dbname=NULL, ...)
+    \S4method{TSconnect}{QuandlDriver,character}(drv, dbname=NULL,
+               token=NULL, ...)
 
     \S4method{TSget}{character,TSQuandlConnection}(serIDs, con, 
 	TSrepresentation = getOption("TSrepresentation"), 
 	tf = NULL, start = tfstart(tf), end = tfend(tf), names = NULL,
-	TSdescription = FALSE, TSdoc = FALSE, TSlabel=FALSE, TSsource=TRUE, ...)
+	quote = NULL, TSdescription = FALSE, TSdoc = FALSE, TSlabel=FALSE,
+	TSsource=TRUE, vintage = NULL, ...)
 
-    \S4method{TSdates}{character,TSQuandlConnection}(serIDs, con, ...)
+    \S4method{TSdates}{character,TSQuandlConnection}(serIDs, 
+        con=getOption("TSconnection"), vintage=NULL, panel=NULL, ...)
 
-    \S4method{TSexists}{character,TSQuandlConnection}(serIDs, con, ...)
+    \S4method{TSexists}{character,TSQuandlConnection}(serIDs, con,
+           vintage=NULL, panel=NULL, ...)
 
     \S4method{TSdescription}{character,TSQuandlConnection}(x, con, ...)
 
-    \S4method{TSdoc}{character,TSQuandlConnection}(x, con, ...)
+    \S4method{TSdoc}{character,TSQuandlConnection}(x, 
+                con=getOption("TSconnection"), ...)
 
     \S4method{TSlabel}{character,TSQuandlConnection}(x, con, ...)
 
@@ -50,16 +58,21 @@
 }
 \arguments{
     \item{drv}{A QuandlDriver.}
-    \item{dbname}{NULL, for compatability with other TS* packages.}
-    \item{con}{A data source connection.}
-    \item{serIDs}{identifiers for series to extract.}
+    \item{dbname}{first part of Quandl identifier code (
+       before '/', e.g. 'NSE').}
+    \item{con}{A data source connection for TSdbi methods.}
+    \item{conn}{A data source connection for DBI methods.}
+    \item{serIDs}{identifiers for series to extract. (Second part of Quandl
+        identifier code, after  '/').}
     \item{x}{a series identifier for
        TSdescription and TSdoc or, for print, 
        a database connection as returned by TSconnect.}
+    \item{token}{character string of Quandl access token.}
     \item{TSrepresentation}{time series representation to use for the result.}
     \item{names}{Optional character vector to use for series names. Defaults to
        serIDs.}
-    \item{tf}{Optional tframe to use for truncating data. (See \code{tfwindow}.)}
+    \item{tf}{Optional time frame to use for truncating data. 
+       (See \code{tfwindow}.)}
     \item{start}{Optional start date to use for truncating data.)}
     \item{end}{Optional end date to use for truncating data.)}
     \item{TSdescription}{TRUE or FALSE indicating whether description 
@@ -70,8 +83,10 @@
         Quandl}
     \item{TSsource}{If TRUE (default) TSsource in the result is set to
         "Quandl".}
-    \item{warn}{Logical indicating if warning messages should be suppressed.} 
-   \item{...}{Arguments passed to other methods.}
+    \item{quote}{reference item (e.g. ''Close''). See details.}
+    \item{vintage}{Vintage to be supplied (if available on dbname).}
+    \item{panel}{Panel to be supplied (if available).}
+    \item{...}{Arguments passed to other methods.}
 }
 \value{depends.}
 \details{
@@ -84,10 +99,23 @@ This package provides a wrapper to the \pkg{Quandl} package to provide a
 for the connection. \code{TSget} retrieves data.
 Both \code{start} and \code{end} can be either date objects or 
 character strings.
+
+The Quandl access token can be specified either [NOT WORKING: as an argument to \code{TSConnect} (\code{token="chars"}) or ] in a file .Quandl.cnf in the user's
+home directory, or in an environment variable 'QUANDL_TOKEN', or using the 
+\pkg{Quandl} \code{Quandl.auth()} function. This last will require the user to
+load \pkg{Quandl} in order to set it. 
+The search will be done in that order and the first none \code{NULL} value used. If no token is found then access will be tried without a token, but this will be subject to the limit imposed by Quandl.
+
+The argument \code{quote} can be used to select a subset of the data requested,
+in the case a multivariate result is produced. For example, daily stock or
+stock index reults may have columns "Open", "High", "Low",  "Close", ... . 
+The argument \code{quote} can be used to select from these.  
+Note that when argument \code{quote} is specified to select a subset of the dataset requested, capitalization is important.
 }
 
 \seealso{ 
 \code{\link[TSdbi]{TSdbi-package}}
+\code{\link[Quandl]{Quandl}}
 }
 \examples{
  require("tfplot")
@@ -99,7 +127,8 @@ character strings.
  x  <- TSget("OIL", con, start=as.Date("2001-01-01")) 
  tfplot(x)
  
- x <- TSget("OIL", con, quote="OPEN")
+ dimnames(x)[2]
+ x <- TSget("OIL", con, quote="Open")
 
  tfplot(x)
 }
