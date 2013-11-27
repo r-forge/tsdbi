@@ -197,10 +197,10 @@ setMethod("TSget",     signature(serIDs="character", con="TSQuandlConnection"),
       hasVintages=con@hasVintages, hasPanels=con@hasPanels,
       conType=class(con), 
       DateStamp=Sys.time(), 
-      TSdescription=NA, 
-      TSdoc=NA,
-      TSlabel=NA,
-      TSsource=if(TSsource) source else NA )
+      TSdescription= if(TSdescription) desc else NA, 
+      TSdoc        = if(TSdoc)          doc else NA,
+      TSlabel      = if(TSlabel)      label else NA,
+      TSsource     = if(TSsource)    source else NA )
   mat
 }
 )
@@ -217,7 +217,7 @@ setMethod("TSput",     signature(x="ANY", serIDs="character", con="TSQuandlConne
 # there may be a way to do this without getting the data (and discarding it).
 setMethod("TSdescription",   signature(x="character", con="TSQuandlConnection"),
    definition= function(x, con=getOption("TSconnection"), ...){
-     r <- try(Quandl::Quandl(paste0(con@dbname,"/",x), meta=TRUE))
+     r <- try(TSget(x ,con, TSdescription=TRUE))
      if (inherits(r, "try-error")) stop("Series (probably) does not exist.")
      if (is.null(r)) stop("Series (probably) does not exist.")
      if(is.null(TSmeta(r)@TSdescription)) NA else TSmeta(r)@TSdescription 
@@ -225,7 +225,7 @@ setMethod("TSdescription",   signature(x="character", con="TSQuandlConnection"),
 
 setMethod("TSdoc",   signature(x="character", con="TSQuandlConnection"),
    definition= function(x, con=getOption("TSconnection"), ...){
-     r <- try(Quandl::Quandl(paste0(con@dbname,"/",x), meta=TRUE))
+     r <- try(TSget(x ,con, TSdoc=TRUE))
      if (inherits(r, "try-error")) stop("Series (probably) does not exist.")
      if (is.null(r)) stop("Series (probably) does not exist.")
      if(is.null(TSmeta(r)@TSdoc)) NA else TSmeta(r)@TSdoc
@@ -234,10 +234,21 @@ setMethod("TSdoc",   signature(x="character", con="TSQuandlConnection"),
 #?? TSlabel,TSsource, get used for new("Meta", so issuing a warning is not a good idea here.
 
 setMethod("TSlabel",   signature(x="character", con="TSQuandlConnection"),
-   definition= function(x, con=getOption("TSconnection"), ...) NA )
+   definition= function(x, con=getOption("TSconnection"), ...){
+     r <- try(TSget(x ,con, TSlabel=TRUE))
+     if (inherits(r, "try-error")) stop("Series (probably) does not exist.")
+     if (is.null(r)) stop("Series (probably) does not exist.")
+     if(is.null(TSmeta(r)@TSlabel)) NA else TSmeta(r)@TSlabel
+     })
 
 setMethod("TSsource",   signature(x="character", con="TSQuandlConnection"),
-   definition= function(x, con=getOption("TSconnection"), ...) NA )
+   definition= function(x, con=getOption("TSconnection"), ...){
+     r <- try(TSget(x ,con, TSsource=TRUE))
+     if (inherits(r, "try-error")) stop("Series (probably) does not exist.")
+     if (is.null(r)) stop("Series (probably) does not exist.")
+     if(is.null(TSmeta(r)@TSsource)) NA else TSmeta(r)@TSsource
+     })
+
 
 setMethod("TSdelete",
    signature(serIDs="character", con="TSQuandlConnection", vintage="ANY", panel="ANY"),
