@@ -7,6 +7,11 @@ Known BUGS
    o	None for the moment.
 
 
+Changes in TSjson version 2014.1-1
+
+   o	Added functions for finding python command, checking python version,
+   	and checking availability of python modules. 
+
 Changes in TSjson version 2013.9-1
 
    o	first release
