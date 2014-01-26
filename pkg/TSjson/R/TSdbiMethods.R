@@ -50,8 +50,10 @@ setMethod("TSconnect",   signature(drv="jsonDriver", dbname="character"),
    # this is not really a url in this case, but the .py has the url+
    # shQuote() for path name spaces in Windows
    url <- shQuote(paste(path.package("TSjson"), "/exec/cansimGet.py", sep=""))
-   # specifying python is for Windows. Script works with or without in linux
-   url <- paste("python ",url) 
+   # In Linux the script may work without specifying the python command
+   #  if it has #!python, but this checks version more carefully.
+   CMD <- findPython2cmd()
+   url <- paste(CMD, url) 
    proxy <- FALSE
    }
  else stop("dbname ", dbname, " not supported.")

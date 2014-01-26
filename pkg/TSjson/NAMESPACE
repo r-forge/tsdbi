@@ -7,8 +7,13 @@ import("TSdbi")
 import("rjson")
 #import("RJSONIO")
 
-export("json")
-
+export(
+  "json",
+  "checkPython",
+  "findPython2cmd",
+  "checkForPythonModule"
+   )
+  
 ## S4 Classes
 exportClasses(
    "jsonDriver",
