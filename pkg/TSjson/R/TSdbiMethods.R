@@ -53,6 +53,13 @@ setMethod("TSconnect",   signature(drv="jsonDriver", dbname="character"),
    # In Linux the script may work without specifying the python command
    #  if it has #!python, but this checks version more carefully.
    CMD <- findPython2cmd()
+   if ((!checkForPythonModule(CMD, "urllib2"))   ||
+       (!checkForPythonModule(CMD, "re"))        ||
+       (!checkForPythonModule(CMD, "csv"))       ||
+       (!checkForPythonModule(CMD, "mechanize")) ||
+       (!checkForPythonModule(CMD, "json")) )  stop("Python 2 modules", 
+         " urllib2, re, csv, mechanize, and json must be installed")
+
    url <- paste(CMD, url) 
    proxy <- FALSE
    }
