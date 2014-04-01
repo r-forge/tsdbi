@@ -52,15 +52,16 @@ setMethod("TSconnect",   signature(drv="jsonDriver", dbname="character"),
    url <- shQuote(paste(path.package("TSjson"), "/exec/cansimGet.py", sep=""))
    # In Linux the script may work without specifying the python command
    #  if it has #!python, but this checks version more carefully.
-   CMD <- findPython2cmd()
-   if ((!checkForPythonModule(CMD, "urllib2"))   ||
-       (!checkForPythonModule(CMD, "re"))        ||
-       (!checkForPythonModule(CMD, "csv"))       ||
-       (!checkForPythonModule(CMD, "mechanize")) ||
-       (!checkForPythonModule(CMD, "json")) )  stop("Python 2 modules", 
+   cmdExists <- can_find_python_cmd(
+       minimum_version = '2.6',
+       maximum_version = '2.9',
+       required_modules = c('sys', 're', 'urllib2', 'csv', 'mechanize', 'json')
+       )
+   if (!cmdExists)  stop("Python 2 and modules", 
          " urllib2, re, csv, mechanize, and json must be installed")
 
-   url <- paste(CMD, url) 
+   CMD <-  attr(cmdExists, 'python_cmd')
+   url <- paste(CMD, ' ', url) 
    proxy <- FALSE
    }
  else stop("dbname ", dbname, " not supported.")
@@ -146,9 +147,9 @@ setMethod("TSget",     signature(serIDs="character", con="TSjsonConnection"),
        for (rpt in seq(repeat.try)) {
 	    #rr <- try(system(qq, intern=TRUE), silent=quiet)
    	    #fromJSON in RJSONIO (requires change of Imports: and NAMESPACE):
-	    #rr <- fromJSON(pcon <- pipe(qq), asText=TRUE)
+	    #rr <- try(fromJSON(pcon <- pipe(qq), asText=TRUE))
   	    #fromJSON in rjson:
-	    rr <- fromJSON(readLines(pcon <- pipe(qq)))
+	    rr <- try(fromJSON(readLines(pcon <- pipe(qq))))
    	    close(pcon)
 	    if ((!inherits(rr , "try-error"))){
 	       if(is.atomic(rr)) stop(rr, "\n rr is atomic. DEBUG py.")

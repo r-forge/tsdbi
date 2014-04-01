@@ -1,46 +1,15 @@
+# require('devtools')
+# devtools::install_github("trevorld/findpython")
+# find_python_cmd(required_modules = c('argparse', 'json | simplejson'))
 
-# findPython2cmd checks  in order
-#   env variable  PYTHON2
-#   env variable  PYTHON
-#   sys command   python2
-#   sys command   python
-# to establish command, then check for modules
+require('findpython')
 
-require("TSjson")
+cmdExists <- can_find_python_cmd(
+    minimum_version = '2.6',
+    maximum_version = '2.9',
+    required_modules = c('sys', 're', 'urllib2', 'csv', 'mechanize', 'json')
+    )
 
-CMD <- findPython2cmd()
-
-
-if (!checkPython(CMD, 2)) stop("python 2 is not available.")
-
-#checkPython(CMD, 3)
-
-missing <- NULL
-ok <- TRUE
-
-if (!checkForPythonModule(CMD, "urllib2")) {
-  ok <- FALSE
-  missing <- c(missing, "urllib2")
-  }
-
-if (!checkForPythonModule(CMD, "re")) {
-  ok <- FALSE
-  missing <- c(missing, "re")
-  }
-
-if (!checkForPythonModule(CMD, "csv")) {
-  ok <- FALSE
-  missing <- c(missing, "csv")
-  }
-
-if (!checkForPythonModule(CMD, "mechanize")) {
-  ok <- FALSE
-  missing <- c(missing, "mechanize")
-  }
-
-if (!checkForPythonModule(CMD, "json")) {
-  ok <- FALSE
-  missing <- c(missing, "json")
-  }
-
-if (!ok) stop("missing python modules: ", paste(missing, collapse =" "))
+if (cmdExists) CMD  <- attr(cmdExists, 'python_cmd') else
+   warning('adequate python was not found. ')
+  

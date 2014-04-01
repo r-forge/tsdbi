@@ -7,6 +7,13 @@ Known BUGS
    o	None for the moment.
 
 
+Changes in TSjson version 2014.4-1
+
+   o	Converted functions for finding python command, checking python version,
+   	and checking availability of python modules to use package findpython. 
+
+   o	Fixed a transient bug (catching try) when web page response failed.
+
 Changes in TSjson version 2014.1-1
 
    o	Added functions for finding python command, checking python version,
