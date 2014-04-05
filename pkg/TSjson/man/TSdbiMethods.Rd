@@ -126,14 +126,22 @@ See the vignette for package \pkg{TSdata} for  additional examples.
 }
 \examples{
   require("TSjson")
-  con <- TSconnect("json", dbname="cansim")
+  require("findpython")
+  if(can_find_python_cmd(
+         minimum_version="2.6",
+         maximum_version="2.9",
+         required_modules=c("sys", "re", "urllib2", "csv", "mechanize", "json"),
+         silent=TRUE)){
 
-  TSdates(c("v498086", "v498087","V122746", "v687341", "V36610", "v141"), con)
+    con <- TSconnect("json", dbname="cansim")
+
+    TSdates(c("v498086", "v498087","V122746", "v687341", "V36610", "v141"), con)
  
-  TSdescription(c("v687341", "v687342"), con)
+    TSdescription(c("v687341", "v687342"), con)
 
-  x <- TSget("v498086", con)
-  require("tfplot")
-  tfplot(x)
+    x <- TSget("v498086", con)
+    require("tfplot")
+    tfplot(x)
+    }
 }
 \keyword{ts}
