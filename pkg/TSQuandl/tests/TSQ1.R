@@ -2,6 +2,7 @@
 # Nov 2013 need devel version for bug fixes
 #  install.packages("devtools")
 #  require("devtools")
+#  install_github("R-package", "quandl")
 #  install_github("R-package", "quandl", ref="develop")
 
 require("TSQuandl")
