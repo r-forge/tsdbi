@@ -1,5 +1,8 @@
 # This just uses dbConnect (not TSconnect) to see if things work
 
+# Note that host will default to localhost if neither environment variables
+#   PGHOST or POSTGRES_HOST are set. (Only one of them is needed.)
+
 service <- Sys.getenv("_R_CHECK_HAVE_POSTGRES_")
 
 Sys.info()
