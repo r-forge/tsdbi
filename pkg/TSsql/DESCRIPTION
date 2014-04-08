@@ -1,5 +1,5 @@
 Package: TSsql
-Version: 2013.9-1
+Version: 2014.4-1
 Title: Generic SQL helper functions for TSdbi SQL plugins
 Description: This package provides standard SQL query functions used by 
 	SQL plugins packages for the TSdbi interface to time series databases. 
