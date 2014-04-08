@@ -1,4 +1,9 @@
 
+Changes in TSsql version 2014.4-1
+
+   o	Fixed zoo example / tests in /inst/TSsql/TSdbi.TSsql to 
+   	require tframePlus.
+
 Changes in TSsql version 2013.9-1
 
    o	First release (split from TSdbi).
