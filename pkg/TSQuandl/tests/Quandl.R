@@ -42,39 +42,39 @@ cat("**************        extracting from Quandl, type xts\n")
 
 cat("**************    test start date trimming\n")
  
-  #x  <- Quandl("NSE/OIL", sort = "asc", start_date = as.Date("2001-01-01"))
+  #x  <- Quandl("NSE/OIL", sort = "asc", start_date = as.Date("2011-01-01"))
   # should not neeed sort = "asc" anymore
 
-  x  <- Quandl("NSE/OIL", start_date = as.Date("2001-01-01"), type="zoo")
+  x  <- Quandl("NSE/OIL", start_date = as.Date("2011-01-03"), type="zoo")
 
-  if (as.Date("2001-01-01") != start(x))  
+  if (as.Date("2011-01-03") != start(x))  
      stop("NSE/OIL start date trimming is not working with type zoo.")
 
-  x  <- Quandl("NSE/OIL", start_date = as.Date("2001-01-01"), type = "xts")
+  x  <- Quandl("NSE/OIL", start_date = as.Date("2011-01-03"), type = "xts")
 
-  if (as.Date("2001-01-01") != start(x))  
+  if (as.Date("2011-01-03") != start(x))  
      stop("NSE/OIL start date trimming is not working with type xts.")
 
 
 cat("**************    test end date trimming\n")
   
-  x  <- Quandl("NSE/OIL", start_date = as.Date("2001-01-01"),
-                            end_date = as.Date("2010-06-01"), type="zoo")
+  x  <- Quandl("NSE/OIL", start_date = as.Date("2013-12-16"),
+                            end_date = as.Date("2014-04-01"), type="zoo")
 
-  if (as.Date("2010-06-01") != end(x))  
+  if (as.Date("2014-04-01") != end(x))  
      stop("NSE/OIL end date trimming is not working with type zoo.")
 
-  if (as.Date("2001-01-01") != start(x))  
+  if (as.Date("2013-12-16") != start(x))  
      stop("NSE/OIL start date trimming in combination with end trimming is not working with type zoo.")
 
 
-  x  <- Quandl("NSE/OIL", start_date = as.Date("2001-01-01"),
-                            end_date = as.Date("2010-06-01"), type = "xts")
+  x  <- Quandl("NSE/OIL", start_date = as.Date("2014-02-17"),
+                            end_date = as.Date("2014-04-01"), type = "xts")
 
-  if (as.Date("2010-06-01") != end(x))  
+  if (as.Date("2014-04-01") != end(x))  
      stop("NSE/OIL end date trimming is not working with type xts.")
 
-  if (as.Date("2001-01-01") != start(x))  
+  if (as.Date("2014-02-17") != start(x))  
      stop("NSE/OIL start date trimming in combination with end trimming is not working with type zoo.")
 
 
