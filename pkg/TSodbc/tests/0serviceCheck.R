@@ -5,7 +5,8 @@ service <- Sys.getenv("_R_CHECK_HAVE_ODBC_")
 Sys.info()
 
 if(identical(as.logical(service), TRUE)) {
-   require("TSodbc") 
+   #require("TSodbc") 
+   require("RODBC") 
 
    dbname   <- Sys.getenv("ODBC_DATABASE")
    if ("" == dbname)   dbname <- NULL
