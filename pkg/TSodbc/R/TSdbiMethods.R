@@ -38,9 +38,17 @@ setMethod("dbRemoveTable", signature(conn="RODBC", name="character"),
      if (-1 == sqlDrop(conn, name, errors = FALSE) ) FALSE else TRUE})
 
 setMethod("dbGetQuery", signature(conn="RODBC", statement="character"),
-   definition=function (conn, statement, ...){
+   definition = function (conn, statement, ...){
       r <- sqlQuery(channel=conn, statement, ...)
-      if( NROW(r) == 0) NULL else r
+      #if( NROW(r) == 0) NULL else r
+      # Above was the last line. Next is work around for odbc 
+      #  returning factors rather than numeric
+      if( NROW(r) == 0) return(NULL)
+      if(is.null(dim(r))) return(r)  # sql other than select, or error message
+      if ('tbl' %in%  names(r)) return(r) # meta query
+      for (i in 1:NCOL(r)) 
+       if (inherits(r[,i], "factor")) r[,i] <- as.numeric(as.character(r[,i]))
+      r
       }) 
 
 ##setMethod("dbGetQuery", signature(conn="TSodbcConnection", statement="character"),
