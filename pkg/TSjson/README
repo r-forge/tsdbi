@@ -92,23 +92,11 @@ then
 >>> quit()
 
 to exit python.
- 
+  
 Installing modules can be done in a number of different ways, for example,
-using apt-get or Synaptic in some versions of Linux. The use of the python 
-program easy_install is described briefly below. Once the program easy_install 
-is installed  (see https://wiki.python.org/moin/EasyInstall, or in debian based
-systems sudo apt-get install python-setuptools), the process for 
-installing python modules is similar on different operating systems. 
-
-The easy_install program also needs to be found on your path, so add its 
-location in the same way that you added python to your path above. (In Windows, 
-easy_install.exe might be installed in C:\Python27\Scripts, in which case that
-should be on your path.)
-
-Then (in non-Windows systems you may need to prefix this with sudo)
-
- easy_install mechanize
- 
+using apt-get or Synaptic in some versions of Linux. The standard python 
+module installation utility 'pip' is a good option (as of 2014) and works
+different operating systems. 
 
 =========== Other data sites =====================
 
