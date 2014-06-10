@@ -1,5 +1,5 @@
 Package: TSdata
-Version: 2013.9-1
+Version: 2014.6-1
 Title: TSdbi Illustration
 Description: TSdata illustrates the various TSdbi packages using time series 
 	data from several sources. It also illustrates some simple time series
@@ -10,10 +10,11 @@ Suggests: tframe, tframePlus (>= 2012.8-1), tfplot,
 	TSPostgreSQL, TSMySQL, RMySQL, TSSQLite, 
 	TSodbc, TSgetSymbol (>= 2012.8-1), 
 	TShistQuote, TSxls, TSzip, TScompare, zoo, tseries, its,
-	TSjson, WriteXLS
+	TSjson, findpython, WriteXLS
+SystemRequirements: python 2, python-sys, python-json, python-mechanize, python-re, python-csv, python-urllib2
 BuildVignettes: false
 License: GPL-2
-Copyright: 2012-2013 Paul Gilbert.
+Copyright: 2012-2014 Paul Gilbert.
 Author: Paul Gilbert <pgilbert.ttv9z@ncf.ca>
 Maintainer: Paul Gilbert <pgilbert.ttv9z@ncf.ca>
 URL: http://tsdbi.r-forge.r-project.org/
