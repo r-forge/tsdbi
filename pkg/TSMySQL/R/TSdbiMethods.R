@@ -1,13 +1,5 @@
+dbBackEnd <- function(...) RMySQL::MySQL(...)
 
-# This can be 
-#setClass("TSMySQLConnection", contains="MySQLConnection",
-#             representation=representation(TSdb="TSdb")) 
-# in which case we need 
-#new("TSMySQLConnection" , con, TSdb=new("TSdb", dbname=dbname, 
-#  	       hasVintages=dbExistsTable(con, "vintages"), 
-#  	       hasPanels  =dbExistsTable(con, "panels"))) 
-
-# or 
 setClass("TSMySQLConnection", contains=c("MySQLConnection", "conType", "TSdb"))
 
 setAs("TSMySQLConnection", "integer", 
@@ -22,18 +14,21 @@ setAs("TSMySQLConnection", "integer",
 #    print(x@TSdb)
 #    })
 
-setMethod("TSconnect",   signature(drv="MySQLDriver", dbname="character"),
-   definition=function(drv, dbname, ...) {
-        con <- dbConnect(drv, dbname=dbname, ...)
+#class(getExportedValue("RMySQL", "MySQL")()) is "MySQLDriver"
+
+setMethod("TSconnect",   signature(q="MySQLConnection", dbname="missing"),
+   definition=function(q, dbname, ...) {
+        con <- q
+	nm <- as.character(dbGetQuery(conn=con, "SELECT DATABASE();"))
 	if(0 == length(dbListTables(con))){
 	  dbDisconnect(con)
-          stop("Database ",dbname," has no tables.")
+          stop("Database ",nm," has no tables.")
 	  }
 	if(!dbExistsTable(con, "Meta")){
 	  dbDisconnect(con)
-          stop("Database ",dbname," does not appear to be a TS database.")
+          stop("Database ",nm," does not appear to be a TS database.")
 	  }
-	new("TSMySQLConnection" , con, drv="MySQL", dbname=dbname, 
+	new("TSMySQLConnection" , con, dbname=nm, 
   	       hasVintages=dbExistsTable(con, "vintageAlias"), 
   	       hasPanels  =dbExistsTable(con, "panels")) 
 	})

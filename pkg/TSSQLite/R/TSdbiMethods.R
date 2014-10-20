@@ -1,3 +1,4 @@
+dbBackEnd <- function(...) RSQLite::SQLite(...)
 
 setClass("TSSQLiteConnection", contains=c("SQLiteConnection","conType", "TSdb")) 
 
@@ -8,14 +9,18 @@ setMethod("print", "TSSQLiteConnection", function(x, ...) {
     print(x@TSdb)
     })
 
-setMethod("TSconnect",   signature(drv="SQLiteDriver", dbname="character"),
-   definition=function(drv, dbname, ...) {
-        con <- dbConnect(drv, dbname=dbname, ...)
-	if(!dbExistsTable(con, "Meta"))
+#class(getExportedValue("RSQLite", "SQLite")()) is "SQLiteDriver"
+
+setMethod("TSconnect",   signature(q="SQLiteConnection", dbname="missing"),
+   definition=function(q, dbname, ...) {
+        con <- q
+	if(!dbExistsTable(conn=con, "Meta"))
 	  stop("The database does not appear to be a TS database,")
-	new("TSSQLiteConnection" , con, drv="SQLite", dbname=dbname, 
-	       hasVintages=dbExistsTable(con, "vintageAlias"), 
-	       hasPanels  =dbExistsTable(con, "panels"))
+	nm <- dbGetQuery(con, "PRAGMA database_list;")
+	nm <- nm$file["main" == nm$name]
+	new("TSSQLiteConnection" , con, dbname=nm, 
+	       hasVintages=dbExistsTable(conn=con, "vintageAlias"), 
+	       hasPanels  =dbExistsTable(conn=con, "panels"))
 	})
 
 setMethod("TSput", signature(x="ANY", serIDs="character", con="TSSQLiteConnection"),

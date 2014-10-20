@@ -1,32 +1,46 @@
-
-setClass("xlsDriver", representation("DBIDriver", Id = "character")) 
-
-xls <- function() {
+dbBackEnd <- function(...) {
   drv <- "xls"
   attr(drv, "package") <- "TSxls"
   new("xlsDriver", Id = drv)
   }
 
-# require("DBI") for this
-setClass("TSxlsConnection", contains=c("DBIConnection", "conType","TSdb"),
-   representation(url="character", data="matrix", ids="character", 
+####### some kludges to make this look like DBI. ######
+# for this require("DBI")
+
+setClass("xlsDriver", contains=c("DBIDriver"), slots=c(Id = "character")) 
+
+setClass("xlsConnection", contains=c("DBIConnection", "xlsDriver"),
+   slots=c(dbname="character") )
+
+setMethod("dbConnect", signature(drv="xlsDriver"), 
+     definition=function(drv, dbname, ...) 
+                   new("xlsConnection", drv, dbname=dbname))
+
+# this does nothing but prevent errors if it is called. 
+setMethod("dbDisconnect", signature(conn="xlsConnection"), 
+     definition=function(conn,...) TRUE)
+#######     end kludges   ######
+
+
+setClass("TSxlsConnection", contains=c("xlsConnection", "conType","TSdb"),
+   slots= c(url="character", data="matrix", ids="character", 
         dates="character", names="character", description="character",
 	source="character", tsrepresentation = "function") 
    )
 
-####### some kludges to make this look like DBI. ######
-# this does nothing but prevent errors if it is called. 
-setMethod("dbDisconnect", signature(conn="TSxlsConnection"), 
-     definition=function(conn,...) TRUE)
-#######     end kludges   ######
+# ... is passed  by default TSconnect (in TSdbi) to both dbBackEnd (and on to
+#  the drivers)  and also to  TSconnect con signature methods.
+# Here map is used by TSconnect but in most other cases it is used by
+#  the driver, so this would be more similar to other packages if it
+#  was stored by dbBackEnd (and then would not need to be passed to both).
 
-setMethod("TSconnect",   signature(drv="xlsDriver", dbname="character"),
-  definition= function(drv, dbname, 
+setMethod("TSconnect",   signature(q="xlsConnection", dbname="missing"),
+  definition= function(q, dbname, 
      map=list(ids, data, dates, names=NULL, description=NULL, sheet=1,
               tsrepresentation = function(data,dates){
 		       zoo(data, as.Date(dates))}), ...){
    #  user / password / host  for future consideration
-   if (is.null(dbname)) stop("dbname must be specified")
+   dbname <- q@dbname 
 
    sheet <- if (is.null(map$sheet)) 1 else map$sheet
 
@@ -115,7 +129,7 @@ setMethod("TSconnect",   signature(drv="xlsDriver", dbname="character"),
   
    # cache data, etc in con
    # use ids to extract from cache, but give names
-   new("TSxlsConnection", drv="xls", dbname=dbname, 
+   new("TSxlsConnection", dbname=dbname, 
         hasVintages=FALSE, hasPanels=FALSE, url=url,
 	data=data,ids=ids,dates=dates, names=nm, description=desc,
 	source=dbname,  #this could be better

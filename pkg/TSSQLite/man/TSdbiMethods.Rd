@@ -1,5 +1,7 @@
 \name{TSdbiMethods}
-\alias{TSconnect,SQLiteDriver,character-method}
+\alias{dbBackEnd}
+
+\alias{TSconnect,SQLiteConnection,missing-method}
 \alias{TSget,character,TSSQLiteConnection-method}
 \alias{TSput,ANY,character,TSSQLiteConnection-method}
 \alias{TSdelete,character,TSSQLiteConnection-method}
@@ -18,7 +20,8 @@
 \title{TSdbi SQLite Methods}
 \description{Methods for TSdbi SQLite time series dtabase connection.}
 \usage{
-    \S4method{TSconnect}{SQLiteDriver,character}(drv, dbname, ...)
+    dbBackEnd(...)
+    \S4method{TSconnect}{SQLiteConnection,missing}(q, dbname, ...)
     \S4method{TSget}{character,TSSQLiteConnection}(
 	serIDs, con, TSrepresentation=options()$TSrepresentation,
 	tf=NULL, start=tfstart(tf), end=tfend(tf), names=NULL, 
@@ -45,9 +48,11 @@
                            yesIknowWhatIamDoing=FALSE)
 }
 \arguments{
-    \item{drv}{A SQLiteDriver.}
-    \item{dbname}{A character string indicating a database name.}
-    \item{con}{A database connection.}
+    \item{q}{A character string indicating the query interface to use, or
+         a database connection object.}
+    \item{dbname}{The name of the database to which the connection should be
+         established, omitted if \code{q} is a database connection object.}
+    \item{con}{A database connection object.}
     \item{serIDs}{identifiers for series to extract.}
     \item{x}{data series to put on the database, or a series identifier for
        TSdescription and TSdoc or, for print, 
@@ -74,7 +79,8 @@
     \item{vintage}{Vintage to be supplied (if supported by db).}
     \item{panel}{Panel to be supplied (if supported by db).}
     \item{yesIknowWhatIamDoing}{logical to help prevent accidents.}
-    \item{...}{Arguments passed to other methods.}
+    \item{...}{Arguments passed to other methods. In the case of dbBackEnd, arguments 
+       passed to RSQLite::SQLite}
 }
 \value{depends.}
 \details{
@@ -94,7 +100,7 @@ will not be removed. These steps are done in the example below.
 }
 \examples{
     require("tfplot")
-    conInit <- try(TSconnect(dbDriver("SQLite"), dbname="test"))
+    conInit <- try(TSconnect("SQLite", dbname="test"))
     if(! inherits(conInit, "try-error")) {
       require("TSsql")
       createTSdbTables(conInit, index=FALSE)
@@ -125,7 +131,7 @@ will not be removed. These steps are done in the example below.
       TSdelete("random2")
        \dontshow{removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)} 
       }
-    con <- try(TSconnect(dbDriver("SQLite"), dbname="ets"))
+    con <- try(TSconnect("SQLite", dbname="ets"))
     if(! inherits(con, "try-error")) {
       TSmeta("B103", con)
       z1 <- TSget("B103", con)

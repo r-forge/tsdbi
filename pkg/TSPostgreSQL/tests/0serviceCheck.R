@@ -12,7 +12,7 @@ if(!identical(as.logical(service), TRUE)) {
    cat("_R_CHECK_HAVE_POSTGRES_ setting ", service, "\n")
  }else {
    require("TSPostgreSQL") 
-   m <- dbDriver("PostgreSQL")
+   m <- "PostgreSQL"
 
    dbname   <- Sys.getenv("POSTGRES_DATABASE")
    if ("" == dbname)  { 
@@ -36,7 +36,7 @@ if(!identical(as.logical(service), TRUE)) {
        cat("passwd set by env variable POSTGRES_PASSWD\n") 
 
        #  See  ?"dbConnect-methods"
-       con <- dbConnect(m, dbname=dbname,
+       con <- RPostgreSQL::dbConnect(m, dbname=dbname,
           user=user, password=passwd, host=host)  
      }else  {
        cat("user set to empty string.\n") 
@@ -53,8 +53,8 @@ if(!identical(as.logical(service), TRUE)) {
           cat("host reset to:", host, "\n") 
 	  } 
        #get user/passwd in ~/.pgpass
-       con <- dbConnect(m, dbname=dbname, host=host) 
+       con <- RPostgreSQL::dbConnect(m, dbname=dbname, host=host) 
        }
    # dbListTables(con) needs a non-null dbname
-   dbDisconnect(con)
+   RPostgreSQL::dbDisconnect(con)
  }

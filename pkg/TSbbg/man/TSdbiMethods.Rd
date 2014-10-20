@@ -1,5 +1,8 @@
-\name{TSdbiMethods}
-\alias{TSconnect,bbgDriver,character-method}
+\name{TSbbgMethods}
+
+\alias{dbBackEnd}
+
+\alias{TSconnect,TSbbgConnection,missing-method}
 \alias{TSget,character,TSbbgConnection-method}
 \alias{TSdoc,character,TSbbgConnection-method}
 \alias{TSdescription,character,TSbbgConnection-method}
@@ -8,22 +11,13 @@
 \alias{TSdates,character,TSbbgConnection-method}
 \alias{TSexists,character,TSbbgConnection-method}
 
-\alias{dbDisconnect,TSbbgConnection-method}
-
-\alias{dbUnloadDriver,bbgDriver-method}
-
-\alias{bbg}
-
 \alias{TSbbgConnection-class}
 
-\alias{dbObjectId-class}
-\alias{bbgObject-class}
-\alias{bbgDriver-class}
-
-\title{TSdbi bbg Methods}
+title{TSdbi bbg Methods}
 \description{Methods for TSdbi bbg time series database connection to Bloomberg.}
 \usage{
-    \S4method{TSconnect}{bbgDriver,character}(drv, dbname=NULL, ...)
+    dbBackEnd(...)
+    \S4method{TSconnect}{TSbbgConnection,missing}(q, dbname=NULL, ...)
 
     \S4method{TSget}{character,TSbbgConnection}(serIDs, con, 
 	TSrepresentation = getOption("TSrepresentation"), 
@@ -41,16 +35,13 @@
     \S4method{TSlabel}{character,TSbbgConnection}(x, con, ...)
 
     \S4method{TSsource}{character,TSbbgConnection}(x, con, ...)
- 
-    \S4method{dbDisconnect}{TSbbgConnection}(conn,...)
-
-    \S4method{dbUnloadDriver}{bbgDriver}(drv, ...)
-
-    \method{bbg}{default}()
-}
+ }
 \arguments{
-    \item{drv}{A bbgDriver.}
-    \item{dbname}{NULL, for compatability with other TS* packages.}
+    \item{q}{A character string indicating the query interface to use, or
+         a database connection object.}
+    \item{dbname}{The name of the database to which the connection should be
+         established, omitted if \code{q} is a database connection object.
+         NULL, for compatability with other TS* packages.}
     \item{con}{A data source connection.}
     \item{serIDs}{identifiers for series to extract.}
     \item{x}{a series identifier for

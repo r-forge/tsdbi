@@ -3,13 +3,12 @@ service <- Sys.getenv("_R_CHECK_HAVE_POSTGRES_")
 if(identical(as.logical(service), TRUE)) {
 
 require("TSPostgreSQL")
+require("DBI")
 
 cat("************** RPostgreSQL  Examples ******************************\n")
 cat("**************************************************************\n")
 cat("* WARNING: THIS OVERWRITES TABLES IN TEST DATABASE ON SERVER**\n")
 cat("**************************************************************\n")
-
-m <- dbDriver("PostgreSQL") # note that this is needed in sourced files.
 
 ###### This is to set up tables. Otherwise use TSconnect#########
 
@@ -23,14 +22,14 @@ m <- dbDriver("PostgreSQL") # note that this is needed in sourced files.
    if ("" != user) {
        passwd  <- Sys.getenv("POSTGRES_PASSWD")
        #  See  ?"dbConnect-methods"
-       con <- dbConnect(m, dbname=dbname,
+       con <- dbConnect("PostgreSQL", dbname=dbname,
           user=user, password=passwd, host=host)  
      }else  {
 	#( the postgres driver may also use PGDATABASE, PGHOST, PGPORT, PGUSER )
        # The Postgress documentation seems to suggest that it should be
        #   possible to get the host from the .pgpass file too, but I cannot.
        #get user/passwd in ~/.pgpass
-       con <- dbConnect(m, dbname=dbname, host=host) 
+       con <- dbConnect("PostgreSQL", dbname=dbname, host=host) 
        }
 
 dbListTables(con) 
@@ -48,20 +47,21 @@ dbDisconnect(con)
 # pass user/passwd in ~/.pgpass (but host defaults to PGHOST or localhost).
 
 con <- if ("" != user)  
-          tryCatch(TSconnect(m, dbname=dbname, user=user, password=passwd, host=host)) 
-    else  tryCatch(TSconnect(m, dbname=dbname)) 
+          tryCatch(TSconnect("PostgreSQL", dbname=dbname, user=user, password=passwd, host=host)) 
+    else  tryCatch(TSconnect("PostgreSQL", dbname=dbname)) 
     
 if(inherits(con, "try-error")) stop("CreateTables did not work.")
 
+require("DBI")
 source(system.file("TSsql/Populate.TSsql", package = "TSsql"))
 source(system.file("TSsql/TSdbi.TSsql", package = "TSsql"))
+m <- "PostgreSQL" # note that this is needed in sourced files.
 source(system.file("TSsql/dbGetQuery.TSsql", package = "TSsql"))
 source(system.file("TSsql/HistQuote.TSsql", package = "TSsql"))
 
 cat("**************        disconnecting test\n")
 removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
 dbDisconnect(con)
-dbUnloadDriver(m)
 
 } else  {
    cat("POSTGRES not available. Skipping tests.\n")

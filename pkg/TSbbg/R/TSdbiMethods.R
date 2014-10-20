@@ -1,3 +1,9 @@
+dbBackEnd <- function(...) {
+  drv <- "bbg"
+  attr(drv, "package") <- "TSbbg"
+  new("bbgDriver", Id = drv)
+  }
+
 # Notes
 #  r <- bdh(con, serIDs[i], fld="PX_LAST", sdate="20020101")
 #  failure tested by zero length result is probably not good.
@@ -5,44 +11,29 @@
 #  showClass("jobjRef")
 #  showClass("TSbbgConnection")
 
-setClass("bbgDriver", representation("DBIDriver", Id = "character")) 
-
-bbg <- function() {
-  drv <- "bbg"
-  attr(drv, "package") <- "TSbbg"
-  new("bbgDriver", Id = drv)
-  }
-
-# for this require("DBI") ; require("TSdbi")
-setClass("TSbbgConnection",  representation(jcon="jobjRef"),
-          contains=c("conType", "TSdb"))
-
 ####### some kludges to make this look like DBI. ######
-# these do nothing, but prevents error messages
 
-setMethod("dbDisconnect", signature(conn="TSbbgConnection"), 
+setClass("bbgDriver", contains=c("DBIDriver"). slots=c(Id = "character")) 
+
+setClass("bbgConnection", contains=c("DBIConnection", "bbgDriver"),
+   slots=c(dbname="character") )
+
+setMethod("dbConnect", signature(drv="bbgDriver"), 
+     definition=function(drv, dbname, ...) 
+                   new("bbgConnection", drv, dbname=dbname))
+
+# this does nothing, but prevents error messages
+setMethod("dbDisconnect", signature(conn="bbgConnection"), 
    definition=function(conn,...) invisible(TRUE))
 
-setMethod("dbUnloadDriver", signature(drv="bbgDriver"),
-   definition=function(drv, ...) invisible(TRUE))
 #######     end kludges   ######
 
-##########################################################################
-# this should go in TSdbi
-setMethod("TSconnect",   signature(drv="character", dbname="missing"),
-   definition=function(drv, dbname=NULL, ...)
-             TSconnect(dbDriver(drv), dbname=NULL, ...))
+setClass("TSbbgConnection", contains=c("bbgConnection", "conType", "TSdb"),  
+          slots=c(jcon="jobjRef"))
 
-##########################################################################
-
-setMethod("TSconnect",   signature(drv="bbgDriver", dbname="ANY"),
-   definition=function(drv, dbname=NULL, ...) {
-        if (!is.null(dbname)) warning("dbname is not used by bbg connection.")
-	TSconnect(drv, ...)
-	})
-
-setMethod("TSconnect",   signature(drv="bbgDriver", dbname="missing"),
-   definition=function(drv, dbname=NULL, ...) {
+setMethod("TSconnect",   signature(q="TSbbgConnection", dbname="missing"),
+   definition=function(q, dbname, ...) {
+        dbname <- q@dbname
         con <- try(blpConnect(verbose=FALSE))
 	if(inherits(con, "try-error") )
            stop("Could not establish TSbbgConnection.")

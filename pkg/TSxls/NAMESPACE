@@ -7,11 +7,10 @@ import("TSdbi")
 
 import("gdata")
 
-export("xls")
+export("dbBackEnd")
 
 ## S4 Classes
 exportClasses(
-   "xlsDriver",
    "TSxlsConnection"
    )
 
@@ -26,7 +25,6 @@ exportMethods(
    "TSdoc",
    "TSlabel",
    "TSsource",
-   "TSget",
-   "dbDisconnect"
+   "TSget"
    )
 

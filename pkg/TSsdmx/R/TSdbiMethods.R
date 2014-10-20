@@ -1,3 +1,8 @@
+dbBackEnd <- function(...) {
+  drv <- "sdmx"
+  attr(drv, "package") <- "TSsdmx"
+  new("sdmxDriver", Id = drv)
+  }
 
 # there is an SDMX primer at
 # http://www.ecb.int/stats/services/sdmx/html/index.en.html
@@ -5,28 +10,24 @@
 # NB firebug shows browser requests to server, so is useful for seeing what is
 #  sent to the server
 
-setClass("sdmxDriver", representation("DBIDriver", Id = "character")) 
-
-sdmx <- function() {
-  drv <- "sdmx"
-  attr(drv, "package") <- "TSsdmx"
-  new("sdmxDriver", Id = drv)
-  }
-
-# require("DBI") for this
-setClass("TSsdmxConnection", contains=c("DBIConnection", "conType","TSdb"),
-   representation(user="character", password="character", host="character") )
-
 ####### some kludges to make this look like DBI. ######
+#for this require("DBI") 
+
+setClass("sdmxDriver", contains=c("DBIDriver"), slots=c(Id = "character")) 
+
 # this does nothing but prevent errors if it is called. 
 setMethod("dbDisconnect", signature(conn="TSsdmxConnection"), 
      definition=function(conn,...) TRUE)
+
 #######     end kludges   ######
 
-setMethod("TSconnect",   signature(drv="sdmxDriver", dbname="character"),
-  definition= function(drv, dbname, user="", password="", host="", ...){
+setClass("TSsdmxConnection", contains=c("DBIConnection", "conType","TSdb"),
+   slots=c(user="character", password="character", host="character") )
+
+setMethod("TSconnect",   signature(q="sdmxConnection", dbname="missing"),
+  definition= function(q, dbname, user="", password="", host="", ...){
    #  user / password / host  for future consideration
-   if (is.null(dbname)) stop("dbname must be specified")
+   dbname) <- q@dbname
    
    # there could be a better connection test mechanism below, especially
    #  since this breaks if the test series disappears

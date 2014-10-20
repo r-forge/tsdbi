@@ -80,6 +80,8 @@ cat("**************    test end date trimming\n")
 
 cat("**************    test meta data\n")
 
+#  temporarily disable, needs as.yearmon or newer Quandl
+if (FALSE) {
   x  <- Quandl("BOC/CDA_CPI", type = "zoo", meta = TRUE)
   
   if (is.null(attr(x,"meta"))) 
@@ -102,3 +104,4 @@ cat("**************    test meta data\n")
    
   if ("Bank of Canada" != attr(x,"meta")$source_name )  
      stop("meta data $source_name is changed (xts).")
+}

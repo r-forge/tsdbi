@@ -3,6 +3,7 @@ service <- Sys.getenv("_R_CHECK_HAVE_ODBC_")
 if(identical(as.logical(service), TRUE)) {
 
 require("TSodbc")
+require("RODBC")
 
 cat("************** RODBC  Examples ******************************\n")
 cat("**************************************************************\n")
@@ -25,9 +26,9 @@ cat("**************************************************************\n")
        passwd  <- Sys.getenv("ODBC_PASSWD")
        if ("" == passwd)   passwd <- NULL
        #  See  ?odbcConnect   ?odbcDriverConnect
-       con <- odbcConnect(dsn=dbname, uid=user, pwd=passwd) #, connection=host) 
+       con <- RODBC::odbcConnect(dsn=dbname, uid=user, pwd=passwd) #, connection=host) 
      }else  
-       con <- odbcConnect(dsn=dbname) # pass user/passwd/host in ~/.odbc.ini
+       con <- RODBC::odbcConnect(dsn=dbname) # pass user/passwd/host in ~/.odbc.ini
 
 #dbListTables(con) 
 #source(system.file("TSsql/CreateTables.TSsql", package = "TSsql"))
@@ -37,17 +38,19 @@ removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
 createTSdbTables(con, index=FALSE)
 
 #dbListTables(con) 
-dbDisconnect(con)
+
+RODBC::odbcClose(con)
+ 
 ##################################################################
 
 con <- if ("" != user)  
-          tryCatch(TSconnect("ODBC", dbname=dbname, username=user, password=passwd, host=host)) 
-    else  tryCatch(TSconnect("ODBC", dbname=dbname)) # pass user/passwd/host in ~/.my.cnf
+          tryCatch(TSconnect("odbc", dbname=dbname, username=user, password=passwd, host=host)) 
+    else  tryCatch(TSconnect("odbc", dbname=dbname)) # pass user/passwd/host in config file
 
 if(inherits(con, "try-error")) cat("CreateTables did not work.\n")
  else {
 
-   m <- "ODBC" # this is needed in sourced files.
+   m <- "odbc" # this is needed in sourced files.
    source(system.file("TSsql/Populate.TSsql", package = "TSsql"))
    cat("**********1\n")
    source(system.file("TSsql/TSdbi.TSsql", package = "TSsql"))
@@ -60,7 +63,8 @@ if(inherits(con, "try-error")) cat("CreateTables did not work.\n")
    removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
 
    cat("**************        disconnecting test\n")
-   dbDisconnect(con)
+   #dbDisconnect(con)
+RODBC::odbcClose(con)
    }
 } else {
    cat("ODBC not available. Skipping tests.\n")

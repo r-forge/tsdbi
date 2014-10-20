@@ -1,44 +1,35 @@
-
-setClass("QuandlDriver", representation("DBIDriver", Id = "character")) 
-
-Quandl <- function() {
+dbBackEnd <- function(...) {
   drv <- "Quandl"
   attr(drv, "package") <- "TSQuandl"
   new("QuandlDriver", Id = drv)
   }
 
-# for this require("DBI") ; require("TSdbi")
-setClass("TSQuandlConnection", contains=c("conType", "TSdb"),
-           representation(token="character"))
-   # TSfame has current as part of representation, used with vintages 
-   #  to fake info the db should have.
 
 ####### some kludges to make this look like DBI. ######
-# these do nothing, but prevents error messages
 
-setMethod("dbDisconnect", signature(conn="TSQuandlConnection"), 
+setClass("QuandlDriver", contains=c("DBIDriver"), slots=c(Id = "character")) 
+
+setClass("QuandlConnection", contains=c("DBIConnection", "QuandlDriver"),
+   slots=c(dbname="character") )
+
+setMethod("dbConnect", signature(drv="QuandlDriver"), 
+     definition=function(drv, dbname, ...) 
+                   new("QuandlConnection", drv, dbname=dbname))
+
+setMethod("dbDisconnect", signature(conn="QuandlConnection"), 
    definition=function(conn,...) invisible(TRUE))
 
-setMethod("dbUnloadDriver", signature(drv="QuandlDriver"),
-   definition=function(drv, ...) invisible(TRUE))
+#setMethod("dbUnloadDriver", signature(drv="QuandlDriver"),
+#   definition=function(drv, ...) invisible(TRUE))
+
 #######     end kludges   ######
 
-##########################################################################
-# this should go in TSdbi
-#setMethod("TSconnect",   signature(drv="character", dbname="missing"),
-#   definition=function(drv, dbname=NULL, ...)
-#             TSconnect(dbDriver(drv), dbname=dbname, ...))
+setClass("TSQuandlConnection", contains=c("QuandlConnection", "conType", "TSdb"),
+           slots = c(token="character"))
 
-##########################################################################
-
-#setMethod("TSconnect",   signature(drv="QuandlDriver", dbname="missing"),
-#   definition=function(drv, dbname=NULL, token=NULL, ...) {
-#        stop("Quandl dbname must be specified.")
-#	})
-
-setMethod("TSconnect", signature(drv="QuandlDriver", dbname="ANY"),
-   definition=function(drv, dbname=NULL, ...) {
-        if (is.null(dbname)) stop("Quandl dbname cannot be NULL.")
+setMethod("TSconnect", signature(q="QuandlConnection", dbname="missing"),
+   definition=function(q, dbname, token=NULL, ...) {
+        dbname <- q@dbname 
         # get defaults from file  or system variables but 
 	# token can be NULL if system variable is not set, and this
 	# works up to Quandl limit. 
@@ -51,7 +42,7 @@ setMethod("TSconnect", signature(drv="QuandlDriver", dbname="ANY"),
           else  token <- Sys.getenv()["QUANDL_TOKEN"] #may be NULL
 	#  }
         if (is.null(token)) token <- Quandl.auth()
-	new("TSQuandlConnection" , drv="Quandl", dbname=dbname, token=token, 
+	new("TSQuandlConnection" , dbname=dbname, token=token, 
   	       hasVintages=FALSE, hasPanels=FALSE) 
 	})
 

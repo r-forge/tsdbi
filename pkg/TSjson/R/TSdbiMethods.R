@@ -1,26 +1,33 @@
-
-setClass("jsonDriver", representation("DBIDriver", Id = "character")) 
-
-json <- function() {
+dbBackEnd <- function() {
   drv <- "json"
   attr(drv, "package") <- "TSjson"
   new("jsonDriver", Id = drv)
   }
 
-# require("DBI") for this
-setClass("TSjsonConnection", contains=c("DBIConnection", "conType","TSdb"),
-   representation(user="character", password="character", host="character",
-                  url="character", proxy="logical") )
-
 ####### some kludges to make this look like DBI. ######
+# for these require("DBI")
+
+setClass("jsonDriver", contains=c("DBIDriver"), slots=c(Id = "character")) 
+
+setClass("jsonConnection", contains=c("DBIConnection", "jsonDriver"),
+   slots=c(dbname="character") )
+
+setMethod("dbConnect", signature(drv="jsonDriver"), 
+     definition=function(drv, dbname, ...) 
+                   new("jsonConnection", drv, dbname=dbname))
+
 # this does nothing but prevent errors if it is called. 
-setMethod("dbDisconnect", signature(conn="TSjsonConnection"), 
+setMethod("dbDisconnect", signature(conn="jsonConnection"), 
      definition=function(conn,...) TRUE)
 #######     end kludges   ######
 
-setMethod("TSconnect",   signature(drv="jsonDriver", dbname="character"),
-  definition= function(drv, dbname, user=NULL, password=NULL, host=NULL, ...){
- if (is.null(dbname)) stop("dbname must be specified")
+setClass("TSjsonConnection", contains=c("jsonConnection", "conType","TSdb"),
+   slots= c(user="character", password="character", host="character",
+                  url="character", proxy="logical") )
+
+setMethod("TSconnect",   signature(q="jsonConnection", dbname="missing"),
+    definition= function(q, dbname, user=NULL, password=NULL, host=NULL, ...){
+ dbname <- q@dbname 
  # if other values are not specified get defaults from file or system variables
 
  if (dbname == "proxy-cansim") {
@@ -70,7 +77,7 @@ setMethod("TSconnect",   signature(drv="jsonDriver", dbname="character"),
  #if(inherits(con, "try-error")) 
  #      stop("Could not establish TSjsonConnection to ",  dbname)
    
- new("TSjsonConnection", drv="json", dbname=dbname,
+ new("TSjsonConnection", dbname=dbname,
         hasVintages=FALSE, hasPanels=FALSE, 
 	user=user, password=password, host=host, url=url, proxy=proxy ) 
  } )

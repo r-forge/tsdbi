@@ -1,5 +1,7 @@
-\name{TSdbiMethods}
-\alias{TSconnect,OracleDriver,character-method}
+\name{TSOracleMethods}
+\alias{dbBackEnd}
+
+\alias{TSconnect,OracleConnection,missing-method}
 \alias{TSget,character,TSOracleConnection-method}
 \alias{TSput,ANY,character,TSOracleConnection-method}
 \alias{TSdelete,character,TSOracleConnection-method}
@@ -9,15 +11,14 @@
 \alias{TSsource,character,TSOracleConnection-method}
 \alias{TSdates,character,TSOracleConnection-method}
 \alias{TSvintages,TSOracleConnection-method}
-\alias{dropTStable,OracleConnection,character,ANY-method}
-\alias{dropTStable,OracleConnection,character-method}
 
 \alias{TSOracleConnection-class}
 
 \title{TSdbi Oracle Methods}
 \description{Methods for TSdbi Oracle time series dtabase connection.}
 \usage{
-    \S4method{TSconnect}{OracleDriver,character}(drv, dbname, ...)
+    dbBackEnd(...)
+    \S4method{TSconnect}{OracleConnection,missing}(q, dbname, ...)
     \S4method{TSget}{character,TSOracleConnection}(serIDs, con, 
        TSrepresentation=options()$TSrepresentation,
        tf=NULL, start=tfstart(tf), end=tfend(tf), names=NULL, 
@@ -40,8 +41,10 @@
                            yesIknowWhatIamDoing=FALSE)
 }
 \arguments{
-    \item{drv}{A OracleDriver.}
-    \item{dbname}{A character string indicating a database name.}
+    \item{q}{A character string indicating the query interface to use, or
+         a database connection object.}
+    \item{dbname}{The name of the database to which the connection should be
+         established, omitted if \code{q} is a database connection object.}
     \item{con}{A database connection.}
     \item{serIDs}{identifiers for series to extract.}
     \item{x}{data series to put on the database, or a series identifier for

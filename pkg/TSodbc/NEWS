@@ -9,11 +9,24 @@ Known BUGS
 	so it is necessary to have a properly defined ~/.odbc.ini  file.
 
 
+Changes in TSodbc version 2014.10-1
+	
+   o	Changed Depends to Imports for RODBC.
+
+   o	Bumped requirement for DBI up to version 0.3.1 or greater.
+
+   o	Adjusted TSconnect() to use a string or a connection in place of a
+   	driver, and renamed argument drv to q to reflect this change.
+
+   o	Re-worked faking of DBI S4 classes and methods for RODBC S3 classes.
+
+
 Changes in TSodbc version 2014.4-1
 
    o	Added work around for RODBC 1.3-10 returning factors for (PostgreSQL)
    	double precision in R-3.1.0 but not in older R versions. This is 
-	caused by an intended change to type.convert() in R.
+	caused by an intended change to type.convert() in R-3.1.0 which was
+	partially undone in subsequent R versions.
 
 Changes in TSodbc version 2013.9-1
 

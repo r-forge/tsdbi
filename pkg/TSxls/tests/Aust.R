@@ -47,7 +47,7 @@ require("tfplot")
 
   z <- TSget(c("DMAM1N", "DMAM3N"), con1)
    
-  con2 <- TSconnect(drv="xls", dbname=testfile,
+  con2 <- TSconnect("xls", dbname=testfile,
           map=list(ids  =list(i=11,     j="B:Q"), 
 	           data =list(i=12:627, j="B:Q"), 
 	           dates=list(i=12:627, j="A"),
@@ -62,7 +62,7 @@ require("tfplot")
 
   require("zoo")
   
-  con3 <- TSconnect(drv="xls", dbname=testfile,
+  con3 <- TSconnect("xls", dbname=testfile,
           map=list(ids  =list(i=11,     j="B:Q"), 
 	           data =list(i=12:627, j="B:Q"), 
 	           dates=list(i=12:627, j="A"),

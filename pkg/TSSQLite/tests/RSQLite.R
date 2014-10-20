@@ -7,9 +7,7 @@ cat("**************************************************************\n")
 cat("* WARNING: THIS OVERWRITES TABLES IN TEST DATABASE ON SERVER**\n")
 cat("**************************************************************\n")
 
-m <- dbDriver("SQLite")
-
-con <- dbConnect(m, dbname="test") # no user/passwd/host
+con <- dbConnect("SQLite", dbname="test") # no user/passwd/host
 
 dbListTables(con) 
 
@@ -21,7 +19,7 @@ createTSdbTables(con, index=FALSE)
 dbListTables(con) 
 dbDisconnect(con)
 
-con <- try(TSconnect(m, dbname="test") )
+con <- try(TSconnect("SQLite", dbname="test") )
 if(inherits(con, "try-error")) stop("CreateTables did not work.")
 
 source(system.file("TSsql/Populate.TSsql", package = "TSsql"))
@@ -34,6 +32,5 @@ removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
 
 cat("**************        disconnecting test\n")
 dbDisconnect(con)
-#  dbUnloadDriver(m) complains about open connections.
 
 } else  cat("SQLLITE not available. Skipping tests.")

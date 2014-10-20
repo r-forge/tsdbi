@@ -1,30 +1,36 @@
-
-setClass("zipDriver", representation("DBIDriver", Id = "character")) 
-
-zip <- function() {
+dbBackEnd <- function(...) {
   drv <- "zip"
   attr(drv, "package") <- "TSzip"
   new("zipDriver", Id = drv)
   }
 
-# require("DBI") for this
-setClass("TSzipConnection", contains=c("DBIConnection", "conType","TSdb"),
-   representation(suffix="character") )
-
 ####### some kludges to make this look like DBI. ######
+# for this require("DBI")
+setClass("zipDriver", contains=("DBIDriver"), slots=c(Id = "character")) 
+
+setClass("zipConnection", contains=c("DBIConnection", "zipDriver"),
+   slots=c(dbname="character") )
+
+setMethod("dbConnect", signature(drv="zipDriver"), 
+     definition=function(drv, dbname, ...) 
+                   new("zipConnection", drv, dbname=dbname))
+
 # this does nothing but prevent errors if it is called. 
-setMethod("dbDisconnect", signature(conn="TSzipConnection"), 
+setMethod("dbDisconnect", signature(conn="zipConnection"), 
      definition=function(conn,...) TRUE)
 #######     end kludges   ######
 
-setMethod("TSconnect",   signature(drv="zipDriver", dbname="character"),
-  definition=function(drv, dbname, 
+setClass("TSzipConnection", contains=c("zipConnection", "conType","TSdb"),
+   slots=c(suffix="character") )
+
+setMethod("TSconnect",   signature(q="zipConnection", dbname="missing"),
+  definition=function(q, dbname, 
                 suffix=c("Open","High","Low","Close","Volume","OI"), ...){ 
    #  user / password / host  for future consideration
    # may need to to have this function specific to dbname  cases as in TSsdmx
-   if (is.null(dbname)) stop("dbname must be specified")
+   dbname <- q@dbname
    
-   new("TSzipConnection", drv="zip", dbname=dbname, 
+   new("TSzipConnection", dbname=dbname, 
         hasVintages=FALSE, hasPanels=FALSE,
 	#read.csvArgs=list(...), 
 	suffix=suffix) 

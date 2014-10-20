@@ -2,6 +2,15 @@ See also
 
    o	See also NEWS in the TSdbi package.
 
+Changes in TSOracle version 2014.10-1
+
+   o	Update class definitions to use slots= rather than representation().
+
+   o	Bumped requirement for DBI up to version 0.3.1 or greater.
+
+   o	Adjusted TSconnect() to use a string or a connection in place of a
+   	driver, and renamed argument drv to q to reflect this change.
+
 
 Changes in TSOracle version 2013.9-1
 

@@ -19,5 +19,3 @@ tfplot(oilz, graphs.per.page=3)
 require("zoo") # for coredata but not for above
 if (max(abs(coredata(oilz) - coredata(oilx))) > 1e-6 )
    stop("oil xts and zoo coredata do not compare.")  
-
-dbDisconnect(con)

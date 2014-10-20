@@ -7,6 +7,10 @@ import("tframe")
 import("RMySQL") ## this should not all be needed, but parts for setClass "TSMySQLConnection"
 ##importClassesFrom("RMySQL","MySQLConnection")
 
+## not generic
+export(
+  "dbBackEnd")
+
 ## many function from TSdbi need to be visible to the user, so it is indicated
 ## using Depends: in NAMESPACE rather than importing and exporting here.
 

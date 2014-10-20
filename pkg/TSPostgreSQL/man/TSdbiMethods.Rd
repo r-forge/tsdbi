@@ -1,5 +1,7 @@
 \name{TSdbiMethods}
-\alias{TSconnect,PostgreSQLDriver,character-method}
+\alias{dbBackEnd}
+
+\alias{TSconnect,PostgreSQLConnection,missing-method}
 \alias{TSget,character,TSPostgreSQLConnection-method}
 \alias{TSput,ANY,character,TSPostgreSQLConnection-method}
 \alias{TSdelete,character,TSPostgreSQLConnection-method}
@@ -17,7 +19,8 @@
 \title{TSdbi PostgreSQL Methods}
 \description{Methods for TSdbi PostgreSQL time series dtabase connection.}
 \usage{
-    \S4method{TSconnect}{PostgreSQLDriver,character}(drv, dbname, host = 
+    dbBackEnd(...)
+    \S4method{TSconnect}{PostgreSQLConnection,missing}(q, dbname, host = 
        if(!is.null(Sys.getenv("PGHOST"))) Sys.getenv("PGHOST") else "localhost", ...)
     \S4method{TSget}{character,TSPostgreSQLConnection}(serIDs, 
        con=getOption("TSconnection"), 
@@ -42,9 +45,11 @@
                            yesIknowWhatIamDoing=FALSE)
 }
 \arguments{
-    \item{drv}{A PostgreSQLDriver.}
-    \item{dbname}{A character string indicating a database name.}
-    \item{con}{A database connection.}
+    \item{q}{A character string indicating the query interface to use, or
+         a database connection object.}
+    \item{dbname}{The name of the database to which the connection should be
+         established, omitted if \code{q} is a database connection object.}
+    \item{con}{A database connection object.}
     \item{serIDs}{Character string identifiers for series to extract.}
     \item{host}{A character string indicating the server.}
     \item{x}{data series to put on the database, or a series identifier for
@@ -72,7 +77,8 @@
     \item{vintage}{Vintage to be supplied (if supported by db).}
     \item{panel}{Panel to be supplied (if supported by db).}
     \item{yesIknowWhatIamDoing}{logical to help prevent accidents.}
-    \item{...}{Arguments passed to other methods.}
+    \item{...}{Arguments passed to other methods. In the case of dbBackEnd, 
+        arguments passed to RPostgreSQL::PostgreSQL}
 }
 \value{depends.}
 \details{
@@ -94,11 +100,11 @@ will not be removed. These steps are done in the example below.
 }
 \examples{
     require("tfplot")
-    conInit <- try(dbConnect(dbDriver("PostgreSQL"), dbname="test"))
+    conInit <- try(RPostgreSQL::dbConnect("PostgreSQL", dbname="test"))
     if(! inherits(conInit, "try-error")) {
       require("TSsql")
       createTSdbTables(conInit, index=FALSE)
-      con <- TSconnect(dbDriver("PostgreSQL"), dbname="test")
+      con <- TSconnect("PostgreSQL", dbname="test")
       z <- ts(rnorm(100), start=c(1975,1), frequency=12)
       seriesNames(z) <- "random1"
       if(TSexists("random1", con)) TSreplace(z, con) else
@@ -125,7 +131,7 @@ will not be removed. These steps are done in the example below.
       TSdelete("random2")
        \dontshow{removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)} 
       }
-    con <- try(TSconnect(dbDriver("PostgreSQL"), dbname="ets"))
+    con <- try(TSconnect("PostgreSQL", dbname="ets"))
     if(! inherits(con, "try-error")) {
       TSmeta("B103", con)
       z1 <- TSget("B103", con)

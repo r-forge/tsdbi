@@ -7,6 +7,16 @@ Known BUGS
    o	TSrepresentaion is specified in TSconnect rather than TSget.
 
 
+Changes in TSxls version 2014.10-1
+
+   o	Update class definitions to use slots= rather than representation().
+
+   o	Bumped requirement for DBI up to version 0.3.1 or greater.
+
+   o	Adjusted TSconnect() to use a string or a connection in place of a
+   	driver, and renamed argument drv to q to reflect this change.
+
+
 Changes in TSxls version 2013.11-1
 
    o	Added fix to avoid skipping blank lines when reading spreadsheet, so

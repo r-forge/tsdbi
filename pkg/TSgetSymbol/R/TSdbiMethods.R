@@ -1,26 +1,37 @@
-
-setClass("getSymbolDriver", representation("DBIDriver", Id = "character")) 
-
-getSymbol <- function() {
+dbBackEnd <- function(...) {
   drv <- "getSymbol"
   attr(drv, "package") <- "TSgetSymbol"
   new("getSymbolDriver", Id = drv)
   }
 
-# require("DBI") for this
-setClass("TSgetSymbolConnection", contains=c("DBIConnection", "conType","TSdb"),
-   representation(user="character", password="character", host="character") )
-
 ####### some kludges to make this look like DBI. ######
+# for these require("DBI")
+
+setClass("getSymbolDriver", contains="DBIDriver", slots=c(Id = "character")) 
+
+setClass("getSymbolConnection", contains=c("DBIConnection", "getSymbolDriver"),
+   slots=c(dbname="character", user="character", password="character", host="character") )
+
+setMethod("dbConnect", signature(drv="getSymbolDriver"), 
+     definition=function(drv, dbname, ...) new("getSymbolConnection", drv, dbname=dbname))
+
 # this does nothing but prevent errors if it is called. 
-setMethod("dbDisconnect", signature(conn="TSgetSymbolConnection"), 
+setMethod("dbDisconnect", signature(conn="getSymbolConnection"), 
      definition=function(conn,...) TRUE)
+
+#  new("getSymbolConnection", dbBackEnd(), dbname="FRED")
+#           dbConnect(dbBackEnd(), "FRED")
+#           dbConnect(getExportedValue("TSgetSymbol", "dbBackEnd")(), dbname="FRED")
+# TSconnect(dbConnect(dbBackEnd(), dbname="FRED"))
+# TSconnect(dbConnect(getExportedValue("TSgetSymbol", "dbBackEnd")(), dbname="FRED"))
 #######     end kludges   ######
 
-setMethod("TSconnect",   signature(drv="getSymbolDriver", dbname="character"),
-  definition= function(drv, dbname, user="", password="", host="", ...){
+setClass("TSgetSymbolConnection", contains=c("getSymbolConnection","conType", "TSdb")) 
+ 
+setMethod("TSconnect",   signature(q="getSymbolConnection", dbname="missing"),
+  definition= function(q, dbname,  user="", password="", host="", ...){
    #  user / password / host  for future consideration
-   if (is.null(dbname)) stop("dbname must be specified")
+   dbname <- q@dbname
    if (dbname == "FRED") {
       #there could be a better test
       con <- try(quantmod::getSymbols('CPIAUCNS',src='FRED'), silent = TRUE)
@@ -39,7 +50,8 @@ setMethod("TSconnect",   signature(drv="getSymbolDriver", dbname="character"),
    else 
       warning(dbname, "not recognized. Connection assumed working, but not tested.")
    
-   new("TSgetSymbolConnection", drv="getSymbol", dbname=dbname, hasVintages=FALSE, hasPanels=FALSE,
+   new("TSgetSymbolConnection", dbname=dbname,
+          hasVintages=FALSE, hasPanels=FALSE,
     	  user = user, password = password, host = host ) 
    } )
 
@@ -134,11 +146,11 @@ setMethod("TSget",     signature(serIDs="character", con="TSgetSymbolConnection"
     
     st <- as.POSIXlt(start(mat)) #POSIXlt as return for zoo
     if (default) {
-        if(periodicity(mat)$scale == "monthly")
+        if(xts::periodicity(mat)$scale == "monthly")
 	   mat <- ts(mat, frequency=12,start=c(1900+st$year, 1+st$mon))
-        else if(periodicity(mat)$scale == "quarterly")
+        else if(xts::periodicity(mat)$scale == "quarterly")
 	   mat <- ts(mat, frequency=4, start=c(1900+st$year, 1+(st$mon)/3))
-        else if(periodicity(mat)$scale == "yearly")  
+        else if(xts::periodicity(mat)$scale == "yearly")  
 	   mat <- ts(mat, frequency=1, start=c(1900+st$year, 1))
 	}
 

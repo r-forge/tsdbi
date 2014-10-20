@@ -6,14 +6,16 @@ import("tframe")
 import("tframePlus")
 
 import("zoo")
+importFrom("xts", "periodicity")
 
 importFrom("quantmod", "getSymbols") #need quantmod in Depends not Imports for some reason
 
-export("getSymbol")
+## not generic
+export(
+  "dbBackEnd")
 
 ## S4 Classes
 exportClasses(
-   "getSymbolDriver",
    "TSgetSymbolConnection"
    )
 

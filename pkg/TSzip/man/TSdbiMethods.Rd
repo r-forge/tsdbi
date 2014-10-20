@@ -1,6 +1,7 @@
-\name{zip}
-\alias{zip}
-\alias{TSconnect,zipDriver,character-method}
+\name{TSzipMethods}
+\alias{dbBackEnd}
+
+\alias{TSconnect,zipConnection,missing-method}
 \alias{TSget,character,TSzipConnection-method}
 \alias{TSdates,character,TSzipConnection-method}
 \alias{TSdescription,character,TSzipConnection-method}
@@ -8,33 +9,31 @@
 \alias{TSlabel,character,TSzipConnection-method}
 \alias{TSsource,character,TSzipConnection-method}
 
-\alias{dbDisconnect,TSzipConnection-method}
-
-\alias{zipDriver-class}
 \alias{TSzipConnection-class}
 
 \title{Methods for TSdbi Generics to Connect to zipped csv Files}
 \description{Get a time series (matrix) from a zipped csv file (at a url).}
 \usage{
-     zip() 
+    dbBackEnd(...) 
+    \S4method{TSconnect}{zipConnection,missing}(q, dbname, 
+                suffix=c("Open","High","Low","Close","Volume","OI"), ...)
     \S4method{TSget}{character,TSzipConnection}(
 	serIDs, con, TSrepresentation=options()$TSrepresentation,
         tf=NULL, start=tfstart(tf), end=tfend(tf),
         names=NULL, quote=con@suffix, ...)
-    \S4method{TSconnect}{zipDriver,character}(drv, dbname, 
-                suffix=c("Open","High","Low","Close","Volume","OI"), ...)
     \S4method{TSdates}{character,TSzipConnection}(
 	serIDs, con, vintage=NULL, panel=NULL, ... )  
     \S4method{TSdescription}{character,TSzipConnection}(x, con, ... )  
     \S4method{TSdoc}{character,TSzipConnection}(x, con, ... )  
     \S4method{TSlabel}{character,TSzipConnection}(x, con, ... )  
     \S4method{TSsource}{character,TSzipConnection}(x, con, ... )  
-
-    \S4method{dbDisconnect}{TSzipConnection}(conn,...)
 }
 \arguments{
+    \item{q}{A character string indicating the query interface to use, or
+         a database connection object.}
+    \item{dbname}{The name of the database to which the connection should be
+         established, omitted if \code{q} is a database connection object.}
     \item{con}{a database connection object.}
-    \item{conn}{a database connection object.}
     \item{serIDs}{identifiers for series on the database
         (name of the zip file less ''.zip'').}
     \item{vintage}{character string indicating vintage of the series on the 
@@ -45,8 +44,6 @@
       identifiers for series on the database (TSdoc and TSdescription).}
     \item{names}{optional character vector to use for series names in the R
     object.}
-    \item{drv}{a database driver object.}
-    \item{dbname}{a character string indicating the name of a database.}
     \item{tf}{time frame for trimming data, passed to tfwindow.}
     \item{start}{time frame for trimming data, passed to tfwindow.}
     \item{end}{time frame for trimming data, passed to tfwindow.}

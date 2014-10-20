@@ -19,7 +19,7 @@ passwd  <- Sys.getenv("MYSQL_PASSWD")
 if ("" == passwd)   passwd <- NULL
 
 require("TSsql")
-conInit <- try(dbConnect(dbDriver("MySQL"), dbname="test"))
+conInit <- try(RMySQL::dbConnect(RMySQL::MySQL(), dbname="test"))
 removeTSdbTables(conInit, yesIknowWhatIamDoing=TRUE)
 createTSdbTables(conInit, index=FALSE)
 
@@ -46,7 +46,7 @@ cat("**************        remove test tables\n")
 removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
 
 cat("**************        disconnecting test\n")
-dbDisconnect(con)
+#dbDisconnect(con)
 
 } else  {
    cat("MYSQL not available. Skipping tests.\n")
