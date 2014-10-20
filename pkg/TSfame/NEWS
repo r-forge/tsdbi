@@ -6,7 +6,8 @@ Known BUGS
 
    o	Note that I have not been able to actually test with
    	Fame since December 2011. Changes since then correspond to
-	changes in R or other TS* packages.
+	changes in R or other TS* packages. Please contact the package
+	author if you are willing to do testing.
 
    o	Weekly (zoo) dates can get shifted. The Guide vignette has an 
    	example of this.
@@ -14,6 +15,17 @@ Known BUGS
    o	Warning messages about "may be a Fame Server path" coming from the fame
 	package in the case of a remote servers (cannot be suppressed).
 
+Changes in TSfame version 2014.10-1
+
+   o	Update class definitions to use slots= rather than representation().
+
+   o	Renamed fameConnection class to fameLocalConnection for symmetry with 
+   	fameServerConnection and to avoid confusion with fame package class.
+
+   o	Bumped requirement for DBI up to version 0.3.1 or greater.
+
+   o	Adjusted TSconnect() to use a string or a connection in place of a
+   	driver, and renamed argument drv to q to reflect this change.
 
 Changes in TSfame version 2013.8-2
 

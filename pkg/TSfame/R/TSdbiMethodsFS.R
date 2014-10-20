@@ -1,13 +1,9 @@
 # these methods us a fame server connection (rather than local fame fake
 #  connection to local or remote db).
+   
+####### some kludges to make this look like DBI. ######
 
-setClass("fameServerDriver", representation("DBIDriver", Id = "character")) 
-
-fameServer <- function() {
-  drv <- "fameServer"
-  attr(drv, "package") <- "TSfameServer"
-  new("fameServerDriver", Id = drv)
-  }
+setClass("fameServerDriver", contains=c("DBIDriver"), slots=c(Id = "character")) 
 
 # require("DBI") for this
 setOldClass("fameConnection",  prototype=structure(integer(1),
@@ -16,27 +12,26 @@ setOldClass("fameConnection",  prototype=structure(integer(1),
 
 setClass("TSfameServerConnection",
     contains=c("DBIConnection","conType","TSdb","fameConnection"),
-   representation(current="character"))
+   slots=c(current="character"))
    # current is only used with vintages (faking info the db should have)
-   
-####### some kludges to make this look like DBI. ######
-# these prevents error messages
 
+# these prevents error messages
 setMethod("dbDisconnect", signature(conn="TSfameServerConnection"), 
    definition=function(conn,...){
       z <-  close(S3Part(conn))
       invisible(!inherits(z, "try-error"))})
 
-setMethod("dbUnloadDriver", signature(drv="fameServerDriver"),
-   definition=function(drv, ...) invisible(TRUE))
 #######     end kludges   ######
 
-setMethod("TSconnect",   signature(drv="fameServerDriver", dbname="character"),
-  definition= function(drv, dbname, 
+
+setMethod("TSconnect", signature(q="TSfameServerConnection", dbname="missing"),
+  definition= function(q, dbname, 
      service = "", host = "", user = "", password = "", 
 	      current=NA, ...){
    #It might be possible to leave the Fame db open, but getfame needs it closed.
-   if (is.null(dbname)) stop("dbname must be specified")
+
+   dbname <- q@dbname
+
    #ensure the db name does not end in .db, fameServer adds this.
    #dbname <- sub('$', '.db',sub('.db$', '', dbname))
    dbname <- sub('.db$', '', dbname)

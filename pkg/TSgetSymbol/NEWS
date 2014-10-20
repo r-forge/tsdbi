@@ -2,6 +2,19 @@ See also
 
    o	See also NEWS in the TSdbi package.
 
+Changes in TSgetSymbol version 2014.10-1
+
+   o	Bumped requirement for DBI up to version 0.3.1 or greater.
+
+   o	Adjusted TSconnect() to use a string or a connection in place of a
+   	driver, and renamed argument drv to q to reflect this change.
+
+   o	Added a dbConnect method.
+
+   o	Switched from Depends to Imports for quantmod.
+
+   o	Renamed getSymbol to dbBackEnd for consistency with other TS* packages.
+
 Changes in TSgetSymbol version 2013.11-1
 
    o	Fixed error in date calculation for quarterly data if converted 

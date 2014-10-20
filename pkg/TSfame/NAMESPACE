@@ -7,13 +7,12 @@ import("tframePlus")
 import("tis") 
 import("fame") 
 
-export("fame")
-export("fameServer")
+export("dbBackEnd")
 export("vintageMap")
 
 ## S4 Classes
 exportClasses(
-   "TSfameConnection",
+   "TSfameLocalConnection",
    "TSfameServerConnection"
    )
 
@@ -29,7 +28,5 @@ exportMethods(
    "TSsource",
    "TSdates",
    "TSexists",
-   "TSvintages",
-   "dbDisconnect",
-   "dbUnloadDriver"
+   "TSvintages"
    )

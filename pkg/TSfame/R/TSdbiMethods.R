@@ -1,36 +1,47 @@
-
-setClass("fameDriver", representation("DBIDriver", Id = "character")) 
-
-fame <- function() {
-  drv <- "fame"
-  attr(drv, "package") <- "TSfame"
-  new("fameDriver", Id = drv)
+dbBackEnd <- function(fameLocal=TRUE, ...) {
+  if(!fameLocal){
+     drv <- "fameServer"
+     attr(drv, "package") <- "TSfameServer"
+     return(new("fameServerDriver", Id = drv))
+    } else {
+     drv <- "fame"
+     attr(drv, "package") <- "TSfame"
+     return(new("fameLocalDriver", Id = drv))
+    }
   }
-
-# require("DBI") for this
-setClass("TSfameConnection", contains=c("DBIConnection", "conType", "TSdb"),
-   representation(current="character"))
+   
+setClass("TSfameLocalConnection", contains=c("DBIConnection", "conType", "TSdb"),
+   slots=c(current="character"))
    # current is only used with vintages (faking info the db should have)
    #user / password / host  for future consideration
    # different for read or write accessMode = "character"
-   
-####### some kludges to make this look like DBI. ######
-# these do nothing, but prevents error messages
 
-setMethod("dbDisconnect", signature(conn="TSfameConnection"), 
+####### some kludges to make this look like DBI. ######
+
+setClass("fameLocalDriver", contains=c("DBIDriver"), slots=c(Id = "character")) 
+
+setClass("fameLocalConnection", contains=c("DBIConnection", "fameLocalDriver"),
+   slots=c(dbname="character") )
+
+setMethod("dbConnect", signature(drv="fameLocalDriver"), 
+     definition=function(drv, dbname, ...) 
+                   new("fameLocalConnection", drv, dbname=dbname))
+
+
+# this does nothing, but prevents error messages
+setMethod("dbDisconnect", signature(conn="TSfameLocalConnection"), 
    definition=function(conn,...) invisible(TRUE))
 
-setMethod("dbUnloadDriver", signature(drv="fameDriver"),
-   definition=function(drv, ...) invisible(TRUE))
 #######     end kludges   ######
 
-setMethod("TSconnect",   signature(drv="fameDriver", dbname="character"),
-  definition= function(drv, dbname, 
+setMethod("TSconnect",   signature(q="TSfameLocalConnection", dbname="missing"),
+  definition= function(q, dbname, 
               accessMode = if(file.exists(dbname)) "shared" else "create", 
 	      current=NA, ...){
    #specifying current is a way to fake vintage info the db should have
    #It might be possible to leave the Fame db open, but getfame needs it closed.
-   if (is.null(dbname)) stop("dbname must be specified")
+   
+   dbname <- q@dbname
    
    #ensure the db name ends in .db, otherwise fame adds this and then con fails
    # if dbname is a vector (for vintages) it should have names so that
@@ -47,17 +58,17 @@ setMethod("TSconnect",   signature(drv="fameDriver", dbname="character"),
    for (i in seq(length(dbname))){
       Id <- try(fameDbOpen(dbname[i], accessMode = accessMode))
       if(inherits(Id, "try-error") )
-         stop("Could not establish TSfameConnection to ", dbname[i])
+         stop("Could not establish TSfameLocalConnection to ", dbname[i])
       fameDbClose(Id) # this Id is not saved
       }
-   new("TSfameConnection", drv="fame",
+   new("TSfameLocalConnection", drv="fame",
           dbname=dbname, hasVintages= (1 < length(dbname)), hasPanels=FALSE,
 	  current=as.character(current)) 
    } )
 
 
 setMethod("TSdates",  
-   signature(serIDs="character", con="TSfameConnection", vintage="ANY", panel="ANY"),
+   signature(serIDs="character", con="TSfameLocalConnection", vintage="ANY", panel="ANY"),
    definition= function(serIDs, con, vintage=getOption("TSvintage"),
     panel=NULL, ... ) { 
    # Indicate  dates for which data is available. Only one vintage can be specified.
@@ -97,7 +108,7 @@ setMethod("TSdates",
 } )
 
 
-setMethod("TSget",     signature(serIDs="character", con="TSfameConnection"),
+setMethod("TSget",     signature(serIDs="character", con="TSfameLocalConnection"),
    definition= function(serIDs, con, TSrepresentation=getOption("TSrepresentation"),
        tf=NULL, start=tfstart(tf), end=tfend(tf), names=NULL, 
        TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE, TSsource=TRUE,
@@ -175,7 +186,7 @@ setMethod("TSget",     signature(serIDs="character", con="TSfameConnection"),
 } )
 
 
-setMethod("TSput",     signature(x="ANY", serIDs="character", con="TSfameConnection"),
+setMethod("TSput",     signature(x="ANY", serIDs="character", con="TSfameLocalConnection"),
    definition= function(x, serIDs=seriesNames(x), con,   
        TSdescription.=TSdescription(x), TSdoc.=TSdoc(x), TSlabel.=NULL,  
        TSsource.=NULL, warn=TRUE, ...) 
@@ -217,14 +228,14 @@ setMethod("TSput",     signature(x="ANY", serIDs="character", con="TSfameConnect
 
 
 
-setMethod("TSdescription",   signature(x="character", con="TSfameConnection"),
+setMethod("TSdescription",   signature(x="character", con="TSfameLocalConnection"),
    definition= function(x, con=getOption("TSconnection"), ...){
      r <- fameWhats(con@dbname[1], x, getDoc = TRUE)$des 
      if (is.null(r)) stop("Series (probably) does not exist.")
      #if(is.null(r) || is.na(r)|| ("NA" == r)) NA else r 
      if(is.na(r)|| ("NA" == r)) NA else r })
 
-setMethod("TSdoc",   signature(x="character", con="TSfameConnection"),
+setMethod("TSdoc",   signature(x="character", con="TSfameLocalConnection"),
    definition= function(x, con=getOption("TSconnection"), ...){
      r <- fameWhats(con@dbname[1], x, getDoc = TRUE)$doc
      if (is.null(r)) stop("Series (probably) does not exist.")
@@ -233,14 +244,14 @@ setMethod("TSdoc",   signature(x="character", con="TSfameConnection"),
 
 #TSlabel,TSsource, get used for new("Meta", so issuing a warning is not a good idea here.
 
-setMethod("TSlabel",   signature(x="character", con="TSfameConnection"),
+setMethod("TSlabel",   signature(x="character", con="TSfameLocalConnection"),
    definition= function(x, con=getOption("TSconnection"), ...) NA )
 
-setMethod("TSsource",   signature(x="character", con="TSfameConnection"),
+setMethod("TSsource",   signature(x="character", con="TSfameLocalConnection"),
    definition= function(x, con=getOption("TSconnection"), ...) NA )
 
 setMethod("TSdelete",
-   signature(serIDs="character", con="TSfameConnection", vintage="ANY", panel="ANY"),
+   signature(serIDs="character", con="TSfameLocalConnection", vintage="ANY", panel="ANY"),
    definition= function(serIDs, con=getOption("TSconnection"),  
             vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...){
     if (con@hasVintages)
@@ -256,7 +267,7 @@ setMethod("TSdelete",
 
 
 setMethod("TSexists", 
- signature(serIDs="character", con="TSfameConnection", vintage="ANY", panel="ANY"),
+ signature(serIDs="character", con="TSfameLocalConnection", vintage="ANY", panel="ANY"),
  definition= function(serIDs, con=getOption("TSconnection"), 
                       vintage=NULL, panel=NULL, ...){
    if (con@hasVintages)
@@ -271,7 +282,7 @@ setMethod("TSexists",
    })
 
 setMethod("TSvintages",  
-   signature(con="TSfameConnection"), 
+   signature(con="TSfameLocalConnection"), 
    definition= function(con){
      if(!con@hasVintages) NULL else sort(names(con@dbname))
      } ) 

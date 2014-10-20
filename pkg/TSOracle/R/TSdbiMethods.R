@@ -1,30 +1,16 @@
+dbBackEnd <- function(...) ROracle::OracleL(...)
 
-# This can be 
-#setClass("TSOraConnection", contains="OraConnection",
-#             representation=representation(TSdb="TSdb")) 
-# in which case we need 
-#new("TSOraConnection" , con, TSdb=new("TSdb", dbname=dbname, 
-#  	       hasVintages=dbExistsTable(con, "vintages"), 
-#  	       hasPanels  =dbExistsTable(con, "panels"))) 
 
-# or 
 setClass("TSOraConnection", contains=c("OraConnection", "conType", "TSdb"))
 
 setAs("TSOraConnection", "integer", 
   def=getMethod("coerce", c("dbObjectId","integer"))) 
 
-# in which case we need 
-#new("TSOraConnection" , con, drv="Oracle", dbname=dbname, 
-#  	       hasVintages=dbExistsTable(con, "vintages"), 
-#  	       hasPanels  =dbExistsTable(con, "panels")) 
 
-#setMethod("print", "TSOraConnection", function(x, ...) {
-#    print(x@TSdb)
-#    })
-
-setMethod("TSconnect",   signature(drv="OraDriver", dbname="character"),
-   definition=function(drv, dbname, ...) {
-        con <- dbConnect(drv, dbname=dbname, ...)
+setMethod("TSconnect",   signature(q="TSOraConnection", dbname="missing"),
+   definition=function(q, dbname, ...) {
+        con <- q
+	dbname <-q@dbname
 	if(0 == length(dbListTables(con))){
 	  dbDisconnect(con)
           stop("Database ",dbname," has no tables.")
@@ -33,7 +19,7 @@ setMethod("TSconnect",   signature(drv="OraDriver", dbname="character"),
 	  dbDisconnect(con)
           stop("Database ",dbname," does not appear to be a TS database.")
 	  }
-	new("TSOraConnection" , con, drv="Oracle", dbname=dbname, 
+	new("TSOraConnection" , con, dbname=dbname, 
   	       hasVintages=dbExistsTable(con, "vintageAlias"), 
   	       hasPanels  =dbExistsTable(con, "panels")) 
 	})

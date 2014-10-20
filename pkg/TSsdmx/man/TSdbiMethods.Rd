@@ -1,6 +1,7 @@
-\name{sdmx}
-\alias{sdmx}
-\alias{TSconnect,sdmxDriver,character-method}
+\name{TSsdmxMethods}
+\alias{dbBackEnd}
+
+\alias{TSconnect,sdmxConnection,missing-method}
 \alias{TSget,character,TSsdmxConnection-method}
 \alias{TSdates,character,TSsdmxConnection-method}
 \alias{TSdescription,character,TSsdmxConnection-method}
@@ -8,21 +9,18 @@
 \alias{TSlabel,character,TSsdmxConnection-method}
 \alias{TSsource,character,TSsdmxConnection-method}
 
-\alias{dbDisconnect,TSsdmxConnection-method}
-
-\alias{sdmxDriver-class}
 \alias{TSsdmxConnection-class}
 
-\title{Methods to wrap sdmxCall for TSdbi Generics}
+\title{Methods to wrap sdmx  for TSdbi Generics}
 \description{Get a time series (matrix) using SDMX, for example, from the OECD database.}
 \usage{
-     sdmxCall() 
+    dbBackEnd(...) 
+    \S4method{TSconnect}{sdmxConnection,missing}(
+	q, dbname, user="", password = "", host="", ...)
     \S4method{TSget}{character,TSsdmxConnection}(
 	serIDs, con, TSrepresentation = options()$TSrepresentation, 
 	tf = NULL, start = tfstart(tf), end = tfend(tf), names=serIDs, 
 	quiet = TRUE, repeat.try=3, ...)
-    \S4method{TSconnect}{sdmxDriver,character}(
-	drv, dbname, user="", password = "", host="", ...)
     \S4method{TSdates}{character,TSsdmxConnection}(
 	serIDs, con, vintage=NULL, panel=NULL, ... )  
     \S4method{TSdescription}{character,TSsdmxConnection}(x, con, ... )  
@@ -33,8 +31,11 @@
     \S4method{dbDisconnect}{TSsdmxConnection}(conn,...)
 }
 \arguments{
+    \item{q}{A character string indicating the query interface to use, or
+         a database connection object.}
+    \item{dbname}{The name of the database to which the connection should be
+         established, omitted if \code{q} is a database connection object.}
     \item{con}{a database connection object.}
-    \item{conn}{a database connection object.}
     \item{serIDs}{identifiers for series on the database.}
     \item{vintage}{character string indicating vintage of the series on the 
         database (not supported by this database).}
@@ -44,8 +45,6 @@
       identifiers for series on the database (TSdoc and TSdescription).}
     \item{names}{optional character vector to use for series names in the R
     object.}
-    \item{drv}{a database driver object.}
-    \item{dbname}{a character string indicating the name of a database.}
     \item{tf}{time frame for trimming data, passed to tfwindow.}
     \item{start}{time frame for trimming data, passed to tfwindow.}
     \item{end}{time frame for trimming data, passed to tfwindow.}

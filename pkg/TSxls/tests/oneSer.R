@@ -21,7 +21,7 @@ require("zoo")
 #   spreadsheet formula box like 1989-01-02, and import as "02/Jan/1989".
 #   The last needs to be used.
 #   If in doubt, look at con@dates
-  con <- TSconnect(drv="xls", dbname=testfile,
+  con <- TSconnect("xls", dbname=testfile,
           map=list(ids  =list(i=11,      j="B"), 
 	           data =list(i=12:6401, j="B"), 
 	           dates=list(i=12:6401, j="A"),

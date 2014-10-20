@@ -8,6 +8,10 @@ import("tframePlus")
 import("RSQLite") ## this should not all be needed, but parts for setClass "TSSQLiteConnection"
 ##importClassesFrom("RSQLite","SQLiteConnection")
 
+## not generic
+export(
+  "dbBackEnd")
+
 ## S4 Classes
 exportClasses(
    "TSSQLiteConnection"

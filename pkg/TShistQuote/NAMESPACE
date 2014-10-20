@@ -10,11 +10,10 @@ import("tframePlus")
 import("zoo")
 import("tseries")
 
-export("histQuote")
+export("dbBackEnd")
 
 ## S4 Classes
 exportClasses(
-   "histQuoteDriver",
    "TShistQuoteConnection"
    )
 
@@ -29,7 +28,6 @@ exportMethods(
    "TSdoc",
    "TSlabel",
    "TSsource",
-   "TSget",
-   "dbDisconnect"
+   "TSget"
    )
 

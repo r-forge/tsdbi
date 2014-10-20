@@ -1,6 +1,7 @@
-\name{histQuote}
-\alias{histQuote}
-\alias{TSconnect,histQuoteDriver,character-method}
+\name{TShistQuoteMethods}
+\alias{dbBackEnd}
+
+\alias{TSconnect,histQuoteConnection,missing-method}
 \alias{TSget,character,TShistQuoteConnection-method}
 \alias{TSdates,character,TShistQuoteConnection-method}
 \alias{TSdescription,character,TShistQuoteConnection-method}
@@ -8,35 +9,28 @@
 \alias{TSlabel,character,TShistQuoteConnection-method}
 \alias{TSsource,character,TShistQuoteConnection-method}
 
-\alias{dbDisconnect,TShistQuoteConnection-method}
-
-\alias{histQuoteDriver-class}
 \alias{TShistQuoteConnection-class}
 
 \title{Methods to wrap get.hist.quote for TSdbi Generics}
 \description{Get a time series (matrix) from stock quote URL}
 \usage{
-     histQuote() 
+    dbBackEnd(...) 
+    \S4method{TSconnect}{histQuoteConnection,missing}(q, dbname, ...)
     \S4method{TSget}{character,TShistQuoteConnection}(
 	serIDs, con, TSrepresentation = options()$TSrepresentation, 
 	tf = NULL, start = tfstart(tf), end = tfend(tf), names=serIDs, 
 	quote = "Close", quiet = TRUE, repeat.try=3, ...)
-##  \S4method{TSput}{ANY,character,TShistQuoteConnection}(
-##	x, serIDs=seriesNames(data), con, ...)   
-    \S4method{TSconnect}{histQuoteDriver,character}(
-	drv, dbname, user="", password = "", host="", ...)
     \S4method{TSdates}{character,TShistQuoteConnection}(
 	serIDs, con, vintage=NULL, panel=NULL, ... )  
     \S4method{TSdescription}{character,TShistQuoteConnection}(x, con, ... )  
     \S4method{TSdoc}{character,TShistQuoteConnection}(x, con, ... )  
     \S4method{TSlabel}{character,TShistQuoteConnection}(x, con, ... )  
     \S4method{TSsource}{character,TShistQuoteConnection}(x, con, ... )  
-
-    \S4method{dbDisconnect}{TShistQuoteConnection}(conn,...)
 }
 \arguments{
+    \item{q}{a string indicating a query interface to use, or a database connection object.}
+    \item{dbname}{a string indicating a database or omitted if \code{q} ia a connection object.}
     \item{con}{a database connection object.}
-    \item{conn}{a database connection object.}
     \item{serIDs}{identifiers for series on the database.}
     \item{vintage}{character string indicating vintage of the series on the 
         database (not supported by this database).}
@@ -46,8 +40,6 @@
       identifiers for series on the database (TSdoc and TSdescription).}
     \item{names}{optional character vector to use for series names in the R
     object.}
-    \item{drv}{a database driver object.}
-    \item{dbname}{a character string indicating the name of a database.}
     \item{tf}{time frame for trimming data, passed to tfwindow.}
     \item{start}{time frame for trimming data, passed to tfwindow.}
     \item{end}{time frame for trimming data, passed to tfwindow.}
@@ -57,9 +49,6 @@
     \item{quiet}{logical to suppress progress report, passed to \code{get.hist.quote}.}
     \item{repeat.try}{integer number of times to attempt retrieval before giving
           up.}
-    \item{user}{(unused) a character string indicating a user id.}
-    \item{password}{(unused) a character string indicating a password.}
-    \item{host}{(unused) a character string indicating a host computer.}
     \item{...}{Arguments passed to get.hist.quote.}
 }
 \value{Depends.}
@@ -86,16 +75,16 @@ See the package vignette for additional examples.
 }
 
 \seealso{ 
+\code{\link[TSdbi]{TSconnect}},
 \code{\link[TSdbi]{TSdates}},
 \code{\link[TSdbi]{TSget}},
 \code{\link[tseries]{get.hist.quote}}
 \code{\link[tframe]{tfwindow}},
 }
 \examples{
-    require("tseries")
-    require("tfplot")
-    con <- TSconnect("histQuote", dbname="yahoo") 
+     con <- TSconnect("histQuote", dbname="yahoo") 
     x <- TSget("^ftse", con)
+    require("tfplot")
     tfplot(x)
 }
 \keyword{ts}

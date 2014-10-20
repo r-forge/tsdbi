@@ -10,12 +10,11 @@ import("rjson")
 import("findpython")
 
 export(
-  "json"
+  "dbBackEnd"
    )
   
 ## S4 Classes
 exportClasses(
-   "jsonDriver",
    "TSjsonConnection"
    )
 
@@ -30,7 +29,6 @@ exportMethods(
    "TSdoc",
    "TSlabel",
    "TSsource",
-   "TSget",
-   "dbDisconnect"
+   "TSget"
    )
 

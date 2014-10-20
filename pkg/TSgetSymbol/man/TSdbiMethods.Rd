@@ -1,6 +1,7 @@
-\name{getSymbol}
-\alias{getSymbol}
-\alias{TSconnect,getSymbolDriver,character-method}
+\name{TSgetSymbolMethods}
+\alias{dbBackEnd}
+
+\alias{TSconnect,getSymbolConnection,missing-method}
 \alias{TSget,character,TSgetSymbolConnection-method}
 \alias{TSdates,character,TSgetSymbolConnection-method}
 \alias{TSdescription,character,TSgetSymbolConnection-method}
@@ -8,33 +9,31 @@
 \alias{TSlabel,character,TSgetSymbolConnection-method}
 \alias{TSsource,character,TSgetSymbolConnection-method}
 
-\alias{dbDisconnect,TSgetSymbolConnection-method}
-
-\alias{getSymbolDriver-class}
 \alias{TSgetSymbolConnection-class}
 
 \title{Methods to wrap getSymbols for TSdbi Generics}
 \description{Get a time series (matrix) using getSymbols from package quantmod, for example, from the Federal Reserve FRED database.}
 \usage{
-     getSymbol() 
+    dbBackEnd(...)
+    \S4method{TSconnect}{getSymbolConnection,missing}(
+	q, dbname, user="", password = "", host="", ...)
     \S4method{TSget}{character,TSgetSymbolConnection}(
 	serIDs, con, TSrepresentation = options()$TSrepresentation, 
 	tf = NULL, start = tfstart(tf), end = tfend(tf), names=serIDs, 
 	quote = NULL, quiet = TRUE, repeat.try=3, ...)
-    \S4method{TSconnect}{getSymbolDriver,character}(
-	drv, dbname, user="", password = "", host="", ...)
     \S4method{TSdates}{character,TSgetSymbolConnection}(
 	serIDs, con, vintage=NULL, panel=NULL, ... )  
     \S4method{TSdescription}{character,TSgetSymbolConnection}(x, con, ... )  
     \S4method{TSdoc}{character,TSgetSymbolConnection}(x, con, ... )  
     \S4method{TSlabel}{character,TSgetSymbolConnection}(x, con, ... )  
     \S4method{TSsource}{character,TSgetSymbolConnection}(x, con, ... )  
-
-    \S4method{dbDisconnect}{TSgetSymbolConnection}(conn,...)
 }
 \arguments{
+    \item{q}{A character string indicating the query interface to use, or
+         a database connection object.}
+    \item{dbname}{The name of the database to which the connection should be
+         established, omitted if \code{q} is a database connection object.}
     \item{con}{a database connection object.}
-    \item{conn}{a database connection object.}
     \item{serIDs}{identifiers for series on the database.}
     \item{vintage}{character string indicating vintage of the series on the 
         database (not supported by this database).}
@@ -44,8 +43,6 @@
       identifiers for series on the database (TSdoc and TSdescription).}
     \item{names}{optional character vector to use for series names in the R
     object.}
-    \item{drv}{a database driver object.}
-    \item{dbname}{a character string indicating the name of a database.}
     \item{tf}{time frame for trimming data, passed to tfwindow.}
     \item{start}{time frame for trimming data, passed to tfwindow.}
     \item{end}{time frame for trimming data, passed to tfwindow.}
@@ -58,7 +55,8 @@
     \item{user}{(unused) a character string indicating a user id.}
     \item{password}{(unused) a character string indicating a password.}
     \item{host}{(unused) a character string indicating a host computer.}
-    \item{...}{Arguments passed to getSymbols.}
+    \item{...}{Arguments passed to methods or by \code{dbBackEnd} to
+        \code{getSymbols}.}
 }
 \value{Depends.}
 \details{

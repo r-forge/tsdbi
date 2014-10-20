@@ -1,12 +1,12 @@
+dbBackEnd <- function (...) {
+   # this is really fake
+   new("odbcDriver")    #DBI Id inot used
+   } 
 
+#RODBC  seems to do both driver and connection in DBI terminology
 #RODBC is non-neg numeric value (or -1 for failure) with S3 class and attributes
 
-ODBC <- function () {new("ODBCDriver", Id = as(1,"integer"))} #Id is ignored
-
-setClass("dbObjectId", representation(Id = "integer", "VIRTUAL"))
-setClass("ODBCObject", representation("DBIObject", "dbObjectId", "VIRTUAL"))
-setClass("ODBCDriver", representation("DBIDriver", "ODBCObject"))
-setClass("ODBCConnection", representation("DBIConnection", "ODBCObject"))
+####### some kludges to make this look like DBI. ######
 
 #this works but the connection gives warnings when it eventually gets closed
 #setOldClass("RODBC",  prototype=odbcConnect("test"))
@@ -18,17 +18,9 @@ setOldClass("RODBC",  prototype=structure(integer(1),
   believeNRows=logical(1), bulk_add=character(1), colQuote=character(1), 
   tabQuote=character(1),   encoding=character(1), rows_at_time=1000))
 
-##setClass("TSodbcConnection", contains=c("DBIConnection","TSdb"),
-##    representation(Id="RODBC"))
-
-setClass("TSodbcConnection", contains=c("DBIConnection","conType","TSdb","RODBC"))
-
-####### some kludges to make this look like DBI. ######
-setMethod("dbListTables", signature(conn="RODBC"), definition=function(conn,...)
-     as(sqlTables(channel=conn)$TABLE_NAME, "character"))
-
-##setMethod("dbListTables", signature(conn="TSodbcConnection"), definition=
-##      function(conn, ...) as(sqlTables(channel=conn@Id)$TABLE_NAME, "character"))
+setMethod("dbListTables", signature(conn="RODBC"), 
+    definition=function(conn,...) 
+        as(sqlTables(channel=conn)$TABLE_NAME, "character"))
 
 setMethod("dbExistsTable", signature(conn="RODBC", name="character"),
    definition=function(conn, name, ...) name %in% dbListTables(conn))
@@ -51,56 +43,46 @@ setMethod("dbGetQuery", signature(conn="RODBC", statement="character"),
       r
       }) 
 
-##setMethod("dbGetQuery", signature(conn="TSodbcConnection", statement="character"),
-##   definition=function (conn, statement, ...){
-##      q <- sqlQuery(channel=conn@Id, statement, ...)
-##      if(0==NROW(q)) NULL else q}) 
+setClass("odbcDriver", contains=c("RODBC"))
 
-setMethod("dbDisconnect", signature(conn="RODBC"), definition=function(conn,...)
-     odbcClose(channel=conn))
+setClass("odbcConnection", contains=c("RODBC", "DBIConnection"),
+   slots=c(dbname="character") )
 
-##setMethod("dbDisconnect", signature(conn="TSodbcConnection"),
-##   definition=function(conn, ...) odbcClose(channel=conn@Id))
+# this does not really connect, that is done in TSconnect
+setMethod("dbConnect", signature(drv="odbcDriver"), 
+     definition=function(drv, dbname, ...) new("odbcConnection", drv, dbname=dbname))
 
-# this does nothing, but prevents error messages
-setMethod("dbUnloadDriver", signature(drv="ODBCDriver"),
-   definition=function(drv, ...) invisible(TRUE))
+setMethod("dbDisconnect", signature(conn="odbcConnection"), 
+    definition=function(conn,...) odbcClose(channel=conn))
 
 #  this is pretty bad
-setMethod("dbGetException", signature(conn="TSodbcConnection"),
+setMethod("dbGetException", signature(conn="odbcConnection"),
    definition=function(conn, ...) list(errorNum=0))
 
 #######     end kludges   ######
 
-##setMethod("TSconnect",   signature(drv="ODBCDriver", dbname="character"),
-##   definition=function(drv, dbname, ...) {
-##        con <- odbcConnect(dsn=dbname) #, uid = "", pwd = "", ...)
-##	if(con == -1) stop("error establishing ODBC connection.") 
-##	if(0 == length(dbListTables(con))){
-##	  dbDisconnect(con)
-##          stop("Database ",dbname," has no tables.")
-##	  }
-##	if(!dbExistsTable(con, "meta")){
-##	  odbcClose(con)
-##          stop("Database ",dbname," does not appear to be a TS database.")
-##	  }
-##	new("TSodbcConnection" , Id=con, dbname=dbname, 
-##  	       hasVintages=dbExistsTable(con, "vintages"), 
-##  	       hasPanels  =dbExistsTable(con, "panels")) 
-##	})
-setMethod("TSconnect",   signature(drv="ODBCDriver", dbname="character"),
-   definition=function(drv, dbname, ...) {
-        con <- odbcConnect(dsn=dbname) #, uid = "", pwd = "", ...)
+setClass("TSodbcConnection", contains=c("odbcConnection","conType","TSdb"))
+
+setMethod("TSconnect",   signature(q="odbcConnection", dbname="missing"),
+   definition=function(q, dbname, ...) {
+        # q should be a connection but I cannot seem to get a valid RODBC (S3) connection
+	#  passed through, so this establishes the connection here, 
+	#   in contrast to other TS* packages
+	nm <- q@dbname
+	#nm <- as.character(attr(q "connection.string"))
+        #nm <- grep("DATABASE=", scan(text=nm, sep=";", what="char", quiet=TRUE), value=TRUE)
+        #nm <- gsub("DATABASE=","", nm)
+ 	con <- odbcConnect(dsn=nm, ...) #, uid = "", pwd = "", ...)
 	if(con == -1) stop("error establishing ODBC connection.") 
 	if(0 == length(dbListTables(con))){
-	  dbDisconnect(con)
+	  odbcClose(con)
           stop("Database ",dbname," has no tables.")
 	  }
 	if(!dbExistsTable(con, "meta")){
 	  odbcClose(con)
           stop("Database ",dbname," does not appear to be a TS database.")
 	  }
-	new("TSodbcConnection" , con, drv="ODBC", dbname=dbname, 
+	new("TSodbcConnection" , con, dbname=nm, 
   	       hasVintages=dbExistsTable(con, "vintageAlias"), 
   	       hasPanels  =dbExistsTable(con, "panels")) 
 	})

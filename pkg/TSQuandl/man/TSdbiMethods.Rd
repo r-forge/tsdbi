@@ -1,8 +1,7 @@
-\name{TSdbiMethods}
-\alias{TSconnect,QuandlDriver,character-method}
-\alias{TSconnect,QuandlDriver,ANY-method}
-\alias{TSconnect,QuandlDriver,missing-method}
-\alias{TSconnect,character,missing-method}
+\name{TSQuandlMethods}
+\alias{dbBackEnd}
+
+\alias{TSconnect,QuandlConnection,missing-method}
 \alias{TSget,character,TSQuandlConnection-method}
 \alias{TSdoc,character,TSQuandlConnection-method}
 \alias{TSdescription,character,TSQuandlConnection-method}
@@ -11,22 +10,13 @@
 \alias{TSdates,character,TSQuandlConnection-method}
 \alias{TSexists,character,TSQuandlConnection-method}
 
-\alias{dbDisconnect,TSQuandlConnection-method}
-
-\alias{dbUnloadDriver,QuandlDriver-method}
-
-\alias{Quandl}
-
 \alias{TSQuandlConnection-class}
-
-\alias{dbObjectId-class}
-\alias{QuandlObject-class}
-\alias{QuandlDriver-class}
 
 \title{TSdbi Quandl Methods}
 \description{Methods for TSdbi Quandl time series database connection.}
 \usage{
-    \S4method{TSconnect}{QuandlDriver,character}(drv, dbname=NULL,
+    dbBackEnd(...)
+    \S4method{TSconnect}{QuandlConnection,missing}(q, dbname,
                token=NULL, ...)
 
     \S4method{TSget}{character,TSQuandlConnection}(serIDs, con, 
@@ -49,19 +39,16 @@
     \S4method{TSlabel}{character,TSQuandlConnection}(x, con, ...)
 
     \S4method{TSsource}{character,TSQuandlConnection}(x, con, ...)
- 
-    \S4method{dbDisconnect}{TSQuandlConnection}(conn,...)
-
-    \S4method{dbUnloadDriver}{QuandlDriver}(drv, ...)
-
-    \method{Quandl}{default}()
 }
 \arguments{
-    \item{drv}{A QuandlDriver.}
-    \item{dbname}{first part of Quandl identifier code (
-       before '/', e.g. 'NSE').}
-    \item{con}{A data source connection.}
-    \item{conn}{A data source connection.}
+    \item{q}{A character string indicating the query interface to use, or
+         a database connection object.}
+    \item{dbname}{A character string indicating the name of the database 
+         to which the connection should be
+         established, omitted if \code{q} is a database connection object. 
+	 The string should be the first part of Quandl identifier 
+	 code ( before '/', e.g. 'NSE').}
+    \item{con}{A TSconnection object.}
     \item{serIDs}{identifiers for series to extract. (Second part of Quandl
         identifier code, after  '/').}
     \item{x}{a series identifier for

@@ -9,11 +9,10 @@ import(Quandl)
 
 ## S4 Classes
 exportClasses(
-   "QuandlDriver", 
    "TSQuandlConnection"
    )
 
-export("Quandl")
+export("dbBackEnd")
 
 ## S4 methods
 exportMethods(
@@ -25,7 +24,5 @@ exportMethods(
    "TSsource",
    "TSdates",
    "TSexists",
-   "TSvintages",
-   "dbDisconnect",
-   "dbUnloadDriver"
+   "TSvintages"
    )

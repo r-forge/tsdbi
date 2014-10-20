@@ -1,3 +1,4 @@
+dbBackEnd <- function(...) RPostgreSQL::PostgreSQL(...)
 
 setClass("TSPostgreSQLConnection", 
    contains=c("PostgreSQLConnection", "conType", "TSdb")) 
@@ -9,10 +10,13 @@ setAs("TSPostgreSQLConnection", "integer",
 #   print(x@TSdb)
 #   })
 
-setMethod("TSconnect",   signature(drv="PostgreSQLDriver", dbname="character"),
-   definition=function(drv, dbname, host=
+#class(getExportedValue("RPostgreSQL", "PostgreSQL")()) is "RPostgreSQL"
+
+setMethod("TSconnect",   signature(q="PostgreSQLConnection", dbname="missing"),
+   definition=function(q, dbname, host=
     if(!is.null(Sys.getenv("PGHOST"))) Sys.getenv("PGHOST") else "localhost", ...) {
-        con <- dbConnect(drv, dbname=dbname, host=host, ...)
+        con <- q
+	nm <- as.character(dbGetQuery(conn=con, "SELECT  current_database();"))
 	if(0 == length(dbListTables(con))){
 	  dbDisconnect(con)
           stop("Database ",dbname," has no tables.")
@@ -21,7 +25,7 @@ setMethod("TSconnect",   signature(drv="PostgreSQLDriver", dbname="character"),
 	  dbDisconnect(con)
           stop("Database ",dbname," does not appear to be a TS database.")
 	  }
-  	new("TSPostgreSQLConnection" , con, drv="PostgreSQL", dbname=dbname, 
+  	new("TSPostgreSQLConnection" , con, dbname=nm, 
  	       hasVintages=dbExistsTable(con, "vintagealias"),  # vintagealias not vintageAlias for PostgreSQL
  	       hasPanels  =dbExistsTable(con, "panels")) 
 	})

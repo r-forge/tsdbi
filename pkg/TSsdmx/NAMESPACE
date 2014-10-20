@@ -8,11 +8,10 @@ import("tframePlus")
 import("RCurl")
 import("XML")
 
-export("sdmx")
+export("dbBackEnd")
 
 ## S4 Classes
 exportClasses(
-   "sdmxDriver",
    "TSsdmxConnection"
    )
 
@@ -27,7 +26,6 @@ exportMethods(
    "TSdoc",
    "TSlabel",
    "TSsource",
-   "TSget",
-   "dbDisconnect"
+   "TSget"
    )
 

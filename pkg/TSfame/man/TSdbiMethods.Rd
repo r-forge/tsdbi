@@ -1,17 +1,19 @@
-\name{TSdbiMethods}
-\alias{TSconnect,fameDriver,character-method}
-\alias{TSget,character,TSfameConnection-method}
-\alias{TSput,ANY,character,TSfameConnection-method}
-\alias{TSdelete,character,TSfameConnection-method}
-\alias{TSdoc,character,TSfameConnection-method}
-\alias{TSdescription,character,TSfameConnection-method}
-\alias{TSlabel,character,TSfameConnection-method}
-\alias{TSsource,character,TSfameConnection-method}
-\alias{TSdates,character,TSfameConnection-method}
-\alias{TSexists,character,TSfameConnection-method}
-\alias{TSvintages,TSfameConnection-method}
+\name{TSfameMethods}
+\alias{dbBackEnd}
 
-\alias{TSconnect,fameServerDriver,character-method}
+\alias{TSconnect,TSfameLocalConnection,missing-method}
+\alias{TSget,character,TSfameLocalConnection-method}
+\alias{TSput,ANY,character,TSfameLocalConnection-method}
+\alias{TSdelete,character,TSfameLocalConnection-method}
+\alias{TSdoc,character,TSfameLocalConnection-method}
+\alias{TSdescription,character,TSfameLocalConnection-method}
+\alias{TSlabel,character,TSfameLocalConnection-method}
+\alias{TSsource,character,TSfameLocalConnection-method}
+\alias{TSdates,character,TSfameLocalConnection-method}
+\alias{TSexists,character,TSfameLocalConnection-method}
+\alias{TSvintages,TSfameLocalConnection-method}
+
+\alias{TSconnect,TSfameServerConnection,missing-method}
 \alias{TSget,character,TSfameServerConnection-method}
 \alias{TSput,ANY,character,TSfameServerConnection-method}
 \alias{TSdelete,character,TSfameServerConnection-method}
@@ -23,32 +25,20 @@
 \alias{TSexists,character,TSfameServerConnection-method}
 \alias{TSvintages,TSfameServerConnection-method}
 
-\alias{dbDisconnect,TSfameConnection-method}
-\alias{dbDisconnect,TSfameServerConnection-method}
-
-\alias{dbUnloadDriver,fameDriver-method}
-\alias{dbUnloadDriver,fameServerDriver-method}
-
-\alias{fame}
-\alias{fameServer}
-
-\alias{TSfameConnection-class}
+\alias{TSfameLocalConnection-class}
 \alias{TSfameServerConnection-class}
 
-\alias{dbObjectId-class}
-\alias{fameObject-class}
-\alias{fameDriver-class}
-
 \title{TSdbi fame Methods}
-\description{Methods for TSdbi fame time series dtabase connection.}
+\description{Methods for TSdbi fame time series database connection.}
 \usage{
-    \S4method{TSconnect}{fameDriver,character}(drv, dbname, 
+   dbBackEnd(fameLocal=TRUE, ...)
+   \S4method{TSconnect}{TSfameLocalConnection,missing}(q, dbname, 
 	accessMode = if (file.exists(dbname)) "shared" else "create", 
 	current = NA, ...)
-    \S4method{TSconnect}{fameServerDriver,character}(drv, dbname, 
+    \S4method{TSconnect}{TSfameServerConnection,missing}(q, dbname, 
         service = "", host = "", user = "", password = "", current = NA, ...)
 
-    \S4method{TSget}{character,TSfameConnection}(serIDs, con, 
+    \S4method{TSget}{character,TSfameLocalConnection}(serIDs, con, 
 	TSrepresentation = getOption("TSrepresentation"), 
 	tf = NULL, start = tfstart(tf), end = tfend(tf), names = NULL,
 	TSdescription = FALSE, TSdoc = FALSE, TSlabel=FALSE, TSsource=TRUE,
@@ -59,57 +49,52 @@
 	TSdescription = FALSE, TSdoc = FALSE, TSlabel=FALSE, TSsource=TRUE,
         vintage=getOption("TSvintage"),   ...)
 
-    \S4method{TSput}{ANY,character,TSfameConnection}(x, serIDs=seriesNames(x), 
+    \S4method{TSput}{ANY,character,TSfameLocalConnection}(x, serIDs=seriesNames(x), 
 	con, TSdescription.=TSdescription(x), 
 	TSdoc.=TSdoc(x), TSlabel.=NULL, TSsource.=NULL, warn = TRUE, ...)
     \S4method{TSput}{ANY,character,TSfameServerConnection}(x, serIDs=seriesNames(x), 
 	con, TSdescription.=TSdescription(x), 
 	TSdoc.=TSdoc(x), TSlabel.=NULL, TSsource.=NULL, warn = TRUE, ...)
 
-    \S4method{TSdates}{character,TSfameConnection}(serIDs, con, 
+    \S4method{TSdates}{character,TSfameLocalConnection}(serIDs, con, 
 	vintage=getOption("TSvintage"), panel=NULL, ...)
     \S4method{TSdates}{character,TSfameServerConnection}(serIDs, con, 
 	vintage=getOption("TSvintage"), panel=NULL, ...)
 
-    \S4method{TSexists}{character,TSfameConnection}(
+    \S4method{TSexists}{character,TSfameLocalConnection}(
 	serIDs, con, vintage=NULL, panel=NULL, ...)
     \S4method{TSexists}{character,TSfameServerConnection}(
 	serIDs, con, vintage=NULL, panel=NULL, ...)
 
-    \S4method{TSdelete}{character,TSfameConnection}(serIDs, con,  
+    \S4method{TSdelete}{character,TSfameLocalConnection}(serIDs, con,  
             vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
     \S4method{TSdelete}{character,TSfameServerConnection}(serIDs, con,  
             vintage=getOption("TSvintage"), panel=getOption("TSpanel"), ...)
 
-    \S4method{TSdescription}{character,TSfameConnection}(x, con, ...)
+    \S4method{TSdescription}{character,TSfameLocalConnection}(x, con, ...)
     \S4method{TSdescription}{character,TSfameServerConnection}(x, con, ...)
 
-    \S4method{TSdoc}{character,TSfameConnection}(x, con, ...)
+    \S4method{TSdoc}{character,TSfameLocalConnection}(x, con, ...)
     \S4method{TSdoc}{character,TSfameServerConnection}(x, con, ...)
 
-    \S4method{TSlabel}{character,TSfameConnection}(x, con, ...)
+    \S4method{TSlabel}{character,TSfameLocalConnection}(x, con, ...)
     \S4method{TSlabel}{character,TSfameServerConnection}(x, con, ...)
 
-    \S4method{TSsource}{character,TSfameConnection}(x, con, ...)
+    \S4method{TSsource}{character,TSfameLocalConnection}(x, con, ...)
     \S4method{TSsource}{character,TSfameServerConnection}(x, con, ...)
 
-    \S4method{TSvintages}{TSfameConnection}(con)
+    \S4method{TSvintages}{TSfameLocalConnection}(con)
     \S4method{TSvintages}{TSfameServerConnection}(con)
-
-    \S4method{dbDisconnect}{TSfameConnection}(conn,...)
-    \S4method{dbDisconnect}{TSfameServerConnection}(conn,...)
-
-    \S4method{dbUnloadDriver}{fameDriver}(drv, ...)
-    \S4method{dbUnloadDriver}{fameServerDriver}(drv, ...)
-
-    \method{fame}{default}()
-    \method{fameServer}{default}()
 }
 \arguments{
-    \item{drv}{A fameDriver.}
-    \item{dbname}{A character string indicating a [server and] database name.}
+    \item{q}{A character string indicating the query interface to use, or
+         a database connection object.}
+    \item{dbname}{The name of the  [server and] database to which the 
+         connection should be
+         established, omitted if \code{q} is a database connection object.}
+    \item{fameLocal}{A logical indicating if the connection is to 
+       a local Fame API or to a Fame server.}
     \item{con}{A database connection.}
-    \item{conn}{A database connection.}
     \item{serIDs}{identifiers for series to extract.}
     \item{vintage}{character string indicating vintage of the series on the 
         databases.}
@@ -156,7 +141,7 @@ These are fame methods for \pkg{TSdbi}. See the package \pkg{TSdbi} for details
 and see the vignette distributed with this package for more complete examples.
 
 This package provides a wrapper to the \pkg{fame} package to provide a 
-\pkg{TSdbi} API for users. The \code{TSfameConnection} establishes a connection
+\pkg{TSdbi} API for users. The \code{TSfameLocalConnection} establishes a connection
 using the locally fame which can access local databases or databases on a remote
 server, specified by the server name followed by a space and the database name.
 The \code{TSfameServerConnection} establishes a connection to a remote server

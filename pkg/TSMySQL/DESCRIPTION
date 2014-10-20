@@ -1,11 +1,11 @@
 Package: TSMySQL
-Version: 2013.9-1
+Version: 2014.10-1
 Title: TSdbi extensions for MySQL
 Description: TSMySQL provides a MySQL interface for TSdbi.
 	Comprehensive examples of all the TS* packages is provided in the
 	vignette Guide.pdf with the TSdata package.
-Depends: R (>= 2.8.0), TSdbi (>= 2013.9-1), RMySQL
-Imports: methods, DBI, tframe, TSsql (>= 2013.9-1)
+Depends: R (>= 2.8.0), TSdbi (>= 2013.9-1)
+Imports: methods, DBI (>= 0.3.1), tframe, TSsql (>= 2013.9-1), RMySQL
 Suggests: zoo, tseries,  tfplot, tframePlus
 BuildVignettes: true
 License: GPL-2

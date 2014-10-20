@@ -1,25 +1,30 @@
-
-setClass("histQuoteDriver", representation("DBIDriver", Id = "character")) 
-
-histQuote <- function() {
+dbBackEnd <- function(...) {
   drv <- "histQuote"
   attr(drv, "package") <- "TShistQuote"
   new("histQuoteDriver", Id = drv)
   }
 
-# require("DBI") for this
-setClass("TShistQuoteConnection", contains=c("DBIConnection", "conType","TSdb"),
-   representation(user="character", password="character", host="character") )
-
 ####### some kludges to make this look like DBI. ######
+# for this require("DBI")
+
+setClass("histQuoteDriver", contains=c("DBIDriver"), slots=c(Id = "character")) 
+
+setClass("histQuoteConnection", contains=c("DBIConnection", "histQuoteDriver"),
+   slots=c(dbname="character") )
+
+setMethod("dbConnect", signature(drv="histQuoteDriver"), 
+     definition=function(drv, dbname, ...) new("histQuoteConnection", drv, dbname=dbname))
+
 # this does nothing but prevent errors if it is called. 
-setMethod("dbDisconnect", signature(conn="TShistQuoteConnection"), 
-     definition=function(conn,...) TRUE)
+setMethod("dbDisconnect", signature(conn="histQuoteConnection"), 
+     definition=function(conn, ...) TRUE)
 #######     end kludges   ######
 
-setMethod("TSconnect",   signature(drv="histQuoteDriver", dbname="character"),
-  definition= function(drv, dbname, user="", password="", host="", ...){
-   #  user / password / host  for future consideration
+setClass("TShistQuoteConnection", contains=c("histQuoteConnection", "conType","TSdb"))
+
+setMethod("TSconnect",   signature(q="histQuoteConnection", dbname="missing"), 
+  definition= function(q, dbname, ...){
+   dbname <- q@dbname
    if (is.null(dbname)) stop("dbname must be specified")
    if (dbname == "yahoo") {
       con <- try(url("http://quote.yahoo.com"), silent = TRUE)
@@ -36,8 +41,7 @@ setMethod("TSconnect",   signature(drv="histQuoteDriver", dbname="character"),
    else 
       warning(dbname, "not recognized. Connection assumed working, but not tested.")
    
-   new("TShistQuoteConnection", drv="histQuote", dbname=dbname, hasVintages=FALSE, hasPanels=FALSE,
-    	  user = user, password = password, host = host ) 
+   new("TShistQuoteConnection", q="histQuote", dbname=dbname, hasVintages=FALSE, hasPanels=FALSE) 
    } )
 
 

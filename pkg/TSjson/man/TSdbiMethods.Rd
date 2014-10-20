@@ -1,6 +1,7 @@
-\name{json}
-\alias{json}
-\alias{TSconnect,jsonDriver,character-method}
+\name{TSjsonMethods}
+\alias{dbBackEnd}
+
+\alias{TSconnect,jsonConnection,missing-method}
 \alias{TSget,character,TSjsonConnection-method}
 \alias{TSdates,character,TSjsonConnection-method}
 \alias{TSdescription,character,TSjsonConnection-method}
@@ -8,9 +9,6 @@
 \alias{TSlabel,character,TSjsonConnection-method}
 \alias{TSsource,character,TSjsonConnection-method}
 
-\alias{dbDisconnect,TSjsonConnection-method}
-
-\alias{jsonDriver-class}
 \alias{TSjsonConnection-class}
 
 \title{TSdbi methods to importing time series from web sources via JSON}
@@ -18,27 +16,28 @@
   Javascript object notation. Direct connections or a proxy connection are
   possible. (Only Statistics Canada connections are currently supported.)}
 \usage{
-     jsonCall() 
+    dbBackEnd() 
+    \S4method{TSconnect}{jsonConnection,missing}(
+	q, dbname, user=NULL, password = NULL, host=NULL, ...)
     \S4method{TSget}{character,TSjsonConnection}(
 	serIDs, con=getOption("TSconnection"), 
 	TSrepresentation=getOption("TSrepresentation"), 
 	tf = NULL, start = tfstart(tf), end = tfend(tf), names=serIDs, 
         TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE, TSsource=TRUE,
 	quiet = TRUE, repeat.try=3, ...)
-    \S4method{TSconnect}{jsonDriver,character}(
-	drv, dbname, user=NULL, password = NULL, host=NULL, ...)
     \S4method{TSdates}{character,TSjsonConnection}(
 	serIDs, con, vintage=NULL, panel=NULL, ... )  
     \S4method{TSdescription}{character,TSjsonConnection}(x, con, ... )  
     \S4method{TSdoc}{character,TSjsonConnection}(x, con, ... )  
     \S4method{TSlabel}{character,TSjsonConnection}(x, con, ... )  
     \S4method{TSsource}{character,TSjsonConnection}(x, con, ... )  
-
-    \S4method{dbDisconnect}{TSjsonConnection}(conn,...)
 }
 \arguments{
+    \item{q}{A character string indicating the query interface to use, or
+         a database connection object.}
+    \item{dbname}{The name of the database to which the connection should be
+         established, omitted if \code{q} is a database connection object.}
     \item{con}{a database connection object.}
-    \item{conn}{a database connection object.}
     \item{serIDs}{identifiers for series on the database.}
     \item{vintage}{character string indicating vintage of the series on the 
         database (not supported by this database).}
@@ -48,8 +47,6 @@
       identifiers for series on the database (TSdoc and TSdescription).}
     \item{names}{optional character vector to use for series names in the R
     object.}
-    \item{drv}{a database driver object.}
-    \item{dbname}{a character string indicating the name of a database.}
     \item{tf}{time frame for trimming data, passed to tfwindow.}
     \item{start}{time frame for trimming data, passed to tfwindow.}
     \item{end}{time frame for trimming data, passed to tfwindow.}
