@@ -1,5 +1,5 @@
 cat("database tables:\n")
-print(dbListTables(con))
+print(DBI::dbListTables(con))
 
 
 cat("**************  Examples Using dbGetQuery\n")
@@ -17,7 +17,7 @@ cat("**************  Examples Using dbGetQuery\n")
 # dbGetQuery(con, "describe W;")
 
 # check if schema query is supported.
-z <- try(dbGetQuery(con, paste(
+z <- try(DBI:dbGetQuery(con, paste(
        "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.Columns ",
        " WHERE TABLE_SCHEMA='test' AND table_name='A' ;")), silent = TRUE)
 
@@ -26,19 +26,19 @@ if(inherits(z, "try-error")) {
   } else {
 
 #  This is generic sql way to get table info.
-print(dbGetQuery(con, paste(
+print(DBI:dbGetQuery(con, paste(
        "SELECT COLUMN_NAME, COLUMN_DEFAULT, COLLATION_NAME, DATA_TYPE,",
        "CHARACTER_SET_NAME, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION",
  "FROM INFORMATION_SCHEMA.Columns WHERE TABLE_SCHEMA='test' AND table_name='A' ;")))
 
-print(dbGetQuery(con, paste(
+print(DBI:dbGetQuery(con, paste(
    "SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION",
  "FROM INFORMATION_SCHEMA.Columns WHERE TABLE_SCHEMA='test' AND table_name='M';")))
 
 }
 
-#  dbGetQuery(con, "SELECT 'rows in M ', COUNT(id) FROM M ;")
-#  dbGetQuery(con, "SELECT 'series in M ', COUNT(DISTINCT(id)) FROM M ;")
+#  DBI:dbGetQuery(con, "SELECT 'rows in M ', COUNT(id) FROM M ;")
+#  DBI:dbGetQuery(con, "SELECT 'series in M ', COUNT(DISTINCT(id)) FROM M ;")
 
 conets <- try(TSconnect(m, dbname="ets"), silent =TRUE) 
 if(inherits(conets, "try-error")) {
@@ -46,10 +46,10 @@ if(inherits(conets, "try-error")) {
   } else {
   cat("**************        dbGetQuery with ets\n")
 
-  print(dbGetQuery(conets, "SELECT description FROM Meta WHERE id = 'B103';"))
-  print(dbGetQuery(conets, "SELECT documentation   FROM Meta WHERE id = 'B103';"))
+  print(DBI:dbGetQuery(conets, "SELECT description FROM Meta WHERE id = 'B103';"))
+  print(DBI:dbGetQuery(conets, "SELECT documentation   FROM Meta WHERE id = 'B103';"))
 
   cat("**************        disconnecting ets\n")
-  dbDisconnect(conets)
+  DBI:dbDisconnect(conets)
   }
   

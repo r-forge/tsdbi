@@ -11,6 +11,8 @@ Known BUGS
 
 Changes in TSdbi version 2014.10-1
 
+   o	Added export of dbDisconnect.
+
    o	Update class definitions to use slots= rather than representation().
 
    o	Bumped requirement for DBI up to version 0.3.1 or greater.

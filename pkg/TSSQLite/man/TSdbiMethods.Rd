@@ -12,8 +12,6 @@
 \alias{TSdates,character,TSSQLiteConnection-method}
 \alias{TSvintages,TSSQLiteConnection-method}
 \alias{print,TSSQLiteConnection-method}
-\alias{dropTStable,SQLiteConnection,character,ANY-method}
-\alias{dropTStable,SQLiteConnection,character-method}
 
 \alias{TSSQLiteConnection-class}
 
@@ -44,8 +42,6 @@
     \S4method{TSsource}{character,TSSQLiteConnection}(x, con, ...)
     \S4method{TSvintages}{TSSQLiteConnection}(con)
     \S4method{print}{TSSQLiteConnection}(x, ...)
-    \S4method{dropTStable}{SQLiteConnection,character,ANY}(con, Table, 
-                           yesIknowWhatIamDoing=FALSE)
 }
 \arguments{
     \item{q}{A character string indicating the query interface to use, or
@@ -78,7 +74,6 @@
     	necessary if it cannot be determined automatically).}
     \item{vintage}{Vintage to be supplied (if supported by db).}
     \item{panel}{Panel to be supplied (if supported by db).}
-    \item{yesIknowWhatIamDoing}{logical to help prevent accidents.}
     \item{...}{Arguments passed to other methods. In the case of dbBackEnd, arguments 
        passed to RSQLite::SQLite}
 }
@@ -100,10 +95,9 @@ will not be removed. These steps are done in the example below.
 }
 \examples{
     require("tfplot")
-    conInit <- try(TSconnect("SQLite", dbname="test"))
+    conInit <- try(dbConnect("SQLite", dbname="test"))
     if(! inherits(conInit, "try-error")) {
-      require("TSsql")
-      createTSdbTables(conInit, index=FALSE)
+      TSsql::createTSdbTables(conInit, index=FALSE)
       con <- TSconnect("SQLite", dbname="test")
       z <- ts(rnorm(100), start=c(1975,1), frequency=12)
       seriesNames(z) <- "random1"
@@ -129,7 +123,7 @@ will not be removed. These steps are done in the example below.
       TSmeta("random2")
       TSdelete("random1", con)
       TSdelete("random2")
-       \dontshow{removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)} 
+       \dontshow{TSsql::removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)} 
       }
     con <- try(TSconnect("SQLite", dbname="ets"))
     if(! inherits(con, "try-error")) {

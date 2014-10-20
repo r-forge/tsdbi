@@ -85,13 +85,3 @@ setMethod("TSvintages",
      if(!con@hasVintages) NULL else   
      sort(dbGetQuery(con,"SELECT  DISTINCT(vintage) FROM  vintages;" )$vintage)
      } )
-
-setMethod("dropTStable", 
-   signature(con="PostgreSQLConnection", Table="character", yesIknowWhatIamDoing="ANY"),
-   definition= function(con=NULL, Table, yesIknowWhatIamDoing=FALSE){
-    if((!is.logical(yesIknowWhatIamDoing)) || !yesIknowWhatIamDoing)
-      stop("See ?dropTStable! You need to know that you may be doing serious damage.")
-    Table <- tolower(Table) #PostgreSQL converts table names to lower case
-    if(dbExistsTable(con, Table)) dbRemoveTable(con, Table)
-    return(TRUE)
-    } )

@@ -12,9 +12,6 @@
 \alias{TSdates,character,TSodbcConnection-method}
 \alias{TSvintages,TSodbcConnection-method}
 
-\alias{dropTStable,RODBC,character,ANY-method}
-\alias{dropTStable,RODBC,character-method}
-
 \alias{dbExistsTable,RODBC,character-method}
 \alias{dbRemoveTable,RODBC,character-method}
 \alias{dbGetQuery,RODBC,character-method}

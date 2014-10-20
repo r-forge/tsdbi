@@ -2,9 +2,6 @@ service <- Sys.getenv("_R_CHECK_HAVE_ODBC_")
 
 if(identical(as.logical(service), TRUE)) {
 
-require("TSodbc")
-require("RODBC")
-
 cat("************** RODBC  Examples ******************************\n")
 cat("**************************************************************\n")
 cat("* WARNING: THIS OVERWRITES TABLES IN TEST DATABASE ON SERVER**\n")
@@ -19,6 +16,8 @@ cat("**************************************************************\n")
    dbname   <- Sys.getenv("ODBC_DATABASE")
    if ("" == dbname)   dbname <- "test"
 
+   require("RODBC")
+   cat("**********setup 0\n")
    user    <- Sys.getenv("ODBC_USER")
    if ("" != user) {
        host    <- Sys.getenv("ODBC_HOST")
@@ -26,22 +25,24 @@ cat("**************************************************************\n")
        passwd  <- Sys.getenv("ODBC_PASSWD")
        if ("" == passwd)   passwd <- NULL
        #  See  ?odbcConnect   ?odbcDriverConnect
-       con <- RODBC::odbcConnect(dsn=dbname, uid=user, pwd=passwd) #, connection=host) 
+       setup <- RODBC::odbcConnect(dsn=dbname, uid=user, pwd=passwd) #, connection=host) 
      }else  
-       con <- RODBC::odbcConnect(dsn=dbname) # pass user/passwd/host in ~/.odbc.ini
+       setup <- RODBC::odbcConnect(dsn=dbname) # pass user/passwd/host in ~/.odbc.ini
 
-#dbListTables(con) 
-#source(system.file("TSsql/CreateTables.TSsql", package = "TSsql"))
+require("TSodbc") # because next needs DBI faking method dbExistsTable, etc
 
-require("TSsql")
-removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
-createTSdbTables(con, index=FALSE)
+cat("**********setup 1\n")
+# ToLower=TRUE here because database is PostgreSQL
+TSsql::removeTSdbTables(setup, yesIknowWhatIamDoing=TRUE, ToLower=TRUE)
 
-#dbListTables(con) 
+cat("**********setup 2\n")
+TSsql::createTSdbTables(setup, index=FALSE)
 
-RODBC::odbcClose(con)
+cat("**********setup 3\n")
+RODBC::odbcClose(setup)
  
 ##################################################################
+require("TSodbc")
 
 con <- if ("" != user)  
           tryCatch(TSconnect("odbc", dbname=dbname, username=user, password=passwd, host=host)) 
@@ -49,22 +50,16 @@ con <- if ("" != user)
 
 if(inherits(con, "try-error")) cat("CreateTables did not work.\n")
  else {
-
-   m <- "odbc" # this is needed in sourced files.
    source(system.file("TSsql/Populate.TSsql", package = "TSsql"))
-   cat("**********1\n")
    source(system.file("TSsql/TSdbi.TSsql", package = "TSsql"))
-   cat("**********2\n")
    source(system.file("TSsql/dbGetQuery.TSsql", package = "TSsql"))
-   cat("*********3\n")
    source(system.file("TSsql/HistQuote.TSsql", package = "TSsql"))
 
    cat("**************        removing test database tables\n")
-   removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
+   TSsql::removeTSdbTables(con, yesIknowWhatIamDoing=TRUE, ToLower=TRUE)
 
    cat("**************        disconnecting test\n")
-   #dbDisconnect(con)
-RODBC::odbcClose(con)
+   dbDisconnect(con)
    }
 } else {
    cat("ODBC not available. Skipping tests.\n")

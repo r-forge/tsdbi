@@ -2,9 +2,6 @@ service <- Sys.getenv("_R_CHECK_HAVE_MYSQL_")
 
 if(identical(as.logical(service), TRUE)) {
 
-require("TSMySQL")
-require("DBI")
-
 cat("************** RMySQL  Examples ******************************\n")
 cat("**************************************************************\n")
 cat("* WARNING: THIS OVERWRITES TABLES IN TEST DATABASE ON SERVER**\n")
@@ -22,20 +19,19 @@ cat("**************************************************************\n")
        passwd  <- Sys.getenv("MYSQL_PASSWD")
        if ("" == passwd)   passwd <- NULL
        #  See  ?"dbConnect-methods"
-       con <- dbConnect(RMySQL::MySQL(),
+       setup <- RMySQL::dbConnect("MySQL",
           username=user, password=passwd, host=host, dbname=dbname)  
-     }else  con <- 
-       dbConnect(RMySQL::MySQL(), dbname=dbname) # pass user/passwd/host in ~/.my.cnf
+     }else setup <- RMySQL::dbConnect("MySQL", dbname=dbname) #user/passwd/host in ~/.my.cnf
 
-dbListTables(con) 
+DBI::dbListTables(setup) 
 
-require("TSsql")
-removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
-createTSdbTables(con, index=FALSE)
+TSsql::removeTSdbTables(setup, yesIknowWhatIamDoing=TRUE)
+TSsql::createTSdbTables(setup, index=FALSE)
 
-dbListTables(con) 
-dbDisconnect(con)
+DBI::dbListTables(setup) 
+DBI::dbDisconnect(setup)
 ##################################################################
+require("TSMySQL")
 
 con <- if ("" != user)  
           tryCatch(TSconnect("MySQL", dbname=dbname, username=user, password=passwd, host=host)) 
@@ -47,12 +43,12 @@ source(system.file("TSsql/Populate.TSsql", package = "TSsql"))
 require("zoo")
 require("tframePlus")
 source(system.file("TSsql/TSdbi.TSsql", package = "TSsql"))
-m <- "MySQL"
+
 source(system.file("TSsql/dbGetQuery.TSsql", package = "TSsql"))
 source(system.file("TSsql/HistQuote.TSsql", package = "TSsql"))
 
 cat("**************        remove test tables\n")
-removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
+TSsql::removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
 
 cat("**************        disconnecting test\n")
 dbDisconnect(con)

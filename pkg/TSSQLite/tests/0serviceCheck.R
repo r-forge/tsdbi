@@ -1,4 +1,4 @@
-z <- Sys.getenv("_R_CHECK_HAVE_SQLLITE_")
+z <- Sys.getenv("_R_CHECK_HAVE_SQLITE_")
 
 Sys.info()
 

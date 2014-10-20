@@ -1,23 +1,22 @@
-if(identical(as.logical(Sys.getenv("_R_CHECK_HAVE_SQLLITE_")), TRUE)) {
+if(identical(as.logical(Sys.getenv("_R_CHECK_HAVE_SQLITE_")), TRUE)) {
 
-require("TSSQLite")
 
 cat("************** RSQLite  Examples ******************************\n")
 cat("**************************************************************\n")
 cat("* WARNING: THIS OVERWRITES TABLES IN TEST DATABASE ON SERVER**\n")
 cat("**************************************************************\n")
 
-con <- dbConnect("SQLite", dbname="test") # no user/passwd/host
+setup <- RSQLite::dbConnect("SQLite", dbname="test") # no user/passwd/host
 
-dbListTables(con) 
+RSQLite::dbListTables(setup) 
 
-#source(system.file("TSsql/CreateTables.TSsql", package = "TSsql"))
-require("TSsql")
-removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
-createTSdbTables(con, index=FALSE)
+TSsql::removeTSdbTables(setup, yesIknowWhatIamDoing=TRUE)
+TSsql::createTSdbTables(setup, index=FALSE)
 
-dbListTables(con) 
-dbDisconnect(con)
+DBI::dbListTables(setup) 
+DBI::dbDisconnect(setup)
+
+require("TSSQLite")
 
 con <- try(TSconnect("SQLite", dbname="test") )
 if(inherits(con, "try-error")) stop("CreateTables did not work.")
@@ -28,7 +27,7 @@ source(system.file("TSsql/dbGetQuery.TSsql", package = "TSsql"))
 source(system.file("TSsql/HistQuote.TSsql", package = "TSsql"))
 
 cat("**************        remove test tables\n")
-removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
+TSsql::removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
 
 cat("**************        disconnecting test\n")
 dbDisconnect(con)
