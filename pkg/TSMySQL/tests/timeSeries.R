@@ -12,41 +12,46 @@ if ("" == dbname)   dbname <- "test"
 
 user	<- Sys.getenv("MYSQL_USER")
 
-# specifying host as NULL or "localhost" results in a socket connection
-host	<- Sys.getenv("MYSQL_HOST")
-if ("" == host)     host <- Sys.info()["nodename"] 
-passwd  <- Sys.getenv("MYSQL_PASSWD")
-if ("" == passwd)   passwd <- NULL
+if ("" != user) {
+    # specifying host as NULL or "localhost" results in a socket connection
+    host    <- Sys.getenv("MYSQL_HOST")
+    if ("" == host)	host <- Sys.info()["nodename"] 
+    passwd  <- Sys.getenv("MYSQL_PASSWD")
+    if ("" == passwd)	passwd <- NULL
+    #  See  ?"dbConnect-methods"
+    setup <- RMySQL::dbConnect("MySQL",
+       username=user, password=passwd, host=host, dbname=dbname)  
+  }else setup <- RMySQL::dbConnect("MySQL", dbname=dbname) #user/passwd/host in ~/.my.cnf
 
-require("TSsql")
-conInit <- try(RMySQL::dbConnect(RMySQL::MySQL(), dbname="test"))
-removeTSdbTables(conInit, yesIknowWhatIamDoing=TRUE)
-createTSdbTables(conInit, index=FALSE)
 
-  con <- if ("" != user)  
-          tryCatch(TSconnect("MySQL", dbname=dbname, username=user, password=passwd, host=host)) 
-    else  tryCatch(TSconnect("MySQL", dbname=dbname)) # pass user/passwd/host in ~/.my.cnf
+TSsql::removeTSdbTables(setup, yesIknowWhatIamDoing=TRUE)
+TSsql::createTSdbTables(setup, index=FALSE)
 
-  if(inherits(con, "try-error")) stop("Cannot connect to TS MySQL database.")
+  
+if ("" != user)  
+  con <- tryCatch(TSconnect("MySQL", dbname=dbname, username=user, password=passwd, host=host))
+else
+  con <- tryCatch(TSconnect("MySQL", dbname=dbname)) # pass user/passwd/host in ~/.my.cnf
 
-  z <- ts(matrix(rnorm(10),10,1), start=c(1990,1), frequency=1)
-  TSput(z, serIDs="Series 1", con) 
+if(inherits(con, "try-error")) stop("Cannot connect to TS MySQL database.")
 
-  z <- TSget("Series 1", con, TSrepresentation="timeSeries")
-  if("timeSeries" != class(z)) stop("timeSeries class object not returned.")
-  tfplot(z)
+z <- ts(matrix(rnorm(10),10,1), start=c(1990,1), frequency=1)
+TSput(z, serIDs="Series 1", con) 
 
-  TSrefperiod(z) 
-  TSdescription(z) 
+z <- TSget("Series 1", con, TSrepresentation="timeSeries")
+if("timeSeries" != class(z)) stop("timeSeries class object not returned.")
+tfplot(z)
 
-  tfplot(z, start="1991-01-01", Title="Test")
+TSrefperiod(z) 
+TSdescription(z) 
+
+tfplot(z, start="1991-01-01", Title="Test")
 
 cat("**************        remove test tables\n")
-
-removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
+TSsql::removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
 
 cat("**************        disconnecting test\n")
-#dbDisconnect(con)
+dbDisconnect(con)
 
 } else  {
    cat("MYSQL not available. Skipping tests.\n")

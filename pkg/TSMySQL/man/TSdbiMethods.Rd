@@ -11,8 +11,6 @@
 \alias{TSsource,character,TSMySQLConnection-method}
 \alias{TSdates,character,TSMySQLConnection-method}
 \alias{TSvintages,TSMySQLConnection-method}
-\alias{dropTStable,MySQLConnection,character,ANY-method}
-\alias{dropTStable,MySQLConnection,character-method}
 
 \alias{TSMySQLConnection-class}
 
@@ -39,8 +37,6 @@
     \S4method{TSlabel}{character,TSMySQLConnection}(x, con, ...)
     \S4method{TSsource}{character,TSMySQLConnection}(x, con, ...)
     \S4method{TSvintages}{TSMySQLConnection}(con)
-    \S4method{dropTStable}{MySQLConnection,character,ANY}(con, Table, 
-                           yesIknowWhatIamDoing=FALSE)
 }
 \arguments{
     \item{q}{A character string indicating the query interface to use, or
@@ -73,7 +69,6 @@
     	necessary if it cannot be determined automatically).}
     \item{vintage}{Vintage to be supplied (if supported by db).}
     \item{panel}{Panel to be supplied (if supported by db).}
-    \item{yesIknowWhatIamDoing}{logical to help prevent accidents.}
     \item{...}{Arguments passed to other methods. In the case of dbBackEnd, arguments 
        passed to RMySQL::MySQL}
 }
@@ -97,8 +92,7 @@ will not be removed. These steps are done in the example below.
     require("tfplot")
     conInit <- try(dbConnect("MySQL", dbname="test"))
     if(! inherits(conInit, "try-error")) {
-      require("TSsql")
-      createTSdbTables(conInit, index=FALSE)
+      TSsql::createTSdbTables(conInit, index=FALSE)
       con <- TSconnect("MySQL", dbname="test")
       z <- ts(rnorm(100), start=c(1975,1), frequency=12)
       seriesNames(z) <- "random1"
@@ -123,7 +117,7 @@ will not be removed. These steps are done in the example below.
       TSmeta("random2")
       TSdelete("random1", con)
       TSdelete("random2")
-       \dontshow{removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)} 
+       \dontshow{TSsql::removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)} 
       }
     con <- try(TSconnect("MySQL", dbname="ets"))
     if(! inherits(con, "try-error")) {

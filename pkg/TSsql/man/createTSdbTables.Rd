@@ -1,20 +1,18 @@
 \name{createTSdbTables}
 \alias{createTSdbTables}
-\alias{dropTStable}
 \alias{removeTSdbTables}
 
-\title{Drop (Remove) a Database Table}
-\description{Drop (remove) a database table if it exists.}
+\title{Create and Remove Time Series Database Tables}
+\description{Create or remove all the TS database tables.}
 \usage{
   createTSdbTables(con, index=FALSE)
-  removeTSdbTables(con, yesIknowWhatIamDoing=FALSE)
-  dropTStable(con, Table, yesIknowWhatIamDoing=FALSE)
+  removeTSdbTables(con, yesIknowWhatIamDoing=FALSE, ToLower=FALSE)
 }
 \arguments{
-    \item{con}{A database connection.}
-    \item{Table}{A character string indicating a table to drop.}
+    \item{con}{A database connection object (NOT a TSconnect object).}
     \item{yesIknowWhatIamDoing}{logical to help prevent accidents.}
     \item{index}{logical to indicate if table date indexes should be added.}
+    \item{ToLower}{logical indicating if table names should be converted to lower case.}
 }
 \value{logical to indicate success.}
 \details{
@@ -26,18 +24,19 @@ examples and testing but will rarely be used otherwise.) Adding date indexes
 writing to the database (but for small databases it will not make much
 difference either way).
 
-The functions dropTStable and removeTSdbTables remove an individual database
-table and all the TS database tables respectively.
+The function removeTSdbTables removes all the TS database tables.
 WARNING: use these function only if you know what you are doing. They destroy
 the whole database and all stored series.
-The function \code{dropTStable} removes the indicated table if it exists on 
-the \code{con}. The function dropTStable needs to be generic in order to work 
+The function \code{removeTSdbTables} needs to work 
 around the problem that different 
 db engines treat capitalized table names differently. For example, MySQL uses
-table name Meta while Posgresql converts to meta. A default \code{con} is not used 
-on purpose to help avoid accidental use. The arument \code{yesIknowWhatIamDoing}
+table name Meta while Posgresql converts to meta. The argument \code{ToLower}
+indicates if table names should be converted to lower case.
+
+The \code{con} needs to be specified. A default \code{con} is not used 
+on purpose to help avoid accidental use. The argument \code{yesIknowWhatIamDoing}
 defaults to \code{FALSE} and must be set to \code{TRUE} or the function will 
-return an error. Beware that dropping tables will likely destory the 
+return an error. Beware that dropping tables will destory the 
 integrity of the of
 the database, and would usually only be done when you are intializing a TS database.
 Database permission may also be set to prevent users from dropping tables. If that

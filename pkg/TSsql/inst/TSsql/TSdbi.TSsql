@@ -5,7 +5,7 @@ if(!require("tfplot")) stop("These examples require package tfplot.")
 cat("**************        with ts\n")
 
  # this prevents problems is series remains from a previous tests
- dbGetQuery(con, "DELETE FROM Meta WHERE id IN ('Series 1', 'vec', 'matc1', 'matc2', 'mat2c1', 'mat2c2');") 
+ DBI::dbGetQuery(con, "DELETE FROM Meta WHERE id IN ('Series 1', 'vec', 'matc1', 'matc2', 'mat2c1', 'mat2c2');") 
 
  z <- ts(matrix(rnorm(10),10,1), start=c(1990,1), frequency=1)
  TSput(z, serIDs="Series 1", con) # test name with a space
@@ -130,5 +130,5 @@ if(inherits(conets, "try-error")) {
                    nfrequency=4,FUN=mean), lag=4, names="GDP Y/Y Growth")
   
   cat("**************        disconnecting ets\n")
-  dbDisconnect(conets)
+  DBI::dbDisconnect(conets)
   }  # ets

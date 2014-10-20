@@ -142,11 +142,3 @@ setMethod("TSvintages",
      if(!con@hasVintages) NULL else   
      sort(dbGetQuery(con,"SELECT  DISTINCT(vintage) FROM  vintages;" )$vintage)
      } )
-
-setMethod("dropTStable", 
-   signature(con="RODBC", Table="character", yesIknowWhatIamDoing="ANY"),
-   definition= function(con=NULL, Table, yesIknowWhatIamDoing=FALSE){
-    if((!is.logical(yesIknowWhatIamDoing)) || !yesIknowWhatIamDoing)
-      stop("See ?dropTStable! You need to know that you may be doing serious damage.")
-    if(dbExistsTable(con, Table)) dbRemoveTable(con, Table) else TRUE
-    } )

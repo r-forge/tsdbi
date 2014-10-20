@@ -12,6 +12,9 @@ Changes in TSPostgreSQL version 2014.10-1
    o	Adjusted TSconnect() to use a string or a connection in place of a
    	driver, and renamed argument drv to q to reflect this change.
 
+   o	Removed dropTStable() from the API. It is now handled by 
+   	removeTSdbTables() in package TSsql.
+
 Changes in TSPostgreSQL version 2013.9-1
 
    o	Using TSsql split from TSdbi.

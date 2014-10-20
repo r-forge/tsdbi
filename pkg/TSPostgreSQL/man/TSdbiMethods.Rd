@@ -11,8 +11,6 @@
 \alias{TSsource,character,TSPostgreSQLConnection-method}
 \alias{TSdates,character,TSPostgreSQLConnection-method}
 \alias{TSvintages,TSPostgreSQLConnection-method}
-\alias{dropTStable,PostgreSQLConnection,character,ANY-method}
-\alias{dropTStable,PostgreSQLConnection,character-method}
 
 \alias{TSPostgreSQLConnection-class}
 
@@ -41,8 +39,6 @@
     \S4method{TSlabel}{character,TSPostgreSQLConnection}(x, con, ...)
     \S4method{TSsource}{character,TSPostgreSQLConnection}(x, con, ...)
     \S4method{TSvintages}{TSPostgreSQLConnection}(con)
-    \S4method{dropTStable}{PostgreSQLConnection,character,ANY}(con, Table, 
-                           yesIknowWhatIamDoing=FALSE)
 }
 \arguments{
     \item{q}{A character string indicating the query interface to use, or
@@ -76,7 +72,6 @@
     	necessary if it cannot be determined automatically).}
     \item{vintage}{Vintage to be supplied (if supported by db).}
     \item{panel}{Panel to be supplied (if supported by db).}
-    \item{yesIknowWhatIamDoing}{logical to help prevent accidents.}
     \item{...}{Arguments passed to other methods. In the case of dbBackEnd, 
         arguments passed to RPostgreSQL::PostgreSQL}
 }
@@ -102,8 +97,7 @@ will not be removed. These steps are done in the example below.
     require("tfplot")
     conInit <- try(RPostgreSQL::dbConnect("PostgreSQL", dbname="test"))
     if(! inherits(conInit, "try-error")) {
-      require("TSsql")
-      createTSdbTables(conInit, index=FALSE)
+      TSsql::createTSdbTables(conInit, index=FALSE)
       con <- TSconnect("PostgreSQL", dbname="test")
       z <- ts(rnorm(100), start=c(1975,1), frequency=12)
       seriesNames(z) <- "random1"
@@ -129,7 +123,8 @@ will not be removed. These steps are done in the example below.
       TSmeta("random2")
       TSdelete("random1", con)
       TSdelete("random2")
-       \dontshow{removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)} 
+       \dontshow{TSsql::removeTSdbTables(con,
+                     yesIknowWhatIamDoing=TRUE, ToLower=TRUE)} 
       }
     con <- try(TSconnect("PostgreSQL", dbname="ets"))
     if(! inherits(con, "try-error")) {

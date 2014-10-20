@@ -403,18 +403,11 @@ TSdatesSQL <- function(serIDs, con,
   }
 
 #####################################
-# this method will generally not be needed by users, but is used in the test
-# database setup. It needs to be generic in order to work around the problem
-# that different db engines treat capitalized table names differently.
-# e.g. MySQL uses table name Meta while PostgreSQL converts to meta.
-# A default con is not used on purpose.
-
-setGeneric("dropTStable",
-   def= function(con=NULL,Table, yesIknowWhatIamDoing=FALSE)
-    standardGeneric("dropTStable"))
-
+# these methods will generally not be needed by users, but is used in the test
+# database setup. 
 
 createTSdbTables <- function(con, index=FALSE){
+ 
  Texists <- function(a){
     if(dbExistsTable(con,a)) {
         warning("table ",a," exists. Not replacing it."); return(TRUE)}
@@ -583,25 +576,31 @@ createTSdbTables <- function(con, index=FALSE){
   dbListTables(con)
   }
    
-removeTSdbTables <- function(con, yesIknowWhatIamDoing=FALSE){
+removeTSdbTables <- function(con, yesIknowWhatIamDoing=FALSE, ToLower=FALSE){
+
   if(!yesIknowWhatIamDoing) 
        stop("You need to know what you are doing before using this function!!")
-    
-  # Note: The  method "dropTStable" works around the
+   
+  # "dropTStable" works around the
   # problem that different db engines treat capitalized table names differently.
-  # e.g. MySQL uses table name Meta while Posgresql conver, yes, yesIknowWhatIamDoing=TRUEIknowWhatIamDoing=TRUEts to meta.
+  # e.g. MySQL uses table name Meta while Posgresql converts to meta.
 
-  dropTStable(con, "Meta", yesIknowWhatIamDoing=TRUE)   
-  dropTStable(con, "A", yesIknowWhatIamDoing=TRUE)
-  dropTStable(con, "B", yesIknowWhatIamDoing=TRUE)
-  dropTStable(con, "D", yesIknowWhatIamDoing=TRUE)
-  dropTStable(con, "M", yesIknowWhatIamDoing=TRUE)
-  dropTStable(con, "U", yesIknowWhatIamDoing=TRUE)
-  dropTStable(con, "Q", yesIknowWhatIamDoing=TRUE)
-  dropTStable(con, "S", yesIknowWhatIamDoing=TRUE)
-  dropTStable(con, "W", yesIknowWhatIamDoing=TRUE)
-  dropTStable(con, "I", yesIknowWhatIamDoing=TRUE)
-  dropTStable(con, "T", yesIknowWhatIamDoing=TRUE)
+  dropTStable <- function(Table){
+    if (ToLower) Table <- tolower(Table)
+    if(dbExistsTable(con, Table)) dbRemoveTable(con, Table)
+    }
+
+  dropTStable("Meta")   
+  dropTStable("A")
+  dropTStable("B")
+  dropTStable("D")
+  dropTStable("M")
+  dropTStable("U")
+  dropTStable("Q")
+  dropTStable("S")
+  dropTStable("W")
+  dropTStable("I")
+  dropTStable("T")
   invisible(TRUE)
   }
   

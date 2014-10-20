@@ -21,13 +21,3 @@ export(
   "removeTSdbTables"
   )
 
-## S4 generics
-export(
-   "dropTStable"
-   )
-
-## S4 methods
-exportMethods(
-   "dropTStable"
-   )
-
