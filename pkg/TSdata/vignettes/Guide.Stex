@@ -553,6 +553,7 @@ provides some end of day data free of charge.
 
 The following illustrates returning an \code{xts} \citep{xts} time series object.
 \begin{Scode}{results=verbatim,fig=TRUE,height=8}
+  require("xts")
   z <- TSget(c("EURUSD", "GBPUSD"), pitr, quote=c("Open","Close"),
          TSrepresentation=xts)
   tfplot(z,
@@ -759,10 +760,14 @@ This part of the vignette is generated using \pkg{TSPostgreSQL}, but other backe
 servers work in a similar way. See Appendix ``A'' for details of establishing
 other SQL database connections.
 
-First establish a connection to the database where data will be saved:
+First set up the TS database structure on the database where data will be
+saved (if it is not already in place) and establish a TS connection to it:
 \begin{Scode}
   require("TSPostgreSQL")
   host    <- Sys.getenv("POSTGRES_HOST")
+  setup <-  DBI::dbConnect("PostgreSQL", dbname="test", host=host) 
+  TSsql::createTSdbTables(setup)
+  dbDisconnect(setup)
   con <-  TSconnect("PostgreSQL", dbname="test", host=host) 
 \end{Scode}
 
@@ -1419,41 +1424,42 @@ configuration file in the user's home directory (.odbc.ini in Linux)
 before starting R. An example of this file is provided below. It will also
 be necessary to have the appropriate driver installed on the system
 (Postgresql in the example below).
-Alternatively, it should be possible to set this information with
+Alternatively, it should be possible to set some of the information with
 environment variables  ODBC\_USER, ODBC\_PASSWD and ODBC\_DATABASE. 
 However, the 
 variable ODBC\_HOST does not seem to work for passing the ODBC connection, 
 so a properly setup ODBC configuration file is needed.  Because of this, the
-environment variable mechanism is not currently supported in \pkg{TSodbc}
-and the user, passwd, and host settings should be done in the configuration file.
+environment variable mechanism is not actively tested in \pkg{TSodbc}
+and the user, passwd, and host settings should preferably be done in the configuration file.
 
-Now setup database tables that are used by TSdbi using a \code{odbcConnect}
+A one time setup of the database tables that are used by TSdbi needs to be
+done using a \code{odbcConnect}
 connection, after which a \code{TSconnect} connection can be used: 
 %%
 \begin{Scode}{results=hide}
  library("TSodbc")
- con <-  odbcConnect(dsn="test") 
+ library("RODBC")
+ con <-  RODBC::odbcConnect(dsn="test") 
  if(con == -1) stop("error establishing ODBC connection.") 
- require("TSsql")
- removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
- createTSdbTables(con, index=FALSE)
- odbcClose(channel=con)
+ TSsql::removeTSdbTables(con, yesIknowWhatIamDoing=TRUE, ToLower=TRUE)
+ TSsql::createTSdbTables(con)
+ RODBC::odbcClose(channel=con)
 \end{Scode}
 
-Now a TSdbi connection to the database is established.
+Now a \code{TSconnect} connection to the database can be established.
 \begin{Scode}{results=hide}
-  con  <-  TSconnect("ODBC", dbname="test")
+  library("TSodbc")
+  con  <-  TSconnect("odbc", dbname="test")
 \end{Scode} 
 
 Another alternative is to pass the user/password information in the arguments to
 the connection function:
 \begin{Scode}{results=hide,eval=FALSE}
-con  <-  TSconnect("ODBC", dbname="test", uid=user, pwd=passwd)
+con  <-  TSconnect("odbc", dbname="test", uid=user, pwd=passwd)
 \end{Scode} 
 
 This is may be cumbersome to change, and is generally considered to be less
 secure.
-
 
 While it may not be necessary to \code{detach} packages, the following prevents
 warnings later about objects being masked:
@@ -1541,17 +1547,17 @@ The next small section of code uses \code{dbConnect} to set up database
 tables that expected by \code{TSconnect}. 
 %%
 \begin{Scode}{eval=FALSE}
- library("TSOracle")
- con  <- dbConnect("Oracle", dbname="test") 
- require("TSsql")
- removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
- createTSdbTables(con, index=FALSE)
- dbDisconnect(con)
+ library("Oracle")
+ con  <- DBI::dbConnect("Oracle", dbname="test") 
+ TSsql::removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
+ TSsql::createTSdbTables(con, index=FALSE)
+ DBI::dbDisconnect(con)
 \end{Scode}
 
 
 Now a TSdbi connection to the database is established.
 \begin{Scode}{eval=FALSE}
+  library("TSOracle")
   con  <-  TSconnect("Oracle", dbname="test")
 \end{Scode} 
 
@@ -1675,14 +1681,16 @@ T     & irregular data with a date and time \\
 In addition, there will be tables ''vintages'' and ''panels'' if those features
 are used.
 
-The following is done with dbConnect in place of a TSconnect, since they
-are direct SQL queries and do not require the TSdbi structure.
+The following is done with \code{dbConnect} from package \pkg{DBI} in place 
+of a \code{TSconnect}, since they
+are direct SQL queries and do not use the \pkg{TSdbi} methods.
 
 The structure reported reflects the setup that was done previously.
 These queries are Mysql specific but below is a generic SQL way to do this.
 
 \begin{Scode}{results=verbatim}
  library("TSMySQL")
+ library("DBI")
  con <- dbConnect("MySQL", dbname="test")
  dbListTables(con)
  dbGetQuery(con, "show tables;")
@@ -1739,6 +1747,7 @@ queries would be affected.
 
 \begin{Scode}{results=verbatim}
  library("TSMySQL")
+ library("DBI")
  con <- TSconnect("MySQL", dbname="test") 
  dbGetQuery(con, "SELECT count(*) FROM Meta ;") 
  dbGetQuery(con, "SELECT max(year) FROM A ;") 

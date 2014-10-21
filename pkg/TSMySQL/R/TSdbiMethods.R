@@ -1,4 +1,7 @@
-dbBackEnd <- function(...) RMySQL::MySQL(...)
+dbBackEnd <- function(...){
+  args <- pmatch(names(list(...)), names(formals(RMySQL::MySQL)) )
+  do.call(RMySQL::MySQL, list(...)[!is.na(args)])
+  }
 
 setClass("TSMySQLConnection", contains=c("MySQLConnection", "conType", "TSdb"))
 
