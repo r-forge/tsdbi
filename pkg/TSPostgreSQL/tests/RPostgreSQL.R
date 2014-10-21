@@ -43,9 +43,10 @@ require("TSPostgreSQL")
 
 # pass user/passwd in ~/.pgpass (but host defaults to PGHOST or localhost).
 
-con <- if ("" != user)  
-          tryCatch(TSconnect("PostgreSQL", dbname=dbname, user=user, password=passwd, host=host)) 
-    else  tryCatch(TSconnect("PostgreSQL", dbname=dbname)) 
+if ("" != user)  
+      con <- tryCatch(TSconnect("PostgreSQL", dbname=dbname, 
+                              user=user, password=passwd, host=host)) 
+else  con <- tryCatch(TSconnect("PostgreSQL", dbname=dbname)) 
     
 if(inherits(con, "try-error")) stop("CreateTables did not work.")
 

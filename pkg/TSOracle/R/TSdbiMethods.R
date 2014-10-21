@@ -1,5 +1,7 @@
-dbBackEnd <- function(...) ROracle::OracleL(...)
-
+dbBackEnd <- function(...){
+  args <- pmatch(names(list(...)), names(formals(ROracle::Oracle)) )
+  do.call(ROracle::Oracle, list(...)[!is.na(args)])
+  }
 
 setClass("TSOraConnection", contains=c("OraConnection", "conType", "TSdb"))
 

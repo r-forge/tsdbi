@@ -144,12 +144,12 @@ tfplot.TScompare  <- function(x, con1=x$con1, con2=x$con2, diff=FALSE, ...){
 AllIds <- function(con, vintage=getOption("TSvintage")){
   if (is.null(vintage)) Q <- "select distinct id from Meta;" 
   else {
-    if( vintage == "current") vintage <- dbGetQuery(con,
+    if( vintage == "current") vintage <- DBI::dbGetQuery(con,
          "select vintage from vintageAlias where alias = 'current';")$vintage
     Q <- paste(
        "select distinct id from Meta where vintage = '", vintage, "';", sep="")
     }
-  dbGetQuery(con,Q)$id 
+  DBI::dbGetQuery(con,Q)$id 
   }
 
 AllPanels <- function(con){	
@@ -157,17 +157,17 @@ AllPanels <- function(con){
   else {
   if (is.null(vintage)) Q <- "select distinct panel from Meta;" 
   else {
-    if( vintage == "current") vintage <- dbGetQuery(con,
+    if( vintage == "current") vintage <- DBI::dbGetQuery(con,
          "select vintage from vintageAlias where alias = 'current';")$vintage
     Q <- paste(
        "select distinct panel from Meta where vintage = '", vintage, "';", sep="")
     }
-  dbGetQuery(con, Q)$panel
+  DBI::dbGetQuery(con, Q)$panel
   }
   }
 
 
 AllVintages <- function(con){
   if(!con@hasVintages) NULL
-  else dbGetQuery(con, "select distinct vintage from Meta;")$vintage
+  else DBI::dbGetQuery(con, "select distinct vintage from Meta;")$vintage
   }

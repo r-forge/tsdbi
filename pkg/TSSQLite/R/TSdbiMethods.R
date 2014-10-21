@@ -1,4 +1,7 @@
-dbBackEnd <- function(...) RSQLite::SQLite(...)
+dbBackEnd <- function(...){
+  args <- pmatch(names(list(...)), names(formals(RSQLite::SQLite)) )
+  do.call(RSQLite::SQLite, list(...)[!is.na(args)])
+  }
 
 setClass("TSSQLiteConnection", contains=c("SQLiteConnection","conType", "TSdb")) 
 

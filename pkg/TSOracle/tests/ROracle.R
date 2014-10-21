@@ -2,14 +2,11 @@ service <- Sys.getenv("_R_CHECK_HAVE_ORACLE_")
 
 if(identical(as.logical(service), TRUE)) {
 
-require("TSOracle")
-
 cat("************** ROracle  Examples ******************************\n")
 cat("**************************************************************\n")
 cat("* WARNING: THIS OVERWRITES TABLES IN TEST DATABASE ON SERVER**\n")
 cat("**************************************************************\n")
 
-m <- dbDriver("Oracle") # note that this is needed in sourced files.
 
 ###### This is to set up tables. Otherwise use TSconnect#########
    dbname   <- Sys.getenv("ORACLE_DATABASE")
@@ -23,25 +20,24 @@ m <- dbDriver("Oracle") # note that this is needed in sourced files.
        passwd  <- Sys.getenv("ORACLE_PASSWD")
        if ("" == passwd)   passwd <- NULL
        #  See  ?"dbConnect-methods"
-       con <- dbConnect("Oracle",
+       con <- DBI::dbConnect("Oracle",
           username=user, password=passwd, host=host, dbname=dbname)  
      }else  con <- 
-       dbConnect(m, dbname=dbname) # pass user/passwd/host in ~/.my.cnf
+       DBI::dbConnect(m, dbname=dbname) # pass user/passwd/host in ~/.my.cnf
 
-dbListTables(con) 
+DBI::dbListTables(con) 
 
-#source(system.file("TSsql/CreateTables.TSsql", package = "TSsql"))
-require("TSsql")
-removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
-createTSdbTables(con, index=FALSE)
+TSsql::removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
+TSsql::createTSdbTables(con, index=FALSE)
 
-dbListTables(con) 
-dbDisconnect(con)
+DBI::dbListTables(con) 
+DBI::dbDisconnect(con)
 ##################################################################
+require("TSOracle")
 
 con <- if ("" != user)  
-          tryCatch(TSconnect(m, dbname=dbname, username=user, password=passwd, host=host)) 
-    else  tryCatch(TSconnect(m, dbname=dbname)) # pass user/passwd/host in ~/.my.cnf
+          tryCatch(TSconnect("Oracle", dbname=dbname, username=user, password=passwd, host=host)) 
+    else  tryCatch(TSconnect("Oracle", dbname=dbname)) # pass user/passwd/host in ~/.my.cnf
 
 if(inherits(con, "try-error")) stop("CreateTables did not work.")
 

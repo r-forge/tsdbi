@@ -40,7 +40,9 @@ TSsql::createTSdbTables(setup, index=FALSE)
 
 cat("**********setup 3\n")
 RODBC::odbcClose(setup)
- 
+
+detach(package:RODBC)
+
 ##################################################################
 require("TSodbc")
 
