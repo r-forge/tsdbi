@@ -1,3 +1,5 @@
+require("TSsdmx")
+
 From: Duncan Temple Lang <duncan@wald.ucdavis.edu>
 To: r-help@r-project.org
 Subject: Re: [R] Custom XML Readers

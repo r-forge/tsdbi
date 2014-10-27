@@ -5,8 +5,11 @@ import("TSdbi")
 import("tframe")
 import("tframePlus")
 
-import("RCurl")
-import("XML")
+##import("RCurl")
+##import("XML")
+
+import("RJSDMX")
+import("rJava") 
 
 export("dbBackEnd")
 
