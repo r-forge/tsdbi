@@ -1,3 +1,9 @@
+require("TSsdmx")
+
+
+frb <- TSconnect("sdmx", dbname="FRB")
+z <- TSget('G19.79d3b610380314397facd01b59b37659', frb)
+
 # Status:  Working, but finding series identifiers is difficult and the
 #    mneumonics are obscure. Needs documentation.
 require("tfplot")

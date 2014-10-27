@@ -1,3 +1,7 @@
+require("TSsdmx")
+
+imf <- TSconnect("sdmx",  dbname == "IMF")
+
 # Status:  Not nearly working
 #    Preliminary investigation notes.
 #    Unclear whether site actually support SDMX download yet, but 

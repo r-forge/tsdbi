@@ -27,8 +27,6 @@
     \S4method{TSdoc}{character,TSsdmxConnection}(x, con, ... )  
     \S4method{TSlabel}{character,TSsdmxConnection}(x, con, ... )  
     \S4method{TSsource}{character,TSsdmxConnection}(x, con, ... )  
-
-    \S4method{dbDisconnect}{TSsdmxConnection}(conn,...)
 }
 \arguments{
     \item{q}{A character string indicating the query interface to use, or

@@ -1,23 +1,26 @@
-# Status:  Not nearly working
-#    Preliminary investigation notes.
-#    So far can only find bulk down loads and not series queries.
- #http://epp.eurostat.ec.europa.eu/portal/page/portal/statistics/metadata/metadata_structure
+require("TSsdmx")
 
-#http://epp.eurostat.ec.europa.eu/portal/page/portal/short_term_business_statistics/data/database
+eurostat <- TSconnect("sdmx", dbname="EUROSTAT")
 
-#extraction tools
-#http://epp.eurostat.ec.europa.eu/portal/page/portal/help/first_visit/extraction_tools
+z <- TSget("ei_nama_q.Q.MIO-EUR.NSA.CLV2000.NA-B11.IT", eurostat) # works
 
-#http://epp.eurostat.ec.europa.eu/portal/page/portal/eurostat/home
+require("tframe")
+if (seriesNames(z) != "ei_nama_q.Q.MIO-EUR.NSA.CLV2000.NA-B11.IT")
+    stop("seriesNames not set properly in eurostat test 1.")
+    
+TSmeta(z)
 
-#http://epp.eurostat.ec.europa.eu/portal/page/portal/statistics/search_database
-#ICON beside TOC gives XML download which (says it) includes link to data but
-#may only have bulkdownload links
+if (start(z) != "1980 Q1") stop("eurostat test 1 start date has changed.")
 
-#"http://appsso.eurostat.ec.europa.eu/nui/setupModifyTableLayout.do"
+z <- TSget("ei_nama_q.Q.MIO-EUR.SWDA.CP.NA-P72.IT", start="1990", end="2012Q2", eurostat)
 
-#"http://epp.eurostat.ec.europa.eu/NavTree_prod/everybody/BulkDownloadListing?dir=data&sort=1"
-#"/NavTree_prod/everybody/BulkDownloadListing"
 
-#browse/search database  >Economic and finance >Monetary and other financial #>...monthly (mmy_agg_m) | M1 | Metadata  
-# http://epp.eurostat.ec.europa.eu/cache/ITY_SDDS/EN /mny_agg_esms.htm
+# 28 series
+#z <- TSget('ei_nama_q.Q.MIO-EUR.NSA.CP.*.IT', eurostat) # all NaN
+z <-  TSget("ei_nama_q.Q.MIO-EUR.NSA.CLV2000.*.IT", eurostat) #  works
+
+if (28 != sum(grepl("ei_nama_q.Q.MIO-EUR.NSA.", seriesNames(z)) ) )
+    stop("seriesNames not set properly in eurostat test 1.")
+
+
+#TSmeta(z)

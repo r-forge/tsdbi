@@ -9,6 +9,8 @@ Known BUGS
 
 Changes in TSsdmx version 2014.10-1
 
+   o	Converted to a wrapper package for RJSDMX.
+
    o	Update class definitions to use slots= rather than representation().
 
    o	Bumped requirement for DBI up to version 0.3.1 or greater.
@@ -40,4 +42,4 @@ Changes in TSsdmx version 2011.3-1
 
 Changes in TSsdmx version 2010.12-1
 
-   o	First release
+   o	First ( alpha unworking release) on R-forge
