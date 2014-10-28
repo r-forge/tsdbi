@@ -1,5 +1,5 @@
 
-# Nov 2013 need devel version for bug fixes
+# Nov 2013 needed devel version for bug fixes, but good with >=2.4.0
 #  install.packages("devtools")
 #  require("devtools")
 #  install_github("R-package", "quandl")
