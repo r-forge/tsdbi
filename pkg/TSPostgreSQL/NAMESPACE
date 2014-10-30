@@ -11,7 +11,7 @@ import(RPostgreSQL) ## this should not all be needed, but parts for setClass "TS
 
 ## not generic
 export(
-  "dbBackEnd")
+  "PostgreSQL")
 
 ## S4 Classes
 exportClasses(

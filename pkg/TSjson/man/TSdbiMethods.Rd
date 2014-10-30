@@ -1,5 +1,5 @@
 \name{TSjsonMethods}
-\alias{dbBackEnd}
+\alias{json}
 
 \alias{TSconnect,jsonConnection,missing-method}
 \alias{TSget,character,TSjsonConnection-method}
@@ -16,7 +16,7 @@
   Javascript object notation. Direct connections or a proxy connection are
   possible. (Only Statistics Canada connections are currently supported.)}
 \usage{
-    dbBackEnd() 
+    json() 
     \S4method{TSconnect}{jsonConnection,missing}(
 	q, dbname, user=NULL, password = NULL, host=NULL, ...)
     \S4method{TSget}{character,TSjsonConnection}(

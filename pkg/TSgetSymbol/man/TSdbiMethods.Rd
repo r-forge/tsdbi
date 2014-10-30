@@ -1,5 +1,5 @@
 \name{TSgetSymbolMethods}
-\alias{dbBackEnd}
+\alias{getSymbol}
 
 \alias{TSconnect,getSymbolConnection,missing-method}
 \alias{TSget,character,TSgetSymbolConnection-method}
@@ -14,7 +14,7 @@
 \title{Methods to wrap getSymbols for TSdbi Generics}
 \description{Get a time series (matrix) using getSymbols from package quantmod, for example, from the Federal Reserve FRED database.}
 \usage{
-    dbBackEnd(...)
+    getSymbol(...)
     \S4method{TSconnect}{getSymbolConnection,missing}(
 	q, dbname, user="", password = "", host="", ...)
     \S4method{TSget}{character,TSgetSymbolConnection}(
@@ -55,7 +55,7 @@
     \item{user}{(unused) a character string indicating a user id.}
     \item{password}{(unused) a character string indicating a password.}
     \item{host}{(unused) a character string indicating a host computer.}
-    \item{...}{Arguments passed to methods or by \code{dbBackEnd} to
+    \item{...}{Arguments passed to methods or to
         \code{getSymbols}.}
 }
 \value{Depends.}

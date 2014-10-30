@@ -1,5 +1,5 @@
 \name{TSdbiMethods}
-\alias{dbBackEnd}
+\alias{PostgreSQL}
 
 \alias{TSconnect,PostgreSQLConnection,missing-method}
 \alias{TSget,character,TSPostgreSQLConnection-method}
@@ -17,7 +17,7 @@
 \title{TSdbi PostgreSQL Methods}
 \description{Methods for TSdbi PostgreSQL time series dtabase connection.}
 \usage{
-    dbBackEnd(...)
+    PostgreSQL(...)
     \S4method{TSconnect}{PostgreSQLConnection,missing}(q, dbname, host = 
        if(!is.null(Sys.getenv("PGHOST"))) Sys.getenv("PGHOST") else "localhost", ...)
     \S4method{TSget}{character,TSPostgreSQLConnection}(serIDs, 
@@ -72,8 +72,7 @@
     	necessary if it cannot be determined automatically).}
     \item{vintage}{Vintage to be supplied (if supported by db).}
     \item{panel}{Panel to be supplied (if supported by db).}
-    \item{...}{Arguments passed to other methods. In the case of dbBackEnd, 
-        arguments passed to RPostgreSQL::PostgreSQL}
+    \item{...}{Arguments passed to other methodsor to RPostgreSQL::PostgreSQL}
 }
 \value{depends.}
 \details{

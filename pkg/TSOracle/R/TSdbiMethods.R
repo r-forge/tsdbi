@@ -1,4 +1,4 @@
-dbBackEnd <- function(...){
+Oracle <- function(...){
   args <- pmatch(names(list(...)), names(formals(ROracle::Oracle)) )
   do.call(ROracle::Oracle, list(...)[!is.na(args)])
   }

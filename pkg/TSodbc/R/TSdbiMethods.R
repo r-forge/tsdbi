@@ -1,4 +1,4 @@
-dbBackEnd <- function (...) {
+odbc <- function (...) {
    # this is really fake
    new("odbcDriver")    #DBI Id inot used
    } 

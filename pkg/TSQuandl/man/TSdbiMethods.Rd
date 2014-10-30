@@ -1,5 +1,5 @@
 \name{TSQuandlMethods}
-\alias{dbBackEnd}
+\alias{Quandl}
 
 \alias{TSconnect,QuandlConnection,missing-method}
 \alias{TSget,character,TSQuandlConnection-method}
@@ -15,7 +15,7 @@
 \title{TSdbi Quandl Methods}
 \description{Methods for TSdbi Quandl time series database connection.}
 \usage{
-    dbBackEnd(...)
+    Quandl(...)
     \S4method{TSconnect}{QuandlConnection,missing}(q, dbname,
                token=NULL, ...)
 

@@ -13,8 +13,6 @@ Changes in TSgetSymbol version 2014.10-1
 
    o	Switched from Depends to Imports for quantmod.
 
-   o	Renamed getSymbol to dbBackEnd for consistency with other TS* packages.
-
 Changes in TSgetSymbol version 2013.11-1
 
    o	Fixed error in date calculation for quarterly data if converted 

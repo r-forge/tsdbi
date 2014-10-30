@@ -92,11 +92,10 @@ setGeneric("TSmeta<-",
 
 setGeneric("TSconnect", def= function(q, dbname, ...) standardGeneric("TSconnect"))
 
-# note that ... is passed to both dbBackEnd and TSconnect in next
+# note that ... is passed to both the driver and to TSconnect in next
 setMethod("TSconnect",   signature(q="character", dbname="character"),
    definition=function(q, dbname, ...)
-        TSconnect(dbConnect(getExportedValue(paste("TS", q, sep=""),
-	    "dbBackEnd")(...), dbname=dbname), ... ))
+        TSconnect(dbConnect(get(q, mode="function")(...), dbname=dbname), ... ))
 
 # This would work above for DBI sql engines, but for others the TS* package needs to export
 #        TSconnect(dbConnect(getExportedValue(paste("R", q,sep=""), q)(),

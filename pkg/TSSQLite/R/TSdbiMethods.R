@@ -1,4 +1,4 @@
-dbBackEnd <- function(...){
+SQLite <- function(...){
   args <- pmatch(names(list(...)), names(formals(RSQLite::SQLite)) )
   do.call(RSQLite::SQLite, list(...)[!is.na(args)])
   }

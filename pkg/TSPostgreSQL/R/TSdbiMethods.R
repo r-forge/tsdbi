@@ -1,4 +1,4 @@
-dbBackEnd <- function(...){
+PostgreSQL <- function(...){
   args <- pmatch(names(list(...)), names(formals(RPostgreSQL::PostgreSQL)) )
   do.call(RPostgreSQL::PostgreSQL, list(...)[!is.na(args)])
   }

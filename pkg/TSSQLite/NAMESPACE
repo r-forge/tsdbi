@@ -10,7 +10,7 @@ import("RSQLite") ## this should not all be needed, but parts for setClass "TSSQ
 
 ## not generic
 export(
-  "dbBackEnd")
+  "SQLite")
 
 ## S4 Classes
 exportClasses(

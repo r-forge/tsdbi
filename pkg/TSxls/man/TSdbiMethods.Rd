@@ -1,5 +1,5 @@
 \name{TSxlsMethods}
-\alias{dbBackEnd}
+\alias{xls}
 
 \alias{TSconnect,xlsConnection,missing-method}
 \alias{TSget,character,TSxlsConnection-method}
@@ -14,7 +14,7 @@
 \title{Methods for TSdbi Generics to Connect to Spreadsheets}
 \description{Get a time series (matrix) from a spreadsheet.}
 \usage{
-    dbBackEnd(...) 
+    xls(...) 
     \S4method{TSconnect}{xlsConnection,missing}(q, dbname, 
        map=list(ids, data, dates, names=NULL, description=NULL, sheet=1,
          tsrepresentation = function(data,dates){zoo(data, as.Date(dates))}),

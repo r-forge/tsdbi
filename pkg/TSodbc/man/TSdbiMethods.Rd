@@ -1,5 +1,5 @@
 \name{TSodbcMethods}
-\alias{dbBackEnd}
+\alias{odbc}
 
 \alias{TSconnect,odbcConnection,missing-method}
 \alias{TSget,character,TSodbcConnection-method}
@@ -22,7 +22,7 @@
 \title{TSdbi ODBC Methods}
 \description{Methods for TSdbi ODBC time series dtabase connection.}
 \usage{
-    dbBackEnd(...)
+    odbc(...)
     \S4method{TSconnect}{odbcConnection,missing}(q, dbname, ...)
     \S4method{TSget}{character,TSodbcConnection}(serIDs, con, 
        TSrepresentation=getOption("TSrepresentation"),

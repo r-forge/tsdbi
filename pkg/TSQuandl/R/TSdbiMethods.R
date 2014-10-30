@@ -1,4 +1,4 @@
-dbBackEnd <- function(...) {
+Quandl <- function(...) {
   drv <- "Quandl"
   attr(drv, "package") <- "TSQuandl"
   new("QuandlDriver", Id = drv)

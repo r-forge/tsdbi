@@ -1,4 +1,4 @@
-dbBackEnd <- function(...) {
+xls <- function(...) {
   drv <- "xls"
   attr(drv, "package") <- "TSxls"
   new("xlsDriver", Id = drv)
@@ -28,11 +28,11 @@ setClass("TSxlsConnection", contains=c("xlsConnection", "conType","TSdb"),
 	source="character", tsrepresentation = "function") 
    )
 
-# ... is passed  by default TSconnect (in TSdbi) to both dbBackEnd (and on to
-#  the drivers)  and also to  TSconnect con signature methods.
+# ... is passed  by default TSconnect (in TSdbi) to both the
+#  the driver  and also to  TSconnect con signature methods.
 # Here map is used by TSconnect but in most other cases it is used by
 #  the driver, so this would be more similar to other packages if it
-#  was stored by dbBackEnd (and then would not need to be passed to both).
+#  was stored by the driver (and then would not need to be passed to both).
 
 setMethod("TSconnect",   signature(q="xlsConnection", dbname="missing"),
   definition= function(q, dbname, 

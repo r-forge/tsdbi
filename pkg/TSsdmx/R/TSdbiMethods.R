@@ -1,4 +1,4 @@
-dbBackEnd <- function(...) {
+sdmx <- function(...) {
   drv <- "sdmx"
   attr(drv, "package") <- "TSsdmx"
   new("sdmxDriver")

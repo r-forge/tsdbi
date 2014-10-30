@@ -9,7 +9,7 @@ import("RMySQL") ## this should not all be needed, but parts for setClass "TSMyS
 
 ## not generic
 export(
-  "dbBackEnd")
+  "MySQL")
 
 ## S4 Classes
 exportClasses(
