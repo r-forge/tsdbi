@@ -1,13 +1,13 @@
-dbBackEnd <- function(fameLocal=TRUE, ...) {
-  if(!fameLocal){
+fameServer <- function(f...) {
      drv <- "fameServer"
      attr(drv, "package") <- "TSfameServer"
-     return(new("fameServerDriver", Id = drv))
-    } else {
+     new("fameServerDriver", Id = drv)
+  }
+
+fameLocal <- function(...) {
      drv <- "fame"
      attr(drv, "package") <- "TSfame"
-     return(new("fameLocalDriver", Id = drv))
-    }
+     new("fameLocalDriver", Id = drv)
   }
    
 setClass("TSfameLocalConnection", contains=c("DBIConnection", "conType", "TSdb"),

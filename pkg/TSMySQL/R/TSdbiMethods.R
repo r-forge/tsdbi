@@ -1,4 +1,4 @@
-dbBackEnd <- function(...){
+MySQL <- function(...){
   args <- pmatch(names(list(...)), names(formals(RMySQL::MySQL)) )
   do.call(RMySQL::MySQL, list(...)[!is.na(args)])
   }

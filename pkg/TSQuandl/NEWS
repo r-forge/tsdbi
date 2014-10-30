@@ -1,6 +1,6 @@
 Changes in TSQuandl version 2014.10-1
 
-   o	Still unreleased. Needs a fix in Quandl 2.3.5 which has not been
+   o	First released. Needs a fix in Quandl 2.3.5 which has not been
    	released. Reverting to 2.3.2 for testing purposes, part of
 	tests/Quandl.R disabled.
 

@@ -1,5 +1,6 @@
 \name{TSfameMethods}
-\alias{dbBackEnd}
+\alias{fameLocal}
+\alias{fameServer}
 
 \alias{TSconnect,TSfameLocalConnection,missing-method}
 \alias{TSget,character,TSfameLocalConnection-method}
@@ -31,7 +32,8 @@
 \title{TSdbi fame Methods}
 \description{Methods for TSdbi fame time series database connection.}
 \usage{
-   dbBackEnd(fameLocal=TRUE, ...)
+   fameLocal(...)
+   fameServer(...)
    \S4method{TSconnect}{TSfameLocalConnection,missing}(q, dbname, 
 	accessMode = if (file.exists(dbname)) "shared" else "create", 
 	current = NA, ...)
@@ -92,8 +94,6 @@
     \item{dbname}{The name of the  [server and] database to which the 
          connection should be
          established, omitted if \code{q} is a database connection object.}
-    \item{fameLocal}{A logical indicating if the connection is to 
-       a local Fame API or to a Fame server.}
     \item{con}{A database connection.}
     \item{serIDs}{identifiers for series to extract.}
     \item{vintage}{character string indicating vintage of the series on the 

@@ -9,9 +9,7 @@ import("rjson")
 
 import("findpython")
 
-export(
-  "dbBackEnd"
-   )
+export("json")
   
 ## S4 Classes
 exportClasses(

@@ -17,8 +17,6 @@ Changes in TShistQuote version 2014.10-1
 
    o	Added a dbConnect method.
 
-   o	Renamed histQuote to dbBackEnd for consistency with other TS* packages.
-
 Changes in TShistQuote version 2013.9-1
 
    o	Adjusted .Rbuildignore to omit accidental top level .png files.

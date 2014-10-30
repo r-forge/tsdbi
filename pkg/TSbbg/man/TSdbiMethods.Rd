@@ -1,6 +1,6 @@
 \name{TSbbgMethods}
 
-\alias{dbBackEnd}
+\alias{bbg}
 
 \alias{TSconnect,TSbbgConnection,missing-method}
 \alias{TSget,character,TSbbgConnection-method}
@@ -16,7 +16,7 @@
 title{TSdbi bbg Methods}
 \description{Methods for TSdbi bbg time series database connection to Bloomberg.}
 \usage{
-    dbBackEnd(...)
+    bbg(...)
     \S4method{TSconnect}{TSbbgConnection,missing}(q, dbname=NULL, ...)
 
     \S4method{TSget}{character,TSbbgConnection}(serIDs, con, 

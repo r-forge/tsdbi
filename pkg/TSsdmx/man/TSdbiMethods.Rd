@@ -1,5 +1,5 @@
 \name{TSsdmxMethods}
-\alias{dbBackEnd}
+\alias{sdmx}
 
 \alias{TSconnect,sdmxConnection,missing-method}
 \alias{TSget,character,TSsdmxConnection-method}
@@ -14,7 +14,7 @@
 \title{Methods to wrap sdmx  for TSdbi Generics}
 \description{Get a time series (matrix) using SDMX, for example, from the OECD database.}
 \usage{
-    dbBackEnd(...) 
+    sdmx...) 
     \S4method{TSconnect}{sdmxConnection,missing}(
 	q, dbname, user="", password = "", host="", ...)
     \S4method{TSget}{character,TSsdmxConnection}(
@@ -54,7 +54,7 @@
     \item{user}{(unused) a character string indicating a user id.}
     \item{password}{(unused) a character string indicating a password.}
     \item{host}{(unused) a character string indicating a host computer.}
-    \item{...}{Arguments passed to sdmxCall.}
+    \item{...}{Arguments passed to other methods or to sdmxCall.}
 }
 \value{Depends.}
 \details{

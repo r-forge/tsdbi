@@ -11,7 +11,7 @@ import("tframePlus")
 import("RJSDMX")
 import("rJava") 
 
-export("dbBackEnd")
+export("sdmx")
 
 ## S4 Classes
 exportClasses(

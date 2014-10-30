@@ -1,5 +1,5 @@
 \name{TSOracleMethods}
-\alias{dbBackEnd}
+\alias{Oracle}
 
 \alias{TSconnect,OracleConnection,missing-method}
 \alias{TSget,character,TSOracleConnection-method}
@@ -17,7 +17,7 @@
 \title{TSdbi Oracle Methods}
 \description{Methods for TSdbi Oracle time series dtabase connection.}
 \usage{
-    dbBackEnd(...)
+    Oracle(...)
     \S4method{TSconnect}{OracleConnection,missing}(q, dbname, ...)
     \S4method{TSget}{character,TSOracleConnection}(serIDs, con, 
        TSrepresentation=options()$TSrepresentation,

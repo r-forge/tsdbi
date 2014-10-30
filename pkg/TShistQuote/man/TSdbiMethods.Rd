@@ -1,5 +1,5 @@
 \name{TShistQuoteMethods}
-\alias{dbBackEnd}
+\alias{histQuote}
 
 \alias{TSconnect,histQuoteConnection,missing-method}
 \alias{TSget,character,TShistQuoteConnection-method}
@@ -14,7 +14,7 @@
 \title{Methods to wrap get.hist.quote for TSdbi Generics}
 \description{Get a time series (matrix) from stock quote URL}
 \usage{
-    dbBackEnd(...) 
+    histQuote(...) 
     \S4method{TSconnect}{histQuoteConnection,missing}(q, dbname, ...)
     \S4method{TSget}{character,TShistQuoteConnection}(
 	serIDs, con, TSrepresentation = options()$TSrepresentation, 

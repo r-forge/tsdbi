@@ -11,8 +11,7 @@ import("RODBC") ## this should not all be needed, but parts for setClass "TSodbc
 ##importClassesFrom("RODBC","ODBCConnection")
 
 ## not generic
-export(
-  "dbBackEnd")
+export("odbc")
 
 ## S4 Classes
 exportClasses(

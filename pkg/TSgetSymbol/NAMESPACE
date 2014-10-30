@@ -11,8 +11,7 @@ importFrom("xts", "periodicity")
 importFrom("quantmod", "getSymbols") #need quantmod in Depends not Imports for some reason
 
 ## not generic
-export(
-  "dbBackEnd")
+export("getSymbol")
 
 ## S4 Classes
 exportClasses(

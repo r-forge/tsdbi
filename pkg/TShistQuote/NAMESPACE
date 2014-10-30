@@ -10,7 +10,7 @@ import("tframePlus")
 import("zoo")
 import("tseries")
 
-export("dbBackEnd")
+export("histQuote")
 
 ## S4 Classes
 exportClasses(

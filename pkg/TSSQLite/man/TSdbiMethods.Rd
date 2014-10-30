@@ -1,5 +1,5 @@
 \name{TSdbiMethods}
-\alias{dbBackEnd}
+\alias{SQLite}
 
 \alias{TSconnect,SQLiteConnection,missing-method}
 \alias{TSget,character,TSSQLiteConnection-method}
@@ -18,7 +18,7 @@
 \title{TSdbi SQLite Methods}
 \description{Methods for TSdbi SQLite time series dtabase connection.}
 \usage{
-    dbBackEnd(...)
+    SQLite(...)
     \S4method{TSconnect}{SQLiteConnection,missing}(q, dbname, ...)
     \S4method{TSget}{character,TSSQLiteConnection}(
 	serIDs, con, TSrepresentation=options()$TSrepresentation,
@@ -74,8 +74,7 @@
     	necessary if it cannot be determined automatically).}
     \item{vintage}{Vintage to be supplied (if supported by db).}
     \item{panel}{Panel to be supplied (if supported by db).}
-    \item{...}{Arguments passed to other methods. In the case of dbBackEnd, arguments 
-       passed to RSQLite::SQLite}
+    \item{...}{Arguments passed to other methods.}
 }
 \value{depends.}
 \details{

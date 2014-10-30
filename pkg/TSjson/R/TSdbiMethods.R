@@ -1,4 +1,4 @@
-dbBackEnd <- function() {
+json <- function() {
   drv <- "json"
   attr(drv, "package") <- "TSjson"
   new("jsonDriver", Id = drv)

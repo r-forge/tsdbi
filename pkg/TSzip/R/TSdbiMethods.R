@@ -1,4 +1,4 @@
-dbBackEnd <- function(...) {
+zip <- function(...) {
   drv <- "zip"
   attr(drv, "package") <- "TSzip"
   new("zipDriver", Id = drv)

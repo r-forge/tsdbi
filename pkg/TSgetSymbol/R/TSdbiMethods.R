@@ -1,4 +1,4 @@
-dbBackEnd <- function(...) {
+getSymbol <- function(...) {
   drv <- "getSymbol"
   attr(drv, "package") <- "TSgetSymbol"
   new("getSymbolDriver", Id = drv)
@@ -19,11 +19,6 @@ setMethod("dbConnect", signature(drv="getSymbolDriver"),
 setMethod("dbDisconnect", signature(conn="getSymbolConnection"), 
      definition=function(conn,...) TRUE)
 
-#  new("getSymbolConnection", dbBackEnd(), dbname="FRED")
-#           dbConnect(dbBackEnd(), "FRED")
-#           dbConnect(getExportedValue("TSgetSymbol", "dbBackEnd")(), dbname="FRED")
-# TSconnect(dbConnect(dbBackEnd(), dbname="FRED"))
-# TSconnect(dbConnect(getExportedValue("TSgetSymbol", "dbBackEnd")(), dbname="FRED"))
 #######     end kludges   ######
 
 setClass("TSgetSymbolConnection", contains=c("getSymbolConnection","conType", "TSdb")) 

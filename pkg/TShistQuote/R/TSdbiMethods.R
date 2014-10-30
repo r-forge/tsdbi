@@ -1,4 +1,4 @@
-dbBackEnd <- function(...) {
+histQuote <- function(...) {
   drv <- "histQuote"
   attr(drv, "package") <- "TShistQuote"
   new("histQuoteDriver", Id = drv)

@@ -1,5 +1,5 @@
 \name{TSdbiMethods}
-\alias{dbBackEnd}
+\alias{MySQL}
 
 \alias{TSconnect,MySQLConnection,missing-method}
 \alias{TSget,character,TSMySQLConnection-method}
@@ -17,7 +17,7 @@
 \title{TSdbi MySQL Methods}
 \description{Methods for TSdbi MySQL time series dtabase connection.}
 \usage{
-    dbBackEnd(...)
+    MySQL(...)
     \S4method{TSconnect}{MySQLConnection,missing}(q, dbname, ...)
     \S4method{TSget}{character,TSMySQLConnection}(serIDs, con, 
        TSrepresentation=options()$TSrepresentation,
@@ -69,8 +69,7 @@
     	necessary if it cannot be determined automatically).}
     \item{vintage}{Vintage to be supplied (if supported by db).}
     \item{panel}{Panel to be supplied (if supported by db).}
-    \item{...}{Arguments passed to other methods. In the case of dbBackEnd, arguments 
-       passed to RMySQL::MySQL}
+    \item{...}{Arguments passed to other methods or to RMySQL::MySQL}
 }
 \value{depends.}
 \details{

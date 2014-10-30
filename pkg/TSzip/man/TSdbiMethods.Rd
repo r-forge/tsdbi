@@ -1,5 +1,5 @@
 \name{TSzipMethods}
-\alias{dbBackEnd}
+\alias{zip}
 
 \alias{TSconnect,zipConnection,missing-method}
 \alias{TSget,character,TSzipConnection-method}
@@ -14,7 +14,7 @@
 \title{Methods for TSdbi Generics to Connect to zipped csv Files}
 \description{Get a time series (matrix) from a zipped csv file (at a url).}
 \usage{
-    dbBackEnd(...) 
+    zip(...) 
     \S4method{TSconnect}{zipConnection,missing}(q, dbname, 
                 suffix=c("Open","High","Low","Close","Volume","OI"), ...)
     \S4method{TSget}{character,TSzipConnection}(

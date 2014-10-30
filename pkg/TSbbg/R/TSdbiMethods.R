@@ -1,4 +1,4 @@
-dbBackEnd <- function(...) {
+bbg <- function(...) {
   drv <- "bbg"
   attr(drv, "package") <- "TSbbg"
   new("bbgDriver", Id = drv)
