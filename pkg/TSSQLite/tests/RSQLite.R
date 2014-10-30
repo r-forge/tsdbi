@@ -6,7 +6,8 @@ cat("**************************************************************\n")
 cat("* WARNING: THIS OVERWRITES TABLES IN TEST DATABASE ON SERVER**\n")
 cat("**************************************************************\n")
 
-setup <- RSQLite::dbConnect("SQLite", dbname="test") # no user/passwd/host
+# no user/passwd/host
+setup <- RSQLite::dbConnect(RSQLite::SQLite(), dbname="test") 
 
 RSQLite::dbListTables(setup) 
 
