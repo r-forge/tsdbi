@@ -11,31 +11,73 @@ require("RJSDMX")
 # require("rJava")
 
 #  sdmxHelp()
-# "ILO" seems broken.
+# "ILO" server is temporarily not working for this help
 # "BIS" requires an account
 
 getProviders()
 #[1] "BIS"      "ILO"      "ECB"      "OECD"     "EUROSTAT"
+
+getFlows('ECB')
+
+getFlows('ECB','*EXR*')
+
+
+# The first time above is used in a session it also gives an indication if/where 
+# a configuration file has been found.
+# Its location should be set with the SDMX_CONF environment variable.
+#  e.g  export SDMX_CONF=/home/paul/.SdmxClient
+# Details about contents are at https://github.com/amattioc/SDMX/wiki/Configuration
+# The configuration file can be used to control the level of std output about
+# warnings and errors. This mostly seems to be coming directly from the java,
+# rather than passed back to R (which would be more usual for R packages as it
+# can then be masked in R by try(), etc, if that makes sense.)
+# R users many want to set 
+#SDMX.level = WARNING
+#java.util.logging.ConsoleHandler.level = WARNING
+# to limit output to what would more usually be expected in R sessions.
 
 ############################ "BIS" ############################
 # need account (free?)
 #https://dbsonline.bis.org/
 
 ############################ "ILO" ############################
-# temporarily broken?
+# The server process which provides information to sdmxHelp() is having problems
+#  but 
+getFlows('ILO')
+
+z <- getSDMX("ILO", 'EAP_TEAP_SEX_AGE_NB.AUS.*.*.*')
+ 
+http://www.ilo.org/ilostat/faces/home/statisticaldata/data_by_country/country-details/indicator-details?country=AUS&indicator=EAP_TEAP_SEX_AGE_NB&source=518&datasetCode=YI&collectionCode=YI
 
 ############################ "ECB" ############################
-# annual
+#### annual ####
 z <- getSDMX("ECB", 'EXR.A.USD.EUR.SP00.A')
-z <- getSDMX("ECB", 'EXR.A.USD.EUR.SP00.A', start = "", end = "")
+if(1999 != start(z[[1]])) stop("ECB annual retrieval error.")
 
-# monthly
+z <- getSDMX("ECB", 'EXR.A.USD.EUR.SP00.A', start = "2001", end = "2012")
+if(2001 != start(z[[1]])) stop("start test for annual data failed.")
+if(2012 != end(z[[1]]))   stop(  "end test for annual data failed.")
+
+#### monthly ####
 z <- getSDMX("ECB", 'EXR.M.USD.EUR.SP00.A')
+
+if("Jan 1999" != start(z[[1]])) stop("ECB monthly retrieval error.")
+
 #  How should start and end be specified?
 #  z <- getSDMX("ECB", 'EXR.M.USD.EUR.SP00.A', start="May 2008", end="Aug 2014")
 #  z <- getSDMX("ECB", 'EXR.M.USD.EUR.SP00.A', start=c(2008,5), end=c(2014,8))
+#  z <- getSDMX("ECB", 'EXR.M.USD.EUR.SP00.A', start=yearmon(2008+4/12))
 
-# weeky data 
+
+#### quarterly ####
+z <- getSDMX("ECB", 'EXR.Q.USD.EUR.SP00.A')
+
+if("1999 Q1" != start(z[[1]])) stop("ECB quarterly retrieval error.")
+
+#  How should start and end be specified?
+#  z <- getSDMX("ECB", 'EXR.Q.USD.EUR.SP00.A', start="2008 Q2", end="2014 Q3")
+
+#### weeky data  ####
 # "Frequency W. Does not allow the creation of a strictly 
 fetching but then failing
 
@@ -60,7 +102,7 @@ z <- getSDMX("ECB", "ILM.W.U2.C.A010.Z5.Z0Z")
 
 ############################ "OECD ############################
 
-tts = getSDMX('OECD', 'G20_PRICES.CAN.*.*.M')
+tts <- getSDMX('OECD', 'G20_PRICES.CAN.*.*.M')
 names(tts)
 
 tts2 = getSDMX('OECD', 'G20_PRICES.CAN.*.IXOB.M')       # retrieves but bad dates
@@ -176,15 +218,20 @@ dims <-  getDimensions('ECB','EXR')
 # getDSDIdentifier
 id <-  getDSDIdentifier('ECB','EXR')
 
-#   Note sure how this works yet
 #  addProvider(name, agency, endpoint, needsCredentials)
-#  This guess does not work
-#  addProvider("ECBTEST", '4F0',
-#    "http://sdw-wsrest.ecb.europa.eu/service/dataflow/ECB/EXR/latest" ,
-#    needsCredentials=FALSE)
-#z <- getSDMX("ECBTEST", 'EXR.A.USD.EUR.SP00.A')
-#z <- getSDMX("ECB",     'EXR.A.USD.EUR.SP00.A')
+#In the next release you will not need to specify the agency.
 
+## The addProvider function works only on SDMX 2.1 fully compliant providers. 
+# All other versions of SDMX are "not so standard", and it is impossible (at 
+# others are a 'custom' client
+
+addProvider(name='test', agency='ECB',
+    endpoint='http://sdw-wsrest.ecb.europa.eu/service', FALSE)
+
+z <- getSDMX('test', 'EXR.A.USD.EUR.SP00.A')
+z <- getSDMX('test', 'EXR.A.USD.EUR.SP00.A', start = "2001")
+
+#http://sdw-wsrest.ecb.europa.eu/service/data/EXR/A.USD.EUR.SP00.A?startPeriod=2001
 
 ######################################
 
@@ -198,16 +245,28 @@ id <-  getDSDIdentifier('ECB','EXR')
 
 ############################ UN ############################
 
-#http://unstats.un.org/unsd/tradekb/Knowledgebase/Comtrade-SDMX-Web-Services-and-Data-Exchange
+R example using json at
+http://comtrade.un.org/data/Doc/api/ex/r
 
+
+# no SDMX yet but coming
+http://comtrade.un.org/data/doc/api/
+http://comtrade.un.org/data/doc/api/#Future
+
+UN Comtrade data request takes the following form:
+http://comtrade.un.org/api/get?parameters
+API call: http://comtrade.un.org/api/get?max=50000&type=C&freq=A&px=HS&ps=2013&r=826&p=0&rg=all&cc=AG2&fmt=json
+
+http://comtrade.un.org/api/get?max=50000&type=C&freq=A&px=HS&ps=2013&r=826&p=0&rg=all&cc=AG2&fmt=sdmx
+
+#Old
+#http://unstats.un.org/unsd/tradekb/Knowledgebase/Comtrade-SDMX-Web-Services-and-Data-Exchange
+#http://unstats.un.org/unsd/tradekb/Knowledgebase/Comtrade-SDMX-Web-Services-and-Data-Exchange?Keywords=SDMX
 
 ######################## World Bank #######################
 # See http://data.worldbank.org/developers
 # and specifics at http://data.worldbank.org/node/11
 
-
-############################ UN ############################
-http://unstats.un.org/unsd/tradekb/Knowledgebase/Comtrade-SDMX-Web-Services-and-Data-Exchange?Keywords=SDMX
 
 ############################ IStat ############################
 
@@ -225,6 +284,20 @@ http://unstats.un.org/unsd/tradekb/Knowledgebase/Comtrade-SDMX-Web-Services-and-
 #http://www.jedh.org/jedh_dbase.html
 
 
+############################ WHO ############################
+# their XLM looks like SDMX but does not say it is
+# see
+# http://apps.who.int/gho/data/node.resources
+# http://apps.who.int/gho/data/node.resources.api?lang=en
+# http://apps.who.int/gho/data/node.resources.examples?lang=en
+
+# dimensions
+#http://apps.who.int/gho/athena/api/ 
+
+# example
+# http://apps.who.int/gho/athena/api/GHO/WHOSIS_000001 
+# http://apps.who.int/gho/athena/api/GHO/WHOSIS_000001?filter=COUNTRY:BWA 
+
 ############################ Federal Reserve Board ############################
 #Consumer credit from all sources (I think)
 #https://www.federalreserve.gov/datadownload/Output.aspx?rel=G19&series=79d3b610380314397facd01b59b37659&lastObs=&from=01/01/1943&to=12/31/2010&filetype=sdmx&label=include&layout=seriescolumn
@@ -236,4 +309,10 @@ http://unstats.un.org/unsd/tradekb/Knowledgebase/Comtrade-SDMX-Web-Services-and-
 ############################  Bank of Canada  ############################
 
 
+############################  Fisheries and Oceans  ############################
 
+
+FAO Fisheries has currently this SDMX 2.1 REST API with SDMX 2.0 messages:
+http://www.fao.org/figis/sdmx/
+FAO will publish this year also:
+http://data.fao.org/sdmx/

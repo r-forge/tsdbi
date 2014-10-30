@@ -19,9 +19,9 @@ cat("**************************************************************\n")
        passwd  <- Sys.getenv("MYSQL_PASSWD")
        if ("" == passwd)   passwd <- NULL
        #  See  ?"dbConnect-methods"
-       setup <- RMySQL::dbConnect("MySQL",
-          username=user, password=passwd, host=host, dbname=dbname)  
-     }else setup <- RMySQL::dbConnect("MySQL", dbname=dbname) #user/passwd/host in ~/.my.cnf
+       setup <- RMySQL::dbConnect(RMySQL::MySQL(),
+           username=user, password=passwd, host=host, dbname=dbname)  
+     }else setup <- RMySQL::dbConnect(RMySQL::MySQL(), dbname=dbname) #user/passwd/host in ~/.my.cnf
 
 DBI::dbListTables(setup) 
 

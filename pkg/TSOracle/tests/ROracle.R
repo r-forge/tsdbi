@@ -20,10 +20,10 @@ cat("**************************************************************\n")
        passwd  <- Sys.getenv("ORACLE_PASSWD")
        if ("" == passwd)   passwd <- NULL
        #  See  ?"dbConnect-methods"
-       con <- DBI::dbConnect("Oracle",
+       con <- Oracle::dbConnect(Oracle::Oracle(),
           username=user, password=passwd, host=host, dbname=dbname)  
      }else  con <- 
-       DBI::dbConnect(m, dbname=dbname) # pass user/passwd/host in ~/.my.cnf
+       Oracle::dbConnect(Oracle::Oracle(), dbname=dbname) # pass user/passwd/host in ~/.my.cnf
 
 DBI::dbListTables(con) 
 
@@ -37,7 +37,7 @@ require("TSOracle")
 
 con <- if ("" != user)  
           tryCatch(TSconnect("Oracle", dbname=dbname, username=user, password=passwd, host=host)) 
-    else  tryCatch(TSconnect("Oracle", dbname=dbname)) # pass user/passwd/host in ~/.my.cnf
+    else  tryCatch(TSconnect("Oracle", dbname=dbname)) # pass user/passwd/host
 
 if(inherits(con, "try-error")) stop("CreateTables did not work.")
 

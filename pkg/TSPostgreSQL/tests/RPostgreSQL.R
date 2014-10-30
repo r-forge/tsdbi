@@ -20,14 +20,14 @@ cat("**************************************************************\n")
    if ("" != user) {
        passwd  <- Sys.getenv("POSTGRES_PASSWD")
        #  See  ?"dbConnect-methods"
-       setup <- RPostgreSQL::dbConnect("PostgreSQL", dbname=dbname,
+       setup <- RPostgreSQL::dbConnect(RPostgreSQL::PostgreSQL(), dbname=dbname,
           user=user, password=passwd, host=host)  
      }else  {
 	#( the postgres driver may also use PGDATABASE, PGHOST, PGPORT, PGUSER )
        # The Postgress documentation seems to suggest that it should be
        #   possible to get the host from the .pgpass file too, but I cannot.
        #get user/passwd in ~/.pgpass
-       setup <- RPostgreSQL::dbConnect("PostgreSQL", dbname=dbname, host=host) 
+       setup <- RPostgreSQL::dbConnect(RPostgreSQL::PostgreSQL(), dbname=dbname, host=host) 
        }
 
 DBI::dbListTables(setup) 
