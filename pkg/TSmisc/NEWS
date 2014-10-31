@@ -1,0 +1,17 @@
+See also
+
+   o	See also NEWS in the TSdbi package.
+
+Known BUGS
+
+   o	None for the moment.
+
+Changes in TSmisc version 2014.10-1
+
+   o	First release
+
+   o	Removed user/password/host from getSymbol.
+
+   o	This package is a consolidation of TShistQuote, TSgetSymbol, TSzip,
+   	and TSxls. For older NEWS see archives of those packages. I also adds
+	a simple json connection to UN data. 
