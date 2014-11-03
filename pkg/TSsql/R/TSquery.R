@@ -65,15 +65,14 @@ TSquery <- function (select, dateField, table, where = NULL,
     else if (frequency == "annual") 
         r <- ts(r[, -1], start = r[1, 1], frequency = 1)
     else if (frequency == "daily") {
-        require("zoo")
-	#expand with NA (or 0) in missing days
+        #expand with NA (or 0) in missing days
 	st <- as.Date(res[1,1])
 	en <- as.Date(res[NROW(res),1])
  	dex <- st + 0 : (en - st)
 	ind <- dex %in% as.Date(res[,1]) 
 	r   <- rep(na.as, length(ind))
 	r[ind] <- as.numeric(res[,2])
-	r <- zoo(r, dex)
+	r <- zoo::zoo(r, dex)
 	}
     if(!is.null(names)) seriesNames(r) <- names 
     r
