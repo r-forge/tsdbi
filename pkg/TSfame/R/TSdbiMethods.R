@@ -1,4 +1,4 @@
-fameServer <- function(f...) {
+fameServer <- function(...) {
      drv <- "fameServer"
      attr(drv, "package") <- "TSfameServer"
      new("fameServerDriver", Id = drv)
