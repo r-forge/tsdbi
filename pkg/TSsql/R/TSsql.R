@@ -139,7 +139,7 @@ TSputSQL <- function(x, serIDs=seriesNames(x), con, Table=NULL,
     else stop("ts frequency not supported.")  
     }
   else if (inherits(x, "zoo")) {
-    require("zoo")
+    ##require("zoo")
     #  might do better than this
     if (is.null(Table)) stop("Table must be specified for zoo series.")
     d <- time(x) 
@@ -260,7 +260,7 @@ TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation")
        tbl <- q$tbl
        useZoo <- if ((TSrepresentation == "zoo") | 
                    !(tbl %in% c("A", "Q", "M","S"))) TRUE else FALSE 
-       if(useZoo && !require("zoo")) stop("zoo package is required.")
+       ##if(useZoo && !require("zoo")) stop("zoo package is required.")
        }
     else if(q$tbl != tbl) 
        stop("Series must all have the same frequency or time representation.")
@@ -270,59 +270,59 @@ TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation")
       {res <- Q(paste("SELECT year, v FROM ", tbNm(hV, "A", vintage[i]), 
                 whereT[j], " order by year;"))
        r   <- ts(res[,2], start=c(res[1,1], 1), frequency=1) 
-       if(useZoo) r <- as.zoo(r)
+       if(useZoo) r <- zoo::as.zoo(r)
      }
     else if (tbl=="Q")  
       {res <- Q(paste("SELECT year, period, v FROM ", tbNm(hV, "Q", vintage[i]),
                 whereT[j], " order by year, period;"))
        r   <- ts(res[,3], start=c(res[1,1:2]), frequency=4) 	 
-       if(useZoo) r <- as.zoo(r)
+       if(useZoo) r <- zoo::as.zoo(r)
       }
     else if (tbl=="M")
       {res <- Q(paste("SELECT year, period, v FROM ", tbNm(hV, "M", vintage[i]),
                 whereT[j], " order by year, period;"))
        r   <- ts(res[,3], start=c(res[1,1:2]), frequency=12)	 
-       if(useZoo) r <- as.zoo(r)
+       if(useZoo) r <- zoo::as.zoo(r)
       }
     else if (tbl=="W") 
       {res <- Q(paste("SELECT date, period, v FROM ", tbNm(hV, "W", vintage[i]),
                 whereT[j], " order by date;"))
-       r   <- zoo(as.numeric(res[,3]), as.Date(res[,1]))
+       r   <- zoo::zoo(as.numeric(res[,3]), as.Date(res[,1]))
        # period is as.int(res[,2]) 	 
       }
     else if (tbl=="B") 
       {res <- Q(paste("SELECT date, period, v FROM ", tbNm(hV, "B", vintage[i]),
                 whereT[j], " order by date;"))
-       r   <- zoo(as.numeric(res[,3]), as.Date(res[,1]))
+       r   <- zoo::zoo(as.numeric(res[,3]), as.Date(res[,1]))
        # period is as.int(res[,2]) 	 
       }
     else if (tbl=="D")  
       {res <- Q(paste("SELECT date, period, v FROM ", tbNm(hV, "D", vintage[i]),
                 whereT[j], " order by date;"))
-       r   <- zoo(as.numeric(res[,3]), as.Date(res[,1]))
+       r   <- zoo::zoo(as.numeric(res[,3]), as.Date(res[,1]))
        # period is as.int(res[,2]) 	 
       }
     else if (tbl=="S")    
       {res <- Q(paste("SELECT year, period, v FROM ", tbNm(hV, "S", vintage[i]),
                 whereT[j], " order by year, period;"))
        r   <- ts(res[,3], start=c(res[1,1:2]), frequency=2)	 
-       if(useZoo) r <- as.zoo(r)
+       if(useZoo) r <- zoo::as.zoo(r)
       }
     else if (tbl=="U")  
       {res <- Q(paste("SELECT date, tz, period, v FROM U ",tbNm(hV,"U",vintage[i]),
                 whereT[j], " order by date;"))
-       r   <- zoo(as.numeric(res[,4]), as.Date(res[,1]))
+       r   <- zoo::zoo(as.numeric(res[,4]), as.Date(res[,1]))
        # tz ? period is as.int(res[,3]) 	 
       }
     else if (tbl=="I")  
       {res <- Q(paste("SELECT date, v FROM ", tbNm(hV, "I", vintage[i]), 
                 whereT[j], " order by date;"))
-       r   <- zoo(as.numeric(res[,2]), as.Date(res[,1]))
+       r   <- zoo::zoo(as.numeric(res[,2]), as.Date(res[,1]))
       }
     else if (tbl=="T")  
       {res <- Q(paste("SELECT date, v FROM ", tbNm(hV, "T", vintage[i]), 
                 whereT[j], " order by date;"))
-       r   <- zoo(as.numeric(res[,2]), as.POSIXct(res[,1]))
+       r   <- zoo::zoo(as.numeric(res[,2]), as.POSIXct(res[,1]))
       }
     else stop("Specified table not found.", 
               " (Internal TSdbi or database error likely.)",
@@ -341,8 +341,8 @@ TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation")
   if( (!all(is.na(rp))) && !all(rp == "	" ) ) TSrefperiod(mat) <- rp      
   
   if (! TSrepresentation  %in% c( "zoo", "default")){
-      require("tframePlus")
-      mat <- changeTSrepresentation(mat, TSrepresentation)
+      ##require("tframePlus")
+      mat <- tframePlus::changeTSrepresentation(mat, TSrepresentation)
       }
 
   seriesNames(mat) <- names

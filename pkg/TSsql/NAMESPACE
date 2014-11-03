@@ -2,9 +2,12 @@ import(TSdbi)
 import(methods)  
 import(DBI)      
 #importFrom("stats", "tsp")
-import("tframe")
 importFrom("stats", "start")
 importFrom("stats", "end")
+
+import("tframe")
+import("tframePlus")
+import("zoo")
 
 ## not generic
 export(
