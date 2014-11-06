@@ -1,4 +1,4 @@
-require("TSxls")
+require("TSmisc")
 require("tfplot")
 require("zoo")
 
@@ -14,7 +14,7 @@ require("zoo")
 
 ####  Australian Intervention copied Oct 28, 2013 ####
   # testfile <- "http://www.rba.gov.au/statistics/tables/xls/a05hist.xls"
-  testfile <- system.file("testxls/a05hist.xls", package = "TSxls")
+  testfile <- system.file("testxls/a05hist.xls", package = "TSmisc")
 
 
 # note that dates display in the spreadsheet like 02-Jan-1989, show in the
@@ -43,3 +43,5 @@ require("zoo")
  
   TSrefperiod(z) 
   TSdescription(z) 
+
+  unlink("Rplots.pdf")
