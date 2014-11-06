@@ -1,4 +1,4 @@
-require("TSzip")
+require("TSmisc")
 require("tis")
 require("tfplot")
 
@@ -26,3 +26,5 @@ require("tfplot")
   z <- TSget(c("AD", "CD"), pit, quote="Close")
   tfplot(z, start="2007-01-01",
          Title="Australian and Canadian Dollar Continuous Contract, Close")
+
+  unlink("Rplots.pdf")
