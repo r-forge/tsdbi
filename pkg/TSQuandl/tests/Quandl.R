@@ -88,7 +88,7 @@ cat("**************    test meta data\n")
   if ("Canada CPI" != attr(x,"meta")$name )  
      stop("meta data $name is changed (zoo).")
    
-  if ("Bank of Canada" != attr(x,"meta")$source_name )  
+  if (! grepl("Bank of Canada", attr(x,"meta")$source_name ))  
      stop("meta data $source_name is changed (zoo).")
 
 
@@ -100,5 +100,5 @@ cat("**************    test meta data\n")
   if ("Canada CPI" != attr(x,"meta")$name )  
      stop("meta data $name is changed (xts).")
    
-  if ("Bank of Canada" != attr(x,"meta")$source_name )  
+  if (! grepl("Bank of Canada", attr(x,"meta")$source_name ))  
      stop("meta data $source_name is changed (xts).")
