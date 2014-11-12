@@ -213,6 +213,9 @@ TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation")
   # so far I think this is generic to all SQL.
   if(is.null(TSrepresentation)) TSrepresentation <- "default"
 
+  # default is ts if the table is in  c("A", "Q", "M","S") and zoo otherwise.
+  # default is used for retrieval and any conversion is done after.
+
   if ( 1 < sum(c(length(serIDs), length(panel), length(vintage)) > 1))
    stop("Only one of serIDs, panel, or vintage can have length greater than 1.")
 
@@ -256,33 +259,26 @@ TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation")
 	q <- q[1,]
 	}
 
-    if  (i == 1) {
-       tbl <- q$tbl
-       useZoo <- if ((TSrepresentation == "zoo") | 
-                   !(tbl %in% c("A", "Q", "M","S"))) TRUE else FALSE 
-       ##if(useZoo && !require("zoo")) stop("zoo package is required.")
-       }
+    if  (i == 1)  tbl <- q$tbl
     else if(q$tbl != tbl) 
        stop("Series must all have the same frequency or time representation.")
+
     rp <- c(rp, q$refperiod)
 
     if (tbl=="A") 
       {res <- Q(paste("SELECT year, v FROM ", tbNm(hV, "A", vintage[i]), 
                 whereT[j], " order by year;"))
        r   <- ts(res[,2], start=c(res[1,1], 1), frequency=1) 
-       if(useZoo) r <- zoo::as.zoo(r)
      }
     else if (tbl=="Q")  
       {res <- Q(paste("SELECT year, period, v FROM ", tbNm(hV, "Q", vintage[i]),
                 whereT[j], " order by year, period;"))
        r   <- ts(res[,3], start=c(res[1,1:2]), frequency=4) 	 
-       if(useZoo) r <- zoo::as.zoo(r)
       }
     else if (tbl=="M")
       {res <- Q(paste("SELECT year, period, v FROM ", tbNm(hV, "M", vintage[i]),
                 whereT[j], " order by year, period;"))
        r   <- ts(res[,3], start=c(res[1,1:2]), frequency=12)	 
-       if(useZoo) r <- zoo::as.zoo(r)
       }
     else if (tbl=="W") 
       {res <- Q(paste("SELECT date, period, v FROM ", tbNm(hV, "W", vintage[i]),
@@ -306,7 +302,6 @@ TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation")
       {res <- Q(paste("SELECT year, period, v FROM ", tbNm(hV, "S", vintage[i]),
                 whereT[j], " order by year, period;"))
        r   <- ts(res[,3], start=c(res[1,1:2]), frequency=2)	 
-       if(useZoo) r <- zoo::as.zoo(r)
       }
     else if (tbl=="U")  
       {res <- Q(paste("SELECT date, tz, period, v FROM U ",tbNm(hV,"U",vintage[i]),
@@ -340,10 +335,7 @@ TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation")
   mat <- tfwindow(mat, tf=tf, start=start, end=end)
   if( (!all(is.na(rp))) && !all(rp == "	" ) ) TSrefperiod(mat) <- rp      
   
-  if (! TSrepresentation  %in% c( "zoo", "default")){
-      ##require("tframePlus")
-      mat <- tframePlus::changeTSrepresentation(mat, TSrepresentation)
-      }
+  mat <- tframePlus::changeTSrepresentation(mat, TSrepresentation)
 
   seriesNames(mat) <- names
 

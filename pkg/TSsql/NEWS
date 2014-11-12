@@ -1,6 +1,9 @@
 
 Changes in TSsql version 2014.10-1
 
+   o	Simplified TSgetSQL to always use default for retrieval and then call
+   	tframePlus::changeTSrepresentation for conversion.
+
    o	Bumped requirement for TSdbi up to version 2014.10-1 or greater.
 
    o	Added DBI:: reference in inst/TSsql files so other packages
