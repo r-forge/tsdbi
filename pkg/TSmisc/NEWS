@@ -10,8 +10,17 @@ Changes in TSmisc version 2014.10-1
 
    o	First release
 
+   o	Adjusted handling of TSrepresentation to be more uniform across 
+   	TSget methods.
+
    o	Removed user/password/host from getSymbol.
 
+   o	Bumped requirement for DBI up to version 0.3.1 or greater. Also some
+   	namespace and driver calling changes changes associated with this. 
+
+   o	Adjusted TSconnect() to use a string or a connection in place of a
+   	driver, and renamed argument drv to q to reflect this change.
+
    o	This package is a consolidation of TShistQuote, TSgetSymbol, TSzip,
-   	and TSxls. For older NEWS see archives of those packages. I also adds
-	a simple json connection to UN data. 
+   	and TSxls. For older NEWS see archives of those packages. I MAY
+	also add a simple json connection to UN data. 
