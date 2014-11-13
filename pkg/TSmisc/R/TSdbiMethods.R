@@ -85,7 +85,7 @@ setMethod("TSget",     signature(serIDs="character", con="TShistQuoteConnection"
    definition= function(serIDs, con, TSrepresentation=options()$TSrepresentation,
        tf=NULL, start=tfstart(tf), end=tfend(tf),
        names=serIDs, quote = "Close", quiet=TRUE, repeat.try=3, ...){ 
-    if (is.null(TSrepresentation)) TSrepresentation <- "zoo"
+
     mat <- desc <- NULL
     # recycle serIDs and quote to matching lengths
     # argument 'quote' ignored for provider 'oanda'
@@ -116,17 +116,15 @@ setMethod("TSget",     signature(serIDs="character", con="TShistQuoteConnection"
        desc <- c(desc, paste(serIDs[i], quote[i], collapse=" "))
        }
     if (NCOL(mat) != length(serIDs)) stop("Error retrieving series", serIDs) 
-    if ((TSrepresentation  == "default")&&
-        (tffrequency(mat) %in% c( 1,4,12,2))) mat <- as.ts(mat)
+
     mat <- tfwindow(mat, tf=tf, start=start, end=end)
   
-    if (! TSrepresentation  %in% c( "zoo", "default")){
-      require("tframePlus")
-      mat <- changeTSrepresentation(mat, TSrepresentation)
-      }
+    mat <- tframePlus::changeTSrepresentation(mat, TSrepresentation)
 
     if(all(quote == quote[1])) TSrefperiod(mat) <- quote[1]
+
     seriesNames(mat) <- names
+
     TSmeta(mat) <- new("TSmeta", serIDs=serIDs,  dbname=con@dbname, 
         hasVintages=con@hasVintages, hasPanels=con@hasPanels,
   	conType=class(con), DateStamp= Sys.time(), 
@@ -255,6 +253,8 @@ setMethod("TSget",     signature(serIDs="character", con="TSgetSymbolConnection"
        names=serIDs, quote = NULL, 
        quiet=TRUE, repeat.try=3, ...){ 
 
+    #This TSget passes of TSrepresentation to getSymbols rather than 
+    #  using tframePlus::changeTSrepresentation
     if (is.null(TSrepresentation)) {
        default <- TRUE
        TSrepresentation <- "zoo"
@@ -263,6 +263,7 @@ setMethod("TSget",     signature(serIDs="character", con="TSgetSymbolConnection"
     
     if (! TSrepresentation %in% c("ts", "its", "zoo", "xts", "timeSeries"))
        stop(TSrepresentation, " time series class not supported.")
+
     mat <- desc <- NULL
     # recycle serIDs and quote to matching lengths
     # argument 'quote' ignored for provider 'oanda'
@@ -318,6 +319,7 @@ setMethod("TSget",     signature(serIDs="character", con="TSgetSymbolConnection"
         mat <- tfwindow(mat, tf=tf, start=start, end=end)
 
     seriesNames(mat) <- names
+
     TSmeta(mat) <- new("TSmeta", serIDs=serIDs,  dbname=con@dbname, 
         hasVintages=con@hasVintages, hasPanels=con@hasPanels,
   	conType=class(con), DateStamp= Sys.time(), 
@@ -533,7 +535,6 @@ setMethod("TSget",     signature(serIDs="character", con="TSxlsConnection"),
    definition=function(serIDs, con, TSrepresentation=options()$TSrepresentation,
        tf=NULL, start=tfstart(tf), end=tfend(tf),
        names=serIDs, ...){ 
-    if (is.null(TSrepresentation)) TSrepresentation <- "ts"
     
     # data, ids and dates are cached in con
     mat <- try(con@tsrepresentation(con@data[,serIDs], con@dates),
@@ -545,13 +546,13 @@ setMethod("TSget",     signature(serIDs="character", con="TSxlsConnection"),
     desc <- con@description[serIDs]
 
     if (NCOL(mat) != length(serIDs)) stop("Error retrieving series", serIDs) 
+
     mat <- tfwindow(mat, tf=tf, start=start, end=end)
-    #if (! TSrepresentation  %in% c( "zoo", "default")){
-    #  require("tframePlus")
-    #  mat <- changeTSrepresentation(mat, TSrepresentation)
-    #  }
+  
+    mat <- tframePlus::changeTSrepresentation(mat, TSrepresentation)
 
     seriesNames(mat) <- names
+
     TSmeta(mat) <- new("TSmeta", serIDs=serIDs,  dbname=con@dbname, 
         hasVintages=con@hasVintages, hasPanels=con@hasPanels,
   	conType=class(con), DateStamp= Sys.time(), 
@@ -687,14 +688,6 @@ setMethod("TSget",     signature(serIDs="character", con="TSzipConnection"),
    definition=function(serIDs, con, TSrepresentation=options()$TSrepresentation,
        tf=NULL, start=tfstart(tf), end=tfend(tf),
        names=NULL, quote=con@suffix, ...){ 
-   if (mode(TSrepresentation) == "character" && TSrepresentation == "tis") {
-	    require("tis")
-	    require("zoo")
-	    }
-   if (is.null(TSrepresentation)) {
-      require("zoo")
-      TSrepresentation <- zoo
-      }
     
    if(is.null(names)) names <- c(t(outer(serIDs, quote, paste, sep=".")))
    quote <- con@suffix %in% quote
@@ -734,23 +727,18 @@ setMethod("TSget",     signature(serIDs="character", con="TSzipConnection"),
    	    stop("Error converting  data to numeric.", data)
       
       d <- matrix(zzz, NROW(zz), NCOL(zz)-1 )
-      #d <- zoo(d[, quote], order.by=dates)
-      #d <- as.tis(zoo(d[, quote], order.by=dates))
-      #d <- timeSeries(d[, quote], charvec=dates)
-      #d <- TSrepresentation(d[, quote], dates)
-      if (mode(TSrepresentation) == "character") d <- 
-	 if (TSrepresentation == "tis") as.tis(zoo(d[, quote], order.by=dates))
-	 else                do.call(TSrepresentation, list(d[, quote], dates))
-      else d <- TSrepresentation(d[, quote], dates)
+      d <- zoo::zoo(d[, quote], order.by=dates)
   
       mat <- tbind(mat,d)
       }
-   
+      
+    mat <- tfwindow(mat, tf=tf, start=start, end=end)
+    
+    mat <- tframePlus::changeTSrepresentation(mat, TSrepresentation)
+
     seriesNames(mat) <- names
     desc <- paste(names, " from ", con@dbname)
-   
-    mat <- tfwindow(mat, tf=tf, start=start, end=end)
- 
+
     TSmeta(mat) <- new("TSmeta", serIDs=serIDs,  dbname=con@dbname, 
         hasVintages=con@hasVintages, hasPanels=con@hasPanels,
   	conType=class(con), DateStamp= Sys.time(), 
