@@ -27,18 +27,19 @@ if(!identical(as.logical(Sys.getenv("_R_CHECK_HAVE_MYSQL_")), TRUE)) {
    cat("****************************************************************\n")
 
    if ("" != user1)
-         con <- try(DBI::dbConnect("MySQL", dbname="test", 
+        setup <- try(RMySQL::dbConnect(RMySQL::MySQL(), dbname="test", 
 	                 username=user1, password=passwd1, host=host1)) 
-   else  con <- try(DBI::dbConnect("MySQL", dbname="test"))#use .my.cnf
+   else setup <- try(RMySQL::dbConnect(RMySQL::MySQL(), dbname="test"))#.my.cnf
  
-   if (inherits(con, "try-error")) stop("dbConnect to MySQL db test failed./n")
+   if (inherits(setup, "try-error")) stop("dbConnect to MySQL db test failed./n")
  
-   DBI::dbListTables(con) 
+   TSsql::removeTSdbTables(setup, yesIknowWhatIamDoing=TRUE)
+   TSsql::createTSdbTables(setup, index=FALSE)
 
-   TSsql::removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
-   TSsql::createTSdbTables(con, index=FALSE)
-
-   DBI::dbListTables(con) 
+   DBI::dbListTables(setup) 
+ 
+    # test tables are cleaned up in guideCheck.R
+    dbDisconnect(setup)
 
    if ("" != user1)
          con1 <- try(TSconnect("MySQL", dbname="test", 
@@ -51,9 +52,6 @@ if(!identical(as.logical(Sys.getenv("_R_CHECK_HAVE_MYSQL_")), TRUE)) {
         dbDisconnect(con)
         stop("TSconnect to MySQL db test failed./n")
 	}
- 
-    # test tables are cleaned up in guideCheck.R
-    dbDisconnect(con)
 
    cat("*******************************************************************\n")
    cat("* WARNING: THIS OVERWRITES TABLES IN TEST DATABASE ON RSQLite SERVER\n")
@@ -61,17 +59,19 @@ if(!identical(as.logical(Sys.getenv("_R_CHECK_HAVE_MYSQL_")), TRUE)) {
 
    # need to cleanup file "test" created by SQLLite but it is 
    # used in guideCheck.R, so cleanup there.
-   con <- try(DBI::dbConnect("SQLite", dbname="TScompareSQLiteTestDB")) # no user/passwd/host
-   if (inherits(con, "try-error"))
+   setup <- try(RSQLite::dbConnect(RSQLite::SQLite(),
+                       dbname="TScompareSQLiteTestDB")) # no user/passwd/host
+ 
+   if (inherits(setup, "try-error"))
            stop("dbConnect to SQLite db test failed./n")
 
-   DBI::dbListTables(con) 
+   DBI::dbListTables(setup) 
 
-   TSsql::removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
-   TSsql::createTSdbTables(con, index=FALSE)
+   TSsql::removeTSdbTables(setup, yesIknowWhatIamDoing=TRUE)
+   TSsql::createTSdbTables(setup, index=FALSE)
    
-   DBI::dbListTables(con) 
-   dbDisconnect(con)
+   DBI::dbListTables(setup) 
+   dbDisconnect(setup)
 
    con2 <- try(TSconnect("SQLite", dbname="TScompareSQLiteTestDB")) # no user/passwd/host
    if (inherits(con2, "try-error"))
