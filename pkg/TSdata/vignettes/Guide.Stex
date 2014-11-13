@@ -602,13 +602,11 @@ tables, which would cause \code{createTSdbTables()} to fail.
 WARNING: running this will overwrite the ``test'' database on your server.
 
 \begin{Scode}
- library("RMySQL")
- con <- dbConnect("MySQL", dbname="test") 
- require("TSsql")
- require("TSMySQL")
- removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
- createTSdbTables(con, index=FALSE)
- dbDisconnect(con)
+ setup <- RMySQL::dbConnect(RMySQL::MySQL(), dbname="test")  
+ TSsql::removeTSdbTables(setup, yesIknowWhatIamDoing=TRUE)
+ TSsql::createTSdbTables(setup, index=FALSE)
+ DBI::dbListTables(setup) 
+ DBI::dbDisconnect(setup)
 \end{Scode}
 %%
 %%
@@ -761,13 +759,17 @@ servers work in a similar way. See Appendix ``A'' for details of establishing
 other SQL database connections.
 
 First set up the TS database structure on the database where data will be
-saved (if it is not already in place) and establish a TS connection to it:
+saved (if it is not already in place)
+\begin{Scode}
+  host    <- Sys.getenv("POSTGRES_HOST")
+  setup <-  DBI::dbConnect(RPostgreSQL::PostgreSQL(), dbname="test", host=host) 
+  TSsql::createTSdbTables(setup)
+  DBI::dbDisconnect(setup)
+\end{Scode}
+
+Then establish a TS connection to it:
 \begin{Scode}
   require("TSPostgreSQL")
-  host    <- Sys.getenv("POSTGRES_HOST")
-  setup <-  DBI::dbConnect("PostgreSQL", dbname="test", host=host) 
-  TSsql::createTSdbTables(setup)
-  dbDisconnect(setup)
   con <-  TSconnect("PostgreSQL", dbname="test", host=host) 
 \end{Scode}
 
@@ -985,21 +987,22 @@ library("TSSQLite")
 
 First setup database tables that are used by TSdbi using a \code{dbConnect}
 connection, after which a \code{TSconnect} connection can be used.
-This requires the package \code{TSsql} which does not need to be attached for
+This uses the package \code{TSsql} which does not need to be attached for
 most purposes, but is needed for the initial setup and for removing \code{TSdbi}
 database tables (which destroys the structure \code{TSconnect} expects).
 When this is re-done it insure the databases are empty: 
 \begin{Scode}{results=hide}
- con <- dbConnect("MySQL", dbname="test") 
- require("TSsql")
- removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
- createTSdbTables(con, index=FALSE)
- dbDisconnect(con)
+ setup <- RMySQL::dbConnect(RMySQL::MySQL(), dbname="test")  
+ TSsql::removeTSdbTables(setup, yesIknowWhatIamDoing=TRUE)
+ TSsql::createTSdbTables(setup, index=FALSE)
+ DBI::dbListTables(setup) 
+ DBI::dbDisconnect(setup)
 
- con <- dbConnect("SQLite", dbname="test") 
- removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
- createTSdbTables(con, index=FALSE)
- dbDisconnect(con)
+ setup <- RSQLite::dbConnect(RSQLite::SQLite(), dbname="test")  
+ TSsql::removeTSdbTables(setup, yesIknowWhatIamDoing=TRUE)
+ TSsql::createTSdbTables(setup, index=FALSE)
+ DBI::dbListTables(setup) 
+ DBI::dbDisconnect(setup)
 \end{Scode}
 
 Now TS connections to the databases are established.
@@ -1305,16 +1308,15 @@ The next small section of code uses \code{dbConnect} to set up database
 tables that expected by \code{TSconnect}. 
 %%
 \begin{Scode}{results=hide}
- library("TSMySQL")
- con <-  dbConnect("MySQL", dbname="test") 
- require("TSsql")
- removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
- createTSdbTables(con, index=FALSE)
- dbDisconnect(con)
+ setup <- RMySQL::dbConnect(RMySQL::MySQL(), dbname="test")  
+ TSsql::removeTSdbTables(setup, yesIknowWhatIamDoing=TRUE)
+ TSsql::createTSdbTables(setup, index=FALSE)
+ DBI::dbDisconnect(setup)
 \end{Scode}
 
 Now a TSdbi connection to the database is established.
 \begin{Scode}{results=hide}
+  library("TSMySQL")
   con  <-  TSconnect("MySQL", dbname="test")
 \end{Scode} 
 
@@ -1358,16 +1360,16 @@ The next small section of code uses \code{dbConnect} to set up database
 tables that expected by \code{TSconnect}. 
 %%
 \begin{Scode}{results=hide}
- library("TSPostgreSQL")
- con  <- dbConnect("PostgreSQL", dbname="test", host=host)
- require("TSsql")
- removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
- createTSdbTables(con, index=FALSE)
- dbDisconnect(con)
+ setup <- RPostgreSQL::dbConnect(RPostgreSQL:::PostgreSQL(), dbname="test")  
+ TSsql::removeTSdbTables(setup, yesIknowWhatIamDoing=TRUE)
+ TSsql::createTSdbTables(setup, index=FALSE)
+ DBI::dbListTables(setup) 
+ DBI::dbDisconnect(setup)
 \end{Scode}
 
 Now a TSdbi connection to the database is established.
 \begin{Scode}{results=hide}
+  library("TSPostgreSQL")
   con  <-  TSconnect("PostgreSQL", dbname="test", host=host)
 \end{Scode} 
 
@@ -1396,16 +1398,16 @@ information, and examples here all use the localhost.
 Now setup database tables that are used by TSdbi using a \code{dbConnect}
 connection, after which a \code{TSconnect} connection can be used: 
 \begin{Scode}{results=hide}
- library("TSSQLite")
- con <- dbConnect("SQLite", dbname="test") 
- require("TSsql")
- removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
- createTSdbTables(con, index=FALSE)
- dbDisconnect(con)
+ setup <- RSQLite::dbConnect(RSQLite::SQLite(), dbname="test")  
+ TSsql::removeTSdbTables(setup, yesIknowWhatIamDoing=TRUE)
+ TSsql::createTSdbTables(setup, index=FALSE)
+ DBI::dbListTables(setup) 
+ DBI::dbDisconnect(setup)
 \end{Scode}
 
 Now a TSdbi connection to the database is established.
 \begin{Scode}{results=hide}
+ library("TSSQLite")
   con  <-  TSconnect("SQLite", dbname="test")
 \end{Scode} 
 
@@ -1547,11 +1549,11 @@ The next small section of code uses \code{dbConnect} to set up database
 tables that expected by \code{TSconnect}. 
 %%
 \begin{Scode}{eval=FALSE}
- library("Oracle")
- con  <- DBI::dbConnect("Oracle", dbname="test") 
- TSsql::removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
- TSsql::createTSdbTables(con, index=FALSE)
- DBI::dbDisconnect(con)
+ setup <- ROracle::dbConnect(ROracle::Oracle(), dbname="test")  
+ TSsql::removeTSdbTables(setup, yesIknowWhatIamDoing=TRUE)
+ TSsql::createTSdbTables(setup, index=FALSE)
+ DBI::dbListTables(setup) 
+ DBI::dbDisconnect(setup)
 \end{Scode}
 
 
@@ -1689,9 +1691,8 @@ The structure reported reflects the setup that was done previously.
 These queries are Mysql specific but below is a generic SQL way to do this.
 
 \begin{Scode}{results=verbatim}
- library("TSMySQL")
- library("DBI")
- con <- dbConnect("MySQL", dbname="test")
+ library("RMySQL")
+ con <- dbConnect(MySQL(), dbname="test")
  dbListTables(con)
  dbGetQuery(con, "show tables;")
  dbGetQuery(con, "describe A;")
