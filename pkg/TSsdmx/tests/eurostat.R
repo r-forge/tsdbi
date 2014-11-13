@@ -12,7 +12,8 @@ TSmeta(z)
 
 if (start(z) != "1980 Q1") stop("eurostat test 1 start date has changed.")
 
-z <- TSget("ei_nama_q.Q.MIO-EUR.SWDA.CP.NA-P72.IT", start="1990", end="2012Q2", eurostat)
+
+# z <- TSget("ei_nama_q.Q.MIO-EUR.SWDA.CP.NA-P72.IT", start="1990", end="2012Q2", eurostat)
 
 
 # 28 series
