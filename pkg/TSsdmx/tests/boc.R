@@ -39,9 +39,9 @@ TSdescription(z)
 # tfplot(x)
 # TSdescription(x) 
 
+#http://credit.bank-banque-canada.ca/webservices?service=getSeriesSDMX&args=CDOR_-_-_FIRST_-_-_Last
 
 TSgetBoC <- function(id, names=NULL){
-    
    uri <- paste( "http://credit.bank-banque-canada.ca/webservices?service=getSeriesSDMX&args=",
    	    paste(id, "_-_-_", sep="", collapse=""),
    	    paste( "FIRST_-_-_Last",sep="", collapse=""), sep="")

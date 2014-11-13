@@ -25,7 +25,7 @@ setMethod("dbConnect", signature(drv="sdmxDriver"),
          new("sdmxConnection", dbname=dbname))
 
 # this does nothing but prevent errors if it is called. 
-setMethod("dbDisconnect", signature(conn="TSsdmxConnection"), 
+setMethod("dbDisconnect", signature(conn="sdmxConnection"), 
      definition=function(conn,...) TRUE)
 
 #######     end kludges   ######

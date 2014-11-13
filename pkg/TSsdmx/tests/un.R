@@ -26,3 +26,24 @@ un <- TSconnect("sdmx", dbname == "UN")
 #http://comtrade.un.org/ws/getSdmxV1.aspx?px=s2&r=36&y=2004&cc=TOTAL&p=0&comp=false
 
 #(requires permission. access denied)
+
+############################ UN ############################
+
+##R example using json at
+##http://comtrade.un.org/data/Doc/api/ex/r
+
+
+# no SDMX yet but coming
+# http://comtrade.un.org/data/doc/api/
+# http://comtrade.un.org/data/doc/api/#Future
+
+# UN Comtrade data request takes the following form:
+# http://comtrade.un.org/api/get?parameters
+# API call: 
+# http://comtrade.un.org/api/get?max=50000&type=C&freq=A&px=HS&ps=2013&r=826&p=0&rg=all&cc=AG2&fmt=json
+
+# http://comtrade.un.org/api/get?max=50000&type=C&freq=A&px=HS&ps=2013&r=826&p=0&rg=all&cc=AG2&fmt=sdmx
+
+#Old
+#http://unstats.un.org/unsd/tradekb/Knowledgebase/Comtrade-SDMX-Web-Services-and-Data-Exchange
+#http://unstats.un.org/unsd/tradekb/Knowledgebase/Comtrade-SDMX-Web-Services-and-Data-Exchange?Keywords=SDMX
