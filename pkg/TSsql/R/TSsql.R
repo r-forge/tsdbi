@@ -211,7 +211,6 @@ TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation")
        TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE, TSsource=TRUE,
        vintage=getOption("TSvintage"), panel=getOption("TSpanel")) {
   # so far I think this is generic to all SQL.
-  if(is.null(TSrepresentation)) TSrepresentation <- "default"
 
   # default is ts if the table is in  c("A", "Q", "M","S") and zoo otherwise.
   # default is used for retrieval and any conversion is done after.
@@ -332,10 +331,12 @@ TSgetSQL <- function(serIDs, con, TSrepresentation=getOption("TSrepresentation")
     mat <- tbind(mat, r)
     } # where[j]
     } # serID[i]
+
   mat <- tfwindow(mat, tf=tf, start=start, end=end)
-  if( (!all(is.na(rp))) && !all(rp == "	" ) ) TSrefperiod(mat) <- rp      
   
   mat <- tframePlus::changeTSrepresentation(mat, TSrepresentation)
+
+  if( (!all(is.na(rp))) && !all(rp == "	" ) ) TSrefperiod(mat) <- rp      
 
   seriesNames(mat) <- names
 
