@@ -2,6 +2,11 @@ See also
 
    o	See also NEWS in the TSdbi package.
 
+Known Bugs
+
+   o	Representation timeSeries loses time information for ts objects. (This
+   	seems to be a bug in package timeSeries.)
+
 
 Changes in TSMySQL version 2014.10-1
 
