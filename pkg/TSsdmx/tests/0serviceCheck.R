@@ -1,3 +1,7 @@
+# see
+#http://sdmx.org/wp-content/uploads/2013/09/SDMX_2_1-SECTION_07_WebServicesGuidelines_2013-04.pdf
+# section 5.8 regarding errors.
+
 require("RJSDMX")
 
 #  https://github.com/amattioc/SDMX/wiki

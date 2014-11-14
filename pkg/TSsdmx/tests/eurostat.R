@@ -1,11 +1,11 @@
 require("TSsdmx")
+require("tframe")
 
 eurostat <- TSconnect("sdmx", dbname="EUROSTAT")
 
-z <- TSget("ei_nama_q.Q.MIO-EUR.NSA.CLV2000.NA-B11.IT", eurostat) # works
+z <- TSget("ei_nama_q.Q.MIO-EUR.NSA.CLV2000.NA-B1G.IT", eurostat) # works
 
-require("tframe")
-if (seriesNames(z) != "ei_nama_q.Q.MIO-EUR.NSA.CLV2000.NA-B11.IT")
+if (seriesNames(z) != "ei_nama_q.Q.MIO-EUR.NSA.CLV2000.NA-B1G.IT")
     stop("seriesNames not set properly in eurostat test 1.")
     
 TSmeta(z)
@@ -13,15 +13,28 @@ TSmeta(z)
 if (start(z) != "1980 Q1") stop("eurostat test 1 start date has changed.")
 
 
-# z <- TSget("ei_nama_q.Q.MIO-EUR.SWDA.CP.NA-P72.IT", start="1990", end="2012Q2", eurostat)
+z <- TSget("ei_nama_q.Q.MIO-EUR.SWDA.CP.NA-P72.IT",
+           start="1990-Q1", end="2012-Q2", eurostat)
+
+if (start(z) != "1990 Q1") stop("eurostat test 2 start date failure.")
+if ( end(z)  != "2012 Q2") stop("eurostat test 2 stop  date failure.")
 
 
-# 28 series
 #z <- TSget('ei_nama_q.Q.MIO-EUR.NSA.CP.*.IT', eurostat) # all NaN
-z <-  TSget("ei_nama_q.Q.MIO-EUR.NSA.CLV2000.*.IT", eurostat) #  works
 
-if (28 != sum(grepl("ei_nama_q.Q.MIO-EUR.NSA.", seriesNames(z)) ) )
-    stop("seriesNames not set properly in eurostat test 1.")
+# 28 series, 23 with data
+z <-  TSget("ei_nama_q.Q.MIO-EUR.NSA.CLV2000.*.IT", eurostat) 
+
+if (23 != sum(hasData(z, quiet=TRUE)))    stop("eurostat hasData test changed.")
+if (28 != length(hasData(z, quiet=TRUE))) stop("eurostat hasData test 2 changed.")
+
+hasDataCount(z)
+hasDataNames(z)
+
+hasDataDescriptions(z)
 
 
-#TSmeta(z)
+
+#  This is a useful check to know if a series has data
+# "ei_nama_q.Q.MIO-EUR.NSA.CLV2000.NA-B11.IT" %in% hasDataNames(z)
+

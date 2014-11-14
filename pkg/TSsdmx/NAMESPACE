@@ -13,6 +13,12 @@ import("rJava")
 
 export("sdmx")
 
+export("hasData",
+       "hasDataNames",
+       "hasDataCount",
+       "hasDataDescriptions"
+	)
+
 ## S4 Classes
 exportClasses(
    "TSsdmxConnection"
