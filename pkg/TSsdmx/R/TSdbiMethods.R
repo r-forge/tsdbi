@@ -170,3 +170,49 @@ setMethod("TSlabel",   signature(x="character", con="TSsdmxConnection"),
 setMethod("TSsource",   signature(x="character", con="TSsdmxConnection"),
    definition= function(x, con=getOption("TSconnection"), ...)
         "TSsource for TSsdmx connection not supported." )
+
+
+############################################################################
+##############               utilities                        ##############   
+############################################################################
+
+hasData <- function(x, quiet=FALSE){
+  nm <- seriesNames(x)
+  N <- length(nm)
+  ok <- rep(NA, N)
+  for (i in 1:N){
+    if(all(is.nan(x[,i]) | is.na(x[,i]))) {
+       ok[i] <- FALSE
+       if(!quiet) warning(nm[i], " has no data.")
+       }
+    else ok[i] <- TRUE
+    }
+   ok
+   }
+
+hasDataCount <- function(x) {
+   ok <- hasData(x, quiet=TRUE)
+   cat(sum(ok), " of ", length(ok), " have data.\n")
+   invisible(ok)
+   }
+
+hasDataNames <- function(x) seriesNames(x)[hasData(x, quiet=TRUE)]
+
+hasDataDescriptions <- function(x) {
+  nm <- seriesNames(x)
+  N <- length(nm)
+  ok <- hasData(x, quiet=TRUE)
+
+  #  this should get SDMX description
+  desc <- TSmeta(x)@TSdescription
+  # but this is just the flow description
+  # nm <- getFlows('EUROSTAT')
+  # #length(names(nm))  #5720
+  # nm["ei_nama_q" == names(nm)]
+  
+  r <- NULL
+  #for (i in 1:N) if(ok[i]) r <- rbind(r, paste(nm[i], ": ", desc[i], sep=""))
+  for (i in 1:N) if(ok[i]) r <- rbind(r, desc[i])
+  r
+  }
+
