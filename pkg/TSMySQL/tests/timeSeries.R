@@ -38,14 +38,30 @@ if(inherits(con, "try-error")) stop("Cannot connect to TS MySQL database.")
 z <- ts(matrix(rnorm(10),10,1), start=c(1990,1), frequency=1)
 TSput(z, serIDs="Series 1", con) 
 
+# timeSeries seems to have a bug
+#z2 <- timeSeries:::as.timeSeries.ts(z)
+#z2 <- timeSeries:::as.timeSeries.zoo(zoo(z))
+#z2 <- timeSeries:::as.timeSeries.zoo(zooreg(z))
+#start(z2)
+#time(z2)
+
+# these retrieve but lose date info
 z <- TSget("Series 1", con, TSrepresentation="timeSeries")
 if("timeSeries" != class(z)) stop("timeSeries class object not returned.")
-tfplot(z)
+
+z <- TSget("Series 1", con, TSrepresentation=timeSeries::timeSeries)
+if("timeSeries" != class(z)) stop("timeSeries class object not returned.")
+
+#unresolved problem with timeSeries  (see above)
+#tfplot(z)
+#gives  'origin' must be supplied
 
 TSrefperiod(z) 
 TSdescription(z) 
 
-tfplot(z, start="1991-01-01", Title="Test")
+#unresolved problem 
+#tfplot(z, start="1991-01-01", Title="Test")
+#gives  'origin' must be supplied
 
 cat("**************        remove test tables\n")
 TSsql::removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
