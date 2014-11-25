@@ -1,6 +1,6 @@
 Package: TSodbc
 Version: 2014.10-1
-Title: TSdbi extensions for ODBC
+Title: TSdbi Extensions for ODBC
 Description: TSodbc provides an ODBC interface for TSdbi.
 	Comprehensive examples of all the TS* packages is provided in the
 	vignette Guide.pdf with the TSdata package.

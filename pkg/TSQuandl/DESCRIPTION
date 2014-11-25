@@ -1,6 +1,6 @@
 Package: TSQuandl
 Version: 2014.10-1
-Title: TSdbi extensions for Quandl
+Title: TSdbi Extensions for Quandl
 Description: TSQuandl provides a TSdbi interface for R package Quandl and 
 	access to data (at www.quandl.com). Comprehensive examples of all 
 	the TS* packages is provided in the vignette Guide.pdf with 
