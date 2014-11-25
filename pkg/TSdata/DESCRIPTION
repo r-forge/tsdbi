@@ -9,9 +9,7 @@ Suggests: tframe, tframePlus (>= 2012.8-1), tfplot,
 	TSdbi (>= 2014.10-1), TSsql (>= 2014.10-1), 
 	TSPostgreSQL (>= 2014.10-1), TSMySQL (>= 2014.10-1), 
 	TSSQLite (>= 2014.10-1), TSodbc (>= 2014.10-1), 
-	TSgetSymbol (>= 2014.10-1), TShistQuote (>= 2014.10-1), 
-	TSxls (>= 2014.10-1), TSzip (>= 2014.10-1),
-	TScompare (>= 2014.10-1), zoo, xts, tseries, its,
+	TSmisc, TScompare (>= 2014.10-1), zoo, xts, tseries, its,
 	TSjson (>= 2014.10-1), findpython, WriteXLS, DBI (>= 0.3.1), 
 	RPostgreSQL, RSQLite, RMySQL, RODBC
 SystemRequirements: python 2, python-sys, python-json, python-mechanize, python-re, python-csv, python-urllib2
