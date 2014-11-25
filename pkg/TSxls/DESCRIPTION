@@ -1,6 +1,6 @@
 Package: TSxls
 Version: 2014.10-1
-Title:  TSdbi extension to connect to spreadsheets
+Title:  TSdbi Extension to Connect  to Spreadsheets
 Description: Provides TSdbi package methods to retrieve time series data from
 	spreadsheets, pretending the spreadsheet is a database.
 	Comprehensive examples of all the TS* packages is provided in the

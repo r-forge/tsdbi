@@ -1,6 +1,6 @@
 Package: TSzip
 Version: 2014.10-1
-Title:  TSdbi extension to connect to zip files
+Title:  TSdbi Extension to Connect to Zip Files
 Description: Provides TSdbi package methods to retrieve time series data from
 	zipped, as if the files form a database.
 	Comprehensive examples of all the TS* packages is provided in the
