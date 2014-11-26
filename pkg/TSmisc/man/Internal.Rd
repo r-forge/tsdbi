@@ -16,6 +16,13 @@
 \alias{dbDisconnect,TSxlsConnection-method}
 
 
+\alias{dbConnect,TSQuandlDriver-method}
+\alias{dbDisconnect,TSQuandlConnection-method}
+\alias{dbObjectId-class}
+\alias{QuandlObject-class}
+\alias{QuandlDriver-class}
+
+
 \title{Internal DBI Methods for histQuote}
 \description{Pretend histQuote has DBI methods for connections.}
 \usage{

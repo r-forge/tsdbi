@@ -1,4 +1,5 @@
-\name{TShistQuoteMethods}
+\name{TSmiscMethods}
+
 \alias{histQuote}
 \alias{TShistQuoteConnection-class}
 
@@ -43,6 +44,18 @@
 \alias{TSlabel,character,TSzipConnection-method}
 \alias{TSsource,character,TSzipConnection-method}
 
+\alias{Quandl}
+
+\alias{TSconnect,QuandlConnection,missing-method}
+\alias{TSget,character,TSQuandlConnection-method}
+\alias{TSdoc,character,TSQuandlConnection-method}
+\alias{TSdescription,character,TSQuandlConnection-method}
+\alias{TSlabel,character,TSQuandlConnection-method}
+\alias{TSsource,character,TSQuandlConnection-method}
+\alias{TSdates,character,TSQuandlConnection-method}
+\alias{TSexists,character,TSQuandlConnection-method}
+
+\alias{TSQuandlConnection-class}
 
 \title{TSdbi Extensions to Wrap Several Different Data Source Formats}
 \description{Get a time series (matrix) from a variety of source URLs}
@@ -51,6 +64,7 @@
     getSymbol(...) 
     xls(...)
     zip(...)
+    Quandl(...)
 
     \S4method{TSconnect}{histQuoteConnection,missing}(q, dbname, ...)
     \S4method{TSget}{character,TShistQuoteConnection}(
@@ -103,6 +117,24 @@
     \S4method{TSdoc}{character,TSzipConnection}(x, con, ... )  
     \S4method{TSlabel}{character,TSzipConnection}(x, con, ... )  
     \S4method{TSsource}{character,TSzipConnection}(x, con, ... )  
+
+    \S4method{TSconnect}{QuandlConnection,missing}(q, dbname,
+               token=NULL, ...)
+    \S4method{TSget}{character,TSQuandlConnection}(serIDs, con, 
+	TSrepresentation = getOption("TSrepresentation"), 
+	tf = NULL, start = tfstart(tf), end = tfend(tf), names = NULL,
+	quote = NULL, TSdescription = FALSE, TSdoc = FALSE, TSlabel=FALSE,
+	TSsource=TRUE, vintage = NULL, ...)
+    \S4method{TSdates}{character,TSQuandlConnection}(serIDs, 
+        con=getOption("TSconnection"), vintage=NULL, panel=NULL, ...)
+    \S4method{TSexists}{character,TSQuandlConnection}(serIDs, con,
+           vintage=NULL, panel=NULL, ...)
+    \S4method{TSdescription}{character,TSQuandlConnection}(x, con, ...)
+    \S4method{TSdoc}{character,TSQuandlConnection}(x, 
+                con=getOption("TSconnection"), ...)
+    \S4method{TSlabel}{character,TSQuandlConnection}(x, con, ...)
+    \S4method{TSsource}{character,TSQuandlConnection}(x, con, ...)
+
 }
 \arguments{
     \item{q}{a string indicating a query interface to use, or a database connection object.}
@@ -132,6 +164,15 @@
     \item{map}{A list with elements indicating the location of data, serIDs, dates, and optional metadata (see Details).}
     \item{suffix}{A vector of strings indicating names of the columns if the 
           zipped file has more than one series (see Details).}
+    \item{TSdescription}{TRUE or FALSE indicating whether description 
+       should be extracted}
+    \item{TSdoc}{TRUE or FALSE indicating whether documentation 
+       should be extracted.}
+    \item{TSlabel}{For compatibility with other TS packages. Not supported in
+        Quandl}
+    \item{TSsource}{If TRUE (default) TSsource in the result is set to
+        "Quandl".}
+    \item{token}{character string of Quandl access token.}
     \item{...}{Arguments passed to other methods, or by histQuote 
         to get.hist.quote.}
 }
@@ -139,7 +180,7 @@
 \details{
 These functions interface to a stock quote URL using get.hist.quote from the 
 \code{tseries} package. Only URLs ''yahoo'' and ''oanda'' are supported.
-\pkg{TShistQuote} is just a wrapper to \code{get.hist.quote}. No 
+\pkg{TShistQuote} is a wrapper to \code{get.hist.quote}. No 
 extra functionality is provided, only an interface that is consistent 
 with \pkg{TSdbi}. The \pkg{TSdbi} function argument
 \code{dbname} is mapped to \code{get.hist.quote} argument \code{provider}, and
@@ -154,6 +195,21 @@ more details on how this works.)
 
 The classes \code{histQuoteDriver} and \code{TShistQuoteConnection} extend classes
 \code{DBIDriver} and  \code{DBIConnection} in the DBI package.
+The package \pkg{TSQuandl}provides a wrapper to the \pkg{Quandl} package to provide a 
+\pkg{TSdbi} API for users. Both \code{start} and \code{end} can be either date objects or 
+character strings.
+
+The Quandl access token can be specified either [NOT WORKING: as an argument to \code{TSConnect} (\code{token="chars"}) or ] in a file .Quandl.cnf in the user's
+home directory, or in an environment variable 'QUANDL_TOKEN', or using the 
+\pkg{Quandl} \code{Quandl.auth()} function. This last will require the user to
+load \pkg{Quandl} in order to set it. 
+The search will be done in that order and the first non-\code{NULL} value used. If no token is found then access will be tried without a token, but this will be subject to the limit imposed by Quandl.
+
+The argument \code{quote} can be used to select a subset of the data requested,
+in the case of a multivariate dataset. For example, daily stock or
+stock index results may have columns "Open", "High", "Low",  "Close", ... . 
+The argument \code{quote} can be used to select from these.  
+Note that when argument \code{quote} is specified to select a subset of the dataset requested, capitalization is important.
 
 See the package vignette for additional examples.
 }
@@ -164,6 +220,7 @@ See the package vignette for additional examples.
 \code{\link[TSdbi]{TSget}},
 \code{\link[tseries]{get.hist.quote}}
 \code{\link[tframe]{tfwindow}},
+\code{\link[Quandl]{Quandl}}
 }
 \examples{
     require("tfplot")
@@ -204,6 +261,19 @@ See the package vignette for additional examples.
 
     z <- TSget("DMACN", con1)
     tfplot(z)
+
+ con <- TSconnect("Quandl", dbname="NSE")
+ x  <- TSget("OIL", con, start="2001-01-01")
+ start(x)
+ end(x)
+ 
+ x  <- TSget("OIL", con, start=as.Date("2001-01-01")) 
+ tfplot(x)
+ 
+ dimnames(x)[2]
+ x <- TSget("OIL", con, quote="Open")
+
+ tfplot(x)
 
 }
 \keyword{ts}
