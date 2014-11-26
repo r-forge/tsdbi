@@ -22,5 +22,4 @@ Changes in TSmisc version 2014.12-1
    	driver, and renamed argument drv to q to reflect this change.
 
    o	This package is a consolidation of TShistQuote, TSgetSymbol, TSzip,
-   	TSxls and TSQuandl(which was never released). For older NEWS see
-	archives of those packages. 
+   	and TSxls. For older NEWS see archives of those packages. 

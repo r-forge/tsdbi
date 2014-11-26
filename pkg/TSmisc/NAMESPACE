@@ -12,8 +12,7 @@ import("tframe",
        "tseries",
        "xts",
        "its",
-       "gdata",
-       "Quandl"
+       "gdata"
        )
 ##   "timeSeries",
 
@@ -28,11 +27,8 @@ export("histQuote",
 ## S4 Classes
 exportClasses(
    "TShistQuoteConnection",
-   "TSgetSymbolConnection",
-   "TSQuandlConnection"
+   "TSgetSymbolConnection"
    )
-
-export("Quandl")
 
 ## S4 generics
 ## none
