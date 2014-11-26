@@ -8,9 +8,6 @@ import(tframePlus)
 import(Quandl) 
 
 ## S4 Classes
-exportClasses(
-   "TSQuandlConnection"
-   )
 
 export("Quandl")
 
