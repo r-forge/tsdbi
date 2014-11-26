@@ -1,5 +1,7 @@
 \name{TSQuandlMethods}
+
 \alias{Quandl}
+\alias{TSQuandlConnection-class}
 
 \alias{TSconnect,QuandlConnection,missing-method}
 \alias{TSget,character,TSQuandlConnection-method}
@@ -10,34 +12,27 @@
 \alias{TSdates,character,TSQuandlConnection-method}
 \alias{TSexists,character,TSQuandlConnection-method}
 
-\alias{TSQuandlConnection-class}
 
 \title{TSdbi Quandl Methods}
 \description{Methods for TSdbi Quandl time series database connection.}
 \usage{
     Quandl(...)
+
     \S4method{TSconnect}{QuandlConnection,missing}(q, dbname,
                token=NULL, ...)
-
     \S4method{TSget}{character,TSQuandlConnection}(serIDs, con, 
 	TSrepresentation = getOption("TSrepresentation"), 
 	tf = NULL, start = tfstart(tf), end = tfend(tf), names = NULL,
 	quote = NULL, TSdescription = FALSE, TSdoc = FALSE, TSlabel=FALSE,
 	TSsource=TRUE, vintage = NULL, ...)
-
     \S4method{TSdates}{character,TSQuandlConnection}(serIDs, 
         con=getOption("TSconnection"), vintage=NULL, panel=NULL, ...)
-
     \S4method{TSexists}{character,TSQuandlConnection}(serIDs, con,
            vintage=NULL, panel=NULL, ...)
-
     \S4method{TSdescription}{character,TSQuandlConnection}(x, con, ...)
-
     \S4method{TSdoc}{character,TSQuandlConnection}(x, 
                 con=getOption("TSconnection"), ...)
-
     \S4method{TSlabel}{character,TSQuandlConnection}(x, con, ...)
-
     \S4method{TSsource}{character,TSQuandlConnection}(x, con, ...)
 }
 \arguments{
@@ -81,8 +76,8 @@ These are methods for \pkg{TSdbi} . See the package \pkg{TSdbi} for details
 and see the vignette distributed with the \pkg{TSdata} package for more 
 complete examples.
 
-This package provides a wrapper to the \pkg{Quandl} package to provide a 
-\pkg{TSdbi} API for users. Function \code{TSConnect} sets the information used
+Package \pkg{TSQuandl} provides a wrapper to the \pkg{Quandl} package to provide
+a \pkg{TSdbi} API for users. Function \code{TSConnect} sets the information used
 for the connection. \code{TSget} retrieves data.
 Both \code{start} and \code{end} can be either date objects or 
 character strings.
