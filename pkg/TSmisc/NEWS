@@ -6,7 +6,7 @@ Known BUGS
 
    o	None for the moment.
 
-Changes in TSmisc version 2014.10-1
+Changes in TSmisc version 2014.12-1
 
    o	First release
 
@@ -22,5 +22,5 @@ Changes in TSmisc version 2014.10-1
    	driver, and renamed argument drv to q to reflect this change.
 
    o	This package is a consolidation of TShistQuote, TSgetSymbol, TSzip,
-   	and TSxls. For older NEWS see archives of those packages. I MAY
-	also add a simple json connection to UN data. 
+   	TSxls and TSQuandl(which was never released). For older NEWS see
+	archives of those packages. 
