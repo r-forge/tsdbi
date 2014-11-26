@@ -167,19 +167,25 @@ See the package vignette for additional examples.
 \code{\link[tframe]{tfwindow}}
 }
 \examples{
-    require("tfplot")
+ require("tfplot")
     
-    con <- TSconnect("histQuote", dbname="yahoo") 
+ con <- try(TSconnect("histQuote", dbname="yahoo") )
+
+ if(!inherits(con, "try-error")){
     x <- TSget("^ftse", con)
     tfplot(x)
+    }
 
-    con <- TSconnect("getSymbol", dbname="FRED")
+ con <- TSconnect("getSymbol", dbname="FRED")
+ if(!inherits(con, "try-error")){
     x <- TSget("CPIAUCNS", con)
     tfplot(x)
+    }
 
     # data from http://pitrading.com/
     # par(ask=TRUE) # to pause between pages
-    con <- TSconnect("zip", dbname="http://pitrading.com/free_eod_data")
+ con <- TSconnect("zip", dbname="http://pitrading.com/free_eod_data")
+ if(!inherits(con, "try-error")){
     x <- TSget("EURUSD", con)
     tfplot(x, graphs.per.page=3)
 
@@ -187,6 +193,7 @@ See the package vignette for additional examples.
     tfplot(z, start="2007-01-01", Title=
      "Futures, Australian and Canadian Dollar Continuous Contract at Close",
       graphs.per.page=3)
+    }
 
   ####  Australian Money ####
   #  test file copied Nov. 29, 2010 from 
