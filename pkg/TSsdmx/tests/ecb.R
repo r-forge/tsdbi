@@ -31,10 +31,9 @@ z <- TSget('EXR.M.USD.EUR.SP00.A', ecb)
 
 if("Jan 1999" != start(z)) stop("ECB monthly start error.")
 
-#  How should start and end be specified?
-#  z <- TSget('EXR.M.USD.EUR.SP00.A', start="May 2008", end="Aug 2014", ecb)
-#  z <- TSget('EXR.M.USD.EUR.SP00.A', start=c(2008,5), end=c(2014,8), ecb)
-#  z <- TSget('EXR.M.USD.EUR.SP00.A', start=yearmon(2008+4/12), ecb)
+z <- TSget('EXR.M.USD.EUR.SP00.A', start="2008-05", end="2014-07", ecb)
+z <- TSget('EXR.M.USD.EUR.SP00.A', start=c(2008,5), end=c(2014,7), ecb)
+FIX SO ABOVE WORKS
 
 z <- TSget('EXR.M.USD.EUR.SP00.A', ecb) 
 z <- TSget('EXR.M.USD.EUR.SP00.A', start = "", end = "", ecb) 
@@ -64,8 +63,8 @@ z <- TSget('EXR.Q.USD.EUR.SP00.A')
 
 if("1999 Q1" != start(z)) stop("ECB quarterly retrieval error.")
 
-#  How should start and end be specified?
-#  z <- TSget('EXR.Q.USD.EUR.SP00.A', start="2008 Q2", end="2014 Q3")
+z <- TSget('EXR.Q.USD.EUR.SP00.A', start="2008-Q2", end="2014-Q3")
+z <- TSget('EXR.Q.USD.EUR.SP00.A', start=c(2008,2), end=c(2014,3))
 
 # BSI balance sheet indicators
 #   FREQ Q
