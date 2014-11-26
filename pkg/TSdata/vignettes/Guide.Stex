@@ -198,7 +198,55 @@ Bloomberg   		&  & TSbbg & bbg \\
 %%%%%%%%%%%%%%%%%%%
 
 The table is not comprehensive. In particular, Quandl, Bloomberg, and some others, provide 
-access to data from a large number of sources.
+access to data from a large number of sources, especial market data.
+%%
+\subsection{\code{SDMX} Data}
+%%
+SDMX is emerging as a widely used standard for time series exchange. It is supported by several 
+large organizations and has evolved over many years. Some of the ad hoc mechanisms 
+in other \pkg{TS*} packages will be replaced as more organizations implement this standard.
+It provides capabilites for transmitting large dataset, mixed frequency, and metada. 
+These are well beyond the scope of what is used by the TSdbi API. The \pkg{RJSDMX} provides
+an interface to SDMX/REST 2.1 compliant databases. Similar to other \pkg{TS*} packages, the 
+wrapper \pkg{TSsdmx} uses only some of the capabilities of the underlying package.  
+Only reading of databases is supported.
+
+By default \pkg{RJSDMX} prints more output than \lang{R} users will typically expect. This 
+output can be supressed by settings in a configuration file, which has been done for this 
+vignette. See Appendix for more details.
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+  library("TSsdmx")  
+  library("tfplot")  
+  tfplot(x)
+# quarterly national accounts
+#CARSA: national currency, nominal, SAAR (level)
+
+x <- TSget('QNA.CAN.PPPGDP.CARSA.Q', oecd)
+tfplot(x, title="Canada: Nominal GDP PPP?", 
+         subtitle="quarterly national accounts, national currency, SAAR")
+
+
+x <- TSget('QNA.*.PPPGDP.CARSA.Q', oecd)
+
+tfplot(ytoypc(x), title="Nominal GDP Growth PPP?", 
+         subtitle="quarterly national accounts, national currency, SAAR",
+	 legend=names(x))
+
+eurostat <- TSconnect("sdmx", dbname="EUROSTAT")
+
+z <- TSget("ei_nama_q.Q.MIO-EUR.SWDA.CP.NA-P72.IT",
+           start="1990-Q1", end="2012-Q2", eurostat)
+
+ecb <- TSconnect("sdmx", dbname="ECB")
+
+z <- TSget('EXR.M.USD.EUR.SP00.A', start="2008-05", end="2014-07", ecb)
+
+#### quarterly data ####
+z <- TSget('EXR.Q.USD.EUR.SP00.A', start="2008-Q2", end="2014-Q3")
+z <- TSget('EXR.Q.USD.EUR.SP00.A', start=c(2008,2), end=c(2014,3))
+
+\end{Scode}
 
 
 %%
