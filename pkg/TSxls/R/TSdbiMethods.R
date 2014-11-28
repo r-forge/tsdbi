@@ -61,12 +61,12 @@ setMethod("TSconnect",   signature(q="xlsConnection", dbname="missing"),
             " or file ", file)
      }
 
-   require("gdata")
-
-   zz <- try(read.xls(file, sheet=sheet, blank.lines.skip=FALSE, verbose=FALSE),
-             silent=TRUE) #method=c("csv","tsv","tab"), perl="perl")
-   if(inherits(zz, "try-error")) 
-         stop("Could not read spreedsheet ",  dbname, zz)
+    if (requireNamespace("gdata", quietly = TRUE)) {
+      zz <- try(gdata::read.xls(file, sheet=sheet, blank.lines.skip=FALSE,
+           verbose=FALSE), silent=TRUE) #method=c("csv","tsv","tab"), perl="perl")
+      if(inherits(zz, "try-error")) 
+           stop("Could not read spreedsheet ",  dbname, zz)
+      } else warning("gdata is needed for TSxls connection.")
 
    #NB The first line provides data frame names, so rows are shifted. 
    #   This fixes so matrix corresponds to spreadsheet cells
