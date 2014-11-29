@@ -1,11 +1,11 @@
 \name{Internal}
+\alias{QuandlDriver-class}
 
 \alias{dbConnect,TSQuandlDriver-method}
 \alias{dbDisconnect,TSQuandlConnection-method}
 
 \alias{dbObjectId-class}
 \alias{QuandlObject-class}
-\alias{QuandlDriver-class}
 
 \title{Internal DBI Methods for TSQuandl}
 \description{Pretend TSQuandl has DBI methods for connections.}
