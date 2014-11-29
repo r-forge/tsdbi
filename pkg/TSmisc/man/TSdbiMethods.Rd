@@ -45,7 +45,7 @@
 \alias{TSsource,character,TSzipConnection-method}
 
 
-\title{TSdbi Extensions to Wrap Several Different Data Source Formats}
+\title{TSdbi Extensions to Wrap Several Data Sources}
 \description{Get a time series (matrix) from a variety of source URLs}
 \usage{
     histQuote(...) 
@@ -169,23 +169,18 @@ See the package vignette for additional examples.
 \examples{
  require("tfplot")
     
- con <- try(TSconnect("histQuote", dbname="yahoo") )
-
- if(!inherits(con, "try-error")){
+ \dontrun{
+    con <- try(TSconnect("histQuote", dbname="yahoo") )
     x <- TSget("^ftse", con)
     tfplot(x)
-    }
 
- con <- TSconnect("getSymbol", dbname="FRED")
- if(!inherits(con, "try-error")){
+    con <- TSconnect("getSymbol", dbname="FRED")
     x <- TSget("CPIAUCNS", con)
     tfplot(x)
-    }
 
     # data from http://pitrading.com/
     # par(ask=TRUE) # to pause between pages
- con <- TSconnect("zip", dbname="http://pitrading.com/free_eod_data")
- if(!inherits(con, "try-error")){
+    con <- TSconnect("zip", dbname="http://pitrading.com/free_eod_data")
     x <- TSget("EURUSD", con)
     tfplot(x, graphs.per.page=3)
 
