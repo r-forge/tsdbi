@@ -1,4 +1,4 @@
-\name{TSQuandlMethods}
+\name{TSmisc2Methods}
 
 \alias{Quandl}
 \alias{TSQuandlConnection-class}
@@ -12,9 +12,8 @@
 \alias{TSdates,character,TSQuandlConnection-method}
 \alias{TSexists,character,TSQuandlConnection-method}
 
-
-\title{TSdbi Quandl Methods}
-\description{Methods for TSdbi Quandl time series database connection.}
+\title{TSdbi Extensions to Wrap Several (in Development) Data Sources}
+\description{Get a time series (matrix) from a variety of source URLs}
 \usage{
     Quandl(...)
 
@@ -76,7 +75,10 @@ These are methods for \pkg{TSdbi} . See the package \pkg{TSdbi} for details
 and see the vignette distributed with the \pkg{TSdata} package for more 
 complete examples.
 
-Package \pkg{TSQuandl} provides a wrapper to the \pkg{Quandl} package to provide
+Interfaces in this package are generally less stable or in development compared
+with other \pkg{TS*} packages.
+
+The package provides a wrapper to the \pkg{Quandl} package to provide
 a \pkg{TSdbi} API for users. Function \code{TSConnect} sets the information used
 for the connection. \code{TSget} retrieves data.
 Both \code{start} and \code{end} can be either date objects or 
@@ -96,23 +98,29 @@ Note that when argument \code{quote} is specified to select a subset of the data
 }
 
 \seealso{ 
-\code{\link[TSdbi]{TSdbi-package}}
+\code{\link[TSdbi]{TSdbi-package}},
+\code{\link[TSdbi]{TSconnect}},
+\code{\link[TSdbi]{TSdates}},
+\code{\link[TSdbi]{TSget}},
+\code{\link[tframe]{tfwindow}},
 \code{\link[Quandl]{Quandl}}
 }
 \examples{
  require("tfplot")
- con <- TSconnect("Quandl", dbname="NSE")
- x  <- TSget("OIL", con, start="2001-01-01")
- start(x)
- end(x)
- 
- x  <- TSget("OIL", con, start=as.Date("2001-01-01")) 
- tfplot(x)
- 
- dimnames(x)[2]
- x <- TSget("OIL", con, quote="Open")
+ \dontrun{
+  con <- TSconnect("Quandl", dbname="NSE")
+  x  <- TSget("OIL", con, start="2001-01-01")
+  start(x)
+  end(x)
+  
+  x  <- TSget("OIL", con, start=as.Date("2001-01-01")) 
+  tfplot(x)
+  
+  dimnames(x)[2]
+  x <- TSget("OIL", con, quote="Open")
 
- tfplot(x)
+  tfplot(x)
+  }
 }
 \keyword{ts}
 
