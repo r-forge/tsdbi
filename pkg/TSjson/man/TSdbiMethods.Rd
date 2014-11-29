@@ -124,6 +124,7 @@ See the vignette for package \pkg{TSdata} for  additional examples.
 \examples{
   require("TSjson")
   require("findpython")
+\dontrun{
   if(can_find_python_cmd(
          minimum_version="2.6",
          maximum_version="2.9",
@@ -140,5 +141,6 @@ See the vignette for package \pkg{TSdata} for  additional examples.
     require("tfplot")
     tfplot(x)
     }
+ }
 }
 \keyword{ts}
