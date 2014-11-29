@@ -88,6 +88,7 @@ and \code{TSget} in \pkg{TSdbi} for more details.
   require("tfplot")
   # data from http://pitrading.com/
   # par(ask=TRUE) # to pause between pages
+ \dontrun{
   con <- TSconnect("zip", dbname="http://pitrading.com/free_eod_data")
   x <- TSget("EURUSD", con)
   tfplot(x, graphs.per.page=3)
@@ -96,5 +97,6 @@ and \code{TSget} in \pkg{TSdbi} for more details.
   tfplot(z, start="2007-01-01", Title=
    "Futures, Australian and Canadian Dollar Continuous Contract at Close",
     graphs.per.page=3)
- }
+  }
+}
 \keyword{ts}
