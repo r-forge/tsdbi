@@ -1,7 +1,7 @@
 Package: TSSQLite
 Version: 2014.10-1
 Title: TSdbi Extensions for SQLite
-Description: TSSQLite provides a SQLite interface for TSdbi.
+Description: An SQLite interface for TSdbi.
 	Comprehensive examples of all the TS* packages is provided in the
 	vignette Guide.pdf with the TSdata package.
 Depends: R (>= 2.8.0), TSdbi (>= 2014.10-1)
