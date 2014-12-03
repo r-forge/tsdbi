@@ -1,13 +1,13 @@
 Package: TScompare
 Version: 2014.10-1
-Title:  TSdbi Comparison
+Title:  TSdbi Database Comparison
 Description: Utilities for comparing the equality of series on two databases.
 	Comprehensive examples of all the TS* packages is provided in the
 	vignette Guide.pdf with the TSdata package.
 Depends: R (>= 2.10.0), TSdbi (>= 2013.9-1)
 Imports: tframe, tfplot, DBI (>= 0.3.1),
-Suggests: tframePlus, TSsql, TSMySQL, TSSQLite, TShistQuote
-Enhances: TSPostgreSQL, TSodbc, TSfame, TSgetSymbol
+Suggests: tframePlus, TSsql, TSMySQL, TSSQLite, TSmisc
+Enhances: TSPostgreSQL, TSodbc, TSfame
 BuildVignettes: true
 License: GPL-2
 Copyright: 2007-2011 Bank of Canada.  2012-2014 Paul Gilbert.

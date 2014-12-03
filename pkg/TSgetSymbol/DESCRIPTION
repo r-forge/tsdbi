@@ -1,7 +1,7 @@
 Package: TSgetSymbol
 Version: 2014.10-1
 Title:  TSdbi Extension to Connect with getSymbols
-Description: Provides methods for generics in the TSdbi package to 
+Description: Methods to 
 	retrieve data with getSymbols, in particular from the Federal Reserve
 	FRED database.
 	Comprehensive examples of all the TS* packages is provided in the
