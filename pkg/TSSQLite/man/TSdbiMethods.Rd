@@ -94,55 +94,41 @@ will not be removed. These steps are done in the example below.
 }
 \examples{
     require("tfplot")
-    conInit <- try(dbConnect("SQLite", dbname="test"))
-    if(! inherits(conInit, "try-error")) {
-      TSsql::createTSdbTables(conInit, index=FALSE)
-      con <- TSconnect("SQLite", dbname="test")
-      z <- ts(rnorm(100), start=c(1975,1), frequency=12)
-      seriesNames(z) <- "random1"
-      if(TSexists("random1", con)) TSreplace(z, con) else
-      TSput(z, con)
-      z1 <- TSget("random1", con)
-      tfplot(z1)
-      z <- ts(matrix(rnorm(100),50,2), start=c(1975,1), frequency=4)
-      seriesNames(z) <- c("random2","random3")
-      if(TSexists("random2", con) |
-         TSexists("random3", con) ) TSreplace(z, con) else
-      TSput(z, con)
-      z2 <- TSget("random2", con)
-      tfplot(z2)
-      TSdates("D1", con)
-      TSdates("random2", con)
-      TSdates(c("random1","random2","random3"), con)
-      TSmeta("random2", con)
-      options(TSconnection=con)
-      z2 <- TSget(c("random2","random3"))
-      z <- TSdates(c("D1","random2","random3"))
-      print(z)
-      TSmeta("random2")
-      TSdelete("random1", con)
-      TSdelete("random2")
-       \dontshow{TSsql::removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)} 
-      }
-    con <- try(TSconnect("SQLite", dbname="ets"))
-    if(! inherits(con, "try-error")) {
-      TSmeta("B103", con)
-      z1 <- TSget("B103", con)
-      tfplot(z1)
-      z2 <- TSget(c("B103", "B104"), con)
-      tfplot(z2)
-      options(TSconnection=con)
-      TSmeta("B103")
-      z2 <- TSget(c("B103","B104"))
-      TSmeta(z2)
-      TSdates("D1", con)
-      TSdates("B103", con)
-      TSdates(c("D1","B103","B104"), con)
-      z <- TSdates(c("D1","B103","B104"))
-      print(z)
-      start(z)
-      end(z)
-      }
+    dbfile <- tempfile()
+    setup <- RSQLite::dbConnect(RSQLite::SQLite(), dbname=dbfile)
+    TSsql::createTSdbTables(setup, index=FALSE)
+    
+    con <- TSconnect("SQLite", dbname=dbfile)
+
+    z <- ts(rnorm(100), start=c(1975,1), frequency=12)
+    seriesNames(z) <- "random1"
+    if(TSexists("random1", con)) TSreplace(z, con) else
+    TSput(z, con)
+    z1 <- TSget("random1", con)
+    tfplot(z1)
+
+    z <- ts(matrix(rnorm(100),50,2), start=c(1975,1), frequency=4)
+    seriesNames(z) <- c("random2","random3")
+    if(TSexists("random2", con) |
+       TSexists("random3", con) ) TSreplace(z, con) else
+    TSput(z, con)
+
+    z2 <- TSget("random2", con)
+    tfplot(z2)
+    TSdates("D1", con)
+    TSdates("random2", con)
+    TSdates(c("random1","random2","random3"), con)
+    TSmeta("random2", con)
+
+    options(TSconnection=con)
+    z2 <- TSget(c("random2","random3"))
+    z <- TSdates(c("D1","random2","random3"))
+    print(z)
+    TSmeta("random2")
+    TSdelete("random1", con)
+    TSdelete("random2")
+    
+    unlink(dbfile)
 }
 \keyword{ts}
 
