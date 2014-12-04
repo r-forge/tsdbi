@@ -30,26 +30,30 @@ setMethod("dbDisconnect", signature(conn="QuandlConnection"),
 #######     end kludges   ######
 
 setClass("TSQuandlConnection", contains=c("QuandlConnection", "conType", "TSdb"),
-           slots = c(token="character"))
+           slots = c(token=c("character", "logical")))
 
 setMethod("TSconnect", signature(q="QuandlConnection", dbname="missing"),
-   definition=function(q, dbname, token=NULL, ...) {
+   definition= function(q, dbname, token=NULL, ...) {
         dbname <- q@dbname 
         # get defaults from file  or system variables but 
 	# token can be NULL if system variable is not set, and this
-	# works up to Quandl limit. 
-   	#if (is.null(token)) {
+	# works up to Quandl limit. Quandl::Quandl.auth() uses NA for not set.
+	# It allows resetting to NULL but then things break so leave NA if not set.
+        if (is.null(token)) token <- Quandl::Quandl.auth() #returns set value or NA
+   	if (is.na(token)) {
    	  f <- paste0(Sys.getenv("HOME"),"/.Quandl.cnf")
    	  if (file.exists(f)) {
              f <- scan(f, what="", quiet=TRUE) #token
              token <- f[1]
              }
           else  token <- Sys.getenv()["QUANDL_TOKEN"] #may be NULL
-	#  }
-        if (is.null(token)) token <- Quandl.auth()
+          if (is.null(token)) token <- NA
+          token <- Quandl::Quandl.auth(token) # set, possibly to default NA
+	  }
 	new("TSQuandlConnection" , dbname=dbname, token=token, 
   	       hasVintages=FALSE, hasPanels=FALSE) 
-	})
+	}
+	)
 
 setMethod("TSdates",  
    signature(serIDs="character", con="TSQuandlConnection", vintage="ANY", panel="ANY"),

@@ -89,8 +89,8 @@ will not be removed. These steps are done in the example below.
 }
 \examples{
     require("tfplot")
-    conInit <- try(dbConnect("MySQL", dbname="test"))
-    if(! inherits(conInit, "try-error")) {
+    \dontrun{
+      conInit <- RMySQL::dbConnect(RMySQL::MySQL(), dbname="test")
       TSsql::createTSdbTables(conInit, index=FALSE)
       con <- TSconnect("MySQL", dbname="test")
       z <- ts(rnorm(100), start=c(1975,1), frequency=12)
@@ -116,26 +116,26 @@ will not be removed. These steps are done in the example below.
       TSmeta("random2")
       TSdelete("random1", con)
       TSdelete("random2")
-       \dontshow{TSsql::removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)} 
-      }
-    con <- try(TSconnect("MySQL", dbname="ets"))
-    if(! inherits(con, "try-error")) {
-      TSmeta("B103", con)
-      z1 <- TSget("B103", con)
-      tfplot(z1)
-      z2 <- TSget(c("B103", "B104"), con)
-      tfplot(z2)
-      options(TSconnection=con)
-      TSmeta("B103")
-      z2 <- TSget(c("B103","B104"))
-      TSmeta(z2)
-      TSdates("D1", con)
-      TSdates("B103", con)
-      TSdates(c("D1","B103","B104"), con)
-      z <- TSdates(c("D1","B103","B104"))
-      print(z)
-      start(z)
-      end(z)
+      TSsql::removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
+      con <- try(TSconnect("MySQL", dbname="ets"))
+      if(!inherits(con, "try-error")){
+          TSmeta("B103", con)
+          z1 <- TSget("B103", con)
+          tfplot(z1)
+          z2 <- TSget(c("B103", "B104"), con)
+          tfplot(z2)
+          options(TSconnection=con)
+          TSmeta("B103")
+          z2 <- TSget(c("B103","B104"))
+          TSmeta(z2)
+          TSdates("D1", con)
+          TSdates("B103", con)
+          TSdates(c("D1","B103","B104"), con)
+          z <- TSdates(c("D1","B103","B104"))
+          print(z)
+          start(z)
+          end(z)
+          }
       }
 }
 \keyword{ts}

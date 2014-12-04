@@ -1,13 +1,9 @@
-if(identical(as.logical(Sys.getenv("_R_CHECK_HAVE_SQLITE_")), TRUE)) {
-
 
 cat("************** RSQLite  Examples ******************************\n")
-cat("**************************************************************\n")
-cat("* WARNING: THIS OVERWRITES TABLES IN TEST DATABASE ON SERVER**\n")
-cat("**************************************************************\n")
 
 # no user/passwd/host
-setup <- RSQLite::dbConnect(RSQLite::SQLite(), dbname="test") 
+dbfile <- tempfile()
+setup <- RSQLite::dbConnect(RSQLite::SQLite(), dbname=dbfile) 
 
 RSQLite::dbListTables(setup) 
 
@@ -19,7 +15,7 @@ DBI::dbDisconnect(setup)
 
 require("TSSQLite")
 
-con <- try(TSconnect("SQLite", dbname="test") )
+con <- try(TSconnect("SQLite", dbname=dbfile) )
 if(inherits(con, "try-error")) stop("CreateTables did not work.")
 
 source(system.file("TSsql/Populate.TSsql", package = "TSsql"))
@@ -32,5 +28,5 @@ TSsql::removeTSdbTables(con, yesIknowWhatIamDoing=TRUE)
 
 cat("**************        disconnecting test\n")
 dbDisconnect(con)
+unlink(dbfile)
 
-} else  cat("SQLLITE not available. Skipping tests.")

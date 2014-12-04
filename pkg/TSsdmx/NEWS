@@ -7,39 +7,10 @@ Known BUGS
    o	None for the moment.
 
 
-Changes in TSsdmx version 2014.10-1
+Changes in TSsdmx version 2014.12-1
 
-   o	Converted to a wrapper package for RJSDMX.
+   o	First release. This package has the same name and function as an
+   	unreleased package that has been on R-forge for some time. However,
+	the underlying code is very different and is now a wrapper for 
+	package RJSDMX.
 
-   o	Update class definitions to use slots= rather than representation().
-
-   o	Bumped requirement for DBI up to version 0.3.1 or greater.
-
-   o	Adjusted TSconnect() to use a string or a connection in place of a
-   	driver, and renamed argument drv to q to reflect this change.
-
-   o	Adjusted Depends and Imports in DESCRIPTION.
-
-Changes in TSsdmx version 2012.8-1
-
-   o	Modified Title in DESCRIPTION file so TSdbi packages will be more
-   	clearly related on CRAN listing.
-
-Changes in TSsdmx version 2012.4-1
-
-   o	Added tfplot to Suggests in DESCRIPTION.
-
-
-Changes in TSsdmx version 2011.11-1
-
-   o	Updated maintainer email address.
-
-
-Changes in TSsdmx version 2011.3-1
-
-   o	Added support for TSrepresentation.
-
-
-Changes in TSsdmx version 2010.12-1
-
-   o	First ( alpha unworking release) on R-forge
