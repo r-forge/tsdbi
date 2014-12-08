@@ -87,7 +87,7 @@ setMethod("TSdates",
 } )
 
 setMethod("TSget",     signature(serIDs="character", con="TSsdmxConnection"),
-   definition= function(serIDs, con, TSrepresentation=options()$TSrepresentation,
+   definition = function(serIDs, con, TSrepresentation=options()$TSrepresentation,
        tf=NULL, start=tfstart(tf), end=tfend(tf),
        names=serIDs, quiet=TRUE, ...){ 
     if (is.null(TSrepresentation)) TSrepresentation <- "ts"
@@ -98,8 +98,17 @@ setMethod("TSget",     signature(serIDs="character", con="TSsdmxConnection"),
 
     st <- if(is.null(start)) "" else as.character(start)
     en <- if(is.null(end))   "" else as.character(end)
-    ser <- try(getSDMX(dbname, serIDs, start=st, end=en))
-    
+
+    if (is.character(start) & is.character(end)) {
+       stenSDMX <- TRUE  # assume char is as per needed by RJSDMX
+       ser <- try(getSDMX(dbname, serIDs, start=start, end=end), silent=TRUE)
+       }
+    else { 
+       stenSDMX <- FALSE  # assume R dates, retrieve all and truncate below
+       ser <- try(getSDMX(dbname, serIDs, start="", end=""), silent=TRUE)
+       }
+
+   
     if(inherits(ser, "try-error")){
        if(grepl("does not exist in provider", attr(ser,"condition")$message))
          stop(serIDs, " does not exist on ", dbname)
@@ -121,14 +130,13 @@ setMethod("TSget",     signature(serIDs="character", con="TSsdmxConnection"),
        #sdmxMeta <- append(sdmxMeta, list(attributes(ser[[i]])))
       }
 
-    #mat <- tfwindow(mat, tf=tf, start=start, end=end)
-
     if (all(is.nan(mat))) warning("Data is all NaN.")
    
-    if (! TSrepresentation  %in% c( "ts", "default")){
-      require("tframePlus")
-      mat <- changeTSrepresentation(mat, TSrepresentation)
-      }
+  
+    mat <- tframePlus::changeTSrepresentation(mat, TSrepresentation)
+    # BUG above and below usually in reverse order but this works around
+    #  window BUG. May be fixed by new zoo not yet on CRAN.
+    if(!stenSDMX)  mat <- tfwindow(mat, tf=tf, start=start, end=end)
 
     if(any(grepl('*',serIDs)))
        if(length(names) != length(ser)) names <- names(ser)

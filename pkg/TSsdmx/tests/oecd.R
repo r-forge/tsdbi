@@ -1,6 +1,5 @@
 require("TSsdmx")
 
-
 oecd <- TSconnect("sdmx", dbname="OECD")
 
 #  environmental indicators. single point, not series?
@@ -10,32 +9,17 @@ oecd <- TSconnect("sdmx", dbname="OECD")
 # z <- TSget('ENV_KEI.*.NOX_GDP', oecd)
 
 
-#  USING sdmxHelp()
-#>OECD
-# 	G20_PRICES > 	>LOCATION:CAN
-#			>SUBJECT : CP   (CPI)
-#			>MEASURE : IXOB (INDEX)
-#			>FREQUENCY: M
-
-z <- TSget('G20_PRICES.CAN.CPALTT01.IXOB.A',oecd)  # date problems
-z <- TSget('G20_PRICES.CAN.CPALTT01.IXOB.M',oecd)  # date problems
-# tts <- getSDMX('OECD', 'G20_PRICES.CAN.*.IXOB.M') 
-
-# above is only subject:
-# tts2 = getSDMX('OECD', 'G20_PRICES.CAN.*.IXOB.M')  #YES but date problems
-# names(tts2)
-# tts2 = getSDMX('OECD', 'G20_PRICES.CAN.*.IXOB.*')  #YES but date problems
-# names(tts2)
-
-
 #### monthly data ####
 
-z <- TSget('G20_PRICES.CAN.CPALTT01.IXOB.M',oecd)  # date problems
-seriesNames(z)
+z <- TSget('G20_PRICES.CAN.CPALTT01.IXOB.M',oecd) 
+if(! all(c(1949,1) == start(z))) stop('monthly test 1 start date is changed.')
+if(12 != frequency(z))           stop('monthly test 1 frequency error.')
 
-z <- TSget('G20_PRICES.CAN.*.IXOB.M', oecd)   # zoo date problems
 tframe::seriesNames(z)
-start(z)
+
+z <- TSget('G20_PRICES.CAN.CPALTT01.IXOB.M', start=c(1990,6), end =c(2012,12), oecd)  
+if(! all(c(1990,6)  == start(z))) stop('monthly test 2 start date error.')
+if(! all(c(2012,12) ==   end(z))) stop('monthly test 2 end date error.')
 
 
 #### quarterly data ####
@@ -44,40 +28,44 @@ start(z)
 #CARSA: national currency, nominal, SAAR (level)
 
 z <- TSget('QNA.CAN.PPPGDP.CARSA.Q', oecd)
+if(! all(c(1960,1) == start(z))) stop('quarterly test 1 start date is changed.')
+if(4 != frequency(z)) stop('quarterly test 1 frequency error.')
 
-if("1960 Q1" != start(z)) stop('quarterly test start date is changed.')
-if(4 != frequency(z)) stop('quarterly test frequency is changed.')
 
-# tts <- getSDMX('OECD', 'QNA.CAN.*.*.*')
-# names(tts)
-
-# tts <- getSDMX('OECD', 'QNA.CAN.*.CARSA.Q')
-# names(tts)
+z <- TSget('QNA.CAN.PPPGDP.CARSA.Q', start=c(1990,2), end =c(2012,4), oecd)
+if(! all(c(1990,2) == start(z))) stop('quarterly test 2 start date error.')
+if(! all(c(2012,4) ==   end(z))) stop('quarterly test 2 end date error.')
 
 z <- TSget('QNA.*.PPPGDP.CARSA.Q', oecd)
 
-if("1955 Q1" != start(z)) stop('quarterly mulivariate test start date is changed.')
-if(4 != frequency(z)) stop('quarterly mulivariate test frequency is changed.')
+if(! all(c(1955,1) == start(z))) stop('quarterly mulivariate test start date is changed.')
+if(4 != frequency(z)) stop('quarterly mulivariate test frequency error.')
 
 # tfplot::tfplot(z, graphs.per.page=3)
 # tfplot::tfOnePlot(z, start=c(1990,1))
 
-
-z <- TSget('G20_PRICES.CAN.CPALTT01.IXOB.Q',oecd)  
-
-if("1949 Q1" != start(z)) stop('quarterly prices test start date is changed.')
-if(4 != frequency(z)) stop('quarterly test frequency is changed.')
-
 # Annual only ??
-z <- TSget('BSI.NAT.EQU.TOT.DIR.CAN', oecd)    # zoo date problems
+z <- TSget('BSI.NAT.EQU.TOT.DIR.CAN', oecd)    # BUG zoo date problems
 
 # tts <- getSDMX('OECD', 'BSI.NAT.*.*.*.CAN')
 # names(tts)
 
 
-
 #####  annual #####
-  
+
+
+#  USING sdmxHelp()
+#>OECD
+# 	G20_PRICES > 	>LOCATION:CAN
+#			>SUBJECT : CP   (CPI)
+#			>MEASURE : IXOB (INDEX)
+#			>FREQUENCY: M
+
+z <- TSget('G20_PRICES.CAN.CPALTT01.IXOB.A',oecd)  
+if(! all(c(1949,1) == start(z))) stop('annual test 1 start date is changed.')
+if(1 != frequency(z)) stop('annual test 1 frequency error.')
+
+
 #>OECD  Household ... assets and liabilities ..
 # 	7HA_A_Q > 	>LOCATION:CAN
 #			>TRANSACTION : AF411LI (cons. cr No 7HAL2=liabilities)
@@ -86,22 +74,20 @@ z <- TSget('BSI.NAT.EQU.TOT.DIR.CAN', oecd)    # zoo date problems
 #			>FREQUENCY:  A only  *** Q does not exist ***
 
 
-z <- TSget('7HA_A_Q.CAN.*.*.*.*', oecd)
-tframe::seriesNames(z)
+#z <- TSget('7HA_A_Q.CAN.*.*.*.*', oecd)
+#tframe::seriesNames(z)
+#tframe::nseries(z) # 44
 
-z <- TSget('7HA_A_Q.CAN.AF411LI.ST.C.A', oecd)
-
-if(1995 != start(z)) stop('annual test start date is changed.')
-if(1 != frequency(z)) stop('annual test frequency is changed.')
+z <- TSget('7HA_A_Q.CAN.AF411LI.ST.C.A', start=c(1999,1), end =c(2009,1), oecd)
+if(! all(c(1999,1) == start(z))) stop('annual test 2 start date error.')
+if(! all(c(2009,1) ==   end(z))) stop('annual test 2 end date error.')
 
 z <- TSget('7HA_A_Q.CAN.*.ST.C.A', oecd)
-
-z <- TSget('7HA_A_Q.CAN.*.*.*.*', oecd)
 tframe::seriesNames(z)
 
-if(1995 != start(z)) stop('annual mulivariate test start date is changed.')
-if(1 != frequency(z)) stop('annual mulivariate test frequency is changed.')
+if(! all(c(1995,1) ==  start(z))) stop('annual mulivariate test start date is changed.')
+if(1 != frequency(z)) stop('annual mulivariate test frequency error.')
 
-# need to catch error in this
-z <- TSget('G20_PRICES.CAB.CP.IXOB.M',oecd)
+#16 BUG silent=TRUE is not working
+z <- try(TSget('G20_PRICES.CAB.CP.IXOB.M',oecd), silent=TRUE)
 

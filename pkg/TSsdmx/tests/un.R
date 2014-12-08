@@ -1,6 +1,8 @@
 require("TSsdmx")
 
-un <- TSconnect("sdmx", dbname == "UN")
+# note REST yet
+
+# un <- TSconnect("sdmx", dbname == "UN")
 
 # Status:  Not nearly working
 #    Preliminary investigation notes. Web site may require account and
