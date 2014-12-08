@@ -1,20 +1,6 @@
-
-# Finding series identifiers is difficult and
-#  the mneumonics are obscure. Needs documentation.
-
-# on finding identifiers
-# http://epp.eurostat.ec.europa.eu/portal/page/portal/sdmx_web_services/about_eurostat_data
-# >SDMX queries tutorial
-# and 
-#http://epp.eurostat.ec.europa.eu/portal/page/portal/sdmx_web_services/sdmx_tutorial/ident_data
-
-#   but real, use   sdmxHelp()
-
 cat("************** ECB sdmx   ******************************\n")
 
 require("TSsdmx")
-# require("RJSDMX")
-# require("tframe")
 
 ecb <- TSconnect("sdmx", dbname="ECB")
 
@@ -28,12 +14,15 @@ if(2000 != start(z))  stop("ECB monthly start error.")
 
 #### monthly ####
 z <- TSget('EXR.M.USD.EUR.SP00.A', ecb)
-
-if("Jan 1999" != start(z)) stop("ECB monthly start error.")
+if(! all(c(1999,1) == start(z))) stop("ECB monthly test 1 start error.")
 
 z <- TSget('EXR.M.USD.EUR.SP00.A', start="2008-05", end="2014-07", ecb)
+if(! all(c(2008,5) == start(z))) stop("ECB monthly test 2 start error.")
+if(! all(c(2014,7) ==   end(z))) stop("ECB monthly test 2 end error.")
+
 z <- TSget('EXR.M.USD.EUR.SP00.A', start=c(2008,5), end=c(2014,7), ecb)
-FIX SO ABOVE WORKS
+if(! all(c(2008,5) == start(z))) stop("ECB monthly test 3 start error.")
+if(! all(c(2014,7) ==   end(z))) stop("ECB monthly test 3 end error.")
 
 z <- TSget('EXR.M.USD.EUR.SP00.A', ecb) 
 z <- TSget('EXR.M.USD.EUR.SP00.A', start = "", end = "", ecb) 
@@ -48,12 +37,13 @@ require("tfplot")
 options(TSconnection=ecb)
 
 z <- TSget("ICP.M.U2.N.000000.4.ANR")# annual rates 
-if("Jan 1991" != start(z)) stop("ECB monthly start error 2.")
+if(! all(c(1991,1) == start(z))) stop("ECB monthly test 4 start error.")
 ##   BUG  ?? tfplot(z)
 
 z <- TSget("ICP.M.U2.N.000000.4.INX")# index 
 z <- TSget("BSI.M.U2.Y.U.A21.A.4.U2.2250.Z01.E")
-##   BUG  ?? tfplot(z)
+
+tfplot(z)
 plot(z)
 
 
@@ -61,10 +51,15 @@ plot(z)
 
 z <- TSget('EXR.Q.USD.EUR.SP00.A')
 
-if("1999 Q1" != start(z)) stop("ECB quarterly retrieval error.")
+if(! all(c(1999,1) == start(z))) stop("ECB quarterly  test 1 start error.")
 
 z <- TSget('EXR.Q.USD.EUR.SP00.A', start="2008-Q2", end="2014-Q3")
+if(! all(c(2008,2) == start(z))) stop("ECB quarterly  test 2 start error.")
+if(! all(c(2014,3) ==   end(z))) stop("ECB quarterly  test 2 end error.")
+
 z <- TSget('EXR.Q.USD.EUR.SP00.A', start=c(2008,2), end=c(2014,3))
+if(! all(c(2008,2) == start(z))) stop("ECB quarterly  test 3 start error.")
+if(! all(c(2014,3) ==   end(z))) stop("ECB quarterly  test 3 end error.")
 
 # BSI balance sheet indicators
 #   FREQ Q
@@ -101,9 +96,9 @@ length(names(z)) #
 names(z)
 
 
-skey <-c("117.BSI.Q.U2.N.A.A21.A.1.U2.2250.Z01.E",
-         "117.BSI.Q.U2.N.A.A22.A.1.U2.2250.Z01.E",
-         "117.BSI.Q.U2.N.A.A23.A.1.U2.2250.Z01.E")
+skey <-c("BSI.Q.U2.N.A.A21.A.1.U2.2250.Z01.E",
+         "BSI.Q.U2.N.A.A22.A.1.U2.2250.Z01.E",
+         "BSI.Q.U2.N.A.A23.A.1.U2.2250.Z01.E")
 
 
 z <- TSget(skey[1], ecb)   

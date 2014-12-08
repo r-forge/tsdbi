@@ -1,16 +1,18 @@
-require("TSsdmx")
 
+#################### Bank of Canada #################### 
+
+require("TSsdmx")
+require("tfplot")
+
+if (FALSE) {
+
+# This is not REST but URL calls return SDMX.
 
 boc <- TSconnect("sdmx", dbname="BoC")
 z <- TSget(c('CDOR', 'OIS'), boc)
 
-# Status: Partially working, but finding series identifiers is difficult and
+# Finding series identifiers is difficult and
 #    limited data is available (as of December 2010).
-#    Needs documentation.
-
-cat("************** Bank of Canada sdmx   ******************************\n")
-require("TSsdmx")
-require("tfplot")
 
 con <- TSconnect("sdmx", dbname="BoC") 
 
@@ -79,3 +81,5 @@ TSgetBoC <- function(id, names=NULL){
 
    r
    }
+
+}
