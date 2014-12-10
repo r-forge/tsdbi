@@ -165,40 +165,41 @@ pending the institutions getting SDMX/REST 2.1 in place. Package \pkg{RJSDMX} ha
 \label{tab:connections}
 \begin{tabular}{@{}lcc@{}}
 \hline
-Data source      & URL &   Package   &   Connection   &
+Data source      &      source URL 		& Package &Connection&
 \hline
-EuroStat		&  & TSsdmx & sdmx \\
-ECB       		&  & TSsdmx & sdmx \\
-OECD	      		&  & TSsdmx & sdmx \\
-IMF	      		&  & TSsdmx & sdmx \\
-ILO	      		& www.ilo.org & TSsdmx & sdmx \\
-Instituto Nacional de Estadistica y Geografia (Mexico)& www.inegi.org.mx & TSsdmx & sdmx \\
-UN*	      		& comtrade.un.org & TSsdmx & sdmx \\
-World Bank*	      	& worldbank.org & TSsdmx & sdmx \\
-BIS+	      		& www.bis.org & TSsdmx & sdmx \\
-FRED    		&  & TSmisc & histQuote \\
-FRED    		&  & TSmisc & getSymbol \\
-Statistics Canada	&  & TSjson & json \\
-Reserve Bank of Australia&  & TSmisc & xls \\
-Bank of Canada		& www.bank-banque-canada.ca & TSQuandl & Quandl \\
-Yahoo    		&  & TSmisc & getSymbol \\
-Yahoo    		&  & TSmisc & histQuote \\
-Oanda    		&  & TSmisc & histQuote \\
-PiTrading    		&  & TSmisc & zip \\
-NSE    			&  & TSQuandl & Quandl \\
-Bloomberg   		&  & TSbbg & bbg \\
+EuroStat	  & epp.eurostat.ec.europa.eu	& TSsdmx & sdmx \\
+ECB       	  & www.ecb.org  		& TSsdmx & sdmx \\
+OECD	      	  & www.oecd.org 		& TSsdmx & sdmx \\
+IMF	      	  & www.imf.org  		& TSsdmx & sdmx \\
+ILO	      	  & www.ilo.org  		& TSsdmx & sdmx \\
+INEGI (Mexico)	  & www.inegi.org.mx 		& TSsdmx & sdmx \\
+UN*	      	  & comtrade.un.org 		& TSsdmx & sdmx \\
+World Bank*	  & worldbank.org 		& TSsdmx & sdmx \\
+BIS+	      	  & www.bis.org 		& TSsdmx & sdmx \\
+FRED    	  &research.stlouisfed.org/fred2& TSmisc & histQuote \\
+FRED    	  &research.stlouisfed.org/fred2& TSmisc & getSymbol \\
+Statistics Canada & www.statcan.gc.ca 		& TSjson & json \\
+Reserve Bank of Australia& www.rba.gov.au 	& TSmisc & xls \\
+Bank of Canada	  & www.bank-banque-canada.ca 	& TSQuandl & Quandl \\
+Yahoo    	  & quote.yahoo.com 		& TSmisc & getSymbol \\
+Yahoo    	  & quote.yahoo.com 		& TSmisc & histQuote \\
+Oanda    	  & www.oanda.com 		& TSmisc & histQuote \\
+PiTrading    	  & pitrading.com 		& TSmisc & zip \\
+Quandl	  	  & www.quandl.com 		& TSQuandl & Quandl \\
+Bloomberg++ 	  & www.bloomberg.com 		& TSbbg & bbg \\
 
 \hline
 * beta testing&& \\
 + requires an account&& \\
+++ not on CRAN&& \\
 \hline
 \end{tabular}
 \end{center}
 \end{table}
 %%%%%%%%%%%%%%%%%%%
 
-The table is not comprehensive. In particular, Quandl, Bloomberg, and some others, provide 
-access to data from a large number of sources, especial market data.
+The table is not comprehensive. In particular, Quandl, Bloomberg, Yahoo, Oanda, 
+and some others, provide access to data from a large number of sources, especial market data.
 %%
 \subsection{\code{SDMX} Data}
 %%

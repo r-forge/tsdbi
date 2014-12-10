@@ -1,3 +1,5 @@
+# sourcing HistQuote.TSsql requires the Internet
+
 service <- Sys.getenv("_R_CHECK_HAVE_POSTGRES_")
 
 if(identical(as.logical(service), TRUE)) {
