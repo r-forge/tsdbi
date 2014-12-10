@@ -194,7 +194,7 @@ See the package vignette for additional examples.
   #  test file copied Nov. 29, 2010 from 
   #  http://www.rba.gov.au/statistics/tables/xls/d03hist.xls  
 
-    testfile <- system.file("testxls/d03hist.xls", package = "TSxls")
+    testfile <- system.file("xlsExampleData/d03hist.xls", package = "TSmisc")
  
     con1 <- TSconnect("xls", dbname=testfile,
           map=list(ids  =list(i=11,     j="B:Q"), 

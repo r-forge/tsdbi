@@ -14,7 +14,7 @@ require("zoo")
 
 ####  Australian Intervention copied Oct 28, 2013 ####
   # testfile <- "http://www.rba.gov.au/statistics/tables/xls/a05hist.xls"
-  testfile <- system.file("testxls/a05hist.xls", package = "TSmisc")
+  testfile <- system.file("xlsExampleData/a05hist.xls", package = "TSmisc")
 
 
 # note that dates display in the spreadsheet like 02-Jan-1989, show in the
