@@ -1,3 +1,4 @@
+# sourcing HistQuote.TSsql requires the Internet
 
 cat("************** RSQLite  Examples ******************************\n")
 
