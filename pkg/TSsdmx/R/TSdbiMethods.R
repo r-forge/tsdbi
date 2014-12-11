@@ -87,48 +87,57 @@ setMethod("TSdates",
 } )
 
 setMethod("TSget",     signature(serIDs="character", con="TSsdmxConnection"),
-   definition = function(serIDs, con, TSrepresentation=options()$TSrepresentation,
+   definition  = function(serIDs, con, TSrepresentation=options()$TSrepresentation,
        tf=NULL, start=tfstart(tf), end=tfend(tf),
        names=serIDs, quiet=TRUE, ...){ 
+
     if (is.null(TSrepresentation)) TSrepresentation <- "ts"
     dbname <- con@dbname
-    
+
     if( ! (dbname %in% getProviders()))
           stop("dbname", dbname, "not a recognized SDMX provider.")
 
-    st <- if(is.null(start)) "" else as.character(start)
-    en <- if(is.null(end))   "" else as.character(end)
+    mat  <- NULL
+    nm   <- NULL
+    desc <- NULL
+    doc  <- NULL
 
     if (is.character(start) & is.character(end)) {
        stenSDMX <- TRUE  # assume char is as per needed by RJSDMX
-       ser <- try(getSDMX(dbname, serIDs, start=start, end=end), silent=TRUE)
+       st <- start 
+       en <- end
        }
     else { 
        stenSDMX <- FALSE  # assume R dates, retrieve all and truncate below
-       ser <- try(getSDMX(dbname, serIDs, start="", end=""), silent=TRUE)
+       st <- "" 
+       en <- "" 
        }
+    
+    #serIDs can be a vector, and a single element may have a wildcard 
+    #  which returns multiple series.
 
-   
-    if(inherits(ser, "try-error")){
-       if(grepl("does not exist in provider", attr(ser,"condition")$message))
-         stop(serIDs, " does not exist on ", dbname)
-       else
-         stop(serIDs, " error: ", attr(ser,"condition")$message)
-       }
+    for (j in 1:length(serIDs)) {
+    	ser <- try(getSDMX(dbname, serIDs[j], start=st, end=en), silent=TRUE)
+       
+    	if(inherits(ser, "try-error")){
+    	   if(grepl("does not exist in provider", attr(ser,"condition")$message))
+    	     stop(serIDs[j], " does not exist on ", dbname)
+    	   else
+    	     stop(serIDs[j], " error: ", attr(ser,"condition")$message)
+    	   }
 
-    if (0 == length(ser)) stop("unknown error getting ", serIDs, " from ", dbname,
-            " try getSDMX('",dbname, "', '", serIDs, "')" )
-
-    mat <- ser[[1]]
-    desc <- names(ser)
-    doc <- attr(ser[[1]], "TITLE_COMPL")
-    #sdmxMeta <- list(attributes(ser[[1]]))
- 
-    if (1 < length(ser)) for (i in 2:length(ser)) {
-       mat <- tbind(mat, ser[[i]])
-       if (! is.null(doc)) doc <- c(doc, attr(ser[[i]], "TITLE_COMPL"))
-       #sdmxMeta <- append(sdmxMeta, list(attributes(ser[[i]])))
-      }
+    	if (0 == length(ser)) stop("unknown error getting ", serIDs[j], " from ", dbname,
+    		" try getSDMX('",dbname, "', '", serIDs[j], "')" )
+     
+    	for (i in 1:length(ser)) {
+    	   mat  <- tbind(mat, ser[[i]])
+    	   desc <- c(desc, names(ser[[i]]))
+    	   doc  <- c(doc, attr(ser[[i]], "TITLE_COMPL"))
+    	   #sdmxMeta <- append(sdmxMeta, list(attributes(ser[[i]])))
+    	  }
+    	desc <- c(desc, names(ser)) # one of these could be different
+        nm   <- c(nm,   names(ser))
+        }
 
     if (all(is.nan(mat))) warning("Data is all NaN.")
    
@@ -136,12 +145,10 @@ setMethod("TSget",     signature(serIDs="character", con="TSsdmxConnection"),
     mat <- tframePlus::changeTSrepresentation(mat, TSrepresentation)
     # BUG above and below usually in reverse order but this works around
     #  window BUG. May be fixed by new zoo not yet on CRAN.
-    if(!stenSDMX)  mat <- tfwindow(mat, tf=tf, start=start, end=end)
+    if(!stenSDMX)  mat <- tfwindow(mat, tf=tf, start=start, end=end)    
+    
+    if(any(grepl('\\*',serIDs)) && (length(names) != nseries(mat))) names <- nm
 
-    if(any(grepl('*',serIDs)))
-       if(length(names) != length(ser)) names <- names(ser)
-    
-    
     seriesNames(mat) <- names
 
     TSmeta(mat) <- new("TSmeta", serIDs=serIDs,  dbname=con@dbname, 

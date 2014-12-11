@@ -74,18 +74,21 @@ if(! all(c(2014,3) ==   end(z))) stop("ECB quarterly  test 3 end error.")
 #   currency  Z01 all currencies
 #   suffix  E euro   (no B average )
 
-z <- getSDMX('ECB', "BSI.Q.U2.N.T.A21.A.1.U2.2250.Z01.B") not found
+
+if (FALSE) {
+
+z <- getSDMX('ECB', "BSI.Q.U2.N.T.A21.A.1.U2.2250.Z01.B") #not found
 
 z <- getSDMX('ECB', "BSI.Q.U2.N.T.A20.A.1.U2.2250.Z01.E") 
 
-z <- getSDMX('ECB', "BSI.Q.U2.N.T.*.*.*.*.*.*.*")  not found
+z <- getSDMX('ECB', "BSI.Q.U2.N.T.*.*.*.*.*.*.*")  #not found
 
 z <- getSDMX('ECB', "BSI.Q.U2.N.*.*.*.*.*.*.*.*") 
 nm <- names(z)
 length(nm) #927
 nm
 
-sum(grepl('A21',nm)  # 0
+sum(grepl('A21',nm))  # 0
 sum(grepl('.B', names(z)))  # 0
 sum(grepl('2250', names(z))) #
 
@@ -117,12 +120,14 @@ tfplot(z)
 
 #### weeky data  ####
 
-# "Frequency W. Does not allow the creation of a strictly 
+# Frequency W. Does not allow the creation of a strictly 
 # fetching but then failing translating date with error
 #   character string is not in a standard unambiguous format
-
+#
 # z <- TSget("ILM.W.U2.C.A010.Z5.Z0Z", ecb)
-
-# "Frequency W. Does not allow the creation of a strictly 
-fetching but then failing
+#
+# Frequency W. Does not allow the creation of a strictly 
+# fetching but then failing
 z <- TSget("ILM.W.U2.C.A010.Z5.Z0Z", ecb)
+
+}

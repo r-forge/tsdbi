@@ -1,3 +1,4 @@
+if (FALSE) {
 ########################### "INEGI" ###########################
 ##### Instituto Nacional de Estadistica y Geografia (Mexico) ######
 
@@ -13,7 +14,7 @@ require("RJSDMX")
   tts = getTimeSeries("INEGI", "DF_STEI/..C1161+C1162+C5004.....")
   tts = getTimeSeries("INEGI", "DF_STEI/..C1161+C1162+C5004.....")
 
-why slash? in DF_STEI/
+#why slash? in DF_STEI/
   tts = getTimeSeries("INEGI", "DF_STEI/..C1161+C1162+C5004.....")
   tts = getSDMX("INEGI", "DF_STEI/..C1161+C1162+C5004.....")
   
@@ -58,3 +59,4 @@ why slash? in DF_STEI/
     
   #names(tts)
  
+}
