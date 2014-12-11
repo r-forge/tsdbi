@@ -14,13 +14,13 @@
 \title{Methods to wrap sdmx  for TSdbi Generics}
 \description{Get a time series (matrix) using SDMX, for example, from the OECD database.}
 \usage{
-    sdmx...) 
+    sdmx(...) 
     \S4method{TSconnect}{sdmxConnection,missing}(
 	q, dbname, user="", password = "", host="", ...)
     \S4method{TSget}{character,TSsdmxConnection}(
 	serIDs, con, TSrepresentation = options()$TSrepresentation, 
 	tf = NULL, start = tfstart(tf), end = tfend(tf), names=serIDs, 
-	quiet = TRUE, repeat.try=3, ...)
+	quiet = TRUE, ...)
     \S4method{TSdates}{character,TSsdmxConnection}(
 	serIDs, con, vintage=NULL, panel=NULL, ... )  
     \S4method{TSdescription}{character,TSsdmxConnection}(x, con, ... )  
@@ -49,8 +49,6 @@
     \item{TSrepresentation}{time representation for returned series. 
           (See \code{TSget} in package \pkg{TSdbi}.)}
     \item{quiet}{logical to suppress progress report.}
-    \item{repeat.try}{integer number of times to attempt retrieval before giving
-          up.}
     \item{user}{(unused) a character string indicating a user id.}
     \item{password}{(unused) a character string indicating a password.}
     \item{host}{(unused) a character string indicating a host computer.}
@@ -79,13 +77,12 @@ See the package vignette for additional examples.
 \code{\link[tframe]{tfwindow}},
 }
 \examples{
+  require("TSsdmx")
   require("tfplot")
-  if (require("TSsdmx")){
-    con <- try(TSconnect("sdmx", dbname="OECD"))
-    if(! inherits(con, "try-error")) {
-        x <- TSget("whatever", con)
-        tfplot(x)
-       }
-    }
+  \dontrun{
+  oecd <- TSconnect("sdmx", dbname="OECD")
+  x <- TSget('G20_PRICES.CAN.CPALTT01.IXOB.M',oecd) 
+  tfplot(x)
   }
+}
 \keyword{ts}
