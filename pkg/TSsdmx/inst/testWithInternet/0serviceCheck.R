@@ -154,8 +154,8 @@ getProviders()
 #http://api.worldbank.org/data/WB/2/chn;ind/sp.pop.totl?format=generic
 
 ############ Swiss Federal Statistical Office ###############
-Site to the following e-mail address: webmaster@bfs.admin.ch
-http://www.bfs.admin.ch/bfs/portal/en/index/dienstleistungen/premiere_visite/07.html
+#Site to the following e-mail address: webmaster@bfs.admin.ch
+#http://www.bfs.admin.ch/bfs/portal/en/index/dienstleistungen/premiere_visite/07.html
 
 # federal Swiss institute of statistics to disseminate their data in SDMX 
 # and via a RESTful API.
@@ -254,7 +254,7 @@ http://www.bfs.admin.ch/bfs/portal/en/index/dienstleistungen/premiere_visite/07.
 # addProvider(name='ABS', 
 #    endpoint='http://stat.abs.gov.au/restsdmx/', FALSE)
 # addProvider(name='ABS', 
-     endpoint='http://stat.abs.gov.au/restsdmx/sdmx.ashx', FALSE)
+#     endpoint='http://stat.abs.gov.au/restsdmx/sdmx.ashx', FALSE)
 
 #  getFlows('ABS')
 
@@ -287,8 +287,4 @@ http://www.bfs.admin.ch/bfs/portal/en/index/dienstleistungen/premiere_visite/07.
 #http://comtrade.un.org/api/get?max=50000&type=C&freq=A&px=HS&ps=2013&r=826&p=0&rg=all&cc=AG2&fmt=json
 
 #http://comtrade.un.org/api/get?max=50000&type=C&freq=A&px=HS&ps=2013&r=826&p=0&rg=all&cc=AG2&fmt=sdmx
-
-#Old
-#http://unstats.un.org/unsd/tradekb/Knowledgebase/Comtrade-SDMX-Web-Services-and-Data-Exchange
-#http://unstats.un.org/unsd/tradekb/Knowledgebase/Comtrade-SDMX-Web-Services-and-Data-Exchange?Keywords=SDMX
 

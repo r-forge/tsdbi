@@ -4,14 +4,15 @@ require("RJSDMX")
 
   names(getDimensions('OECD','G20_PRICES')) # I think this is also in correct order
   getCodes('OECD', 'G20_PRICES', 'FREQUENCY')
-  
-  nm <- getFlows('OECD')
-  names(nm)
-  nm['G20_PRICES']
-  
-  nm[grepl('TRADE', names(nm))]
-  nm[grepl('WATER', names(nm))]
-  nm[grepl('FISH', names(nm))]
+ 
+#  message: Internal Server Error Dec 10,2014
+#  nm <- getFlows('OECD')
+#  names(nm)
+#  nm['G20_PRICES']
+#  
+#  nm[grepl('TRADE', names(nm))]
+#  nm[grepl('WATER', names(nm))]
+#  nm[grepl('FISH', names(nm))]
 
   tts <- getSDMX('OECD', 'G20_PRICES.CAN.*.*.M')
   names(tts)

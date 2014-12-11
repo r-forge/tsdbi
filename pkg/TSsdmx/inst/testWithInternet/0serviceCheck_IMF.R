@@ -18,7 +18,8 @@ require("RJSDMX")
   #  FREQ
   #  L_M USD millions (N_M: National currency, Millions 
   #   (NSA_M: National currency SA, Millions)
-  
+
+if (FALSE) {  
   tts0 <- getSDMX('IMF', 'PGI.CA.*.*.*.*')	#13 BUG works but slow. not working in 1.3
   nm <- names(tts0)
   length(nm) # 627
@@ -56,3 +57,5 @@ require("RJSDMX")
 # previously
   tts0 <- getSDMX('IMF', 'PGI.CA.*.*.*.*')["PGI.CA.BIS.FOSLB.A.L_M"] # not empty BUG
   tts1 <- getSDMX('IMF', 'PGI.CA.BIS.FOSLB.A.L_M') #  empty result
+
+}
