@@ -38,3 +38,24 @@ hasDataDescriptions(z)
 
 if (! ("ei_nama_q.Q.MIO-EUR.NSA.CLV2000.NA-P72.IT"
                  %in% hasDataNames(z))) stop("eurostat hasData test 3 changed.")
+
+##  vector of serIDs
+
+z <-  TSget(c("ei_nama_q.Q.MIO-EUR.NSA.CLV2000.NA-P7.IT",        
+              "ei_nama_q.Q.MIO-EUR.NSA.CLV2000.NA-P71.IT",        
+              "ei_nama_q.Q.MIO-EUR.NSA.CLV2000.NA-P72.IT"),
+	    start="1990-Q1", end="2012-Q2",eurostat) 
+
+if (! all(c(1990, 1) == start(z))) stop("eurostat vector test 1 start date failure.")
+if (! all(c(2012, 2) ==   end(z))) stop("eurostat vector test 1  end  date failure.")
+if ( 4 !=  frequency(z)) stop("eurostat vector test 1  frequency  date failure.")
+
+
+z <-  TSget(c("ei_nama_q.Q.MIO-EUR.NSA.CLV2000.NA-P7.IT",        
+              "ei_nama_q.Q.MIO-EUR.NSA.CLV2000.NA-P71.IT",        
+              "ei_nama_q.Q.MIO-EUR.NSA.CLV2000.NA-P72.IT"),
+	    start=c(1990,1), end=c(2012,2), eurostat) 
+
+if (! all(c(1990, 1) == start(z))) stop("eurostat vector test 1 start date failure.")
+if (! all(c(2012, 2) ==   end(z))) stop("eurostat vector test 1  end  date failure.")
+if ( 4 !=  frequency(z)) stop("eurostat vector test 1  frequency  date failure.")
