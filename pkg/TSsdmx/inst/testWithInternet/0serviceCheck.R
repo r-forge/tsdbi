@@ -16,11 +16,12 @@ z <- try(getSDMX("OECD", 'G20_PRICES.CAB.CP.IXOB.M'), silent=TRUE)
 # to install devel version from Github
 # require(devtools)
 # install_github(repo = "SDMX", username = "amattioc", subdir = "RJSDMX")
-
+# require("RJSDMX", lib.loc="/home/paul/R-forge/tsdbi/pkg/TSsdmx/FLAGS/unchecked/TSsdmx")
 # check installed version
 # installed.packages()["RJSDMX",c("Package","Version")] 
 # used 1.1 testing to 6 Nov 2014
 #      1.2 installed from github 6 Nov 2014
+#      1.3 installed from github 11 Dec 2014
 
 # Package rJava may be needed interactively for experimenting but should be found
 #   in the the namespace when everything is working.
@@ -240,33 +241,6 @@ getProviders()
 
 #tts <- getSDMX('INE', 'dpop')
 #names(tts)
-
-########################## Australian Bureau of Statistics ####################
-
-# contacted on web form, Dec 7, 2014 
-
-
-# The Australian Bureau of Statistics have an SDMX interface 
-# http://www.abs.gov.au/ausstats/abs@.nsf/Lookup/1407.0.55.002main+features32013/  
-# we haven't tried to RJSDMX to access it but it would be great if you were able to.
-# addProvider(name='ABS', 
-#     endpoint='http://stat.abs.gov.au/sdmxws/sdmx.asmx', FALSE)
-# addProvider(name='ABS', 
-#    endpoint='http://stat.abs.gov.au/restsdmx/', FALSE)
-# addProvider(name='ABS', 
-#     endpoint='http://stat.abs.gov.au/restsdmx/sdmx.ashx', FALSE)
-
-#  getFlows('ABS')
-
-#  sdmxHelp()
-
-#example
-
-#SDMX DATA URL:
-#http://stat.abs.gov.au/restsdmx/sdmx.ashx/GetData/MERCH_EXP/-.-1+0+1+2+3+4+5+6+7+8+9.-1.-.M/ABS?startTime=2014&endTime=2014
-
-#SDMX Data Structure Definition URL:
-#http://stat.abs.gov.au/restsdmx/sdmx.ashx/GetDataStructure/MERCH_EXP/ABS
 
 ############################ UN ############################
 # contaced on web form Dec 7, 2014
