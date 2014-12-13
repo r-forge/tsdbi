@@ -16,7 +16,6 @@ z <- try(getSDMX("OECD", 'G20_PRICES.CAB.CP.IXOB.M'), silent=TRUE)
 # to install devel version from Github
 # require(devtools)
 # install_github(repo = "SDMX", username = "amattioc", subdir = "RJSDMX")
-# require("RJSDMX", lib.loc="/home/paul/R-forge/tsdbi/pkg/TSsdmx/FLAGS/unchecked/TSsdmx")
 # check installed version
 # installed.packages()["RJSDMX",c("Package","Version")] 
 # used 1.1 testing to 6 Nov 2014
