@@ -36,8 +36,12 @@ z <- TSget('QNA.CAN.PPPGDP.CARSA.Q', start=c(1990,2), end =c(2012,4), oecd)
 if(! all(c(1990,2) == start(z))) stop('quarterly test 2 start date error.')
 if(! all(c(2012,4) ==   end(z))) stop('quarterly test 2 end date error.')
 
-z <- TSget('QNA.*.PPPGDP.CARSA.Q', oecd)
+#   test "+" and "|" in query and test setting names
+z <- TSget('QNA.CAN+USA|MEX.PPPGDP.CARSA.Q', 
+         names=c("Canada", "United States", "Mexico"),   oecd)
 
+if(! all(c("Canada", "United States", "Mexico") == tframe::seriesNames(z)))
+          stop('quarterly test setting series names not working.')
 if(! all(c(1955,1) == start(z))) stop('quarterly mulivariate test start date is changed.')
 if(4 != frequency(z)) stop('quarterly mulivariate test frequency error.')
 
@@ -89,5 +93,5 @@ if(! all(c(1995,1) ==  start(z))) stop('annual mulivariate test start date is ch
 if(1 != frequency(z)) stop('annual mulivariate test frequency error.')
 
 #16 BUG silent=TRUE is not working
-z <- try(TSget('G20_PRICES.CAB.CP.IXOB.M',oecd), silent=TRUE)
+#z <- try(TSget('G20_PRICES.CAB.CP.IXOB.M',oecd), silent=TRUE)
 

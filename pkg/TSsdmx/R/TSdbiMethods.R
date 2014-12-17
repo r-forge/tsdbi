@@ -147,7 +147,10 @@ setMethod("TSget",     signature(serIDs="character", con="TSsdmxConnection"),
     #  window BUG. May be fixed by new zoo not yet on CRAN.
     if(!stenSDMX)  mat <- tfwindow(mat, tf=tf, start=start, end=end)    
     
-    if(any(grepl('\\*',serIDs)) && (length(names) != nseries(mat))) names <- nm
+    if((any(grepl('\\*',serIDs)) | 
+        any(grepl('|',serIDs))   | 
+	any(grepl('+',serIDs)))  && 
+	(length(names) != nseries(mat))) names <- nm
 
     seriesNames(mat) <- names
 
