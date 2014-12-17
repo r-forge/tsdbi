@@ -32,6 +32,19 @@ require("RJSDMX")
   if(frequency(tts2) != 12) stop("OECD monthly retrieval 2 frequency changed.")
  
 
+  #### quarterly data  ####
+
+#   test "+" and "|" in query 
+  tts <-  getSDMX('OECD', 'QNA.CAN+USA|MEX.PPPGDP.CARSA.Q')
+
+  if (! all(names(tts) == 
+      c("QNA.CAN.PPPGDP.CARSA.Q", "QNA.MEX.PPPGDP.CARSA.Q", "QNA.USA.PPPGDP.CARSA.Q")))
+             stop("OECD quarterly retrieval series names changed.")
+
+  if(start(tts[[1]]) != "1960 Q1") stop("OECD quarterly retrieval  changed start date.")
+  if(frequency(tts[[1]]) != 4)  stop("OECD quarterly retrieval  frequency changed.")
+
+
   #### annual data  ####
 
   tts <- getSDMX('OECD', '7HA_A_Q.CAN.*.*.*.*')
