@@ -5,9 +5,6 @@ Oracle <- function(...){
 
 setClass("TSOraConnection", contains=c("OraConnection", "conType", "TSdb"))
 
-setAs("TSOraConnection", "integer", 
-  def=getMethod("coerce", c("dbObjectId","integer"))) 
-
 
 setMethod("TSconnect",   signature(q="TSOraConnection", dbname="missing"),
    definition=function(q, dbname, ...) {
