@@ -5,8 +5,11 @@ MySQL <- function(...){
 
 setClass("TSMySQLConnection", contains=c("MySQLConnection", "conType", "TSdb"))
 
-setAs("TSMySQLConnection", "integer", 
-  def=getMethod("coerce", c("dbObjectId","integer"))) 
+# works  with both pre-release 2015.1 and older versions of RMySQL
+# but setAs really should not be needed
+#setAs("TSMySQLConnection", "integer",
+# def = function(from) as(slot(from,"Id"), "integer")
+# )
 
 # in which case we need 
 #new("TSMySQLConnection" , con, drv="MySQL", dbname=dbname, 
