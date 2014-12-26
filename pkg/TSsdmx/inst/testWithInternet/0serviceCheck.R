@@ -5,8 +5,8 @@
 require("RJSDMX")
 
 
-###################### BUGS ######################
-# BUG silent=TRUE is not working, using level WARNING  #16
+###################### NOTE re try(..., silent=TRUE) ######################
+#  silent=TRUE only works properly, using level OFF in configuration file
 z <- try(getSDMX("OECD", 'G20_PRICES.CAB.CP.IXOB.M'), silent=TRUE)
 
 ##################################################
@@ -21,6 +21,7 @@ z <- try(getSDMX("OECD", 'G20_PRICES.CAB.CP.IXOB.M'), silent=TRUE)
 # used 1.1 testing to 6 Nov 2014
 #      1.2 installed from github 6 Nov 2014
 #      1.3 installed from github 11 Dec 2014
+#      1.3 installed from github 22 Dec 2014
 
 # Package rJava may be needed interactively for experimenting but should be found
 #   in the the namespace when everything is working.

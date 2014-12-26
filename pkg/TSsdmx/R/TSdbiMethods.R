@@ -147,10 +147,35 @@ setMethod("TSget",     signature(serIDs="character", con="TSsdmxConnection"),
     #  window BUG. May be fixed by new zoo not yet on CRAN.
     if(!stenSDMX)  mat <- tfwindow(mat, tf=tf, start=start, end=end)    
     
-    if((any(grepl('\\*',serIDs)) | 
-        any(grepl('|',serIDs))   | 
-	any(grepl('+',serIDs)))  && 
-	(length(names) != nseries(mat))) names <- nm
+    # If serIDs has a * replacement skip because order is not determined.
+    # If length of names does not match number of series then skip.
+    # If serIDs is longer than 1 and wildcard used, skip name replacement.
+    # Otherwise, for +| searches, if specified names is the right length,
+    # then sort to ensure proper order.     
+
+    wild <- any(grepl('[\\|+\\*]',serIDs))
+
+    if (grepl('\\*',serIDs) || (length(names) != nseries(mat))) names <- nm
+    else if (wild) {
+       if (1 < length(serIDs)) names <- nm
+       else  { # must be '[|+]'
+	   parsed <- strsplit(serIDs, "\\.")[[1]]
+	   m <- (1:length(parsed))[grepl("[+|]", parsed)]
+	   ids <- strsplit(parsed[m], '[+|]')[[1]]
+	   pre  <- if (m > 1) paste(parsed[1:(m-1)], collapse=".") else NULL
+	   post <- if (m < length(parsed)) 
+	            paste(parsed[(m+1):length(parsed)], collapse=".") else NULL
+	   ids <- paste(pre, ids, post, sep=".")
+	   if (!all(ids %in% nm)){
+	       warning("skipping renaming. something is not working.")
+	       names <- nm
+	       }
+           else {
+	       dimnames(mat) <- list(NULL,nm)
+	       mat <- mat[, ids] # reoder
+	       }
+	   }
+       }
 
     seriesNames(mat) <- names
 
