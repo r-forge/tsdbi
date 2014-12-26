@@ -40,6 +40,14 @@ if(! all(c(2012,4) ==   end(z))) stop('quarterly test 2 end date error.')
 z <- TSget('QNA.CAN+USA|MEX.PPPGDP.CARSA.Q', 
          names=c("Canada", "United States", "Mexico"),   oecd)
 
+# SDMX + and | queries do not determine the return order, TSget fixes by
+# reordering data. (Above query  was not returned in order in Dec 2014.)
+# The PPPGDP numbers are relative to the US so USA numbers are 1.0 and next
+#  test checks that as a confirmation that re-order was done. 
+
+if(max(abs(1 - z[,2])) > 1e-16)
+          stop('quarterly test reorder series to apply names not working.')
+
 if(! all(c("Canada", "United States", "Mexico") == tframe::seriesNames(z)))
           stop('quarterly test setting series names not working.')
 if(! all(c(1955,1) == start(z))) stop('quarterly mulivariate test start date is changed.')
@@ -92,6 +100,8 @@ tframe::seriesNames(z)
 if(! all(c(1995,1) ==  start(z))) stop('annual mulivariate test start date is changed.')
 if(1 != frequency(z)) stop('annual mulivariate test frequency error.')
 
-#16 BUG silent=TRUE is not working
+#silent=TRUE only works properly if levels are set OFF in 
+#   the Sdmx configuration file
 #z <- try(TSget('G20_PRICES.CAB.CP.IXOB.M',oecd), silent=TRUE)
+#z <-     TSget('G20_PRICES.CAB.CP.IXOB.M',oecd)
 
