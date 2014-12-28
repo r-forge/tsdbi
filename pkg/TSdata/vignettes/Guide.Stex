@@ -64,15 +64,15 @@ underlying database.
 Section \ref{sec:SimpleExamples} of this vignette illustrates the mechanism for
 connecting to a data source. The connection contains all the source specific 
 information so, once the connection is established, the syntax for retrieving
-data is similar for different sources. The section also illustrates packages that 
+data is similar for different sources. The section illustrates packages that 
 pull data from Internet sources. This currently includes \pkg{TSsdmx}, \pkg{TSjson}, 
-and \pkg{TSmisc}. (Package pkg{TSmisc} is an amalgamation of former packages 
+and \pkg{TSmisc}. (Package \pkg{TSmisc} is an amalgamation of former packages 
 \pkg{TSgetSymbol} \pkg{TShistQuote}, \pkg{TSxls}, \pkg{TSzip}, and some new connections.)
 The section starts
 with a table indicating which packages and connections might be used for various data
 sources. These packages only get data, they do not support writing data to the database.
-Finally, the section also illustrates the flexibility to return different types
-of time series objects.
+Finally, the section also illustrates the flexibility to return different representations
+of time series objects. CHECK
 
 Section \ref{sec:SQL} illustrates the SQL packages \pkg{TSPostgreSQL}, 
 \pkg{TSMySQL}, \pkg{TSSQLite}, and \pkg{TSodbc}. These use a very standard SQL
@@ -86,7 +86,7 @@ See Appendix ``B'' (section \ref{appdx:B}) and the vignette in package \pkg{TSdb
 for more explanation 
 of the underlying database tables, and for bulk loading of
 data into a database.
-The section illustrates writing artificial data to the database. 
+The section illustrates the packages by writing artificial data to the database. 
 
 Section \ref{sec:MoreExamples} provides additional examples of \pkg{TSdbi}
 functionality and of using and graphing series. 
@@ -121,12 +121,13 @@ provide a common API for interfacing with time series databases, and an easy
 mechanism to specify the type of time series object that should be returned, for
 example, a \code{ts} object or a \code{zoo} \citep{zoo} object. One consequence of providing
 a common interface is that special strengths of some of the underlying packages
-cannot always be used. If you really need some of these features then you may
+cannot always be used. If you really need some of these features then you will
 need to go directly to the underlying package. However, if you limit your
-reliance on these underlying features then you will be able to move from one
+reliance on these special features then you will be able to move from one
 data source to another much more easily.
 
-Loading a \pkg{TS*} package will also load required packages \pkg{TSdbi}, 
+Loading a \pkg{TS*} package will also attach or load the namespace of required 
+packages \pkg{TSdbi}, 
 \pkg{DBI} \citep{DBI}, \pkg{methods} \citep{methods}, \pkg{tframePlus}, 
 \pkg{zoo}, and then any underlying package that the specific \pkg{TS*} package uses.
 
@@ -140,7 +141,7 @@ some simple calculations and graphs are done to demonstrate how the data
 might be used.
 However, the purpose of the \pkg{TS*} packages is to provide a common interface,
 not to do all time series calculations and graphics. Once you have the data, 
-you should be able to use whatever other \pkg{R} 
+you should be able to use whatever other \proglang{R} 
 packages you like for your calculations and graphs.
 
 The generic aspect of the interface API is accomplished by putting the
@@ -148,11 +149,13 @@ information specific to the underlying source into the ``connection''. Once the
 connection is established, other aspects of using data are the same, so one
 connection can be easily interchanged with another, and so your programs do not
 need to be changed when the data source is changed. (But, of course, some
-changes will be needed if the names of the variables change.) 
+changes will be needed if the series identifiers of the variables change on
+the different databases.) 
 
-The following table indicates various data sources and the \pkg{TS*} connections and 
-packages that can be used to extract data from them, \pkg{TSsdmx} is a wrapper for package
-\pkg{RJSDMX} maintained by Attilio Mattiocco at the Banca d'Italia. It uses SDMX/REST
+The following table indicates various data sources and the \pkg{TS*} connections 
+and packages that can be used to extract data from them, \pkg{TSsdmx} is a 
+wrapper for package \pkg{RJSDMX} \citep{RJSDMX} maintained by Attilio Mattiocco
+at the Banca d'Italia. It uses SDMX/REST
 to connect to several important sources for economic data. This API is probably the 
 main future direction, and some of the other interfaces should be considered temporary,
 pending the institutions getting SDMX/REST 2.1 in place. Package \pkg{RJSDMX} has an
@@ -163,35 +166,38 @@ pending the institutions getting SDMX/REST 2.1 in place. Package \pkg{RJSDMX} ha
 \begin{center}
 \caption{Connections for various data sources.}
 \label{tab:connections}
-\begin{tabular}{@{}lcc@{}}
+\begin{tabular}{@{}lclc@{}}
 \hline
-Data source      &      source URL 		& Package &Connection&
+Data source      &      source URL 		& Package &Connection \\
 \hline
-EuroStat	  & epp.eurostat.ec.europa.eu	& TSsdmx & sdmx \\
-ECB       	  & www.ecb.org  		& TSsdmx & sdmx \\
-OECD	      	  & www.oecd.org 		& TSsdmx & sdmx \\
-IMF	      	  & www.imf.org  		& TSsdmx & sdmx \\
-ILO	      	  & www.ilo.org  		& TSsdmx & sdmx \\
-INEGI (Mexico)	  & www.inegi.org.mx 		& TSsdmx & sdmx \\
-UN*	      	  & comtrade.un.org 		& TSsdmx & sdmx \\
-World Bank*	  & worldbank.org 		& TSsdmx & sdmx \\
-BIS+	      	  & www.bis.org 		& TSsdmx & sdmx \\
-FRED    	  &research.stlouisfed.org/fred2& TSmisc & histQuote \\
-FRED    	  &research.stlouisfed.org/fred2& TSmisc & getSymbol \\
-Statistics Canada & www.statcan.gc.ca 		& TSjson & json \\
-Reserve Bank of Australia& www.rba.gov.au 	& TSmisc & xls \\
-Bank of Canada	  & www.bank-banque-canada.ca 	& TSQuandl & Quandl \\
-Yahoo    	  & quote.yahoo.com 		& TSmisc & getSymbol \\
-Yahoo    	  & quote.yahoo.com 		& TSmisc & histQuote \\
-Oanda    	  & www.oanda.com 		& TSmisc & histQuote \\
-PiTrading    	  & pitrading.com 		& TSmisc & zip \\
-Quandl	  	  & www.quandl.com 		& TSQuandl & Quandl \\
-Bloomberg++ 	  & www.bloomberg.com 		& TSbbg & bbg \\
+EuroStat	  & \url{epp.eurostat.ec.europa.eu}	& TSsdmx & sdmx \\
+ECB       	  & \url{www.ecb.org}  			& TSsdmx & sdmx \\
+OECD	      	  & \url{www.oecd.org} 			& TSsdmx & sdmx \\
+IMF	      	  & \url{www.imf.org}  			& TSsdmx & sdmx \\
+ILO	      	  & \url{www.ilo.org}  			& TSsdmx & sdmx \\
+INEGI (Mexico)	  & \url{www.inegi.org.mx} 		& TSsdmx & sdmx \\
+UN$^2$	      	  & \url{comtrade.un.org} 		& TSsdmx & sdmx \\
+World Bank$^1$	  & \url{worldbank.org} 		& TSsdmx & sdmx \\
+BIS$^3$	      	  & \url{www.bis.org} 			& TSsdmx & sdmx \\
+FRED    	  & \url{research.stlouisfed.org/fred2}& TSmisc & histQuote \\
+FRED    	  & \url{research.stlouisfed.org/fred2}& TSmisc & getSymbol \\
+ABS (Australia)   & \url{www.abs.gov.au}		& TSsdmx & sdmx \\
+RBA (Australia)   & \url{www.rba.gov.au} 		& TSmisc & xls \\
+Statistics Canada & \url{www.statcan.gc.ca} 		& TSjson & json \\
+Bank of Canada	  & \url{www.bank-banque-canada.ca} 	& TSmisc2$^5$ & Quandl \\
+Yahoo    	  & \url{quote.yahoo.com} 		& TSmisc & getSymbol \\
+Yahoo    	  & \url{quote.yahoo.com} 		& TSmisc & histQuote \\
+Oanda    	  & \url{www.oanda.com} 		& TSmisc & histQuote \\
+PiTrading    	  & \url{pitrading.com} 		& TSmisc & zip \\
+Quandl	  	  & \url{www.quandl.com} 		& TSmisc2$^3$ & Quandl \\
+Bloomberg$^4$ 	  & \url{www.bloomberg.com} 		& TSbbg & bbg \\
 
 \hline
-* beta testing&& \\
-+ requires an account&& \\
-++ not on CRAN&& \\
+$^1$ beta testing&& \\
+$^2$ planning&& \\
+$^3$ requires an account&& \\
+$^4$ not on CRAN&& \\
+$^5$ on R-forge, not CRAN&& \\
 \hline
 \end{tabular}
 \end{center}
@@ -207,48 +213,88 @@ SDMX is emerging as a widely used standard for time series exchange. It is suppo
 large organizations and has evolved over many years. Some of the ad hoc mechanisms 
 in other \pkg{TS*} packages will be replaced as more organizations implement this standard.
 It provides capabilites for transmitting large dataset, mixed frequency, and metada. 
-These are well beyond the scope of what is used by the TSdbi API. The \pkg{RJSDMX} provides
+These are well beyond the scope of what is used by the TSdbi API. 
+The \pkg{RJSDMX} package provides
 an interface to SDMX/REST 2.1 compliant databases. Similar to other \pkg{TS*} packages, the 
 wrapper \pkg{TSsdmx} uses only some of the capabilities of the underlying package.  
 Only reading of databases is supported.
 
-By default \pkg{RJSDMX} prints more output than \lang{R} users will typically expect. This 
-output can be supressed by settings in a configuration file, which has been done for this 
-vignette. See Appendix for more details.
+By default \pkg{RJSDMX} prints more output than \proglang{R} users will typically expect. 
+This output can be supressed by settings in a configuration file, which has been done 
+for this vignette. See Appendix ``A'' for more details.
 
+CHECK THIS
 \begin{Scode}{results=verbatim,fig=TRUE}
   library("TSsdmx")  
   library("tfplot")  
-  tfplot(x)
-# quarterly national accounts
-#CARSA: national currency, nominal, SAAR (level)
+oecd <- TSconnect("sdmx", dbname="OECD")
 
 x <- TSget('QNA.CAN.PPPGDP.CARSA.Q', oecd)
-tfplot(x, title="Canada: Nominal GDP PPP?", 
-         subtitle="quarterly national accounts, national currency, SAAR")
 
-
-x <- TSget('QNA.*.PPPGDP.CARSA.Q', oecd)
-
-tfplot(ytoypc(x), title="Nominal GDP Growth PPP?", 
-         subtitle="quarterly national accounts, national currency, SAAR",
-	 legend=names(x))
-
-eurostat <- TSconnect("sdmx", dbname="EUROSTAT")
-
-z <- TSget("ei_nama_q.Q.MIO-EUR.SWDA.CP.NA-P72.IT",
-           start="1990-Q1", end="2012-Q2", eurostat)
-
-ecb <- TSconnect("sdmx", dbname="ECB")
-
-z <- TSget('EXR.M.USD.EUR.SP00.A', start="2008-05", end="2014-07", ecb)
-
-#### quarterly data ####
-z <- TSget('EXR.Q.USD.EUR.SP00.A', start="2008-Q2", end="2014-Q3")
-z <- TSget('EXR.Q.USD.EUR.SP00.A', start=c(2008,2), end=c(2014,3))
+tfplot(x, title="Canada: Nominal GDP at PPP?", 
+         subtitle="quarterly national accounts, SAAR",
+	 ylab="guess the units")
 
 \end{Scode}
 
+Determining what the above series is will be left as an exercise. 
+SDMX queries are roughly like database queries with the fields separated by dots.
+They can use \code{*}, \code{|}, and \code{+} to return muliple series.
+\code{TSget} provides the ability to rename series on retrieval when
+\code{|}, and \code{+} are used, but not when \code{*} is used.
+
+\begin{Scode}{results=verbatim,fig=TRUE}
+x <- TSget('QNA.CAN|USA|MEX.PPPGDP.CARSA.Q', 
+         names=c("Canada", "United States", "Mexico"),   oecd)
+
+x <- TSget('QNA.CAN+USA+MEX.PPPGDP.CARSA.Q',   oecd)
+
+tfOnePlot(ytoypc(x), title="Nominal GDP Growth PPP?", 
+         subtitle="quarterly national accounts, national currency, SAAR",
+	 legend=seriesNames(x))
+\end{Scode}
+
+Several different connections can be defined, and data retreived from them.
+
+\begin{Scode}{results=verbatim,fig=FALSE}
+eurostat <- TSconnect("sdmx", dbname="EUROSTAT")
+ecb <- TSconnect("sdmx", dbname="ECB")
+abs <- TSconnect("sdmx", dbname="ABS")
+
+z <- TSget("ei_nama_q.Q.MIO-EUR.SWDA.CP.NA-P72.IT", eurostat)
+\end{Scode}
+
+\code{TSget} allows for specifying start and end dates.
+
+\begin{Scode}{results=verbatim,fig=FALSE}
+z <- TSget('EXR.Q.USD.EUR.SP00.A', start="2008-Q2", end="2014-Q3", ecb)
+z <- TSget('EXR.Q.USD.EUR.SP00.A', start=c(2008,2), end=c(2014,3), ecb)
+\end{Scode}
+
+The first request above uses SDMX syntax for \code{start} and \code{end}, 
+which is passed to the query, and only data in the range is returned from 
+the server. 
+The second syntax uses a \proglang{R} convention which is difficult to translate 
+into the query, because it is necessary to first determine the frequency of the 
+data. For this query all the data is returned and the truncation is done 
+in \proglang{R}. For \code{sdmx} connections, character string \code{start} 
+and \code{end} specifications are assumed to be SDMX and are passed to the
+underlying \pkg{RJSDMX} call and on to the server, otherwise truncation is 
+done in \proglang{R} on the returned data.
+
+A connection can be specified to be used as the default, so it does not need to
+be specified each time:
+
+\begin{Scode}{fig=FALSE}
+  options(TSconnection=ecb)
+  z <- TSget('EXR.Q.USD.EUR.SP00.A')
+\end{Scode}
+
+Several different connections will be used in this vignette, and so a default
+will not be used. To unset the default
+\begin{Scode}
+  options(TSconnection=NULL)
+\end{Scode}
 
 %%
 \subsection{\code{histQuote} and \code{getSymbol}}
@@ -348,12 +394,10 @@ Bank of St.Louis, as will be illustrated here.
   tfplot(TSget("M2", fred))
 \end{Scode}
 
-A connection can be specified to be used as the default, so it does not need to
-be specified each time:
+Additional information can be specified in \code{tfplot} and \code{tfOnePlot}:
 
 \begin{Scode}{fig=TRUE}
-  options(TSconnection=fred)
-  tfOnePlot(percentChange(TSget("M2"), lag=52), 
+  tfOnePlot(percentChange(TSget("M2", fred), lag=52), 
     title = "Running commentary, blah, blah, blah", 
     subtitle="Broad Money (M2)",
     ylab= "y/y percent change*",
@@ -361,12 +405,6 @@ be specified each time:
     footnoteLeft = "seasonally adjusted data",
     footnoteRight = "* approximated by 52 week growth",
     lastObs = TRUE )
-\end{Scode}
-
-Several different connections will be used in this vignette, and so a default
-will not be used. To unset the default
-\begin{Scode}
-  options(TSconnection=NULL)
 \end{Scode}
 
 It is also possible to return multiple series, but they should all be of the
@@ -601,8 +639,8 @@ The imported format needs to be used when tsrepresentation
 is specified. If in doubt, look at the connection slot \code{@dates} 
 (\code{rba@dates} above).
 
-Beware that data is read into \pkg{R} when the connection is established, so
-changes in the spreadsheet will not be visible in \pkg{R} until a new connection
+Beware that data is read into \proglang{R} when the connection is established, so
+changes in the spreadsheet will not be visible in \proglang{R} until a new connection
 is established (in contrast to other \code{TS*} packages).
 
 \begin{Scode}{results=verbatim,fig=TRUE}
@@ -1674,6 +1712,35 @@ warnings later about objects being masked:
 %%
 %%
 %%
+\subsection{TSsdmx Connection Details}
+\label{appdx:TSsdmx}
+%%
+Package \pkg{TSsdmx} is a wrapper for \pkg{RJSDMX}. Additional information about 
+\pkg{RJSDMX} and the underlying \proglang{java} code is available at
+\url{https://github.com/amattioc/SDMX/wiki/}.
+
+When the \pkg{TSsdmx} method \code{TSconnect} is first used the underlying code 
+reads a configuration file that sets, among other things, the 
+amount of printout done during retrieval. The default is useful for debugging 
+but will be more than typically expected in an \proglang{R} session. 
+A system wide default location for this file can be set. 
+A user's default will be found in the users home directory (~/.SdmxClient in
+Linux). More details on this file can be found at 
+\url{https://github.com/amattioc/SDMX/wiki/Configuration}. \proglang{R} users will
+probably want to specify 
+
+\start{verbatim}
+SDMX.level = OFF
+java.util.logging.ConsoleHandler.level = OFF
+\end{verbatim}
+
+to suppress most printed output. Otherwise, \proglang{R} programs that 
+use \code{try()} will not suppress printed error messages as they should. 
+With the levels set OFF, the error and warning messages are still returned to
+the \proglang{R} to deal with as appropriate.
+%%
+%%
+%%
 \subsection{TSjson Connection Details}
 \label{appdx:TSjson}
 %%
@@ -1727,7 +1794,8 @@ database available on the local system:
 
 The second requires a Fame server:
 \begin{Scode}{eval=FALSE}
-  con <- TSconnect("fame", dbname="ets /path/to/etsmfacansim.db", "read") 
+  con <- TSconnect("fame", 
+             dbname="ets /path/to/etsmfacansim.db", "read") 
 \end{Scode}
 where the characters before the space in the dbname string indicate the network
 name of the server, and the path after the string indicates where the server
