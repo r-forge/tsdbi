@@ -104,17 +104,17 @@ See the vignette in \pkg{TSdata} for additional examples.
 When the \pkg{TSsdmx} method \code{TSconnect} is first used the underlying code 
 reads a configuration file that sets, among other things, the 
 amount of printout done during retrieval. The default is useful for debugging 
-but will be more than typically expected in an \proglang{R} session. 
+but will be more than typically expected in an \code{R} session. 
 A system wide default location for this file can be set. 
 A user's default will be found in the users home directory (~/.SdmxClient in
 Linux). More details on this file can be found at 
-\url{https://github.com/amattioc/SDMX/wiki/Configuration}. \proglang{R} users will
+\url{https://github.com/amattioc/SDMX/wiki/Configuration}. \code{R} users will
 probably want to specify \code{SDMX.level = OFF} and 
 \code{java.util.logging.ConsoleHandler.level = OFF}
-to suppress most printed output. Otherwise, \proglang{R} programs that 
+to suppress most printed output. Otherwise, \code{R} programs that 
 use \code{try()} will not suppress printed error messages as they should. 
 With the levels set OFF, the error and warning messages are still returned to
-the \proglang{R} to deal with as appropriate.
+the \code{R} to deal with as appropriate.
 }
 
 \seealso{ 
