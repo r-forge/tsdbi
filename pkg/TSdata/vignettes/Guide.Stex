@@ -41,6 +41,17 @@ common \emph{API}, so simplicity of changing the data source is a primary
 feature. 
 The vignette also illustrates some simple time series
 manipulation and plotting using packages \pkg{tframe} and \pkg{tfplot}.
+While these do not need to be attached for data retrieval, functions in these
+packages are used in several places in this vignette so they should be
+attached to run examples in this vignette. 
+This is done with
+%%
+\begin{Scode}{results=verbatim,fig=FALSE}
+library("tframe")  
+library("tfplot")  
+\end{Scode}
+%%
+Package \pkg{tframePlus} is also used but will be attached when needed.
 
 To generate this vignette requires most of the \pkg{TS*} packages, but 
 users will only need one, or a few of these packages. For example, a time series
@@ -225,7 +236,6 @@ for this vignette. See Appendix ``A'' for more details.
 
 \begin{Scode}{results=verbatim,fig=TRUE}
 library("TSsdmx")  
-library("tfplot")  
 oecd <- TSconnect("sdmx", dbname="OECD")
 
 x <- TSget('QNA.CAN.PPPGDP.CARSA.Q', oecd)
@@ -298,10 +308,10 @@ By defaults most \code{TSget} methods return a class \code{ts} series when
 that is possible (annual, quarterly, monthly, or semi-annual data) and
 \code{zoo} series otherwise. Thus the class of the serries returned above is
 \code{ts}, but \code{zoo} can be specified.
-\begin{Scode}{fig=FALSE}
+\begin{Scode}{results=verbatim,fig=FALSE}
 class(z)
-z <- TSget("BOP.1.100.10.Q", start=c(1990, 1), end=c(2012, 2),
-           TSrepresentation="zoo")) 
+z <- TSget("BOP.1.100.10.Q", start=c(1990, 1), end=c(2012, 2), abs,
+           TSrepresentation="zoo")
 class(z)
 \end{Scode}
 
