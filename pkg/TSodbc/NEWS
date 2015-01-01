@@ -9,7 +9,7 @@ Known BUGS
 	so it is necessary to have a properly defined ~/.odbc.ini  file.
 
 
-Changes in TSodbc version 2014.10-1
+Changes in TSodbc version 2015.1-1
 	
    o	Changed Depends to Imports for RODBC.
 

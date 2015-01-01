@@ -8,7 +8,7 @@ Known BUGS
 
    o	None for the moment.
 
-Changes in TSdbi version 2014.10-1
+Changes in TSdbi version 2015.1-1
 
    o	Added export of dbDisconnect.
 

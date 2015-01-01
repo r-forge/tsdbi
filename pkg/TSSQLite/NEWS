@@ -3,7 +3,7 @@ See also
    o	See also NEWS in the TSdbi package.
 
 
-Changes in TSSQLite version 2014.10-1
+Changes in TSSQLite version 2015.1-1
 
    o	Update class definitions to use slots= rather than representation().
 

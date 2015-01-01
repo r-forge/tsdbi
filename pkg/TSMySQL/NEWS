@@ -8,7 +8,7 @@ Known Bugs
    	seems to be a bug in package timeSeries.)
 
 
-Changes in TSMySQL version 2014.10-1
+Changes in TSMySQL version 2015.1-1
 
    o	Changed Depends to Imports for RMySQL
 

@@ -1,5 +1,5 @@
 
-Changes in TSsql version 2014.10-1
+Changes in TSsql version 2015.1-1
 
    o	Simplified TSgetSQL to always use default for retrieval and then call
    	tframePlus::changeTSrepresentation for conversion.

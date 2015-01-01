@@ -9,14 +9,9 @@ if (FALSE) {
 
 require("RJSDMX")
 
-  tts = getTimeSeries("INEGI", "DF_STEI/..C1161+C1162+C5004.....")
-  tts = getTimeSeries("INEGI", "DF_STEI/..C1161+C1162+C5004.....")
-  tts = getTimeSeries("INEGI", "DF_STEI/..C1161+C1162+C5004.....")
-  tts = getTimeSeries("INEGI", "DF_STEI/..C1161+C1162+C5004.....")
-
 #why slash? in DF_STEI/
-  tts = getTimeSeries("INEGI", "DF_STEI/..C1161+C1162+C5004.....")
-  tts = getSDMX("INEGI", "DF_STEI/..C1161+C1162+C5004.....")
+  tts = getTimeSeries("INEGI", "DF_STEI/..C1161+C1162+C5004.....") #works sometimes
+  tts = getSDMX("INEGI", "DF_STEI/..C1161+C1162+C5004.....") #works sometimes
   
   nm <- getFlows('INEGI')  # can be slow
   length(nm)  # 8

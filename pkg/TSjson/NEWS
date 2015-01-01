@@ -7,7 +7,7 @@ Known BUGS
 
    o	None for the moment.
 
-Changes in TSjson version 2014.10-1
+Changes in TSjson version 2015.1-1
 
    o	Update class definitions to use slots= rather than representation().
 

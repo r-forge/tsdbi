@@ -1,5 +1,5 @@
 Package: TSmisc2
-Version: 2014.12-1
+Version: 2015.1-1
 Title: TSdbi Misc. Extensions
 Description: Methods to 
 	retrieve data from different sources. This includes a TSdbi interface
@@ -7,11 +7,12 @@ Description: Methods to
 	access to data (at www.quandl.com). Comprehensive examples of all 
 	the TS* packages is provided in the vignette Guide.pdf with 
 	the TSdata package.
-Depends: R (>= 2.8.0), TSdbi (>= 2013.9-1)
-Imports: methods, DBI (>= 0.3.1), tframe, tframePlus(>= 2011.8-1), Quandl(>= 2.4.0)
+Depends: R (>= 2.8.0), TSdbi (>= 2015.1-1)
+Imports: methods, DBI (>= 0.3.1), tframe, tframePlus, Quandl(>= 2.4.0)
 Suggests: tseries, tfplot, zoo, xts
 BuildVignettes: true
 License: GPL-2
 Author: Paul Gilbert <pgilbert.ttv9z@ncf.ca>
+Copyright: 2014-2015 Paul Gilbert.
 Maintainer: Paul Gilbert <pgilbert.ttv9z@ncf.ca>
 URL: http://tsdbi.r-forge.r-project.org/
