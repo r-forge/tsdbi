@@ -1,22 +1,22 @@
 Package: TSdata
-Version: 2014.12-1
+Version: 2015.1-1
 Title: TSdbi Illustration
 Description: TSdata illustrates the various TSdbi packages using time series 
 	data from several sources. It also illustrates some simple time series
 	manipulation and plotting using packages tframe and tfplot.
 Depends: R (>= 2.8.0)
-Suggests: tframe, tframePlus (>= 2012.8-1), tfplot, 
-	TSdbi (>= 2014.10-1), TSsql (>= 2014.10-1), 
-	TSPostgreSQL (>= 2014.10-1), TSMySQL (>= 2014.10-1), 
-	TSSQLite (>= 2014.10-1), TSodbc (>= 2014.10-1), 
-	TSsdmx, TSmisc, TSjson (>= 2014.10-1), 
-	TScompare (>= 2014.10-1), 
+Suggests: tframe, tframePlus, tfplot, 
+	TSdbi (>= 2015.1-1), TSsql (>= 2015.1-1), 
+	TSPostgreSQL (>= 2015.1-1), TSMySQL (>= 2015.1-1), 
+	TSSQLite (>= 2015.1-1), TSodbc (>= 2015.1-1), 
+	TSsdmx, TSmisc, TSjson (>= 2015.1-1), 
+	TScompare (>= 2015.1-1), 
 	zoo, xts, tseries, its, findpython, WriteXLS, 
 	DBI (>= 0.3.1), RPostgreSQL, RSQLite, RMySQL, RODBC, RJSDMX
 SystemRequirements: python 2, python-sys, python-json, python-mechanize, python-re, python-csv, python-urllib2
 BuildVignettes: false
 License: GPL-2
-Copyright: 2012-2014 Paul Gilbert.
+Copyright: 2012-2015 Paul Gilbert.
 Author: Paul Gilbert <pgilbert.ttv9z@ncf.ca>
 Maintainer: Paul Gilbert <pgilbert.ttv9z@ncf.ca>
 URL: http://tsdbi.r-forge.r-project.org/
