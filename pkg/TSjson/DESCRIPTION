@@ -1,5 +1,5 @@
 Package: TSjson
-Version: 2014.10-1
+Version: 2015.1-1
 Title:  TSdbi Extension for Importing Time Series from Web Sources via JSON 
 Description: Methods to 
 	retrieve data from web data sources, importing them using Javascript 
@@ -7,8 +7,8 @@ Description: Methods to
 	possible. (Only Statistics Canada connections are currently supported.)
 	Comprehensive examples of all the TS* packages is provided in the
 	vignette Guide.pdf with the TSdata package.
-Depends: R (>= 2.14.0), TSdbi (>= 2014.10-1)
-Imports: methods, DBI (>= 0.3.1), tframe (>= 2011.11-1), tframePlus, rjson, findpython
+Depends: R (>= 2.14.0), TSdbi (>= 2015.1-1)
+Imports: methods, DBI (>= 0.3.1), tframe, tframePlus, rjson, findpython
 Suggests: tfplot, zoo
 SystemRequirements: python 2, python-sys, python-json, python-mechanize, python-re, python-csv, python-urllib2
 BuildVignettes: FALSE

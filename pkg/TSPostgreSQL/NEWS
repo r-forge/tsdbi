@@ -3,7 +3,7 @@ See also
    o	See also NEWS in the TSdbi package.
 
 
-Changes in TSPostgreSQL version 2014.10-1
+Changes in TSPostgreSQL version 2015.1-1
 
    o	Changed Depends to Imports for RPostgreSQL
 
