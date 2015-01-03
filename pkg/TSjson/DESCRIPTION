@@ -1,6 +1,6 @@
 Package: TSjson
 Version: 2015.1-1
-Title:  TSdbi Extension for Importing Time Series from Web Sources via JSON 
+Title: TSdbi Extension to Import Time Series from Web Sources via JSON 
 Description: Methods to 
 	retrieve data from web data sources, importing them using Javascript 
 	object notation. Direct connections or a proxy connection are
