@@ -11,7 +11,7 @@ Depends: R (>= 2.14.0), TSdbi (>= 2015.1-1)
 Imports: methods, DBI (>= 0.3.1), tframe, tframePlus, rjson, findpython
 Suggests: tfplot, zoo
 SystemRequirements: python 2, python-sys, python-json, python-mechanize, python-re, python-csv, python-urllib2
-BuildVignettes: FALSE
+BuildVignettes: TRUE
 License: GPL-2
 Author: Paul Gilbert <pgilbert.ttv9z@ncf.ca>
 Maintainer: Paul Gilbert <pgilbert.ttv9z@ncf.ca>
