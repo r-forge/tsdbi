@@ -6,7 +6,7 @@ Description: Utilities for comparing the equality of series on two databases.
 	vignette Guide.pdf with the TSdata package.
 Depends: R (>= 2.10.0), TSdbi (>= 2015.1-1)
 Imports: tframe, tfplot, DBI (>= 0.3.1),
-Suggests: tframePlus, TSsql, TSMySQL, TSSQLite, TSmisc
+Suggests: tframePlus, TSsql, TSMySQL, TSSQLite, TSmisc, zoo
 Enhances: TSPostgreSQL, TSodbc, TSfame
 BuildVignettes: true
 License: GPL-2

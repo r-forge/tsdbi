@@ -9,7 +9,7 @@ if(!identical(as.logical(Sys.getenv("_R_CHECK_HAVE_MYSQL_")), TRUE)) {
    require("TScompare")
    require("TSMySQL")
    require("TSSQLite")
-   require("TShistQuote")  
+   require("TSmisc")  
 
    user1    <- Sys.getenv("MYSQL_USER")
    cat("user1 set to:", user1, " by env variable MYSQL_USER\n") 
