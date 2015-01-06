@@ -1,3 +1,4 @@
+if (FALSE){  #needs RJSDMX 1.3
 ########################## Australian Bureau of Statistics ####################
 # http://www.abs.gov.au
 
@@ -25,3 +26,5 @@ if ("Retail Trade" != seriesNames(z))    stop("abs test 2 seriesName failure.")
 if (! all(c(1990, 1) == start(z))) stop("abs test 2 start date failure.")
 if (! all(c(2012, 2) == end(z)))   stop("abs test 2  end  date failure.")
 if   (12 != frequency(z))          stop("abs test 2 frequency failure.")
+
+}

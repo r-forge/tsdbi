@@ -1,3 +1,4 @@
+if (FALSE){  #needs RJSDMX 1.3
 ########################## Australian Bureau of Statistics ####################
 # http://www.abs.gov.au
 
@@ -44,3 +45,4 @@ if ("May 2008" != start(tts[[1]])) stop("ABS test 2 start date failure.")
 if ("Jul 2014" != end(tts[[1]]))   stop("ABS test 2  end  date failure.")
 if   (12 != frequency(tts[[1]]))   stop("ABS test 2 frequency failure.")
 
+}
