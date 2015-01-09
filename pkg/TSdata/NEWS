@@ -1,3 +1,9 @@
+Known Bugs
+
+   o	There can be some difficulties using TSMySQL and TSPostgreSQL
+   	in the same session, and unloading the namespaaces of one can
+	cause problems with the other.
+
 See also
 
    o	See also NEWS in the TSdbi package.
