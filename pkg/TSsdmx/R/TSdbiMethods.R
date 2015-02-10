@@ -38,17 +38,16 @@ setClass("TSsdmxConnection", contains=c("DBIConnection", "conType","TSdb"),
 setMethod("TSconnect",   signature(q="sdmxConnection", dbname="missing"),
   definition= function(q, dbname, user="", password="", host="", ...){
    #  user / password / host  for future consideration
-   # getProviders()
-   # "BIS"      "ILO"      "ECB"      "OECD"     "EUROSTAT"
-   dbname <- q@dbname #  dbname <- "ECB" 
    
-   get <- try(
-     J("it.bankitalia.reri.sia.sdmx.client.SdmxClientHandler")$getTimeSeries)
+   dbname <- q@dbname #  eg "BIS" "ILO" "ECB" "OECD" "EUROSTAT"
 
-   # there should be something that could be checked. This is not really
-   #  contacting the server yet
-   if(inherits(get, "try-error")) 
-         stop("Could not establish TSsdmxConnection to ",  dbname)
+   providers <- try(getProviders())
+   
+   if(inherits(providers, "try-error")) 
+         stop("Error trying to verify provider ",  dbname)
+
+   if( ! (dbname %in% providers))
+          stop("dbname ", dbname, " not a recognized SDMX provider.")
    
    new("TSsdmxConnection", dbname=dbname, getTimeSeries=get,
         hasVintages=FALSE, hasPanels=FALSE, 
@@ -93,9 +92,6 @@ setMethod("TSget",     signature(serIDs="character", con="TSsdmxConnection"),
 
     if (is.null(TSrepresentation)) TSrepresentation <- "ts"
     dbname <- con@dbname
-
-    if( ! (dbname %in% getProviders()))
-          stop("dbname", dbname, "not a recognized SDMX provider.")
 
     mat  <- NULL
     nm   <- NULL
@@ -218,6 +214,46 @@ setMethod("TSsource",   signature(x="character", con="TSsdmxConnection"),
 ############################################################################
 ##############               utilities                        ##############   
 ############################################################################
+
+verifyQuery <- function(provider, Q, verbose=TRUE){
+  parsed <- strsplit(Q, "\\.")[[1]]
+  flow <- parsed[1]
+  dq   <- parsed[-1]
+
+  if(!provider %in% getProviders()) {
+     if (verbose) cat("provider", provider," not supported.\n")
+     return(invisible(FALSE))
+     }
+
+  if(!flow %in% names(getFlows(provider))) {
+     if (verbose) cat("flow", flow," not in providers flows.\n")
+     return(invisible(FALSE))
+     }
+
+  dm <- names(getDimensions(provider, flow)) 
+
+  if(length(dm) != length(dq)) {
+     if (verbose)
+         cat("query dimension not equal dimension of provider flow.")
+     return(invisible(FALSE))
+     }
+
+  for (i in 1:length(dm)) {
+     z <- names(getCodes(provider, flow, dm[i]))
+     if ((! (dq[i] %in% c('*','+', ''))) && (! (dq[i] %in% z))) {
+           if (verbose)
+              cat("query field '", dq[i], "' not in dimension options.\n")
+           return(invisible(FALSE))
+           }   
+     }
+  invisible(TRUE)
+  }
+
+#  verifyQuery('IMFx', 'PGI.CA.*.*.*.*')
+#  verifyQuery('IMF', 'PGI.CA.*.*.*.*')
+#  verifyQuery('IMF', 'PGI.CAN.*.*.*.*')
+#  verifyQuery('IMF', 'PGI.CA..*.*.*')
+  
 
 hasData <- function(x, quiet=FALSE){
   nm <- seriesNames(x)
