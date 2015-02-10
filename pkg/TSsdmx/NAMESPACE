@@ -13,7 +13,8 @@ import("rJava")
 
 export("sdmx")
 
-export("hasData",
+export("verifyQuery",
+       "hasData",
        "hasDataNames",
        "hasDataCount",
        "hasDataDescriptions"
