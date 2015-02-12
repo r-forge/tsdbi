@@ -181,20 +181,22 @@ pending the institutions getting SDMX/REST 2.1 in place. Package \pkg{RJSDMX} ha
 \hline
 Data source      &      source URL 		& Package &Connection \\
 \hline
+ABS (Australia)   & \url{www.abs.gov.au}		& TSsdmx & sdmx \\
 EuroStat	  & \url{epp.eurostat.ec.europa.eu}	& TSsdmx & sdmx \\
 ECB       	  & \url{www.ecb.org}  			& TSsdmx & sdmx \\
-OECD	      	  & \url{www.oecd.org} 			& TSsdmx & sdmx \\
-IMF	      	  & \url{www.imf.org}  			& TSsdmx & sdmx \\
 ILO	      	  & \url{www.ilo.org}  			& TSsdmx & sdmx \\
+IMF	      	  & \url{www.imf.org}  			& TSsdmx & sdmx \\
 INEGI (Mexico)	  & \url{www.inegi.org.mx} 		& TSsdmx & sdmx \\
+NBB (Belgium)	  & http://www.nbb.be} 			& TSsdmx & sdmx \\
+OECD	      	  & \url{www.oecd.org} 			& TSsdmx & sdmx \\
 UN$^2$	      	  & \url{comtrade.un.org} 		& TSsdmx & sdmx \\
+Unesco     	  & \url{http://www.uis.unesco.org} 	& TSsdmx & sdmx \\
 World Bank$^1$	  & \url{worldbank.org} 		& TSsdmx & sdmx \\
 BIS$^3$	      	  & \url{www.bis.org} 			& TSsdmx & sdmx \\
 FRED    	  & \url{research.stlouisfed.org/fred2}& TSmisc & histQuote \\
 FRED    	  & \url{research.stlouisfed.org/fred2}& TSmisc & getSymbol \\
-ABS (Australia)   & \url{www.abs.gov.au}		& TSsdmx & sdmx \\
 RBA (Australia)   & \url{www.rba.gov.au} 		& TSmisc & xls \\
-Statistics Canada & \url{www.statcan.gc.ca} 		& TSjson & json \\
+Statistics Canada & \url{www.statcan.gc.ca} 		& TSjson$^6$ & json \\
 Bank of Canada	  & \url{www.bank-banque-canada.ca} 	& TSmisc2$^5$ & Quandl \\
 Yahoo    	  & \url{quote.yahoo.com} 		& TSmisc & getSymbol \\
 Yahoo    	  & \url{quote.yahoo.com} 		& TSmisc & histQuote \\
@@ -209,6 +211,7 @@ $^2$ planning&& \\
 $^3$ requires an account&& \\
 $^4$ not on CRAN&& \\
 $^5$ on R-forge, not CRAN&& \\
+$^6$ unstable&& \\
 \hline
 \end{tabular}
 \end{center}
