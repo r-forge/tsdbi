@@ -75,45 +75,25 @@ if(! all(c(2014,3) ==   end(z))) stop("ECB quarterly  test 3 end error.")
 #   suffix  E euro   (no B average )
 
 
-if (FALSE) {
+z <- TSget("BSI.Q.U2.N.V.*.*.*.*.*.*.*")  #has A,F,R,V Feb 2015
 
-z <- getSDMX('ECB', "BSI.Q.U2.N.T.A21.A.1.U2.2250.Z01.B") #not found
-
-z <- getSDMX('ECB', "BSI.Q.U2.N.T.A20.A.1.U2.2250.Z01.E") 
-
-z <- getSDMX('ECB', "BSI.Q.U2.N.T.*.*.*.*.*.*.*")  #not found
-
-z <- getSDMX('ECB', "BSI.Q.U2.N.*.*.*.*.*.*.*.*") 
-nm <- names(z)
-length(nm) #927
-nm
-
-sum(grepl('A21',nm))  # 0
-sum(grepl('.B', names(z)))  # 0
-sum(grepl('2250', names(z))) #
-
-any("BSI.Q.U2.N.V.A20.A.1.U2.2250.Z01.E" %in% nm )
-
-z <- getSDMX('ECB', "BSI.Q.U2.N.*.*.*.*.*.*.*.*") 
-length(names(z)) #
-names(z)
+# next is ok Feb 2015
+if(! any("BSI.Q.U2.N.V.M30.X.1.U2.2250.Z01.E" %in% seriesNames(z) ))
+    stop("available series has changed")  
 
 
-skey <-c("BSI.Q.U2.N.A.A21.A.1.U2.2250.Z01.E",
-         "BSI.Q.U2.N.A.A22.A.1.U2.2250.Z01.E",
-         "BSI.Q.U2.N.A.A23.A.1.U2.2250.Z01.E")
+
+# next is ok Feb 2015
+skey <-c("BSI.Q.U2.N.V.M30.X.I.U2.2240.Z01.E",
+         "BSI.Q.U2.N.V.M30.X.I.U2.2250.Z01.E",
+         "BSI.Q.U2.N.V.M30.X.1.U2.2250.Z01.E")
 
 
 z <- TSget(skey[1], ecb)   
   
 tfplot(z)
 
-z <- TSget("BSI.Q.U2.N.A.A21.A.1.U2.2250.Z01.E", ecb) 
-z <- TSget("117.BSI.Q.U2.N.A.A22.A.1.U2.2250.Z01.E", ecb) 
- 
-tfplot(z)
-
-z <- TSget(skey, ecb)     # multiple series still needs work
+z <- TSget(skey, ecb) 
 tfplot(z)
   plot(z)
 
@@ -128,6 +108,5 @@ tfplot(z)
 #
 # Frequency W. Does not allow the creation of a strictly 
 # fetching but then failing
-z <- TSget("ILM.W.U2.C.A010.Z5.Z0Z", ecb)
+# z <- TSget("ILM.W.U2.C.A010.Z5.Z0Z", ecb) # zoo BUG warning re underlying regularity
 
-}

@@ -48,7 +48,7 @@ the number (invisibly).
   eurostat <- TSconnect("sdmx", dbname="EUROSTAT")
 
   # 28 series, 23 with data
-  z <-  TSget("ei_nama_q.Q.MIO-EUR.NSA.CLV2000.*.IT", eurostat) 
+  z <-  TSget("ei_nama_q.Q.MIO-EUR.NSA.CP.*.IT", eurostat) 
 
   sum(hasData(z, quiet=TRUE)) 
 

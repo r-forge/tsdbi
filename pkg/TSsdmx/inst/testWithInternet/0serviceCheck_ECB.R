@@ -125,3 +125,40 @@ end(z)    # "2014-W01"
 ## get mixed all available frequencies
 ##z <- getSDMX('ECB', 'EXR.*.USD.EUR.SP00.A')
 
+
+# BSI balance sheet indicators
+#   FREQ Q
+#   U2 Euro area, changing composition.
+#   not adjusted 
+#   sector T 
+#   item  A20 loans   (no A21 cedit for cunsumption)
+#   A all maturities
+#   data type 1 outstanding
+#   count area  U2 Euro area, changing composition.
+#   count sector2250 household and non-profit...
+#   currency  Z01 all currencies
+#   suffix  E euro   (no B average )
+
+
+#z <- getSDMX('ECB', "BSI.Q.U2.N.T.A21.A.1.U2.2250.Z01.B") #not found
+#z <- getSDMX('ECB', "BSI.Q.U2.N.T.A20.A.1.U2.2250.Z01.E") 
+#z <- getSDMX('ECB', "BSI.Q.U2.N.T.*.*.*.*.*.*.*")  #not found
+
+z <- getSDMX('ECB', "BSI.Q.U2.N.V.*.*.*.*.*.*.*")  #has A,F,R,V Feb 2015
+
+#z <- getSDMX('ECB', "BSI.Q.U2.N.*.*.*.*.*.*.*.*") works 
+#length(names(z) #927
+
+nm <- names(z)
+length(nm) # for A=530  V=92
+nm
+
+sum(grepl('A21',nm))  # 0
+sum(grepl('.B', names(z)))  # 0
+sum(grepl('2250', names(z))) # 22, Feb 2015
+
+# next is ok Feb 2015
+if(! any("BSI.Q.U2.N.V.M30.X.1.U2.2250.Z01.E" %in% nm ))
+    stop("available series has changed")  
+
+

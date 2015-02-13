@@ -51,6 +51,8 @@ require("RJSDMX")
   #tts2 = getSDMX('EUROSTAT', 'ei_nama_q.Q.*.NSA.CP.*.IT')  # works
   #tts2 = getSDMX('EUROSTAT', 'ei_nama_q.Q.*.*.CP.*.*.*') NO
 
+  #tts2 = getSDMX('EUROSTAT', 'ei_nama_q.Q.MIO-EUR.NSA.*.*.IT') 
+       #  above has 84 series Feb 2015, but may change
   #tts2 = getSDMX('EUROSTAT', 'ei_nama_q.Q.MIO-EUR.NSA.CP.*.IT') #  28 series
   #names(tts2)
 

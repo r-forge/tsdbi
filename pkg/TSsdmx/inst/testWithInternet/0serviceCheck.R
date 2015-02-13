@@ -22,6 +22,7 @@ z <- try(getSDMX("OECD", 'G20_PRICES.CAB.CP.IXOB.M'), silent=TRUE)
 #      1.2 installed from github 6 Nov 2014
 #      1.3 installed from github 11 Dec 2014
 #      1.3 installed from github 22 Dec 2014
+#      1.3 installed from github  5 Feb 2015
 
 # Package rJava may be needed interactively for experimenting but should be found
 #   in the the namespace when everything is working.
@@ -91,21 +92,16 @@ z <- try(getSDMX("OECD", 'G20_PRICES.CAB.CP.IXOB.M'), silent=TRUE)
 
 
 #  sdmxHelp()
-# "ILO" server is (temporarily?) not working
 
 getProviders()
 #[1] "BIS"      "ILO"      "ECB"      "OECD"     "EUROSTAT"       with v1.1
 #[1] "ILO"      "ECB"      "INEGI"    "OECD"     "EUROSTAT" "IMF" with v1.2
-
+#[1] "ABS"  "WB"  "ILO" "ECB" "OECD_RESTR" "NBB" "INEGI" "OECD" 
+#                                        "UIS"  "EUROSTAT"   "IMF" with v1.3
  
   # z <- getSDMX('EUROSTAT', 'ei_nama_q.Q.MIO-EUR.NSA.CLV2000.*.IT')[[1]]
 
-  # When it occures, the message
-  # SEVERE: Exception. Class: it.bankitalia.reri.sia.util.SdmxException .Message: 
-  # Exception. Class: java.net.UnknownHostException .Message: ec.europa.eu
-  # should return an R error. (Occassionaly seems to return null result instead.)
-
-  
+ 
 ############################ "BIS" ############################
 # need account, not available to the publicly as of Nov 2014
 #addProvider(name='BIS', endpoint='xxx', TRUE)
@@ -139,20 +135,6 @@ getProviders()
   
   z <- getSDMX('test', 'EXR.A.USD.EUR.SP00.A')
 
-
-######################## World Bank #######################
-# See http://data.worldbank.org/developers
-# and specifics at http://data.worldbank.org/node/11
-
-#  addProvider(name='WB', 
-#     endpoint='http://api.worldbank.org/data', FALSE)
-#
-#  getFlows('WB')
-#
-#  addProvider(name='WB', 
-#     endpoint='http://api.worldbank.org', FALSE)
-
-#http://api.worldbank.org/data/WB/2/chn;ind/sp.pop.totl?format=generic
 
 ############ Swiss Federal Statistical Office ###############
 #Site to the following e-mail address: webmaster@bfs.admin.ch
