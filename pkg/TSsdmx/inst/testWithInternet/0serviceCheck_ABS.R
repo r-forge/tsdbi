@@ -1,4 +1,3 @@
-if (FALSE){  #needs RJSDMX 1.3
 ########################## Australian Bureau of Statistics ####################
 # http://www.abs.gov.au
 
@@ -22,7 +21,7 @@ names(tts)
 if ("1960 Q1" != start(tts[[1]])) stop("ABS test 2 start date failure.")
 if ("2010 Q4" != end(tts[[1]]))   stop("ABS test 2  end  date failure.")
 
-#tts <-  getSDMX('ABS', 'CPI.1.*.10001.10.Q') #19 BUG
+#tts <-  getSDMX('ABS', 'CPI.1.*.10001.10.Q') #19 provider BUG (White spaces...)
 ## tts <-  getSDMX('ABS', 'CPI.1*') 1461 series
 
 
@@ -44,5 +43,3 @@ names(tts)
 if ("May 2008" != start(tts[[1]])) stop("ABS test 2 start date failure.")
 if ("Jul 2014" != end(tts[[1]]))   stop("ABS test 2  end  date failure.")
 if   (12 != frequency(tts[[1]]))   stop("ABS test 2 frequency failure.")
-
-}

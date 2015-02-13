@@ -1,5 +1,5 @@
 Package: TSsdmx
-Version: 2015.1-1
+Version: 2015.2-1
 Title:  TSdbi Extension to Connect with SDMX
 Description: Methods to 
 	retrieve data in SDMX format from several database. (For example,
@@ -7,7 +7,7 @@ Description: Methods to
 	Comprehensive examples of all the TS* packages is provided in the
 	vignette Guide.pdf with the TSdata package.
 Depends: R (>= 2.8.0), TSdbi (>= 2015.1-1)
-Imports: methods, DBI (>= 0.3.1), tframe, tframePlus, RJSDMX(>= 1.2), rJava
+Imports: methods, DBI (>= 0.3.1), tframe, tframePlus, RJSDMX(>= 1.3), rJava
 Suggests: tfplot
 BuildVignettes: true
 License: GPL-2

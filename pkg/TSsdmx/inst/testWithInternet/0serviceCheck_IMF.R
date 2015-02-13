@@ -1,61 +1,66 @@
+######################## IMF #######################
 require("RJSDMX")
 
-######################## IMF #######################
+#  sdmxHelp()
+  
+  if(! 'PGI' %in% names(getFlows('IMF')))
+     stop("PGI has disappearde from IMF flows (again). Provider changed something.")
+
+  # IMF PGI codes were not working for some period prior to Feb 9, 2015. 
+  #  but then started working again. 
+
+  # PGI
+  #  REF_AREA.DATASOURCE.PGI_CONCEPT.FREQ.UNIT0FMEASURE
+  #     CA: Canada
+  #  INDICATOR
+  #    003: National Accounts
+  #    IFS: International Financial Statistics
+  #    AIP: Industrial Production
+  #    BIS_BP6: Balance on Secondary Income
+  #    NCG: Government Consumption Expenditure
+  #    NGDP: Gross Domestic Product (Nominal)
+  #  DATA SOURCE
+  #    PGI: Principal Global Indicators
+  #  UNIT
+  #    L:  USD  
+  #    N:   National currency 
+  #    NSA: National currency SA
+  #  FREQ
+  #    A:  
+  #    M:  
+  #    Q:  
 
   names(getDimensions('IMF','PGI')) 
   getCodes('IMF','PGI', 'FREQ')
   
-  nm <- getFlows('IMF')
-  names(nm)
-  nm
-  nm['PGI']
-
-  # PGI
-  #   REF_AREA.DATASOURCE.PGI_CONCEPT.FREQ.UNIT0FMEASURE
-  #   CA: Canada
-  #  IFS: International Financial Statistics  (BIS is and option)
-  #  (003: National Accounts)
-  #  FREQ
-  #  L_M USD millions (N_M: National currency, Millions 
-  #   (NSA_M: National currency SA, Millions)
-
-if (FALSE) {  
-  tts0 <- getSDMX('IMF', 'PGI.CA.*.*.*.*')	#13 BUG works but slow. not working in 1.3
+  if(! TSsdmx::verifyQuery('IMF', 'PGI.CA.*.*.*.*'))
+     stop("Query 1 does not verify. Provider changed something.")
+  
+  tts0 <- getSDMX('IMF', 'PGI.CA.*.*.*.*')   # length # 627   #774 Feb 9, 2015
   nm <- names(tts0)
-  length(nm) # 627
+  length(nm) 
   
-  nm[grepl('PGI.CA.BIS.', nm )] # this suggests these should work but
+  nm[grepl('PGI.CA.BIS.', nm )] 
+  #[1] "PGI.CA.BIS_BP6.PGI.L.A" "PGI.CA.BIS_BP6.PGI.L.Q"  # Feb 9, 2015
 
-  z <- tts0[grepl('PGI.CA.BIS.', nm )]
+  # note that grepl uses . as any char so this gets above
+  #z <- tts0[grepl('PGI.CA.BIS.', nm )]
+    
+  z <- getSDMX('IMF', 'PGI.CA.BIS_BP6.PGI.L.A')
+  if(start(z[[1]]) !=  2005)  stop("test 1 start date changed.")
+  if(frequency(z[[1]]) !=  1) stop("test 1  frequency changed.")
+
+  tts <- getSDMX('IMF', 'PGI.CA.BIS_BP6.*.L.Q')	
+  names(tts)
   
-  tts0["PGI.CA.BIS.FOSLB.A.L_M"]  # this is not empty
-  
-  getSDMX('IMF', 'PGI.CA.BIS.FOSLB.A.L_M') # but this gives an empty result
+  #  at one time this was TRUE, but not Feb 9, 2015 
+  #	"PGI.CA.BIS.FOSAB.Q.L_M" %in% nm 
+
+  if( TSsdmx::verifyQuery('IMF', 'PGI.CA.BIS.*.*.*'))
+     stop("Query 2 now verifies. Provider added it again.")
+
+  if( TSsdmx::verifyQuery('IMF', 'PGI.CA.IFS.*.*.*'))
+     stop("Query 3 now verifies. Provider added it again.")
  
-#####  FAILURE #####:   empty result but retrieved above
-  tts <- getSDMX('IMF', 'PGI.CA.BIS.*.*.L_M')	#fails (empty result)
-  names(tts)
-  
-#####  FAILURE #####:   empty result but retrieved above
-  tts <- getSDMX('IMF', "PGI.CA.BIS.FOSAB.Q.L_M") #fails (empty result)
-  names(tts)
-  
-  #  even though it was returned above
-  	"PGI.CA.BIS.FOSAB.Q.L_M" %in% nm  # TRUE
-  #   and 
-       tts0[["PGI.CA.BIS.FOSAB.Q.L_M" ]]
+  #tts <- getSDMX('IMF', 'PGI.CA.IFS.*.Q.N_M') #fails (empty result)
 
- 
-  nm[grepl('PGI.CA.IFS.', nm )] # this suggests these should work but
-
-#####  FAILURE #####:   empty result but retrieved above
-  tts <- getSDMX('IMF', 'PGI.CA.IFS.*.Q.N_M') #fails (empty result)
-  names(tts)
-
-# BUG #13 repeating from above. Remove
-  tts0 <- getSDMX('IMF', 'PGI.CA.*.*.*.*') #  BUG tts not found
-# previously
-  tts0 <- getSDMX('IMF', 'PGI.CA.*.*.*.*')["PGI.CA.BIS.FOSLB.A.L_M"] # not empty BUG
-  tts1 <- getSDMX('IMF', 'PGI.CA.BIS.FOSLB.A.L_M') #  empty result
-
-}

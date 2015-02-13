@@ -28,15 +28,14 @@ tts <- getSDMX("ILO",
 
 if ("1995" != start(tts[[1]]))  stop("ILO test 1 start date error.")
 
-if (FALSE) {
-
-if ("2012" !=   end(tts[[1]]))  stop("ILO test 1 end date error.") #17 BUG
+#if ("2012" !=   end(tts[[1]]))  stop("ILO test 1 end date error.") #17 provider BUG
 
 
-tts <- getTimeSeries("ILO", "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB/YI.MEX+ESP.....")
-
-nm <- names(tts)
-nm[grepl('SEX_T.AGE_AGGREGATE_TOTAL', nm )] 
+# works but slow
+# tts <- getTimeSeries("ILO", "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB/YI.MEX+ESP.....")
+# 
+# nm <- names(tts)
+# nm[grepl('SEX_T.AGE_AGGREGATE_TOTAL', nm )] 
  
  
 tts <- getTimeSeries("ILO", "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB/YI.DEU+FRA+GBR+ITA.A..EMP_TEMP_NB.SEX_T.AGE_AGGREGATE_TOTAL")
@@ -45,4 +44,3 @@ length(tts) # 10
 
 if ("2001" != start(tts[[1]]))  stop("ILO test 3 start date changed.")
 
-}

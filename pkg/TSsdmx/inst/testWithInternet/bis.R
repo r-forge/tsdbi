@@ -1,10 +1,7 @@
 require("TSsdmx")
-
-bis <- TSconnect("sdmx", dbname="BIS")
-
-
 # need a BIS account for this    
-# try email@bis.org
+
+# bis <- TSconnect("sdmx", dbname="BIS")
 
 # NEED SOME PROPER IDENTIFIERS 
   

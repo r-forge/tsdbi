@@ -234,7 +234,7 @@ verifyQuery <- function(provider, Q, verbose=TRUE){
 
   if(length(dm) != length(dq)) {
      if (verbose)
-         cat("query dimension not equal dimension of provider flow.")
+         cat("query dimension not equal dimension of provider flow.\n")
      return(invisible(FALSE))
      }
 

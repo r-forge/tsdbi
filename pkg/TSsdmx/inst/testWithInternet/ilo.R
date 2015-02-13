@@ -27,9 +27,8 @@ z <- TSget("DF_YI_ALL_EMP_TEMP_SEX_AGE_NB/YI.MEX.A.463.EMP_TEMP_NB.SEX_F.AGE_10Y
 
 if (! all(c(1995,1) == start(z)))  stop("ILO test 2 start date error.")
 
-if (FALSE) {
 
-if (! all(c(2012,1) ==   end(z)))  stop("ILO test 2 end date error.") #17 BUG
+#if (!all(c(2012,1) == end(z))) stop("ILO test 2 end date error.") #17 provider BUG
 
 z <- TSget( "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB/YI.DEU+FRA+GBR+ITA.A..EMP_TEMP_NB.SEX_T.AGE_AGGREGATE_TOTAL", ilo)
 
@@ -48,4 +47,3 @@ tframe::seriesNames(z)
 # [9] "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB.YI.ITA.A.325.EMP_TEMP_NB.SEX_T.AGE_AGGREGATE_TOTAL" 
 #[10] "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB.YI.ITA.A.2238.EMP_TEMP_NB.SEX_T.AGE_AGGREGATE_TOTAL"
 
-}
