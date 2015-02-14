@@ -12,4 +12,4 @@ require("TSsdmx")
 
   if(start(z) !=  1970)  stop("test 2 start date changed.")
   if(frequency(z) !=  1) stop("test 2  frequency changed.")
-  if(tframe::nseries(z) !=  3)  stop("test 21  number of series changed.")
+  if(tframe::nseries(z) !=  3)  stop("test 2  number of series changed.")
