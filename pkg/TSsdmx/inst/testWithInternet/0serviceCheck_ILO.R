@@ -13,7 +13,8 @@
 
 require("RJSDMX")
 
-# z <- getFlows('ILO')  fails (see above)
+# z <- getFlows('ILO')  # very slow but works Feb 13, 2015. Previously failed (see above)
+# length(z)  #[1] 710
 
 ########### annual ########### 
 
