@@ -1,5 +1,5 @@
 require("tfplot")
-require("TSQuandl")
+require("TSmisc2")
 
 cat("**************        connecting to Quandl\n")
 
