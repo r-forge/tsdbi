@@ -5,7 +5,7 @@
 #  install_github("R-package", "quandl")
 #  install_github("R-package", "quandl", ref="develop")
 
-require("TSQuandl")
+require("TSmisc2")
 require("tfplot")
  
 cat("**************        connecting to Quandl\n")
