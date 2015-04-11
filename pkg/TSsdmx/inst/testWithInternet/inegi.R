@@ -1,3 +1,4 @@
+if (FALSE){ # previously this all worked
 ########################### "INEGI" ###########################
 ##### Instituto Nacional de Estadistica y Geografia (Mexico) ######
 
@@ -17,3 +18,4 @@ if(!all(start(z) ==  c(1993,1))) stop("test 2 start date changed.")
 if (12 != frequency(z))          stop("test 2 frequency error.")
 if(tframe::nseries(z) !=  1)     stop("test 2  number of series changed.")
 
+}

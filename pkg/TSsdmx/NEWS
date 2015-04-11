@@ -4,7 +4,8 @@ See also
 
 Known BUGS
 
-   o	None for the moment.
+   o	Some service providors are upgrading and not yet stable, causing
+   	checks (and retrievals) to sometimes fail.
 
 
 Changes in TSsdmx version 2015.2-1
