@@ -1,3 +1,4 @@
+if (FALSE){ 
 ########################### "INEGI" ###########################
 ##### Instituto Nacional de Estadistica y Geografia (Mexico) ######
 
@@ -7,6 +8,8 @@
 #  sdmxHelp()
 
 require("RJSDMX")
+
+#  getFlows('INEGI') 
 
 getDimensions('INEGI','DF_STES') 
 # FREQ   REFERENCE_AREA  SUBJECT  MEASURE  ADJUSTMENT UNIT
@@ -53,7 +56,7 @@ if ("Jan 1993" != start(tts[[1]]))  stop("INEGI test 2 start date error.")
 if (12 != frequency(tts[[1]]))      stop("INEGI test 2 frequency error.")
 if (1 != length(names(tts)))     stop("INEGI test 2 number of series changed.")
 
-
+####  previously worked to here
 if (FALSE){ 
 
 tts <- getSDMX("INEGI", 'DF_STES.M.MX.PRMNTO01.IXNB.SA.2008100', start='Feb 1995') 
