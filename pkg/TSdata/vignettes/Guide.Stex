@@ -178,9 +178,11 @@ pending the institutions getting SDMX/REST 2.1 in place. Package \pkg{RJSDMX} ha
 \caption{Connections for various data sources.}
 \label{tab:connections}
 \begin{tabular}{@{}lclc@{}}
-\hline
+\\
+\hline \\
 Data source      &     source URL		 & Package&Connection \\
-\hline
+\\
+\hline \\
 ABS (Australia)  &\url{www.abs.gov.au}  	 & TSsdmx & sdmx \\
 ECB       	 &\url{www.ecb.org}		 & TSsdmx & sdmx \\
 EuroStat	 &\url{epp.eurostat.ec.europa.eu}& TSsdmx & sdmx \\
@@ -206,14 +208,15 @@ Oanda    	 &\url{www.oanda.com}		 & TSmisc & histQuote \\
 PiTrading    	 &\url{pitrading.com}		 & TSmisc & zip \\
 Quandl	  	 &\url{www.quandl.com}  	 & TSmisc2$^5$ & Quandl \\
 Bloomberg$^4$ 	 &\url{www.bloomberg.com}	 & TSbbg & bbg \\
-\hline
-$^1$ beta&& \\
-$^2$ planning&& \\
-$^3$ requires an account&& \\
-$^4$ not on CRAN&& \\
-$^5$ on R-forge, not CRAN&& \\
-\multicolumn{4}{l}{$^6$ using python mechanize,  unstable website API}\\
-$^6$ using python mechanize,  unstable website API&& \\
+\\
+\hline \\
+\multicolumn{4}{l}{$^1$ beta} \\
+\multicolumn{4}{l}{$^2$ planning} \\
+\multicolumn{4}{l}{$^3$ requires an account} \\
+\multicolumn{4}{l}{$^4$ not on CRAN} \\
+\multicolumn{4}{l}{$^5$ on R-forge, not CRAN} \\
+\multicolumn{4}{l}{$^6$ using python mechanize,  unstable website API} \\
+\\
 \hline
 \end{tabular}
 \end{center}
