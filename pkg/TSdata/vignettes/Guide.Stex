@@ -189,7 +189,7 @@ EuroStat	 &\url{epp.eurostat.ec.europa.eu}& TSsdmx & sdmx \\
 ILO	      	 &\url{www.ilo.org}		 & TSsdmx & sdmx \\
 IMF	      	 &\url{www.imf.org}		 & TSsdmx & sdmx \\
 INEGI (Mexico)	 &\url{www.inegi.org.mx}	 & TSsdmx & sdmx \\
-ISTAT (Italy) 	 &\url{www.istat.it}		 & TSsdmx & sdmx \\
+ISTAT$^6$ (Italy)&\url{www.istat.it}		 & TSsdmx & sdmx \\
 NBB   (Belgium)	 &\url{www.nbb.be}		 & TSsdmx & sdmx \\
 OECD	      	 &\url{www.oecd.org}		 & TSsdmx & sdmx \\
 UIS	      	 &\url{www.uis.unesco.org}	 & TSsdmx & sdmx \\
@@ -200,7 +200,7 @@ BIS$^3$	      	 &\url{www.bis.org}		 & TSsdmx & sdmx \\
 FRED    	 &\url{research.stlouisfed.org}  & TSmisc & histQuote \\
 FRED    	 &\url{research.stlouisfed.org}  & TSmisc & getSymbol \\
 RBA (Australia)  &\url{www.rba.gov.au}  	 & TSmisc & xls \\
-Statistics Canada&\url{www.statcan.gc.ca}	 & TSjson$^6$ & json \\
+Statistics Canada&\url{www.statcan.gc.ca}	 & TSjson$^7$ & json \\
 Bank of Canada	 &\url{www.bank-banque-canada.ca}& TSmisc2$^5$ & Quandl \\
 Yahoo    	 &\url{quote.yahoo.com} 	 & TSmisc & getSymbol \\
 Yahoo    	 &\url{quote.yahoo.com} 	 & TSmisc & histQuote \\
@@ -215,13 +215,16 @@ Bloomberg$^4$ 	 &\url{www.bloomberg.com}	 & TSbbg & bbg \\
 \multicolumn{4}{l}{$^3$ requires an account} \\
 \multicolumn{4}{l}{$^4$ not on CRAN} \\
 \multicolumn{4}{l}{$^5$ on R-forge, not CRAN} \\
-\multicolumn{4}{l}{$^6$ using python mechanize,  unstable website API} \\
+\multicolumn{4}{l}{$^6$ requires registration at \url{sdmx.istat.it/registr_ut_sep/}} \\
+\multicolumn{4}{l}{$^7$ using python mechanize,  unstable website API} \\
 \\
 \hline
 \end{tabular}
 \end{center}
 \end{table}
 %%%%%%%%%%%%%%%%%%%
+The above URL is for the organization. The SDMX data web URL can be determined with \code{RJSDMX::sdmxHelp()} using the build command action to give the URL 
+of an sdmx query.
 
 The table is not comprehensive. In particular, Quandl, Bloomberg, Yahoo, Oanda, 
 and some others, provide access to data from a large number of sources, especial market data.
