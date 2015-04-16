@@ -42,16 +42,14 @@ you have to build the WB query as REF_AREA.SERIES.
 
 \examples{
 \dontrun{
-  verifyQuery('IMFx', 'PGI.CA.*.*.*.*')
-  print(verifyQuery('IMFx', 'PGI.CA.*.*.*.*', verbose = FALSE))
+  print(verifyQuery('IMFx', 'PGI.CA.*.*.*.*'))# returns FALSE
 
-  verifyQuery('IMF',  'PGI.CA.*.*.*.*')
-  print(verifyQuery('IMF', 'PGI.CA.*.*.*.*', verbose = FALSE))
+  print(verifyQuery('IMF', 'PGI.CA.*.*.*.*', verbose = FALSE)) # returns TRUE
 
-  verifyQuery('IMF', 'PGI.CAN.*.*.*.*')
+  print(verifyQuery('IMF', 'PGI.CAN.*.*.*.*'))# returns FALSE 
 
-  verifyQuery('NBB', 'HICP.000000.*.*')
-  verifyQuery('NBB', 'HICP.000000.BE.M') 
+  #print(verifyQuery('NBB', 'HICP.000000.*.*'))
+  #print(verifyQuery('NBB', 'HICP.000000.BE.M'))
   }
 }
 \keyword{ts}

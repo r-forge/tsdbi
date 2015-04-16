@@ -4,6 +4,10 @@
   
   nbb <- TSconnect("sdmx", dbname="NBB")
 
+##  BUG
+## if( ! verifyQuery('NBB', 'HICP.000000.*.*', verbose=FALSE))
+##     stop("verifyQuery NBB wildcards failed")
+
 ######### annual
 
   z <- TSget('HICP.000000.BE.A', nbb) 
