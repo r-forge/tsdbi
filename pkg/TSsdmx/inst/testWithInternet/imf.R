@@ -4,6 +4,15 @@ require("TSsdmx")
 
 imf <- TSconnect("sdmx",  dbname="IMF")
 
+ if(FALSE != verifyQuery('IMFx', 'PGI.CA.*.*.*.*', verbose=FALSE)) 
+     stop("verifyQuery provider IMFx failed")
+
+ if( ! verifyQuery('IMF',  'PGI.CA.*.*.*.*', verbose=FALSE))
+     stop("verifyQuery IMF wildcards failed")
+
+ if(FALSE != verifyQuery('IMF', 'PGI.CAN.*.*.*.*', verbose=FALSE)) 
+     stop("verifyQuery bad dimension check failed")
+ 
 if (FALSE){
   
   z <- TSget("PGI.CA.BIS.FOSLB.A.L_M", imf)  #13 BUG? this was previously not empty
