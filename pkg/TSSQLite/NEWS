@@ -3,6 +3,10 @@ See also
    o	See also NEWS in the TSdbi package.
 
 
+Changes in TSSQLite version 2015.4-1
+
+   o	Moved tests to inst/testWithSQLiteServer and inst/testWithInternet.
+
 Changes in TSSQLite version 2015.1-1
 
    o	Update class definitions to use slots= rather than representation().
