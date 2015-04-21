@@ -3,6 +3,10 @@ See also
    o	See also NEWS in the TSdbi package.
 
 
+Changes in TSPostgreSQL version 2015.4-1
+
+   o	Moved tests to inst/testWithPostgreSQLserver and inst/testWithInternet.
+
 Changes in TSPostgreSQL version 2015.1-1
 
    o	Changed Depends to Imports for RPostgreSQL
