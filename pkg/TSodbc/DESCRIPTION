@@ -1,5 +1,5 @@
 Package: TSodbc
-Version: 2015.1-1
+Version: 2015.4-1
 Title: TSdbi Extensions for ODBC
 Description: An ODBC interface for TSdbi.
 	Comprehensive examples of all the TS* packages is provided in the

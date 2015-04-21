@@ -9,6 +9,10 @@ Known BUGS
 	so it is necessary to have a properly defined ~/.odbc.ini  file.
 
 
+Changes in TSodbc version 2015.4-1
+
+   o	Moved tests to inst/testWithMySQLserver and inst/testWithInternet.
+
 Changes in TSodbc version 2015.1-1
 	
    o	Changed Depends to Imports for RODBC.
