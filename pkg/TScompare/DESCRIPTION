@@ -1,5 +1,5 @@
 Package: TScompare
-Version: 2015.1-1
+Version: 2015.4-1
 Title:  TSdbi Database Comparison
 Description: Utilities for comparing the equality of series on two databases.
 	Comprehensive examples of all the TS* packages is provided in the
