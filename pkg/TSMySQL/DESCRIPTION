@@ -1,11 +1,11 @@
 Package: TSMySQL
-Version: 2015.1-1
+Version: 2015.4-1
 Title: TSdbi Extensions for MySQL
 Description: A MySQL interface for TSdbi.
 	Comprehensive examples of all the TS* packages is provided in the
 	vignette Guide.pdf with the TSdata package.
 Depends: R (>= 2.8.0), TSdbi (>= 2015.1-1)
-Imports: methods, DBI (>= 0.3.1), tframe, TSsql (>= 2015.1-1), RMySQL
+Imports: methods, DBI (>= 0.3.1), tframe, TSsql (>= 2015.1-1), RMySQL (>= 0.10.3)
 Suggests: zoo, tseries,  tfplot, tframePlus
 BuildVignettes: true
 License: GPL-2
