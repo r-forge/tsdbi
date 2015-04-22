@@ -8,9 +8,11 @@ See also
 
    o	See also NEWS in the TSdbi package.
 
-Changes in TSdata version 2015.1-1
+Changes in TSdata version 2015.4-1
 
-   o	Updated vignette with TSsdmx and TSmisc in place of package rolled into it.
+   o	Updated some version dependencies.
+
+   o	Updated vignette with TSsdmx and TSmisc.
 
 Changes in TSdata version 2014.6-1
 
