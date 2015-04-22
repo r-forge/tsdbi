@@ -928,33 +928,6 @@ will cause the generation of this vignette to fail.
 This part of the vignette is generated using \pkg{TSPostgreSQL}, but other backend SQL
 servers work in a similar way. See Appendix ``A'' for details of establishing
 other SQL database connections.
-\begin{Scode}{results=verbatim}
-# this should not be necessary but ...
-detach("package:TSmisc", unload=TRUE)
-detach("package:TSjson", unload=TRUE)
-detach("package:findpython", unload=TRUE)
-detach("package:TSsdmx", unload=TRUE)
-detach("package:xts", unload=TRUE)
-
-unloadNamespace("RJSDMX")
-unloadNamespace("TSMySQL")
-unloadNamespace("TSsql")
-unloadNamespace("RMySQL")
-unloadNamespace("quantmod")
-unloadNamespace("TTR")
-unloadNamespace("its")
-unloadNamespace("xts")
-unloadNamespace("tseries")
-unloadNamespace("quadprog")
-unloadNamespace("rJava")
-unloadNamespace("rjson")
-unloadNamespace("tframePlus")
-unloadNamespace("timeSeries")
-unloadNamespace("timeDate")
-detach("package:zoo", unload=TRUE)
-detach("package:TSdbi", unload=TRUE)
-unloadNamespace("DBI")
-\end{Scode}
 
 First set up the TS database structure on the database where data will be
 saved (if it is not already in place)

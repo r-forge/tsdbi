@@ -38,14 +38,17 @@ unloadNamespace("TSSQLite")
 require("TSMySQL")
 require("TSPostgreSQL")
 
-# next failing with  argument "where" is missing, with no default 
-#  as of Jan 2015,  R-devel, new MySQL 0.10, 2015,1-1 versions of TS* ready for release
-#  R Under development (unstable) (2015-01-02 r67308) -- "Unsuffered Consequences"
-#  Platform: x86_64-unknown-linux-gnu (64-bit)
-#unloadNamespace("TSMySQL")
-#unloadNamespace("TSPostgreSQL")
+# next previously failed with  argument "where" is missing, with no default 
+#  in Jan 2015 R-devel and MySQL 0.10.2
+# works April 21, 2015 with R-devel  and MySQL 0.10.3
+unloadNamespace("TSMySQL")
+unloadNamespace("TSPostgreSQL")
 
 #detach("package:TScompare", unload=TRUE)
 #detach("package:TSmisc", unload=TRUE)
 #detach("package:TSjson", unload=TRUE)
 #detach("package:WriteXLS", unload=TRUE)
+
+loadedNamespaces()
+search()
+
