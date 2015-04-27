@@ -1,3 +1,4 @@
+if (FALSE){ 
 ######################## National Bank Belguim #######################
 
   require("TSsdmx")
@@ -37,3 +38,5 @@
   if(!all(end(z)   ==  c(2010,1)))  stop("test 4  end  date changed.")
   if(frequency(z) !=  12)           stop("test 4  frequency changed.")
   if(tframe::nseries(z) !=  9)      stop("test 4  number of series changed.")
+
+}
