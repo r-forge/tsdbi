@@ -6,7 +6,7 @@ Description: A MySQL interface for TSdbi.
 	vignette Guide.pdf with the TSdata package.
 Depends: R (>= 2.8.0), TSdbi (>= 2015.1-1)
 Imports: methods, DBI (>= 0.3.1), tframe, TSsql (>= 2015.1-1), RMySQL (>= 0.10.3)
-Suggests: zoo, tseries,  tfplot, tframePlus
+Suggests: zoo, tseries,  tfplot, tframePlus, timeSeries
 BuildVignettes: true
 License: GPL-2
 Copyright: 2007-2011 Bank of Canada.  2012-2015 Paul Gilbert.
