@@ -189,7 +189,7 @@ EuroStat	 &\url{epp.eurostat.ec.europa.eu}& TSsdmx & sdmx \\
 ILO	      	 &\url{www.ilo.org}		 & TSsdmx & sdmx \\
 IMF	      	 &\url{www.imf.org}		 & TSsdmx & sdmx \\
 INEGI (Mexico)	 &\url{www.inegi.org.mx}	 & TSsdmx & sdmx \\
-ISTAT$^6$ (Italy)&\url{www.istat.it}		 & TSsdmx & sdmx \\
+ISTAT$^5$ (Italy)&\url{www.istat.it}		 & TSsdmx & sdmx \\
 NBB   (Belgium)	 &\url{www.nbb.be}		 & TSsdmx & sdmx \\
 OECD	      	 &\url{www.oecd.org}		 & TSsdmx & sdmx \\
 UIS	      	 &\url{www.uis.unesco.org}	 & TSsdmx & sdmx \\
@@ -200,23 +200,22 @@ BIS$^3$	      	 &\url{www.bis.org}		 & TSsdmx & sdmx \\
 FRED    	 &\url{research.stlouisfed.org}  & TSmisc & histQuote \\
 FRED    	 &\url{research.stlouisfed.org}  & TSmisc & getSymbol \\
 RBA (Australia)  &\url{www.rba.gov.au}  	 & TSmisc & xls \\
-Statistics Canada&\url{www.statcan.gc.ca}	 & TSjson$^7$ & json \\
-Bank of Canada	 &\url{www.bank-banque-canada.ca}& TSmisc2$^5$ & Quandl \\
+Statistics Canada&\url{www.statcan.gc.ca}	 & TSjson$^{4,6}$ & json \\
+Bank of Canada	 &\url{www.bank-banque-canada.ca}& TSmisc2$^4$ & Quandl \\
 Yahoo    	 &\url{quote.yahoo.com} 	 & TSmisc & getSymbol \\
 Yahoo    	 &\url{quote.yahoo.com} 	 & TSmisc & histQuote \\
 Oanda    	 &\url{www.oanda.com}		 & TSmisc & histQuote \\
 PiTrading    	 &\url{pitrading.com}		 & TSmisc & zip \\
-Quandl	  	 &\url{www.quandl.com}  	 & TSmisc2$^5$ & Quandl \\
-Bloomberg$^4$ 	 &\url{www.bloomberg.com}	 & TSbbg & bbg \\
+Quandl	  	 &\url{www.quandl.com}  	 & TSmisc2$^4$ & Quandl \\
+Bloomberg 	 &\url{www.bloomberg.com}	 & TSbbg$^4$ & bbg \\
 \\
 \hline \\
 \multicolumn{4}{l}{$^1$ beta} \\
 \multicolumn{4}{l}{$^2$ planning} \\
 \multicolumn{4}{l}{$^3$ requires an account} \\
-\multicolumn{4}{l}{$^4$ not on CRAN} \\
-\multicolumn{4}{l}{$^5$ on R-forge, not CRAN} \\
-\multicolumn{4}{l}{$^6$ requires registration at \url{sdmx.istat.it/registr_ut_sep/}} \\
-\multicolumn{4}{l}{$^7$ using python mechanize,  unstable website API} \\
+\multicolumn{4}{l}{$^4$ not on CRAN, on R-forge \url{tsdbi.r-forge.r-project.org/}} \\
+\multicolumn{4}{l}{$^5$ requires free registration at \url{sdmx.istat.it/registr_ut_sep/}} \\
+\multicolumn{4}{l}{$^6$ using python mechanize,  unstable website API} \\
 \\
 \hline
 \end{tabular}
@@ -269,8 +268,8 @@ x <- TSget('QNA.CAN+USA+MEX.PPPGDP.CARSA.Q',
 
 tfOnePlot(ytoypc(x), title="Nominal GDP Growth PPP?", 
          subtitle="quarterly national accounts, national currency, SAAR",
-	 ylab="relative to USA",
-	 legend=seriesNames(x))
+	 ylab="relative to USA", start=c(1975,1),
+	 legend=seriesNames(x), legend.loc="topright")
 \end{Scode}
 
 Several different connections can be defined, and data retreived from them.
@@ -286,8 +285,10 @@ z <- TSget("ei_nama_q.Q.MIO-EUR.SWDA.CP.NA-P72.IT", eurostat)
 \code{TSget} allows for specifying start and end dates.
 
 \begin{Scode}{results=verbatim,fig=FALSE}
-z <- TSget('EXR.Q.USD.EUR.SP00.A', start="2008-Q2", end="2014-Q3", ecb)
-z <- TSget('EXR.Q.USD.EUR.SP00.A', start=c(2008,2), end=c(2014,3), ecb)
+z <- TSget('EXR.Q.USD.EUR.SP00.A', 
+                start="2008-Q2", end="2014-Q3", ecb)
+z <- TSget('EXR.Q.USD.EUR.SP00.A', 
+                start=c(2008,2), end=c(2014,3), ecb)
 \end{Scode}
 
 The first request above uses SDMX syntax for \code{start} and \code{end}, 
@@ -321,8 +322,8 @@ that is possible (annual, quarterly, monthly, or semi-annual data) and
 \code{ts}, but \code{zoo} can be specified.
 \begin{Scode}{results=verbatim,fig=FALSE}
 class(z)
-z <- TSget("BOP.1.100.10.Q", start=c(1990, 1), end=c(2012, 2), abs,
-           TSrepresentation="zoo")
+z <- TSget("BOP.1.100.10.Q", start=c(1990, 1), end=c(2012, 2), 
+                 abs, TSrepresentation="zoo")
 class(z)
 \end{Scode}
 
@@ -539,7 +540,7 @@ and also copied in an appendix here.
 
 Checking that an adequate Python and modules are available on the system can
 be done with
-\begin{Scode}
+\begin{Scode}{eval=FALSE}
 require('findpython')
 
 cmdExists <- can_find_python_cmd(
@@ -564,7 +565,11 @@ The following examples use the first method. More details on establishing
 connections with the second method are provided in the appendix section
 (separate vignette). First, establish a connection
 
-\begin{Scode}
+Although the package \pkg{TSjson} usually works, it is not really stable because
+the web interface is not a proper API and can change from time to time.
+The following examples are not being evaluated because failures
+prevent reliable automatic generation of the vignette. 
+\begin{Scode}{eval=FALSE}
 require("TSjson")
 cansim <- TSconnect("json", dbname="cansim")
 \end{Scode}
@@ -578,7 +583,7 @@ tfplot(x)
 \end{Scode}
 
 Meta data can also be retrieved:
-\begin{Scode}{results=verbatim}
+\begin{Scode}{eval=FALSE,results=verbatim}
 TSdescription("v498086", cansim)
 TSdoc("v498086", cansim)
 TSlabel("v498086", cansim)
@@ -587,7 +592,8 @@ TSsource("v498086", cansim)
 
 A transformation of the data can be done, more detail added to the graph, and
 a start date specified:
-\begin{Scode}{fig=TRUE,width=7.0,height=8}
+%% \begin{Scode}{eval=TRUE,fig=TRUE,width=7.0,height=8}
+\begin{Scode}{eval=FALSE}
 tfplot(ytoypc(x), start=c(1975,1),
    ylab="Year-to-Year Growth Rate",
    title="Canadian GDP", 
@@ -600,7 +606,8 @@ interactive use but multi-series graphs may be squashed as above when pdf is
 output. The next illustrates one way to achieve more specific control,
 which will often be necessary for generating pdf documents.
 The series can be retreived and plotted in one step:
-\begin{Scode}{fig=TRUE,width=7.0,height=8}
+%% \begin{Scode}{eval=TRUE,fig=TRUE,width=7.0,height=8}
+\begin{Scode}{eval=FALSE}
 oldpar <- par(omi=c(0.1,0.1,0.1,0.1),mar=c(3.1,4.1,0.6,0.1))
 tfplot(ytoypc(TSget(c("v498086", "v498087"), cansim)))
 par(oldpar)
@@ -608,14 +615,17 @@ par(oldpar)
 
 
 Sometimes it is useful to check availability:
-\begin{Scode}{results=verbatim}
+%% \begin{Scode}{eval=TRUE,results=verbatim}
+\begin{Scode}{eval=FALSE}
 TSdates(c("v498086", "v498087"), cansim)
 \end{Scode}
 
 The meta data can also be retrieved with the series, which will generally be
 faster than retreiving it separately, if it is needed:
-\begin{Scode}{fig=TRUE,results=verbatim}
-resMorg <- TSget("V122746", cansim, TSdescription=TRUE, TSdoc=TRUE, TSlabel=TRUE)
+%% \begin{Scode}{eval=TRUE,fig=TRUE,results=verbatim}
+\begin{Scode}{eval=FALSE}
+resMorg <- TSget("V122746", cansim, TSdescription=TRUE, 
+                   TSdoc=TRUE, TSlabel=TRUE)
 TSdescription(resMorg)
 TSdoc(resMorg)
 TSlabel(resMorg)
@@ -647,9 +657,9 @@ The following retrieves a file from the Reserve Bank of Australia and maps
 the elements that are used: data, dates, identifiers, and series names. 
 \begin{Scode}{results=verbatim}
 library("TSmisc")  
-rba <- TSconnect("xls",
-          dbname="http://www.rba.gov.au/statistics/tables/xls/d03hist.xls",
-          map=list(ids  =list(i=11,     j="B:Q"), 
+rba <- TSconnect("xls", dbname=
+      "http://www.rba.gov.au/statistics/tables/xls/d03hist.xls",
+    map=list(ids  =list(i=11,     j="B:Q"), 
 	           data =list(i=12:627, j="B:Q"), 
 	           dates=list(i=12:627, j="A"),
                    names=list(i=4:7,    j="B:Q"), 
@@ -1356,11 +1366,21 @@ The starting point will be to get some data. Previous sections illustrate
 several possibilities. For example purposes here use
 
 \begin{Scode}{fig=FALSE}
-require("TSjson")
-cansim <- TSconnect("json", dbname="cansim")
-z <- TSget(c("V36415","V122707","V122746"),  con=cansim)
-seriesNames(z) <- c("Total", "Consumer", "ResMort")
+library("TSsdmx") 
+ 
+# RJSDMX::sdmxHelp()  # can be useful for finding series identifiers, etc
+
+oecd <- TSconnect("sdmx", dbname="OECD")
+
+x <- TSget('QNA.CAN|MEX|USA|.PPPGDP.CARSA.Q', oecd)
+
 \end{Scode}
+
+%% cansim <- TSconnect("json", dbname="cansim")
+%% x <- TSget(c("V36415","V122707","V122746"),  con=cansim)
+%% seriesNames(x) <- c("Total", "Consumer", "ResMort")
+%% library("tfplot")
+%% tfplot(x, title="Canadian Household Debt")
 
 While this is optional, it might be useful to look at the data to see if it is
 really what you expect:
@@ -1368,14 +1388,20 @@ really what you expect:
 \begin{Scode}{fig=TRUE,width=7.0,height=12}
 library("tframePlus")
 library("tfplot")
-tfplot(z, title="Canadian Household Debt")
+
+tfplot(x, title="Nominal GDP at PPP? (relative to US)", 
+         subtitle=paste(c("Canada","Mexico","US"),"quarterly national accounts, SAAR"),
+	 ylab=rep("guess the units",3))
 \end{Scode}
 
-In this case the dates of one series start in 1956, but data is NA until
-about 1970. It is possible to trim the \code{NA} data from the beginning with
+If the data in one series starts at a different time then \code{z} will be filled
+with \code{NA} for missing points. 
+It is possible to trim the \code{NA} data from the beginning with 
 
-\begin{Scode}{fig=FALSE}
-z <- trimNA(z, endNAs=FALSE)
+\begin{Scode}{results=verbatim,fig=FALSE}
+start(x)
+x <- trimNA(x, endNAs=FALSE)
+start(x)
 \end{Scode}
 
 By default, \code{trimNA} will trim all series if any one of them is \code{NA},
@@ -1385,7 +1411,7 @@ most recent data. Setting \code{endNAs=FALSE)} overrides the default.
 It is also possible to trim the data to a specified subsample with
 
 \begin{Scode}{fig=FALSE}
-z <- tfwindow(z, start=c(1995,1))
+x <- tfwindow(x, start=c(1995,1))
 \end{Scode}
 
 Now write the data to an .xls file using \code{TSwriteXLS} which uses 
@@ -1394,7 +1420,7 @@ Now write the data to an .xls file using \code{TSwriteXLS} which uses
 \begin{Scode}{fig=FALSE}
 library("WriteXLS")
 tofile <- tempfile(fileext = ".xls")
-TSwriteXLS(z, FileName=tofile)
+TSwriteXLS(x, FileName=tofile)
 unlink(tofile) 
 \end{Scode}
 
@@ -1418,7 +1444,7 @@ To write the data to a .csv file
 
 \begin{Scode}{fig=FALSE}
 tofile <- tempfile(fileext = ".csv")
-TSwriteCSV(z, FileName=tofile)
+TSwriteCSV(x, FileName=tofile)
 unlink(tofile) 
 \end{Scode}
 %%
