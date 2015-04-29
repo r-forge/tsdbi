@@ -11,9 +11,9 @@ unloadNamespace("RMySQL")
 unloadNamespace("RPostgreSQL")
 
 require("TSmisc")
-require("TSjson")
+##require("TSjson")
 unloadNamespace("TSmisc")
-unloadNamespace("TSjson")
+##unloadNamespace("TSjson")
 
 require("TSmisc")
 require("TSSQLite")
@@ -46,7 +46,7 @@ unloadNamespace("TSPostgreSQL")
 
 #detach("package:TScompare", unload=TRUE)
 #detach("package:TSmisc", unload=TRUE)
-#detach("package:TSjson", unload=TRUE)
+##detach("package:TSjson", unload=TRUE)
 #detach("package:WriteXLS", unload=TRUE)
 
 loadedNamespaces()
