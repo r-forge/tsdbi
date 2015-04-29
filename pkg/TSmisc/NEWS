@@ -6,9 +6,14 @@ Known BUGS
 
    o	None for the moment.
 
-Changes in TSmisc version 2015.1-1
+Changes in TSmisc version 2015.1-2
 
    o	First release
+
+   o	Minor spelling and typographical adjustments.
+
+
+Changes in TSmisc version 2015.1-1
 
    o	Adjusted handling of TSrepresentation to be more uniform across 
    	TSget methods.

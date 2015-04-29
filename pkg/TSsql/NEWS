@@ -1,4 +1,8 @@
 
+Changes in TSsql version 2015.1-2
+
+   o	Minor typographical and spelling corrections in description.
+
 Changes in TSsql version 2015.1-1
 
    o	Simplified TSgetSQL to always use default for retrieval and then call
