@@ -1,6 +1,8 @@
 require("TSsdmx")
 require("tframe")
 
+# RJSDMX::sdmxHelp()  # can be useful for finding series identifiers, etc
+
 eurostat <- TSconnect("sdmx", dbname="EUROSTAT")
 
 # this worked in Dec 2014 but the series seems to have disappeared

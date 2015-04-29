@@ -2,6 +2,8 @@
 
 require("TSsdmx")
 
+# RJSDMX::sdmxHelp()  # can be useful for finding series identifiers, etc
+
 imf <- TSconnect("sdmx",  dbname="IMF")
 
  if(FALSE != verifyQuery('IMFx', 'PGI.CA.*.*.*.*', verbose=FALSE)) 
