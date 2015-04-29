@@ -1,5 +1,7 @@
 require("TSsdmx")
 
+# RJSDMX::sdmxHelp()  # can be useful for finding series identifiers, etc
+
 oecd <- TSconnect("sdmx", dbname="OECD")
 
 #  environmental indicators. single point, not series?

@@ -2,6 +2,8 @@ cat("************** ECB sdmx   ******************************\n")
 
 require("TSsdmx")
 
+# RJSDMX::sdmxHelp()  # can be useful for finding series identifiers, etc
+
 ecb <- TSconnect("sdmx", dbname="ECB")
 
 #### annual####
