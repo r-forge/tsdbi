@@ -1,9 +1,9 @@
 Package: TScompare
 Version: 2015.4-1
-Title:  TSdbi Database Comparison
+Title:  'TSdbi' Database Comparison
 Description: Utilities for comparing the equality of series on two databases.
-	Comprehensive examples of all the TS* packages is provided in the
-	vignette Guide.pdf with the TSdata package.
+	Comprehensive examples of all the 'TS*' packages is provided in the
+	vignette Guide.pdf with the 'TSdata' package.
 Depends: R (>= 2.10.0), TSdbi (>= 2015.1-1)
 Imports: tframe, tfplot, DBI (>= 0.3.1),
 Suggests: tframePlus, TSsql, TSMySQL, TSSQLite, TSmisc, zoo

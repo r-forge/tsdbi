@@ -1,12 +1,12 @@
 Package: TSmisc
-Version: 2015.1-1
-Title:  TSdbi Extensions to Wrap Several Misc. Data Sources
+Version: 2015.1-2
+Title:  'TSdbi' Extensions to Wrap Miscellaneous Data Sources
 Description: Methods to 
 	retrieve data from several different sources. This include historical
 	quote data from Yahoo and Oanda, economic data from FRED, and xls and 
 	csv data from different sources.
-	Comprehensive examples of all the TS* packages is provided in the
-	vignette Guide.pdf with the TSdata package.
+	Comprehensive examples of all the 'TS*' packages is provided in the
+	vignette Guide.pdf with the 'TSdata' package.
 Depends: R (>= 2.8.0), TSdbi (>= 2015.1-1)
 Imports: methods, DBI (>= 0.3.1), tframe, tframePlus,
   zoo, xts, its, 
