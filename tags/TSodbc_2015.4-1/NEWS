@@ -1,0 +1,136 @@
+See also
+
+   o	See also NEWS in the TSdbi package.
+
+
+Known BUGS
+
+   o	host (connection) setting cannot be passed with an environment variable,
+	so it is necessary to have a properly defined ~/.odbc.ini  file.
+
+
+Changes in TSodbc version 2015.4-1
+
+   o	Moved tests to inst/testWithMySQLserver and inst/testWithInternet.
+
+Changes in TSodbc version 2015.1-1
+	
+   o	Changed Depends to Imports for RODBC.
+
+   o	Bumped requirement for DBI up to version 0.3.1 or greater.
+
+   o	Adjusted TSconnect() to use a string or a connection in place of a
+   	driver, and renamed argument drv to q to reflect this change.
+
+   o	Re-worked faking of DBI S4 classes and methods for RODBC S3 classes.
+
+   o	Removed dropTStable() from the API. It is now handled by 
+   	removeTSdbTables() in package TSsql.
+
+
+Changes in TSodbc version 2014.4-1
+
+   o	Added work around for RODBC 1.3-10 returning factors for (PostgreSQL)
+   	double precision in R-3.1.0 but not in older R versions. This is 
+	caused by an intended change to type.convert() in R-3.1.0 which was
+	partially undone in subsequent R versions.
+
+Changes in TSodbc version 2013.9-1
+
+   o	Using TSsql split from TSdbi.
+
+Changes in TSodbc version 2013.8-2
+
+   o	Adjusted Depends and Imports in DESCRIPTION.
+
+Changes in TSodbc version 2012.8-1
+
+   o	Modified Title in DESCRIPTION file so TSdbi packages will be more
+   	clearly related on CRAN listing.
+
+Changes in TSodbc version 2012.5-1
+
+   o	Minor tweaks for vignette check on CRAN.
+
+
+Changes in TSodbc version 2012.4-1
+
+   o	Added tfplot to Suggests in DESCRIPTION.
+
+ 
+Changes in TSodbc version 2011.11-1
+
+   o	updated maintainer email address.
+
+   o	fixed problem that TSdoc and TSdescription were returning factors
+   	rather than character.
+
+   o	added dbRemoveTable() for DBI consistency (uses RODBC sqlDrop()).
+
+Changes in TSodbc version 2011.8-2
+
+   o	fixed method signature for TSvintages method.
+
+Changes in TSodbc version 2011.8-1
+
+   o	added TSvintages method.
+
+Changes in TSodbc version 2011.3-1
+
+   o	added support for TSrepresentation.
+
+Changes in TSodbc version 2010.10-1
+
+   o	added method dropTStable to work around problem that different database
+   	engines handle capitalization in table names differently.
+
+
+Changes in TSodbc version 2010.5-1
+
+   o	Removed ... argument from TSdbi:::standardSQL function calls.
+
+   o	Added arguments vintage and panel to TSdates() to correspond
+	to TSdbi changes.
+
+   o	Modified vintage aliases to work for each series rather than globally. 
+	(So "current" might refer to different vintages for different series.)
+	The main changes are in the TSdbi package, but the vintageAlias and
+	vintages table structures also need to have an id field added.
+
+   o	Modified indication of whether a database supports vintages and panels
+	to use vintageAlias and panelAlias tables, since these are more
+	fundamental than vintages and panels tables (which are only used for
+	documentation of the vintages and panels).
+
+
+Changes in TSodbc version 2010.3-1
+
+   o	Fixed bug in passing of series names to generic (always used serIDs).
+
+
+Changes in TSodbc version 2009.5-2
+
+   o	Standardized NEWS format for new function news().
+
+
+Changes in TSodbc version 2009.5-1
+
+   o	Connection now inherits from class conType. 
+
+
+Changes in TSodbc version 2009.3-3
+
+   o	fixed a minor problem with the vignette, using tryCatch incorrectly in
+	place of try(). 
+
+
+Changes in TSodbc version 2009.3-2
+
+   o	fixed syntax of tests and vignette to use environment variables 
+	if specified. This does not seem to work for the HOST variable, which 
+	may be an odbc limitation.
+
+
+Changes in TSodbc version 2009.3-1
+
+   o	only changes to keep in sync with TSdbi.

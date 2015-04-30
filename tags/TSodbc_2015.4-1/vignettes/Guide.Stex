@@ -1,0 +1,72 @@
+\documentclass[english]{article}
+\usepackage{url}
+\newcommand{\pkg}{\textsl}
+\title{Time Series Database Interface: TSodbc Extensions}
+\begin{document}
+\maketitle
+%\VignetteIndexEntry{TSodbc Guide}
+
+\section{Introduction}
+The package \pkg{TSodbc} provides methods for generics in the package 
+\pkg{TSdbi}. A complete vignette, illustrating the general functionality of all
+\pkg{TSdbi} extension packages is provided in the vignette 
+with package \pkg{TSdata}. 
+Installing that package requires that most of the \pkg{TS*}
+packages are available, which will not be necessary for most users, so it may
+be easier to get the pdf version of the vignette from CRAN at 
+\url{http://cran.r-project.org/web/packages/TSdata/index.html}.
+
+See the vignette in \pkg{TSdbi} for an explanation of the underlying 
+database tables.
+
+\section{Example  ODBC configuration file}
+
+Following is an example ODBC configuration file I use in Linux (so the file is
+in my home directory and called  ''.odbc.ini'') to connect to a remote
+PostgreSQL server:
+
+\begin{verbatim}
+[test]
+
+Description             = test DB (Postgresql)
+Driver                  = Postgresql
+Trace                   = No
+TraceFile               = /tmp/test_odbc.log
+Database                = test
+Servername              = some.host
+UserName                = paul
+Password                = mySecret
+Port                    = 5432
+Protocol                = 6.4
+ReadOnly                = No
+RowVersioning           = No
+ShowSystemTables        = No
+ShowOidColumn           = No
+FakeOidIndex            = No
+ConnSettings            =
+
+
+[ets]
+
+Description             = ets DB (Postgresql)
+Driver                  = Postgresql
+Trace                   = No
+TraceFile               = /tmp/test_odbc.log
+Database                = ets
+Servername              = some.host
+UserName                = paul
+Password                = mySecret
+Port                    = 5432
+Protocol                = 6.4
+ReadOnly                = No
+RowVersioning           = No
+ShowSystemTables        = No
+ShowOidColumn           = No
+FakeOidIndex            = No
+ConnSettings            =
+\end{verbatim}
+
+\end{Scode}
+
+
+\end{document}
