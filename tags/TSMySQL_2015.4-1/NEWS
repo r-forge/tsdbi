@@ -1,0 +1,128 @@
+See also
+
+   o	See also NEWS in the TSdbi package.
+
+Known Bugs
+
+   o	Representation timeSeries loses time information for ts objects. (This
+   	seems to be a bug in package timeSeries.)
+
+
+Changes in TSMySQL version 2015.4-1
+
+   o	Bumped requirement for RMySQL up to version 0.10.3 or greater.
+
+   o	Moved tests to inst/testWithMySQLserver and inst/testWithInternet.
+
+
+Changes in TSMySQL version 2015.1-1
+
+   o	Changed Depends to Imports for RMySQL
+
+   o	Bumped requirement for DBI up to version 0.3.1 or greater.
+
+   o	Adjusted TSconnect() to use a string or a connection in place of a
+   	driver, and renamed argument drv to q to reflect this change.
+
+   o	Removed dropTStable() from the API. It is now handled by 
+   	removeTSdbTables() in package TSsql.
+
+Changes in TSMySQL version 2013.9-1
+
+   o	Using TSsql split from TSdbi.
+
+Changes in TSMySQL version 2013.8-2
+
+   o	Adjusted Depends and Imports in DESCRIPTION.
+
+   o	Functions createTSdbTables() and removeTSdbTables() from TSdbi are now
+   	used in tests and examples so that test database tables are cleaned 
+	up (removed).
+
+   o	Fixed bug when replacing muliple series: if not all existed then none
+   	where deleted before putting new versions in place. (Fix is in TSdbi.)
+
+Changes in TSMySQL version 2012.8-1
+
+   o	Modified Title in DESCRIPTION file so TSdbi packages will be more
+   	clearly related on CRAN listing.
+
+Changes in TSMySQL version 2012.4-1
+
+   o	Added tfplot to Suggests in DESCRIPTION.
+
+Changes in TSMySQL version 2012.3-1
+
+   o	Added setAs() to avoid note about ambiguity when coercing from 
+   	TSMySQLConnection to integer.
+
+Changes in TSMySQL version 2011.11-1
+
+   o	Updated maintainer email address.
+
+Changes in TSMySQL version 2011.8-2
+
+   o	fixed a problem with Guide.pdf.
+
+Changes in TSMySQL version 2011.8-1
+
+   o	added TSvintages method.
+
+Changes in TSMySQL version 2011.7-1
+
+   o	modified several methods signatures to expect a TSdbi connection and not attempt
+   	(and fail) with a raw DBI connection.
+
+Changes in TSMySQL version 2011.3-1
+
+   o	added support for TSrepresentation.
+
+Changes in TSMySQL version 2010.10-1
+
+   o	added method dropTStable to work around problem that different database
+   	engines handle capitalization in table names differently.
+
+
+Changes in TSMySQL version 2010.5-1
+
+   o	Removed ... argument from TSdbi:::standardSQL function calls.
+
+   o	Added arguments vintage and panel to TSdates() and TSexists() to
+	correspond to TSdbi changes.
+
+   o	Modified vintage aliases to work for each series rather than globally. 
+	(So "current" might refer to different vintages for different series.)
+	The main changes are in the TSdbi package, but the vintageAlias and
+	vintages table structures also need to have an id field added.
+
+   o	Modified indication of whether a database supports vintages and panels
+	to use vintageAlias and panelAlias tables, since these are more
+	fundamental than vintages and panels tables (which are only used for
+	documentation of the vintages and panels).
+
+
+Changes in TSMySQL version 2010.3-1
+
+   o	Fixed bug in passing of series names to generic (always used serIDs).
+
+
+Changes in TSMySQL version 2009.10-1
+
+   o	Standardized NEWS format for new function news().
+
+
+Changes in TSMySQL version 2009.5-1
+
+   o	Connection now inherits from class conType. 
+
+
+Changes in TSMySQL version 2009.3-2
+
+   o	fixed syntax of tests and vignette to use environment variables 
+	if specified. 
+
+
+Changes in TSMySQL version 2009.3-1
+
+   o	only changes to keep in sync with TSdbi.
+
