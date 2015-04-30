@@ -1,0 +1,38 @@
+Changes in TScompare version 2015.4-1
+
+   o	Moved tests to inst/testWithDatabases and inst/testWithInternet.
+
+Changes in TScompare version 2015.1-1
+
+   o	Minor adjustments for NAMESPACE cleanup in other TS* packages.
+
+   o	Bumped requirement for DBI up to version 0.3.1 or greater.
+
+Changes in TScompare version 2013.9-1
+
+   o	Adjusted Depends and Imports in DESCRIPTION.
+
+   o	Remove MySQL TSdbi tables in test db created when running tests.
+
+Changes in TScompare version 2013.6-1
+
+   o	added unlink of test file created by SQLLite when running tests.
+
+Changes in TScompare version 2013.3-1
+
+   o	removed mention of TSpadi as it has been moved to CRAN archives.
+
+Changes in TScompare version 2012.10-1
+
+   o	removed need for TSpadi in tests.
+
+   o	added Suggests: in DESCRIPTION for packages needed for testiing.
+
+Changes in TScompare version 2012.8-1
+
+   o	first release.
+
+   o	Added tfplot to Suggests in DESCRIPTION.
+
+   o	ongoing cleanup.
+
