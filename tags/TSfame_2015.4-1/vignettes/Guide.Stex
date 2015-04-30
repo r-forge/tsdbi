@@ -1,0 +1,29 @@
+\documentclass[english]{article}
+\usepackage{url}
+\newcommand{\code}{\emph}
+\newcommand{\pkg}{\textsl}
+\title{Time Series Database Interface: TSfame Extensions}
+\begin{document}
+\maketitle
+%\VignetteIndexEntry{TSfame Guide}
+\SweaveOpts{eval=TRUE,echo=TRUE,results=hide,fig=FALSE}
+%\SweaveOpts{eval=TRUE,echo=TRUE,results=verbatim,fig=TRUE}
+\begin{Scode}{echo=FALSE,results=hide}
+ options(continue="  ")
+\end{Scode}
+
+I no longer have access to Fame so package \pkg{TSfame} is no longer being
+extensively tested. Please contact the package maintainer (Paul Gilbert) if 
+you have Fame and are willing to test this package.
+
+
+\section{Introduction}
+The package \pkg{TSfame} provides methods for generics in the package 
+\pkg{TSdbi}. A complete vignette, illustrating the general functionality of all
+\pkg{TSdbi} extension packages is provided in the vignette 
+with package \pkg{TSdata}. 
+Installing that package requires that most of the \pkg{TS*}
+packages are available, which will not be necessary for most users, so it may
+be easier to get the pdf version of the vignette from CRAN at 
+\url{http://cran.r-project.org/web/packages/TSdata/index.html}.
+\end{document}

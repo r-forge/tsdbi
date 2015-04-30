@@ -1,0 +1,126 @@
+See also
+
+   o	See also NEWS in the TSdbi package.
+
+Known BUGS
+
+   o	Note that I have not been able to actually test with
+   	Fame since December 2011. Changes since then correspond to
+	changes in R or other TS* packages. Please contact the package
+	author if you are willing to do testing.
+
+   o	Weekly (zoo) dates can get shifted. The Guide vignette has an 
+   	example of this.
+
+   o	Warning messages about "may be a Fame Server path" coming from the fame
+	package in the case of a remote servers (cannot be suppressed).
+
+Changes in TSfame version 2015.4-1
+
+   o	Moved tests to inst/testWithFame.
+
+Changes in TSfame version 2015.1-1
+
+   o	Update class definitions to use slots= rather than representation().
+
+   o	Renamed fameConnection class to fameLocalConnection for symmetry with 
+   	fameServerConnection and to avoid confusion with fame package class.
+
+   o	Bumped requirement for DBI up to version 0.3.1 or greater.
+
+   o	Adjusted TSconnect() to use a string or a connection in place of a
+   	driver, and renamed argument drv to q to reflect this change.
+
+Changes in TSfame version 2013.8-2
+
+   o	Adjusted Depends and Imports in DESCRIPTION.
+
+Changes in TSfame version 2012.10-1
+
+   o	Remove duplication of Imports and Depends in DESCRIPTION file.
+
+Changes in TSfame version 2012.8-1
+
+   o	Modified Title in DESCRIPTION file so TSdbi packages will be more
+   	clearly related on CRAN listing.
+
+Changes in TSfame version 2012.4-1
+
+   o	Added tfplot to Suggests in DESCRIPTION.
+
+Changes in TSfame version 2011.11-1
+
+   o	updated maintainer email address.
+
+Changes in TSfame version 2011.8-3
+
+   o	added TSvintages method.
+
+Changes in TSfame version 2011.8-2
+
+   o	added utility function vintageMap() to read vintage names and file paths
+   	from a file.
+
+Changes in TSfame version 2011.8-1
+
+   o	fixed bug from competing as.Date() in tests generics, depending on 
+   	attached packages.
+
+Changes in TSfame version 2011.7-1
+
+   o	fixed bug in fameServer connection for non-vintages, introduced by 
+   	vintages support.
+
+Changes in TSfame version 2011.6-1
+
+   o	added support for vintages coming from different Fame databases.
+
+Changes in TSfame version 2011.3-1
+
+   o	added support for TSrepresentation.
+
+Changes in TSfame version 2011.1-1
+
+   o	Version requirement for fame package bumped to (> 2.12).
+
+   o	Fame server connection is now also working.
+
+   o	Added test of fame remote server.
+
+
+Changes in TSfame version 2010.5-1
+
+   o	Re-introduced vignette examples that use fame remote server.
+
+   o	Added arguments vintage and panel to TSdates() and TSexists() and 
+	TSdelete() correspond to TSdbi changes.
+
+
+Changes in TSfame version 2009.12-1
+
+   o	Added some simple tests of underlying fame package.
+
+
+Changes in TSfame version 2009.10-1
+
+   o	Standardized NEWS format for new function news().
+
+   o	Fixed a few documentation problems found by R-2.10.0 (beta) quality checks.
+
+
+Changes in TSfame version 2009.5-1
+
+   o	Connection now inherits from class conType. 
+
+
+Changes in TSfame version 2009.3-1
+
+   o	changes to keep in sync with TSdbi.
+
+
+Changes in TSfame version 2008.11-1
+
+   o	tis methods for tframe are included. (These could be in package tframe 
+	or tframePlus, but then tis is needed to build those packages.
+
+   o	first (post beta) release.
