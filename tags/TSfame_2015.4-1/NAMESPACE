@@ -1,0 +1,33 @@
+import("methods")  
+import("DBI")      
+import("TSdbi")
+import("tframe")
+import("tframePlus")
+
+import("tis") 
+import("fame") 
+
+export("fameLocal")
+export("fameServer")
+export("vintageMap")
+
+## S4 Classes
+exportClasses(
+   "TSfameLocalConnection",
+   "TSfameServerConnection"
+   )
+
+## S4 methods
+exportMethods(
+   "TSconnect",
+   "TSget",
+   "TSput",
+   "TSdelete",
+   "TSdescription",
+   "TSdoc",
+   "TSlabel",
+   "TSsource",
+   "TSdates",
+   "TSexists",
+   "TSvintages"
+   )
