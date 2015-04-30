@@ -1,0 +1,42 @@
+
+Changes in TSsql version 2015.1-2
+
+   o	Minor typographical and spelling corrections in description.
+
+Changes in TSsql version 2015.1-1
+
+   o	Simplified TSgetSQL to always use default for retrieval and then call
+   	tframePlus::changeTSrepresentation for conversion.
+
+   o	Bumped requirement for TSdbi up to version 2014.10-1 or greater.
+
+   o	Added DBI:: reference in inst/TSsql files so other packages
+   	do not need to require(DBI) in tests.
+
+   o	Additional namespace adjustments for checks in R-3.1.2. Moved zoo and
+   	tframePlus to Imorts from Suggests.
+
+   o	Adjusted functions createTSdbTables() and removeTSdbTables() to use
+   	:: references and underlying DBI connection rather than TS* 
+	connections,  so DBI, TS* packages, and TSsql do not need to be 
+	attached for testing setup.
+
+   o	Removed dropTStable() from the API. It is now handled by 
+   	removeTSdbTables() which now has to handle capitalization differences.
+
+Changes in TSsql version 2014.4-1
+
+   o	Fixed zoo example / tests in /inst/TSsql/TSdbi.TSsql to 
+   	require tframePlus.
+
+Changes in TSsql version 2013.9-1
+
+   o	First release (split from TSdbi).
+
+To Do
+
+   o	a mechanism for handling aliases for series names.
+
+   o	rollback meta when data put fails
+
+   o	mechanism for signaling series updates to users

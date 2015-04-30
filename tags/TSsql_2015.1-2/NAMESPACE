@@ -1,0 +1,26 @@
+import(TSdbi)  
+import(methods)  
+import(DBI)      
+#importFrom("stats", "tsp")
+importFrom("stats", "start")
+importFrom("stats", "end")
+
+import("tframe")
+import("tframePlus")
+import("zoo")
+
+## not generic
+export(
+  "TSquery",
+  "TSdescriptionSQL",
+  "TSdocSQL",
+  "TSlabelSQL",
+  "TSsourceSQL",
+  "TSputSQL",
+  "TSdeleteSQL",
+  "TSgetSQL",
+  "TSdatesSQL",
+  "createTSdbTables",
+  "removeTSdbTables"
+  )
+
