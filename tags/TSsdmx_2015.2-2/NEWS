@@ -1,0 +1,25 @@
+See also
+
+   o	See also NEWS in the TSdbi package.
+
+Known BUGS
+
+   o	Some service providors are upgrading and not yet stable, causing
+   	checks (and retrievals) to sometimes fail.
+
+
+Changes in TSsdmx version 2015.2-2
+
+   o	First release. 
+
+   o	Minor spelling and acronym adjustments.
+
+Changes in TSsdmx version 2015.2-1
+
+   o	Minor adjustments for RJSDMX v1.3.
+
+   o	This package has the same name and function as an
+   	unreleased package that has been on R-forge for some time. However,
+	the underlying code is very different and is now a wrapper for 
+	package RJSDMX.
+
