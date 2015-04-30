@@ -1,0 +1,46 @@
+import("methods",  
+       "DBI",      
+       "TSdbi"
+       )
+
+## many function from TSdbi need to be visible to the user, so it is indicated
+## using Depends: in NAMESPACE rather than importing and exporting here.
+
+import("tframe",
+       "tframePlus",
+       "zoo",
+       "tseries",
+       "xts",
+       "its",
+       "gdata"
+       )
+##   "timeSeries",
+
+importFrom("quantmod", "getSymbols") 
+
+export("histQuote",
+       "getSymbol",
+       "xls",
+       "zip"
+       )
+
+## S4 Classes
+exportClasses(
+   "TShistQuoteConnection",
+   "TSgetSymbolConnection"
+   )
+
+## S4 generics
+## none
+
+## S4 methods
+exportMethods(
+   "TSconnect",
+   "TSdates",
+   "TSdescription",
+   "TSdoc",
+   "TSlabel",
+   "TSsource",
+   "TSget"
+   )
+
