@@ -1,0 +1,45 @@
+\documentclass[english]{article}
+\usepackage{url}
+\newcommand{\pkg}{\textsl}
+\title{Time Series Database Interface: TSPostgreSQL Extensions}
+\begin{document}
+\maketitle
+%\VignetteIndexEntry{TSPostgreSQL Guide}
+
+\section{Introduction}
+The package \pkg{TSPostgreSQL} provides methods for generics in the package 
+\pkg{TSdbi}. A complete vignette, illustrating the general functionality of all
+\pkg{TSdbi} extension packages is provided in the vignette 
+with package \pkg{TSdata}. 
+Installing that package requires that most of the \pkg{TS*}
+packages are available, which will not be necessary for most users, so it may
+be easier to get the pdf version of the vignette from CRAN at 
+\url{http://cran.r-project.org/web/packages/TSdata/index.html}.
+
+The PostgreSQL  user, and password, should be set in PostgreSQL 
+configuration file (.pgpass) before starting R. 
+The Postgress documentation suggests that it should be
+possible to get the host from the .pgpass file too, but I have not been able
+to make that work. The PostgreSQL alternative to the configuration file
+is to use environment variables PGDATABASE, PGHOST, PGPORT, and PGUSER.
+This package (and CRAN) support another alternatively to set this information 
+with environment variables  POSTGRES\_USER, POSTGRES\_PASSWD 
+and POSTGRES\_HOST.
+(An environment variable POSTGRES\_DATABASE can also be set, but ''test'' is
+specified below.)  Below, the environment variable  POSTGRES\_USER is used to
+determine how the user and password are set. If this environment variable is
+empty then it is assumed the PostgreSQL mechanism will be used (i.e. the driver
+consults the PG* variables or the configuration file). However, the host is
+determined by the following logic:
+
+\begin{Scode}
+   user    <- Sys.getenv("POSTGRES_USER")
+   host    <- Sys.getenv("POSTGRES_HOST")
+   if ("" == host) host  <- Sys.getenv("PGHOST")
+   if ("" == host) host  <- "localhost"  #Sys.info()["nodename"] 
+   if ("" != user) passwd  <- Sys.getenv("POSTGRES_PASSWD")
+\end{Scode}
+
+See the vignette in \pkg{TSdbi} for an explanation of the underlying 
+database tables.
+\end{document}
