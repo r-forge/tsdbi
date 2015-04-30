@@ -1,0 +1,38 @@
+import("methods")  
+import("DBI")      
+import("TSdbi")
+import("TSsql")
+
+import("tframe")
+import("tframePlus")
+
+import("RODBC") ## this should not all be needed, but parts for setClass "TSodbcConnection"
+# but RODBC has S3 classes
+##importClassesFrom("RODBC","ODBCConnection")
+
+## not generic
+export("odbc")
+
+## S4 Classes
+exportClasses(
+   "TSodbcConnection"
+   )
+
+## S4 methods
+exportMethods(
+   "dbListTables",
+   "dbExistsTable",
+   "dbGetQuery",
+   "dbDisconnect",
+   "TSconnect",
+   "TSget",
+   "TSput",
+   "TSdelete",
+   "TSdescription",
+   "TSdoc",
+   "TSlabel",
+   "TSsource",
+   "TSdates",
+   "TSvintages"
+   )
+
