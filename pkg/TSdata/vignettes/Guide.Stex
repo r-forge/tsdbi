@@ -316,9 +316,9 @@ will not be used. To unset the default
 options(TSconnection=NULL)
 \end{Scode}
 
-By defaults most \code{TSget} methods return a class \code{ts} series when
+By default most \code{TSget} methods return a class \code{ts} series when
 that is possible (annual, quarterly, monthly, or semi-annual data) and
-\code{zoo} series otherwise. Thus the class of the serries returned above is
+\code{zoo} series otherwise. Thus the class of the series returned above is
 \code{ts}, but \code{zoo} can be specified.
 \begin{Scode}{results=verbatim,fig=FALSE}
 class(z)
@@ -567,6 +567,8 @@ connections with the second method are provided in the appendix section
 
 Although the package \pkg{TSjson} usually works, it is not really stable because
 the web interface is not a proper API and can change from time to time.
+For this reason, \pkg{TSjson} is not on CRAN but available on R-forge
+at \url{tsdbi.r-forge.r-project.org/}.
 The following examples are not being evaluated because failures
 prevent reliable automatic generation of the vignette. 
 \begin{Scode}{eval=FALSE}
