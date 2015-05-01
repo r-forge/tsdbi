@@ -1,0 +1,73 @@
+See also
+
+   o	See also NEWS in the TSdbi package.
+
+Changes in TSgetSymbol version 2014.10-1
+
+   o	Bumped requirement for DBI up to version 0.3.1 or greater.
+
+   o	Adjusted TSconnect() to use a string or a connection in place of a
+   	driver, and renamed argument drv to q to reflect this change.
+
+   o	Added a dbConnect method.
+
+   o	Switched from Depends to Imports for quantmod.
+
+Changes in TSgetSymbol version 2013.11-1
+
+   o	Fixed error in date calculation for quarterly data if converted 
+   	from zoo to ts.
+
+Changes in TSgetSymbol version 2013.9-1
+
+   o	Added passing of start and end (from and to) to getSymbols call
+   	to yahoo.
+
+   o	Adjusted Depends and Imports in DESCRIPTION.
+
+Changes in TSgetSymbol version 2013.2-1
+
+   o	Removed work around for bug in getSymbol, as the bug was fixed and
+   	the work around no longer works.
+
+Changes in TSgetSymbol version 2012.8-1
+
+   o	Modified Title in DESCRIPTION file so TSdbi packages will be more
+   	clearly related on CRAN listing.
+
+   o	Modified argument quote to TSget so retrieval from Yahoo defaults to
+   	return Open, High, Low, Close, Volume, Adjusted, as was documented
+	some places but not other. Adjusted documentation for consistency.
+
+   o	Fixed bug matching "^" in series names when quote was specified.
+
+Changes in TSgetSymbol version 2012.4-1
+
+   o	Added tfplot to Suggests in DESCRIPTION.
+ 
+   o	Added argument quote to TSget for consistency with TShistQuote.
+
+   o	Converted "default" to internally use zoo and convert to ts 
+   	when appropriate.
+
+   o	Converted to using getSymbols return.class, and added checks that
+   	TSrepresentation specification is supported by getSymbols.
+
+   o	Changed TSget to return con@dbname for TSsources in cases where it was
+   	previously set to "unspecified".
+
+Changes in TSgetSymbol version 2011.11-1
+
+   o	Updated maintainer email address.
+
+   o	Fixed faulty conversion from zoo to ts.
+
+   o	Fixed vignette to use monthly rather than weekly M2. (Binding a weekly
+   	and monthly series together caused problems.)
+
+   o	Removed yahoo connection test in TSconnect as it causes more problems
+   	than it likely prevents.
+
+Changes in TSgetSymbol version 2010.11-1
+
+   o	First release
