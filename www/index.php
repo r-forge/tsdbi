@@ -24,14 +24,14 @@ vintages of data (sometimes called "realtime data") and panels of time series.
 to all the packages. <i>TSdata</i> is difficult to install because it requires
 working versions of most of the other packages. It will generally be easier just
 to get the vignette from the 
-<a href="http://cran.at.r-project.org/web/packages/TSdata/vignettes/Guide.pdf">TSdata vignette on CRAN</a>. Of course, that only discusses released packages.
+<a href="http://cran.at.r-project.org/web/packages/TSdata/vignettes/Guide.pdf">TSdata vignette on CRAN</a>.
+Of course, that mainly discusses released packages.
 
 <P>
 Several of the packages pull <a href=webWraps.php>
-<b>data from the Internet</b>.</a> This includes <i>TSgetSymbol</i>, <i>TShistQuote</i>, 
-<i>TSjson</i>, <i>TSxls</i>, <i>TSzip</i> and <i>TSsdmx</i>.
-Of these, <i>TSsdmx</i> 
-(in development) should eventually provide the most general mechanism.
+<b>data from the Internet</b>.</a> This includes <i>TSsdmx</i>, <i>TSmisc</i>, 
+<i>TSjson</i> and some experimental interfaces in <i>TSmisc2</i>.
+Of these, <i>TSsdmx</i> is the most general mechanism.
 
 <P>
 Other packages provide a mechanism for 

@@ -12,12 +12,9 @@ CRAN Packages
 <li><a href="http://cran.at.r-project.org/web/packages/TSPostgreSQL/index.html">TSPostgreSQL</a>
 <li><a href="http://cran.at.r-project.org/web/packages/TSSQLite/index.html">TSSQLite</a>
 <li><a href="http://cran.at.r-project.org/web/packages/TSodbc/index.html">TSodbc</a>
+<li><a href="http://cran.at.r-project.org/web/packages/TSsdmx/index.html">TSsdmx</a>
+<li><a href="http://cran.at.r-project.org/web/packages/TSmisc/index.html">TSmisc</a>
 <li><a href="http://cran.at.r-project.org/web/packages/TSfame/index.html">TSfame</a>
-<li><a href="http://cran.at.r-project.org/web/packages/TSgetSymbol/index.html">TSgetSymbol</a>
-<li><a href="http://cran.at.r-project.org/web/packages/TShistQuote/index.html">TShistQuote</a>
-<li><a href="http://cran.at.r-project.org/web/packages/TSxls/index.html">TSxls</a>
-<li><a href="http://cran.at.r-project.org/web/packages/TSzip/index.html">TSzip</a>
-<li><a href="http://cran.at.r-project.org/web/packages/TSjson/index.html">TSjson</a>
 <li><a href="http://cran.at.r-project.org/web/packages/TScompare/index.html">TScompare</a>
 </ul>
 
@@ -28,11 +25,13 @@ Related Packages
 <li><a href="http://cran.at.r-project.org/web/packages/xts/index.html">xts</a>
 <li><a href="http://cran.at.r-project.org/web/packages/its/index.html">its</a>
 <li><a href="http://cran.at.r-project.org/web/packages/tis/index.html">tis</a>
+<li><a href="http://cran.at.r-project.org/web/packages/RJSDMX/index.html">RJSDMX</a>
 <li><a href="http://cran.at.r-project.org/web/packages/RMySQL/index.html">RMySQL</a>
 <li><a href="http://cran.at.r-project.org/web/packages/RPostgreSQL/index.html">RPostgreSQL</a>
 <li><a href="http://cran.at.r-project.org/web/packages/RSQLite/index.html">RSQLite</a>
 <li><a href="http://cran.at.r-project.org/web/packages/RODBC/index.html">RODBC</a>
 <li><a href="http://cran.at.r-project.org/web/packages/ROracle/index.html">ROracle</a>
+<li><a href="http://cran.at.r-project.org/web/packages/Quandl/index.html">Quandl</a>
 <li><a href="http://cran.at.r-project.org/web/packages/fame/index.html">fame</a>
 <li><a href="http://cran.at.r-project.org/web/packages/quantmod/index.html">quantmod</a>
 <li><a href="http://cran.at.r-project.org/web/packages/tseries/index.html">tseries</a>

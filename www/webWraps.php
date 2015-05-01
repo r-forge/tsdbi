@@ -8,21 +8,24 @@
 <BODY BGCOLOR="#FFFFFF">
 <b>Data from the Internet</b>
 <hr>
+<P><b>TSsdmx</i></b> is a wrapper for package RJSDMX. Additional information
+about the underlying package is available at 
+<a href="https://github.com/amattioc/SDMX/wiki>the wiki</a>.
+SDMX is an XML time series data format supported by several large international
+organizations (OECD, Eurostat, the ECB, the IMF, the UN, the BIS,
+the Federal Reserve Board, the World Bank, the Italian Statistics agency, ...).
+It has become the most complete interface and may soon replace all others.
 <P>
-<b><i>TSgetSymbol</i></b> is a wrapper for <i>getSymbols</i> in package
-<i>quantmod</i> and, among other sources can retrieve data from Yahoo, Google,
-Oanda and the U.S. Federal Reserve FRED database.
-<P>
-<b><i>TShistQuote</i></b> is a wrapper for  <i>get.hist.quote</i> in package 
-<i>tseries</i> and can be used to get stock prices from Yahoo and Oanda.
-<P>
-<b><i>TSxls</i></b> is a wrapper for <i>read.xls</i> in package 
-<i>gdata</i>. A map of the location of data in a spreadsheet is specified.
-The spreadsheet can be a local file or come from an Internet location.
-An example with data from the Reserve Bank of Australia is provided.
-<P>
-<b><i>TSzip</i></b> downloads zipped comma separated value files, unzips 
-them and then extracts the data. An example is provided with exchange rate
+<b><i>TSmisc</i></b> provides wrappers for several different functions 
+including:
+<i>getSymbols</i> in package <i>quantmod</i>, which can retrieve data from 
+Yahoo, Google, Oanda and the U.S. Federal Reserve FRED database among others;
+<i>get.hist.quote</i> in package <i>tseries</i> which can get stock prices 
+from Yahoo and Oanda; 
+<i>read.xls</i> in package <i>gdata</i> reads series from a spreadsheet,
+either in a local file or from the Internet;
+and <i>zip</i></b> which downloads zipped comma separated value files, unzips 
+them and extracts the series data, for example exchange rate
 data from pitrading.com (no affiliation).
 <P>
 <b><i>TSjson</i></b> gets time series data from the 
@@ -60,20 +63,6 @@ but on the R client machine only R and the <i>TSjson</i> package are required.
 The server can require user identification and a password.
 Please contact the package maintainer if you would be interested in providing 
 an intermediate proxy server to the community.
-<P>
-<b>TSsdmx</i></b> (not yet working) will (hopefully) be a wrapper for 
-a yet to be released package that handles SDMX data. 
-SDMX is an XML time series data format supported by several large international organizations (OECD, Eurostat, the ECB, the IMF, the UN, the BIS,
-the Federal Reserve Board, the World Bank, the Italian Statistics agency, 
-and to a small extent by the Bank of Canada).
-For this reason it is likely to be the most complete interface
-at some time in the future. Several of these organizations provide an option to 
-download data in SDMX format, after clicking through web pages to construct a 
-data request. 
-However, a SOAP or REST protocol for doing this automatically does not yet seem
-to be completely standardized. Furthermore, a complete, robust, SDMX parser is a
-non-trivial project, or at least requires a good understand of some powerful 
-tools. For these reasons the <i>TSsdmx</i> package is still very experimental.
 
 <P> If you are interested in becoming a developer on these projects, please contact 
 the project administrator.
