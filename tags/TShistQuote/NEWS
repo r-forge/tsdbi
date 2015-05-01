@@ -1,0 +1,95 @@
+See also
+
+   o	See also NEWS in the TSdbi package.
+
+Known BUGS
+
+   o	None for the moment.
+
+Changes in TShistQuote version 2014.10-1
+
+   o	Update class definitions to use slots= rather than representation().
+
+   o	Bumped requirement for DBI up to version 0.3.1 or greater.
+
+   o	Adjusted TSconnect() to use a string or a connection in place of a
+   	driver, and renamed argument drv to q to reflect this change.
+
+   o	Added a dbConnect method.
+
+Changes in TShistQuote version 2013.9-1
+
+   o	Adjusted .Rbuildignore to omit accidental top level .png files.
+
+Changes in TShistQuote version 2013.8-2
+
+   o	Adjusted Depends and Imports in DESCRIPTION.
+
+   o	Added recording of reference period when specified.
+
+Changes in TShistQuote version 2012.8-1
+
+   o	Modified Title in DESCRIPTION file so TSdbi packages will be more
+   	clearly related on CRAN listing.
+
+Changes in TShistQuote version 2012.4-1
+
+   o	Added tfplot to Suggests in DESCRIPTION.
+
+
+Changes in TShistQuote version 2011.11-1
+
+   o	updated maintainer email address.
+
+Changes in TShistQuote version 2011.3-1
+
+   o	added support for TSrepresentation.
+
+Changes in TShistQuote version 2010.10-1
+
+   o	fixed bad require specified in example (as caught by new QA). 
+
+
+Changes in TShistQuote version 2010.5-1
+
+   o	Added arguments vintage and panel to TSdates() to 
+	correspond to TSdbi changes.
+
+
+Changes in TShistQuote version 2009.12-1
+
+   o	Changed test and vignette using yahoo gdax to ftse because of retrieval
+   	problems.
+
+   o	Standardized NEWS format for new function news().
+
+
+Changes in TShistQuote version 2009.7-1
+
+   o	Added argument repeat.try to TSget with, default 3, indicating the 
+	number of retrieval attmpts before giving up. (The internet web sites 
+	do not always respond.) 
+
+
+Changes in TShistQuote version 2009.5-1
+
+   o	Connection now inherits from class conType. 
+
+
+Changes in TShistQuote version 2009.1-2
+
+   o	fixed NEWS file to indicate previous release as 2009.1-1 (not 2008.11-1).
+
+
+Changes in TShistQuote version 2009.1-1
+
+   o	changed test retrieval from Oanda to respect max 500 days.
+
+   o	minor documentation fixes found by new R-devel parsing. 
+
+   o	minor changes to keep in sync with TSdbi.
+
+
+Changes in TShistQuote version 2008.11-1
+
+   o	first release
