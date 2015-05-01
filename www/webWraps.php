@@ -8,6 +8,9 @@
 <BODY BGCOLOR="#FFFFFF">
 <b>Data from the Internet</b>
 <hr>
+<P>(If you are interested in becoming a developer on these projects, please contact 
+the project administrator.)
+
 <P><b>TSsdmx</i></b> is a wrapper for package RJSDMX. Additional information
 about the underlying package is available at 
 <a href="https://github.com/amattioc/SDMX/wiki">the wiki</a>.
@@ -37,8 +40,8 @@ could if the server implements support). For this reason <i>TSjson</i> should be
 considered a temporary solution, until the data server implements a proper API. 
 The <i>Python</i> scripts are not generic, there needs to be a customized script
 for a specific site. Currently, only a Statistics Canada connection is supported.
-If you would like to work on a connection to another site, please contact the 
-package maintainer.
+This package will be phased out when Statistics Canada implements SDMX/REST.
+It has been archived on CRAN and is only available from this R-forge site.
 <P>
 <i>TSjson</i> package supports two mechanisms for contacting the web data 
 source. The first calls a <i>Python</i> script distributed with the package. 
@@ -61,8 +64,3 @@ The proxy retrieves and relays the data. This requires setting up an HTTP server
 somewhere on the Internet, which must have <i>Python</i> and the modules installed,
 but on the R client machine only R and the <i>TSjson</i> package are required.
 The server can require user identification and a password.
-Please contact the package maintainer if you would be interested in providing 
-an intermediate proxy server to the community.
-
-<P> If you are interested in becoming a developer on these projects, please contact 
-the project administrator.
