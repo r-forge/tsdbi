@@ -10,7 +10,7 @@
 <hr>
 <P><b>TSsdmx</i></b> is a wrapper for package RJSDMX. Additional information
 about the underlying package is available at 
-<a href="https://github.com/amattioc/SDMX/wiki>the wiki</a>.
+<a href="https://github.com/amattioc/SDMX/wiki">the wiki</a>.
 SDMX is an XML time series data format supported by several large international
 organizations (OECD, Eurostat, the ECB, the IMF, the UN, the BIS,
 the Federal Reserve Board, the World Bank, the Italian Statistics agency, ...).
