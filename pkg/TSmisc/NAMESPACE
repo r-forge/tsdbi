@@ -11,10 +11,11 @@ import("tframe",
        "zoo",
        "tseries",
        "xts",
-       "its",
-       "gdata"
+       "its"
        )
 ##   "timeSeries",
+
+importFrom("gdata","read.xls")
 
 importFrom("quantmod", "getSymbols") 
 
