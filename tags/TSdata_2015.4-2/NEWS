@@ -1,0 +1,53 @@
+Known Bugs
+
+   o	There can be some difficulties using TSMySQL and TSPostgreSQL
+   	in the same session, and unloading the namespaaces of one can
+	cause problems with the other.
+
+See also
+
+   o	See also NEWS in the TSdbi package.
+
+Changes in TSdata version 2015.4-2
+
+   o	Moved tests to inst/testWithAllServers so other packages only need to
+   	be  suggested, not required.
+
+
+Changes in TSdata version 2015.4-1
+
+   o	Updated some version dependencies.
+
+   o	Updated vignette with TSsdmx and TSmisc.
+
+Changes in TSdata version 2014.6-1
+
+   o	Added test for python version used by TSjson.
+
+Changes in TSdata version 2013.9-1
+
+   o	Cleanup related to splitting TSsql out of TSdbi.
+
+   o	Cleanup related to Depends/Imports changes.
+
+Changes in TSdata version 2013.4-1
+
+   o	removed mention of TSpadi as it has been moved to CRAN archives.
+
+Changes in TSdata version 2012.11-1
+
+   o	add sections on TSjson and on writing xls and csv files.
+
+Changes in TSdata version 2012.10-2
+
+   o	minor adjustment to vignette titles and VignetteIndexEntry for CRAN.
+
+Changes in TSdata version 2012.10-1
+
+   o	copied Stex vignette files to inst/doc so CRAN processing puts them
+   	on the web page..
+
+
+Changes in TSdata version 2012.8-1
+
+   o	first release.
