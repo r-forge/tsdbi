@@ -21,7 +21,7 @@ png(file=files[1], width=480, height=240, pointsize=12, bg = "white")
     lastObs = TRUE )
 dev.off()
 
-png(file=files[2],width=480, height=240, pointsize=12, bg = "white")
+png(file=files[2],width=480, height=240, pointsize=12, bg = "white", type="cairo-png")
 # mv US-CPIsmall.png US-CPIsmall.png.orig ; pngcrush US-CPIsmall.png.orig US-CPIsmall.png
 #png(file="US-CPI.png",    width=960, height=480, pointsize=12, bg = "white")
   tfOnePlot(annualizedGrowth(TSget("CPIAUCNS", fred)), start=c(2005,1),
