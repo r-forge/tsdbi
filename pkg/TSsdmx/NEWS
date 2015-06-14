@@ -8,6 +8,10 @@ Known BUGS
    	checks (and retrievals) to sometimes fail.
 
 
+Changes in TSsdmx version 2015.6-1
+
+   o	Syntax fix in an optional test file. 
+
 Changes in TSsdmx version 2015.2-2
 
    o	First release. 
