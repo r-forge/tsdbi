@@ -1,5 +1,5 @@
 Package: TSdbi
-Version: 2015.1-1
+Version: 2015.7-1
 Title: Time Series Database Interface
 Description: Provides a common interface to time series databases. The
 	objective is to define a standard interface so users can retrieve time 
