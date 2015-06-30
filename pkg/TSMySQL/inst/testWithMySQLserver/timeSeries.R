@@ -10,30 +10,27 @@ cat("***** RMySQL  with timeSeries representation *********\n")
 dbname   <- Sys.getenv("MYSQL_DATABASE")
 if ("" == dbname)   dbname <- "test"
 
-user	<- Sys.getenv("MYSQL_USER")
-
-if ("" != user) {
-    # specifying host as NULL or "localhost" results in a socket connection
-    host    <- Sys.getenv("MYSQL_HOST")
-    if ("" == host)	host <- Sys.info()["nodename"] 
-    passwd  <- Sys.getenv("MYSQL_PASSWD")
-    if ("" == passwd)	passwd <- NULL
-    #  See  ?"dbConnect-methods"
-    setup <- RMySQL::dbConnect(RMySQL::MySQL(),
-       username=user, password=passwd, host=host, dbname=dbname)  
-  }else setup <- RMySQL::dbConnect(RMySQL::MySQL(), dbname=dbname) #user/passwd/host in ~/.my.cnf
+#user/passwd/host in ~/.my.cnf
+setup <- RMySQL::dbConnect(RMySQL::MySQL(), dbname=dbname) 
 
 
 TSsql::removeTSdbTables(setup, yesIknowWhatIamDoing=TRUE)
 TSsql::createTSdbTables(setup, index=FALSE)
 
   
-if ("" != user)  
-  con <- tryCatch(TSconnect("MySQL", dbname=dbname, username=user, password=passwd, host=host))
-else
-  con <- tryCatch(TSconnect("MySQL", dbname=dbname)) # pass user/passwd/host in ~/.my.cnf
+#user/passwd/host in ~/.my.cnf
+con <- tryCatch(TSconnect("MySQL", dbname=dbname)) 
 
 if(inherits(con, "try-error")) stop("Cannot connect to TS MySQL database.")
+
+# check also passing arguments
+# specifying host as NULL or "localhost" results in a socket connection
+host    <- Sys.getenv("MYSQL_HOST")
+user	<- Sys.getenv("MYSQL_USER")
+passwd  <- Sys.getenv("MYSQL_PASSWD")
+con2 <- TSconnect("MySQL", dbname=dbname, 
+               username=user, password=passwd, host=host)
+dbDisconnect(con2)
 
 z <- ts(matrix(rnorm(10),10,1), start=c(1990,1), frequency=1)
 TSput(z, serIDs="Series 1", con) 
