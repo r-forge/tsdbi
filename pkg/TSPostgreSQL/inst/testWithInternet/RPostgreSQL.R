@@ -12,25 +12,17 @@ cat("**************************************************************\n")
 
 ###### This is to set up tables. Otherwise use TSconnect#########
 
-   dbname   <- Sys.getenv("POSTGRES_DATABASE")
-   if ("" == dbname)   dbname <- "test"
+dbname   <- Sys.getenv("POSTGRES_DATABASE")
+if ("" == dbname)   dbname <- "test"
 
-   user    <- Sys.getenv("POSTGRES_USER")
-   host <- Sys.getenv("POSTGRES_HOST")
-   if ("" == host) host  <- Sys.getenv("PGHOST")
-   if ("" == host) host  <- "localhost"  #Sys.info()["nodename"] 
-   if ("" != user) {
-       passwd  <- Sys.getenv("POSTGRES_PASSWD")
-       #  See  ?"dbConnect-methods"
-       setup <- RPostgreSQL::dbConnect(RPostgreSQL::PostgreSQL(), dbname=dbname,
-          user=user, password=passwd, host=host)  
-     }else  {
-	#( the postgres driver may also use PGDATABASE, PGHOST, PGPORT, PGUSER )
-       # The Postgress documentation seems to suggest that it should be
-       #   possible to get the host from the .pgpass file too, but I cannot.
-       #get user/passwd in ~/.pgpass
-       setup <- RPostgreSQL::dbConnect(RPostgreSQL::PostgreSQL(), dbname=dbname, host=host) 
-       }
+user	<- Sys.getenv("POSTGRES_USER")
+host <- Sys.getenv("POSTGRES_HOST")
+if ("" == host) host  <- Sys.getenv("PGHOST")
+if ("" == host) host  <- "localhost"  #Sys.info()["nodename"] 
+#( the postgres driver may also use PGDATABASE, PGHOST, PGPORT, PGUSER )
+#get user/passwd in ~/.pgpass (using line designated by host)
+setup <- RPostgreSQL::dbConnect(RPostgreSQL::PostgreSQL(), 
+            dbname=dbname, host=host) 
 
 DBI::dbListTables(setup) 
 
@@ -43,14 +35,17 @@ DBI::dbDisconnect(setup)
 
 require("TSPostgreSQL")
 
-# pass user/passwd in ~/.pgpass (but host defaults to PGHOST or localhost).
-
-if ("" != user)  
-      con <- tryCatch(TSconnect("PostgreSQL", dbname=dbname, 
-                              user=user, password=passwd, host=host)) 
-else  con <- tryCatch(TSconnect("PostgreSQL", dbname=dbname)) 
+# pass user/passwd in ~/.pgpass 
+con <- tryCatch(TSconnect("PostgreSQL", dbname=dbname, host=host)) 
     
 if(inherits(con, "try-error")) stop("CreateTables did not work.")
+
+# check also using arguments for user/passwd
+user	<- Sys.getenv("POSTGRES_USER")
+passwd  <- Sys.getenv("POSTGRES_PASSWD")
+con2 <- TSconnect("PostgreSQL", dbname=dbname,
+                              user=user, password=passwd, host=host) 
+
 
 source(system.file("TSsql/Populate.TSsql", package = "TSsql"))
 source(system.file("TSsql/TSdbi.TSsql", package = "TSsql"))
