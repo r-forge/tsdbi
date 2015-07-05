@@ -5,7 +5,9 @@ import("tframe")
 import("tframePlus")
 
 import("tis") 
-import("fame") 
+import("fame")
+
+importFrom("utils", "read.table")  
 
 export("fameLocal")
 export("fameServer")

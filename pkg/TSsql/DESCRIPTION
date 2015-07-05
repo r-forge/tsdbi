@@ -1,5 +1,5 @@
 Package: TSsql
-Version: 2015.1-2
+Version: 2015.7-1
 Title: Generic SQL Helper Functions for 'TSdbi' SQL Plugins
 Description: Standard SQL query functions used by 
 	SQL plugins packages for the 'TSdbi' interface to time series databases. 
@@ -12,7 +12,7 @@ Description: Standard SQL query functions used by
 	Comprehensive examples of all the 'TS*' packages is provided in the
 	vignette Guide.pdf with the 'TSdata' package.
 Depends: R (>= 2.8.0)
-Imports: methods, DBI, tframe (>= 2015.1-1), TSdbi (>= 2015.1-1), tframePlus, zoo
+Imports: methods, DBI, tframe (>= 2015.1-1), TSdbi (>= 2015.1-1), tframePlus, zoo, stats
 Suggests: tseries, tis, tfplot, RMySQL, RSQLite
 BuildVignettes: true
 License: GPL-2
