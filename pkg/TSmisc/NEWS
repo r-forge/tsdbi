@@ -6,6 +6,10 @@ Known BUGS
 
    o	None for the moment.
 
+Changes in TSmisc version 2015.7-1
+
+   o	Added default package imports as now required by CRAN.
+
 Changes in TSmisc version 2015.1-3
 
    o	Adjusted gdata import to be more selective and avoid conflicts

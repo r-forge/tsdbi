@@ -3,6 +3,7 @@ import("TSdbi")
 import("DBI")
 
 importFrom("tfplot","tfplot")
+importFrom("stats","start", "end")
 
 export(
    "TScompare",
