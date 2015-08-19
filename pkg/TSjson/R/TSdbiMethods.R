@@ -135,7 +135,7 @@ setMethod("TSget",     signature(serIDs="character", con="TSjsonConnection"),
     
     if(con@proxy){
        for (rpt in seq(repeat.try)) {
-   	      rr <- try(getURL(qq), silent=quiet)
+   	      rr <- try(rjson::getURL(qq), silent=quiet)
    	      if (!inherits(rr , "try-error")) break
    	      }
 
@@ -146,7 +146,8 @@ setMethod("TSget",     signature(serIDs="character", con="TSjsonConnection"),
        if ((!is.null(attr(rr,"status"))) && (0 !=  attr(rr,"status")) ) 
    	  stop("Series retrieval failed. Series ",serIDs[i], " may not exist.")
 
-       rr <-  try(fromJSON(rr, asText=TRUE), silent=quiet)
+       #rr <-  try(fromJSON(rr, asText=TRUE), silent=quiet)
+       rr <-  try(fromJSON(rr), silent=quiet)
        if(inherits(rr , "try-error") ) stop(
    	   "Conversion from JSON failed, server returning unrecognized object.")
        } 
@@ -197,7 +198,7 @@ setMethod("TSget",     signature(serIDs="character", con="TSjsonConnection"),
     else {
          require("tframePlus")
 	 require("zoo")
-	 r <-  zoo(x, order.by=as.Date(rr$dates, format='%b %d %Y'))
+	 r <-  zoo::zoo(x, order.by=as.Date(rr$dates, format='%b %d %Y'))
 	 }
 
     mat <- tbind(mat, r)
