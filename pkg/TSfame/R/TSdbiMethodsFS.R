@@ -139,14 +139,14 @@ setMethod("TSget",     signature(serIDs="character", con="TSfameServerConnection
        stop("Fame retrieval failed. Series may not exist on ",dbname[i],".")
     # r is class tis
 #    r <-  if((TSrepresentation=="default" | TSrepresentation=="ts")
-#             && frequency(r) %in% c(1,4,12,2)) as.ts(r[[1]]) else as.zoo(r[[1]])
+#             && frequency(r) %in% c(1,4,12,2)) as.ts(r[[1]]) else zoo::as.zoo(r[[1]])
 
     if(TSrepresentation=="tis") r <- r[[1]]
     else if((TSrepresentation=="default" | TSrepresentation=="ts")
              && tif(r[[1]]) %in% c(1044,1027,1032,1050)) r <-  as.ts(r[[1]]) 
     else {
        rp <- c(rp, tifName(r[[1]]))
-       r <- zoo(c(r[[1]]), order.by=as.Date(ti(r[[1]])), frequency=frequency(r[[1]]))
+       r <- zoo::zoo(c(r[[1]]), order.by=as.Date(ti(r[[1]])), frequency=frequency(r[[1]]))
        }
     mat <- tbind(mat, r)
     if(TSdescription) desc   <- c(desc,   TSdescription(serIDs[i],con) ) 
