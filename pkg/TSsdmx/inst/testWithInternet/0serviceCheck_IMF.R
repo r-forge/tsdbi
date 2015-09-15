@@ -47,7 +47,8 @@ require("RJSDMX")
   #z <- tts0[grepl('PGI.CA.BIS.', nm )]
     
   z <- getSDMX('IMF', 'PGI.CA.BIS_BP6.PGI.L.A')
-  if(start(z[[1]]) !=  2005)  stop("test 1 start date changed.")
+  # start was 2005 for awhile (circa spring 2015)
+  if(start(z[[1]]) !=  1948)  stop("test 1 start date changed (again).")
   if(frequency(z[[1]]) !=  1) stop("test 1  frequency changed.")
 
   tts <- getSDMX('IMF', 'PGI.CA.BIS_BP6.*.L.Q')	

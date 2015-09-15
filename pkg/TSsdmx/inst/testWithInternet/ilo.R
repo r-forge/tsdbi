@@ -28,11 +28,18 @@ z <- TSget("DF_YI_ALL_EMP_TEMP_SEX_AGE_NB/YI.MEX.A.463.EMP_TEMP_NB.SEX_F.AGE_10Y
 if (! all(c(1995,1) == start(z)))  stop("ILO test 2 start date error.")
 
 
-#if (!all(c(2012,1) == end(z))) stop("ILO test 2 end date error.") #17 provider BUG
+#if (!all(c(2012,1) == end(z))) stop("ILO test 2 end date error.") #17 provider BUG must be done as next (see notes in 0ServiceCheck_ILO.R)
+
+z <- TSget("DF_YI_ALL_EMP_TEMP_SEX_AGE_NB/YI.MEX.A.463.EMP_TEMP_NB.SEX_F.AGE_10YRBANDS_TOTAL",
+        start="1995-01-01", end="2012-12-31", ilo)
+if (!all(c(2012,1) == end(z))) stop("ILO test 2 end date error.")  
+
 
 z <- TSget( "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB/YI.DEU+FRA+GBR+ITA.A..EMP_TEMP_NB.SEX_T.AGE_AGGREGATE_TOTAL", ilo)
 
-if (10 !=  tframe::nseries(z))     stop("ILO test 3 number of series  changed.")
+# was 10 circa spring 2015
+if (11 !=  tframe::nseries(z))
+    stop("ILO test 3 number of series changed (again).")
 if (! all(c(1969,1) == start(z)))  stop("ILO test 3 start date error.")
  
 tframe::seriesNames(z)
@@ -42,6 +49,10 @@ tframe::seriesNames(z)
 # [4] "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB.YI.FRA.A.47.EMP_TEMP_NB.SEX_T.AGE_AGGREGATE_TOTAL"  
 # [5] "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB.YI.FRA.A.1142.EMP_TEMP_NB.SEX_T.AGE_AGGREGATE_TOTAL"
 # [6] "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB.YI.FRA.A.2260.EMP_TEMP_NB.SEX_T.AGE_AGGREGATE_TOTAL"
+
+# new as of checking in Sept 2015 
+# [7] "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB.YI.GBR.A.666.EMP_TEMP_NB.SEX_T.AGE_AGGREGATE_TOTAL" 
+
 # [7] "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB.YI.GBR.A.1155.EMP_TEMP_NB.SEX_T.AGE_AGGREGATE_TOTAL"
 # [8] "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB.YI.GBR.A.2247.EMP_TEMP_NB.SEX_T.AGE_AGGREGATE_TOTAL"
 # [9] "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB.YI.ITA.A.325.EMP_TEMP_NB.SEX_T.AGE_AGGREGATE_TOTAL" 

@@ -34,8 +34,17 @@ require("RJSDMX")
 
   #### quarterly data  ####
 
+if (FALSE) {
+  #  BUG this gives  500, message: Internal Server Error
+  tts <-  getSDMX('OECD', 'QNA.CAN.PPPGDP.CARSA.Q')
+  tts <-  getSDMX('OECD', 'QNA.USA.PPPGDP.CARSA.Q')
+
 #   test "+" and "|" in query 
-  tts <-  getSDMX('OECD', 'QNA.CAN+USA|MEX.PPPGDP.CARSA.Q')
+  #  BUG this gives  500, message: Internal Server Error
+# tts <-  getSDMX('OECD', 'QNA.CAN+USA+MEX.PPPGDP.CARSA.Q')
+  #  but should be able to use 
+  #  BUG this gives  500, message: Internal Server Error
+#  tts <-  getSDMX('OECD', 'QNA.CAN+USA|MEX.PPPGDP.CARSA.Q')
 
   if (! all(names(tts) == 
       c("QNA.CAN.PPPGDP.CARSA.Q", "QNA.MEX.PPPGDP.CARSA.Q", "QNA.USA.PPPGDP.CARSA.Q")))
@@ -43,6 +52,20 @@ require("RJSDMX")
 
   if(start(tts[[1]]) != "1960 Q1") stop("OECD quarterly retrieval  changed start date.")
   if(frequency(tts[[1]]) != 4)  stop("OECD quarterly retrieval  frequency changed.")
+
+} # end if FALSE
+
+# Annual only ??
+  tts <- getSDMX('OECD', 'BSI.NAT.EQU.TOT.DIR.CAN')   
+  
+  if ( names(tts) != "BSI.NAT.EQU.TOT.DIR.CAN" )
+             stop("OECD annual retrieval 1 series names changed.")
+
+  if(start(tts[[1]]) != "2009")
+       stop("OECD annual retrieval 1 changed start date.")
+
+  if(frequency(tts[[1]]) != 1)
+        stop("OECD annual retrieval 1  frequency changed.")
 
 
   #### annual data  ####
