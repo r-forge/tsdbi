@@ -24,6 +24,7 @@ z <- try(getSDMX("OECD", 'G20_PRICES.CAB.CP.IXOB.M'), silent=TRUE)
 #      1.3 installed from github 11 Dec 2014
 #      1.3 installed from github 22 Dec 2014
 #      1.3 installed from github  5 Feb 2015
+#      1.4.2 installed from github  14 Sept 2015
 
 # Package rJava may be needed interactively for experimenting but should be found
 #   in the the namespace when everything is working.
@@ -97,9 +98,16 @@ z <- try(getSDMX("OECD", 'G20_PRICES.CAB.CP.IXOB.M'), silent=TRUE)
 getProviders()
 #[1] "BIS"      "ILO"      "ECB"      "OECD"     "EUROSTAT"       with v1.1
 #[1] "ILO"      "ECB"      "INEGI"    "OECD"     "EUROSTAT" "IMF" with v1.2
+
+#with v1.3
 #[1] "ABS"  "WB"  "ILO" "ECB" "OECD_RESTR" "NBB" "INEGI" "OECD" 
-#                                        "UIS"  "EUROSTAT"   "IMF" with v1.3
- 
+#                                        "UIS"  "EUROSTAT"   "IMF" 
+
+# github version Sept 15, 2015 Build ID: 20150915-1113:
+# [1] "ABS"        "OECD_RESTR" "EUROSTAT"   "ISTAT"      "INSEE"     
+# [6] "WB"         "ILO"        "ECB"        "NBB"        "OECD"      
+#[11] "INEGI"      "UIS"        "IMF"  
+
   # z <- getSDMX('EUROSTAT', 'ei_nama_q.Q.MIO-EUR.NSA.CLV2000.*.IT')[[1]]
 
  

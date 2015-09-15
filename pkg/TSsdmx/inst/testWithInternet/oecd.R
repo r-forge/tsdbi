@@ -29,6 +29,9 @@ if(! all(c(2012,12) ==   end(z))) stop('monthly test 2 end date error.')
 # quarterly national accounts
 #CARSA: national currency, nominal, SAAR (level)
 
+if (FALSE) {
+  #  BUG this gives  500, message: Internal Server Error
+
 z <- TSget('QNA.CAN.PPPGDP.CARSA.Q', oecd)
 if(! all(c(1960,1) == start(z))) stop('quarterly test 1 start date is changed.')
 if(4 != frequency(z)) stop('quarterly test 1 frequency error.')
@@ -58,8 +61,12 @@ if(4 != frequency(z)) stop('quarterly mulivariate test frequency error.')
 # tfplot::tfplot(z, graphs.per.page=3)
 # tfplot::tfOnePlot(z, start=c(1990,1))
 
+} # end if FALSE
+
 # Annual only ??
-z <- TSget('BSI.NAT.EQU.TOT.DIR.CAN', oecd)    # BUG zoo date problems
+z <- TSget('BSI.NAT.EQU.TOT.DIR.CAN', oecd)  
+if(! all(c(2009,1) == start(z))) stop('annual test 0 start date is changed.')
+if(1 != frequency(z)) stop('annual test 0 frequency error.')
 
 # tts <- getSDMX('OECD', 'BSI.NAT.*.*.*.CAN')
 # names(tts)

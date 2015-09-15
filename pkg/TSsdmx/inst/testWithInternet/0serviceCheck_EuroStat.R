@@ -23,7 +23,8 @@ require("RJSDMX")
 
 
 #### quarterly ####
-
+  # as of Sept 2015 next fails if compression is enabled (BUG #76)
+  # compression can be disbled in .SdmxClient config file.
   tts1 <- getSDMX('EUROSTAT', "ei_nama_q.Q.MIO-EUR.SWDA.CP.NA-P72.IT") 
   names(tts1)
 
