@@ -29,9 +29,6 @@ if(! all(c(2012,12) ==   end(z))) stop('monthly test 2 end date error.')
 # quarterly national accounts
 #CARSA: national currency, nominal, SAAR (level)
 
-if (FALSE) {
-  #  BUG this gives  500, message: Internal Server Error
-
 z <- TSget('QNA.CAN.PPPGDP.CARSA.Q', oecd)
 if(! all(c(1960,1) == start(z))) stop('quarterly test 1 start date is changed.')
 if(4 != frequency(z)) stop('quarterly test 1 frequency error.')
@@ -47,21 +44,26 @@ z <- TSget('QNA.CAN+USA|MEX.PPPGDP.CARSA.Q',
 
 # SDMX + and | queries do not determine the return order, TSget fixes by
 # reordering data. (Above query  was not returned in order in Dec 2014.)
-# The PPPGDP numbers are relative to the US so USA numbers are 1.0 and next
+# The PPPGDP numbers are all relative to the US so USA numbers are 1.0 and next
 #  test checks that as a confirmation that re-order was done. 
+# This was BUG #22 which was closed with work around in RJSDMX by using ; to
+#  separate queries and maintain order.
 
 if(max(abs(1 - z[,2])) > 1e-16)
           stop('quarterly test reorder series to apply names not working.')
 
 if(! all(c("Canada", "United States", "Mexico") == tframe::seriesNames(z)))
           stop('quarterly test setting series names not working.')
-if(! all(c(1955,1) == start(z))) stop('quarterly mulivariate test start date is changed.')
-if(4 != frequency(z)) stop('quarterly mulivariate test frequency error.')
+
+if(! all(c(1955,1) == start(z))) 
+          stop('quarterly mulivariate test start date is changed.')
+
+if(4 != frequency(z)) 
+          stop('quarterly mulivariate test frequency error.')
 
 # tfplot::tfplot(z, graphs.per.page=3)
 # tfplot::tfOnePlot(z, start=c(1990,1))
 
-} # end if FALSE
 
 # Annual only ??
 z <- TSget('BSI.NAT.EQU.TOT.DIR.CAN', oecd)  

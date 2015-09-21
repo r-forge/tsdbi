@@ -34,26 +34,42 @@ require("RJSDMX")
 
   #### quarterly data  ####
 
-if (FALSE) {
-  #  BUG this gives  500, message: Internal Server Error
+  #  Sept 2015 this gave  500, message: Internal Server Error
+  #   This was a provider error now fixed,  BUG #80 closed
   tts <-  getSDMX('OECD', 'QNA.CAN.PPPGDP.CARSA.Q')
-  tts <-  getSDMX('OECD', 'QNA.USA.PPPGDP.CARSA.Q')
 
-#   test "+" and "|" in query 
-  #  BUG this gives  500, message: Internal Server Error
-# tts <-  getSDMX('OECD', 'QNA.CAN+USA+MEX.PPPGDP.CARSA.Q')
-  #  but should be able to use 
-  #  BUG this gives  500, message: Internal Server Error
-#  tts <-  getSDMX('OECD', 'QNA.CAN+USA|MEX.PPPGDP.CARSA.Q')
+  if(start(tts[[1]]) != "1960 Q1")
+      stop("OECD quarterly retrieval test 1 changed start date.")
 
-  if (! all(names(tts) == 
-      c("QNA.CAN.PPPGDP.CARSA.Q", "QNA.MEX.PPPGDP.CARSA.Q", "QNA.USA.PPPGDP.CARSA.Q")))
-             stop("OECD quarterly retrieval series names changed.")
+  tts <-  getSDMX('OECD', 'QNA.CAN+USA+MEX.PPPGDP.CARSA.Q')
 
-  if(start(tts[[1]]) != "1960 Q1") stop("OECD quarterly retrieval  changed start date.")
-  if(frequency(tts[[1]]) != 4)  stop("OECD quarterly retrieval  frequency changed.")
+  # SDMX + and | queries do not necessarily determine the returned order.
+  # This was BUG #22 which was closed with work around in RJSDMX by using ; to
+  #  separate queries and maintain order. The next failed circa 2014 but
+  #  passes in Sept 2015 after above fix. Not certain if this change by the
+  #  provider is a fix on purpose of just accidental.
 
-} # end if FALSE
+  if (! all(names(tts) ==  c("QNA.CAN.PPPGDP.CARSA.Q", 
+       "QNA.MEX.PPPGDP.CARSA.Q", "QNA.USA.PPPGDP.CARSA.Q")))
+             stop("OECD quarterly test 2 retrieval series names changed.")
+
+  if(start(tts[[1]]) != "1960 Q1")
+             stop("OECD quarterly retrieval test 3 changed start date.")
+
+  if(frequency(tts[[1]]) != 4)  
+             stop("OECD quarterly retrieval test 4 frequency changed.")
+
+  #   test "+" and "|" in query 
+  tts2 <-  getSDMX('OECD', 'QNA.CAN+USA|MEX.PPPGDP.CARSA.Q')
+
+  if (! all(names(tts) ==  names(tts2)))
+             stop("OECD quarterly test 5 retrieval series names changed.")
+
+  if(start(tts[[1]]) != start(tts2[[1]]))
+             stop("OECD quarterly retrieval test 6 changed start date.")
+
+  if(frequency(tts[[1]]) != frequency(tts2[[1]]))
+             stop("OECD quarterly retrieval test 7 frequency changed.")
 
 # Annual only ??
   tts <- getSDMX('OECD', 'BSI.NAT.EQU.TOT.DIR.CAN')   
