@@ -41,16 +41,17 @@ require("RJSDMX")
   if(start(tts[[1]]) != "1960 Q1")
       stop("OECD quarterly retrieval test 1 changed start date.")
 
-  tts <-  getSDMX('OECD', 'QNA.CAN+USA+MEX.PPPGDP.CARSA.Q')
-
   # SDMX + and | queries do not necessarily determine the returned order.
   # This was BUG #22 which was closed with work around in RJSDMX by using ; to
-  #  separate queries and maintain order. The next failed circa 2014 but
-  #  passes in Sept 2015 after above fix. Not certain if this change by the
-  #  provider is a fix on purpose of just accidental.
+  #  separate queries and maintain order. Thus
+  #     tts <-  getSDMX('OECD', 'QNA.CAN+USA+MEX.PPPGDP.CARSA.Q')
+  #  returns data, but order is not guaranteed. Instead use
+
+  tts <-  getSDMX('OECD', 
+            'QNA.CAN.PPPGDP.CARSA.Q;QNA.USA.PPPGDP.CARSA.Q;QNA.MEX.PPPGDP.CARSA.Q')
 
   if (! all(names(tts) ==  c("QNA.CAN.PPPGDP.CARSA.Q", 
-       "QNA.MEX.PPPGDP.CARSA.Q", "QNA.USA.PPPGDP.CARSA.Q")))
+                    "QNA.USA.PPPGDP.CARSA.Q", "QNA.MEX.PPPGDP.CARSA.Q")))
              stop("OECD quarterly test 2 retrieval series names changed.")
 
   if(start(tts[[1]]) != "1960 Q1")
@@ -62,8 +63,9 @@ require("RJSDMX")
   #   test "+" and "|" in query 
   tts2 <-  getSDMX('OECD', 'QNA.CAN+USA|MEX.PPPGDP.CARSA.Q')
 
-  if (! all(names(tts) ==  names(tts2)))
-             stop("OECD quarterly test 5 retrieval series names changed.")
+  # order is not guaranteed
+  #if (! all(names(tts) ==  names(tts2)))
+  #           stop("OECD quarterly test 5 retrieval series names changed.")
 
   if(start(tts[[1]]) != start(tts2[[1]]))
              stop("OECD quarterly retrieval test 6 changed start date.")
