@@ -233,16 +233,21 @@ verifyQuery <- function(provider, Q, verbose=TRUE){
   dm <- names(getDimensions(provider, flow)) 
 
   if(length(dm) != length(dq)) {
-     if (verbose)
+     if (verbose){
          cat("query dimension not equal dimension of provider flow.\n")
+         cat("query : ", dq, ".\n")
+         cat("fields: ", dm, ".\n")
+	 }
      return(invisible(FALSE))
      }
 
   for (i in 1:length(dm)) {
      z <- names(getCodes(provider, flow, dm[i]))
      if ((! (dq[i] %in% c('*','+', ''))) && (! (dq[i] %in% z))) {
-           if (verbose)
+           if (verbose) {
               cat("query field '", dq[i], "' not in dimension options.\n")
+              cat("provider options for field ", dm[i], ": ",z,".\n")
+	      }
            return(invisible(FALSE))
            }   
      }

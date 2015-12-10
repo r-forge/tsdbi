@@ -1,5 +1,5 @@
 Package: TSsdmx
-Version: 2015.6-1
+Version: 2015.12-1
 Title:  'TSdbi' Extension to Connect with 'SDMX'
 Description: Methods to 
 	retrieve data in the Statistical Data and Metadata Exchange ('SDMX') format
