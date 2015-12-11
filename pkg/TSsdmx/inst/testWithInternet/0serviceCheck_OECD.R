@@ -34,12 +34,15 @@ require("RJSDMX")
 
   #### quarterly data  ####
 
+if (FALSE) { # failing again, now with  "Premature end of file."  Dec 11, 2015
+
   #  Sept 2015 this gave  500, message: Internal Server Error
   #   This was a provider error now fixed,  BUG #80 closed
   tts <-  getSDMX('OECD', 'QNA.CAN.PPPGDP.CARSA.Q')
 
   if(start(tts[[1]]) != "1960 Q1")
       stop("OECD quarterly retrieval test 1 changed start date.")
+
 
   # SDMX + and | queries do not necessarily determine the returned order.
   # This was BUG #22 which was closed with work around in RJSDMX by using ; to
@@ -72,6 +75,8 @@ require("RJSDMX")
 
   if(frequency(tts[[1]]) != frequency(tts2[[1]]))
              stop("OECD quarterly retrieval test 7 frequency changed.")
+
+} # end if (FALSE)
 
 # Annual only ??
   tts <- getSDMX('OECD', 'BSI.NAT.EQU.TOT.DIR.CAN')   
