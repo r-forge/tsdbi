@@ -8,7 +8,9 @@ require("timeSeries")
 
 cat("***** RMySQL  with timeSeries representation *********\n")
 dbname   <- Sys.getenv("MYSQL_DATABASE")
-if ("" == dbname)   dbname <- "test"
+
+if (""==dbname )   
+       stop("environment variable must be specified for MySQL dbname.")
 
 #user/passwd/host in ~/.my.cnf
 setup <- RMySQL::dbConnect(RMySQL::MySQL(), dbname=dbname) 
@@ -28,9 +30,12 @@ if(inherits(con, "try-error")) stop("Cannot connect to TS MySQL database.")
 host    <- Sys.getenv("MYSQL_HOST")
 user	<- Sys.getenv("MYSQL_USER")
 passwd  <- Sys.getenv("MYSQL_PASSWD")
-con2 <- TSconnect("MySQL", dbname=dbname, 
+
+if (!(""==host || ""==user || ""==passwd )) {
+  con2 <- TSconnect("MySQL", dbname=dbname, 
                username=user, password=passwd, host=host)
-dbDisconnect(con2)
+  dbDisconnect(con2)
+  }
 
 z <- ts(matrix(rnorm(10),10,1), start=c(1990,1), frequency=1)
 TSput(z, serIDs="Series 1", con) 
