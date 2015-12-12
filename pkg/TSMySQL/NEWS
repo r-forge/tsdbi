@@ -8,6 +8,10 @@ Known Bugs
    	seems to be a bug in package timeSeries.)
 
 
+Changes in TSMySQL version 2015.12-1
+
+   o	Adjusted tests for case when .my.cnf is used.
+
 Changes in TSMySQL version 2015.4-1
 
    o	Bumped requirement for RMySQL up to version 0.10.3 or greater.

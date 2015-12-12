@@ -19,16 +19,20 @@ if(!identical(as.logical(service), TRUE)) {
    user    <- Sys.getenv("MYSQL_USER")
    passwd  <- Sys.getenv("MYSQL_PASSWD")
    host    <- Sys.getenv("MYSQL_HOST")
-   if ("" == host)     host <- Sys.info()["nodename"] 
-   # specifying host as NULL or "localhost" results in a socket connection
 
-   if (""==dbname || ""==user || ""==passwd )   
-       stop("environment variables not specified for MySQL connection.")
+   if (""==dbname )   
+       stop("environment variable must be specified for MySQL dbname.")
 
-   con <- RMySQL::dbConnect(m,
+   if (""==host || ""==user || ""==passwd ) {
+       cat("environment variables not specified for MySQL connection.",
+               " Using .my.cnf\n")
+       con <- RMySQL::dbConnect(m, dbname=dbname)  
+       } else {
+       con <- RMySQL::dbConnect(m,
           username=user, password=passwd, host=host, dbname=dbname)  
+       } 
    
-   DBI::dbListTables(con) #needs a non-null dbname
+   DBI::dbListTables(con, dbname) #needs a non-null dbname
 
    RMySQL::dbDisconnect(con)
 
