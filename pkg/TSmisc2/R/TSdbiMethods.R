@@ -28,29 +28,44 @@ setMethod("dbDisconnect", signature(conn="QuandlConnection"),
 #   definition=function(drv, ...) invisible(TRUE))
 
 #######     end kludges   ######
+# Optionalcharacter allow the possibility of character or NULL
+setClassUnion("Optionalcharacter",   c("character",   "NULL"))
 
 setClass("TSQuandlConnection", contains=c("QuandlConnection", "conType", "TSdb"),
-           slots = c(token=c("character", "logical")))
+           slots = c(api_key="Optionalcharacter")) 
 
 setMethod("TSconnect", signature(q="QuandlConnection", dbname="missing"),
-   definition= function(q, dbname, token=NULL, ...) {
+   definition= function(q, dbname, api_key=NULL, ...) {
         dbname <- q@dbname 
-        # get defaults from file  or system variables but 
-	# token can be NULL if system variable is not set, and this
-	# works up to Quandl limit. Quandl::Quandl.auth() uses NA for not set.
-	# It allows resetting to NULL but then things break so leave NA if not set.
-        if (is.null(token)) token <- Quandl::Quandl.auth() #returns set value or NA
-   	if (is.na(token)) {
+        if (is.null(dbname))
+	  stop("dbname must be specified part of QuandlConnection connection object.")
+        # Use api_key if passed as an non NULL argument
+	# otherwise use it as already set non NULL in session
+	# otherwise use it from ~/.Quandl.cnf file if the file exists 
+	# otherwise use it from system variable QUANDL_API_KEY if set non NULL 
+	# otherwise api_key is left NULL and this  works up to daily limit.  
+
+	# api_key was previously called token by Quandl package and used NA for
+	# not set.  Quandl::Quandl.api_key() now uses NULL for not set.
+	        
+        if (is.null(api_key))
+	  api_key <- Quandl::Quandl.api_key() #get session value or NULL
+
+	if (is.null(api_key)) {
    	  f <- paste0(Sys.getenv("HOME"),"/.Quandl.cnf")
-   	  if (file.exists(f)) {
-             f <- scan(f, what="", quiet=TRUE) #token
-             token <- f[1]
-             }
-          else  token <- Sys.getenv()["QUANDL_TOKEN"] #may be NULL
-          if (is.null(token)) token <- NA
-          token <- Quandl::Quandl.auth(token) # set, possibly to default NA
+   	  if (file.exists(f)) 
+             api_key <- scan(f, what="", quiet=TRUE)[1] #token=api_key
 	  }
-	new("TSQuandlConnection" , dbname=dbname, token=token, 
+
+        if (is.null(api_key)){
+	     api_key <- Sys.getenv("QUANDL_API_KEY") #may be NULL
+	     if (""  == api_key) api_key <- NULL
+	     }
+
+        # set session value. Possibly this should not be done?
+	api_key <- Quandl::Quandl.api_key(api_key)
+	
+	new("TSQuandlConnection" , dbname=dbname, api_key=api_key, 
   	       hasVintages=FALSE, hasPanels=FALSE) 
 	}
 	)
@@ -131,9 +146,9 @@ setMethod("TSget",     signature(serIDs="character", con="TSQuandlConnection"),
   else  meta <- FALSE
   metadata   <- list()
 
-# sort="asc"  should be ignored but is important as of Nov23,2013
-  #if(!is.null(con@token)) tok <- con@token else tok <- NA
-  tok <- con@token 
+# sort="asc"  should be ignored but was important as of Nov23,2013
+  #if(!is.null(con@api_key)) tok <- con@api_key else tok <- NA
+  tok <- con@api_key 
 
 
   for (i in seq(length(serIDs))) {
