@@ -18,7 +18,7 @@
     Quandl(...)
 
     \S4method{TSconnect}{QuandlConnection,missing}(q, dbname,
-               token=NULL, ...)
+               api_key=NULL, ...)
     \S4method{TSget}{character,TSQuandlConnection}(serIDs, con, 
 	TSrepresentation = getOption("TSrepresentation"), 
 	tf = NULL, start = tfstart(tf), end = tfend(tf), names = NULL,
@@ -48,7 +48,7 @@
     \item{x}{a series identifier for
        TSdescription and TSdoc or, for print, 
        a database connection as returned by TSconnect.}
-    \item{token}{character string of Quandl access token.}
+    \item{api_key}{character string of Quandl access api_key.}
     \item{TSrepresentation}{time series representation to use for the result.}
     \item{names}{Optional character vector to use for series names. Defaults to
        serIDs.}
@@ -84,11 +84,11 @@ for the connection. \code{TSget} retrieves data.
 Both \code{start} and \code{end} can be either date objects or 
 character strings.
 
-The Quandl access token can be specified either [NOT WORKING: as an argument to \code{TSConnect} (\code{token="chars"}) or ] in a file .Quandl.cnf in the user's
-home directory, or in an environment variable 'QUANDL_TOKEN', or using the 
-\pkg{Quandl} \code{Quandl.auth()} function. This last will require the user to
-load \pkg{Quandl} in order to set it. 
-The search will be done in that order and the first non-\code{NULL} value used. If no token is found then access will be tried without a token, but this will be subject to the limit imposed by Quandl.
+The Quandl access api_key can be specified either as an argument to \code{TSConnect} (\code{api_key="chars"}) or in a file .Quandl.cnf in the user's
+home directory, or in an environment variable 'QUANDL_API_KEY', or using the 
+\pkg{Quandl} \code{Quandl.api_key} function. This last will require the user to
+attach \pkg{Quandl} in order to set it. 
+The search will be done in that order and the first non-\code{NULL} value used. If no api_key is found then access will be tried without a api_key, but this will be subject to the limit imposed by Quandl.
 
 The argument \code{quote} can be used to select a subset of the data requested,
 in the case of a multivariate dataset. For example, daily stock or

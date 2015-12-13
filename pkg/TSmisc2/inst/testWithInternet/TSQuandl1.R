@@ -13,7 +13,6 @@ cat("**************        connecting to Quandl\n")
 # token from ~/.Quandl or env variable QUANDL_TOKEN if available.
 # Otherwise, Quandl default limit applies.
 con <- TSconnect("Quandl", dbname="BOC") 
- 
 
 # ts
 cpi <- TSget("CDA_CPI", con)

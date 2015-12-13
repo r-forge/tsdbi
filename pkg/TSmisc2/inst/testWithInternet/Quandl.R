@@ -88,8 +88,8 @@ cat("**************    test meta data\n")
   if ("Canada CPI" != attr(x,"meta")$name )  
      stop("meta data $name is changed (zoo).")
    
-  if (! grepl("Bank of Canada", attr(x,"meta")$source_name ))  
-     stop("meta data $source_name is changed (zoo).")
+  if (! grepl("BOC", attr(x,"meta")$database_code ))  
+     stop("meta data $database_code is changed (zoo).")
 
 
   x  <- Quandl("BOC/CDA_CPI", type = "xts", meta = TRUE)
@@ -100,5 +100,5 @@ cat("**************    test meta data\n")
   if ("Canada CPI" != attr(x,"meta")$name )  
      stop("meta data $name is changed (xts).")
    
-  if (! grepl("Bank of Canada", attr(x,"meta")$source_name ))  
-     stop("meta data $source_name is changed (xts).")
+  if (! grepl("BOC", attr(x,"meta")$database_code ))  
+     stop("meta data $database_code is changed (xts).")
