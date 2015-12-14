@@ -2,6 +2,8 @@ import(methods)
 import(DBI)      
 import(TSdbi)
 
+importFrom("stats", "as.ts", "frequency")
+
 import(tframe)
 import(tframePlus)
 
