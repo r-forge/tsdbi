@@ -96,8 +96,9 @@ if (FALSE) { # failing again, now with  "Premature end of file."  Dec 11, 2015
   tts <- getSDMX('OECD', '7HA_A_Q.CAN.*.*.*.*')
   names(tts)
 
-  if (names(tts)[[1]] != "7HA_A_Q.CAN.AF411LI.ST.C.A")
-             stop("OECD annual retrieval  first series changed.")
+  # the names change from time to time
+  #if (names(tts)[[1]] != "7HA_A_Q.CAN.AF411LI.ST.C.A")
+  #           stop("OECD annual retrieval  first series changed.")
 
   if(start(tts[[1]]) != "1995") stop("OECD annual retrieval  changed start date.")
   if(frequency(tts[[1]]) != 1)  stop("OECD annual retrieval  frequency changed.")
