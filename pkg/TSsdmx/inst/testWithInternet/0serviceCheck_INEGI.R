@@ -8,6 +8,14 @@
 
 require("RJSDMX")
 
+if (FALSE) {  # April, 2016
+# I am often but not consistently getting errors like
+#Error in .jcall...  Comment must start with "<!--".
+# This is similar to BUG #14
+# It sometimes seems like the error may be related to
+#  java.util.logging.ConsoleHandler.level = OFF
+# but that may just be because of the random nature of the bug.
+
 #  getFlows('INEGI') 
 
 getDimensions('INEGI','DF_STES') 
@@ -55,6 +63,7 @@ if ("Jan 1993" != start(tts[[1]]))  stop("INEGI test 2 start date error.")
 if (12 != frequency(tts[[1]]))      stop("INEGI test 2 frequency error.")
 if (1 != length(names(tts)))     stop("INEGI test 2 number of series changed.")
 
+} # end if FALSE
 
 if (FALSE){ 
 

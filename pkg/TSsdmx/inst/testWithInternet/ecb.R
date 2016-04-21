@@ -39,7 +39,9 @@ require("tfplot")
 options(TSconnection=ecb)
 
 z <- TSget("ICP.M.U2.N.000000.4.ANR")# annual rates 
-if(! all(c(1991,1) == start(z))) stop("ECB monthly test 4 start error.")
+#if(! all(c(1991,1) == start(z))) stop("ECB monthly test 4 start error.")
+# this changed to 1997 in early 2016.
+if(! all(c(1997,1) == start(z))) stop("ECB monthly test 4 start error.")
 ##   BUG  ?? tfplot(z)
 
 z <- TSget("ICP.M.U2.N.000000.4.INX")# index 

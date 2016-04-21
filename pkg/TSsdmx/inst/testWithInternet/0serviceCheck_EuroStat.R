@@ -22,6 +22,7 @@ require("RJSDMX")
   getFlows('EUROSTAT', "ei_nama_q")  # length 1
 
 
+if  (FALSE) {# BUG #96  April 2016
 #### quarterly ####
   # as of Sept 2015 next fails if compression is enabled (BUG #76)
   # compression can be disbled in .SdmxClient config file.
@@ -69,4 +70,5 @@ require("RJSDMX")
   # if("1980 Q1" != start(z)) stop("EUROSTAT quarterly retrieval start changed.")
   # if(4 != frequency(z)) stop("EUROSTAT quarterly retrieval frequency error.")
   
- 
+ } # end BUG #96
+

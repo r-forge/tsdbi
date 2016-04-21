@@ -8,6 +8,8 @@ eurostat <- TSconnect("sdmx", dbname="EUROSTAT")
 # this worked in Dec 2014 but the series seems to have disappeared
 # z <- TSget("ei_nama_q.Q.MIO-EUR.NSA.CLV2000.NA-B1G.IT", eurostat)
 
+if  (FALSE) {# BUG #96  April 2016
+
 z <- TSget("ei_nama_q.Q.MIO-EUR.SWDA.CP.NA-P72.IT", eurostat)
 
 if (seriesNames(z) != "ei_nama_q.Q.MIO-EUR.SWDA.CP.NA-P72.IT")
@@ -63,3 +65,5 @@ z <-  TSget(c("ei_nama_q.Q.MIO-EUR.NSA.CP.NA-P7.IT",
 if (! all(c(1990, 1) == start(z))) stop("eurostat vector test 1 start date failure.")
 if (! all(c(2012, 2) ==   end(z))) stop("eurostat vector test 1  end  date failure.")
 if ( 4 !=  frequency(z)) stop("eurostat vector test 1  frequency  date failure.")
+
+} # end BUG #96
