@@ -47,6 +47,8 @@ TSdescription(x)
 tfplot(x, xlab = TSdescription(x))
 tfplot(x, Title="IBM", start="2007-01-01")
 
+if (FALSE) { #histQuote temp? bug with oanda which now needs https
+
 conO <- TSconnect("histQuote", dbname="oanda") 
 
 # oanda has max 500 data points
@@ -63,3 +65,4 @@ tfplot(z, Title = "EUR/USD", start=Sys.Date()-14, end=Sys.Date(),
 
 
 TSdates(c("^ftse","^gspc", "ibm"), con) # note default start
+} # end if FALSE

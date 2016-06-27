@@ -6,6 +6,11 @@ Known BUGS
 
    o	None for the moment.
 
+Changes in TSmisc version 2016.6-1
+
+   o	Moved xts and its from Imports to Suggests as they should not need 
+   	to be imported.
+
 Changes in TSmisc version 2015.12-1
 
    o	Added default package imports as now required by CRAN.
