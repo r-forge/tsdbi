@@ -401,7 +401,7 @@ setMethod("TSconnect",   signature(q="xlsConnection", dbname="missing"),
   definition= function(q, dbname, 
      map=list(ids, data, dates, names=NULL, description=NULL, sheet=1,
               tsrepresentation = function(data,dates){
-		       zoo(data, as.Date(dates))}), ...){
+		       zoo::zoo(data, as.Date(dates))}), ...){
    #  user / password / host  for future consideration
    dbname <- q@dbname 
 

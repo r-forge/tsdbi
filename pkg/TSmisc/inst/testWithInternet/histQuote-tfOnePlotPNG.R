@@ -2,7 +2,9 @@ require("TSmisc")
 require("tfplot")  
 
 yahoo <- TSconnect("histQuote", dbname="yahoo") 
+if (FALSE) { #histQuote temp? bug with oanda which now needs https
 oanda <- TSconnect("histQuote", dbname="oanda") 
+} # end if FALSE
 
 tmp <- tempdir()
 
@@ -66,6 +68,8 @@ png(file=files[4],width=480, height=240, pointsize=12, bg = "white")
     lastObs = TRUE )
 dev.off()
 
+if (FALSE) { #histQuote temp? bug with oanda which now needs https
+
 EuroUSD <- TSget("EUR/USD", con=oanda, start=Sys.Date() - 480)
 
 png(file=files[5],width=480, height=240, pointsize=12, bg = "white")
@@ -94,6 +98,7 @@ png(file=files[6],width=480, height=240, pointsize=12, bg = "white")
     footnoteRight = paste("Extracted:", date()),
     lastObs = TRUE )
 dev.off()
+} # end if FALSE
 
 tyx <- TSget("^TYX", con=yahoo, quote="Close")
 

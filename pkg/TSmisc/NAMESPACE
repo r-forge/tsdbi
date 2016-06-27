@@ -12,14 +12,13 @@ importFrom("utils", "data", "download.file", "read.csv", "unzip")
 ## many function from TSdbi need to be visible to the user, so it is indicated
 ## using Depends: in NAMESPACE rather than importing and exporting here.
 
+## zoo should not need to be imported as the representation should get done by
+## tframePlus, but some methods still call it directly
 import("tframe",
        "tframePlus",
-       "zoo",
        "tseries",
-       "xts",
-       "its"
+       "zoo"
        )
-##   "timeSeries",
 
 importFrom("gdata","read.xls")
 

@@ -80,8 +80,8 @@
 
     \S4method{TSconnect}{xlsConnection,missing}(q, dbname, 
        map=list(ids, data, dates, names=NULL, description=NULL, sheet=1,
-         tsrepresentation = function(data,dates){zoo(data, as.Date(dates))}),
-	  ...)
+         tsrepresentation = function(data,dates){
+	                      zoo::zoo(data, as.Date(dates))}), ...)
     \S4method{TSget}{character,TSxlsConnection}(
 	serIDs, con, TSrepresentation = options()$TSrepresentation, 
 	tf = NULL, start = tfstart(tf), end = tfend(tf), names=serIDs, ...)
