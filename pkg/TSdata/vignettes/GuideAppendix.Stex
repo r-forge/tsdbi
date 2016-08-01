@@ -17,7 +17,7 @@
 %%  but needs to be over-ridden for multi-panel graphs.
 \SweaveOpts{eval=TRUE,echo=TRUE,results=hide,fig=FALSE,width=7.0,height=4}
 %\SweaveOpts{eval=TRUE,echo=TRUE,results=verbatim,fig=TRUE}
-%\VignetteIndexEntry{Time Series Database Interface (TSdbi) Guide and Illustrations}
+%\VignetteIndexEntry{Time Series Database Interface (TSdbi) Guide and Illustrations - Appendix}
 \begin{document}
 \begin{titlepage}
 \begin{center}
