@@ -34,12 +34,32 @@ require("RJSDMX")
 
   #### quarterly data  ####
 
-if (FALSE) { # failing again, now with  "Premature end of file."  Dec 11, 2015
+# RJSDMX::sdmxHelp() # build command can help find data query
 
-  #  Sept 2015 this gave  500, message: Internal Server Error
-  #   This was a provider error now fixed,  BUG #80 closed
-  tts <-  getSDMX('OECD', 'QNA.CAN.PPPGDP.CARSA.Q')
+# failing again,  with  "Premature end of file."  Dec 11, 2015
+# failing in summer 2016 because PPPGDP now has no data.
+# Switched to B1_GE.
 
+  names(getDimensions('OECD','QNA')) 
+  #  getCodes('OECD', 'QNA', 'FREQUENCY')
+  #  getCodes('OECD', 'QNA', 'SUBJECT')$PPPGDP
+  #  getCodes('OECD', 'QNA', 'SUBJECT')$GDP
+  #  getCodes('OECD', 'QNA', 'SUBJECT')$B1_GE
+       # GDP - expenditure approach
+  #  getCodes('OECD', 'QNA', 'MEASURE')$CARSA
+       #National currency, current prices, annual levels, seasonally adjusted
+
+  ## from TSsdmx  print(verifyQuery('OECD', 'QNA.CAN.PPPGDP.CARSA.Q'))
+  #  Sept 2015 QNA.CAN.GDP.CARSA.Q gave  500, message: Internal Server Error
+  #     This was a provider error now fixed,  BUG #80 closed
+  # But, in spring/summer 2016 it was valid query but returned no data.
+  # Also  'QNA.CAN.GDP.CARSA.Q'   was valid query but returned no data.
+  # 'QNA.CAN.B1_GE.CARSA.Q' does have data
+
+  tts <-  getSDMX('OECD', 'QNA.CAN.B1_GE.CARSA.Q')
+
+  #tts <-  getSDMX('OECD', 'QNA.CAN+CHE.B1_GE.CUR+CARSA.Q')
+    
   if(start(tts[[1]]) != "1960 Q1")
       stop("OECD quarterly retrieval test 1 changed start date.")
 
@@ -51,10 +71,10 @@ if (FALSE) { # failing again, now with  "Premature end of file."  Dec 11, 2015
   #  returns data, but order is not guaranteed. Instead use
 
   tts <-  getSDMX('OECD', 
-            'QNA.CAN.PPPGDP.CARSA.Q;QNA.USA.PPPGDP.CARSA.Q;QNA.MEX.PPPGDP.CARSA.Q')
+            'QNA.CAN.B1_GE.CARSA.Q;QNA.USA.B1_GE.CARSA.Q;QNA.MEX.B1_GE.CARSA.Q')
 
-  if (! all(names(tts) ==  c("QNA.CAN.PPPGDP.CARSA.Q", 
-                    "QNA.USA.PPPGDP.CARSA.Q", "QNA.MEX.PPPGDP.CARSA.Q")))
+  if (! all(names(tts) ==  c("QNA.CAN.B1_GE.CARSA.Q", 
+                    "QNA.USA.B1_GE.CARSA.Q", "QNA.MEX.B1_GE.CARSA.Q")))
              stop("OECD quarterly test 2 retrieval series names changed.")
 
   if(start(tts[[1]]) != "1960 Q1")
@@ -64,7 +84,7 @@ if (FALSE) { # failing again, now with  "Premature end of file."  Dec 11, 2015
              stop("OECD quarterly retrieval test 4 frequency changed.")
 
   #   test "+" and "|" in query 
-  tts2 <-  getSDMX('OECD', 'QNA.CAN+USA|MEX.PPPGDP.CARSA.Q')
+  tts2 <-  getSDMX('OECD', 'QNA.CAN+USA|MEX.B1_GE.CARSA.Q')
 
   # order is not guaranteed
   #if (! all(names(tts) ==  names(tts2)))
@@ -76,7 +96,6 @@ if (FALSE) { # failing again, now with  "Premature end of file."  Dec 11, 2015
   if(frequency(tts[[1]]) != frequency(tts2[[1]]))
              stop("OECD quarterly retrieval test 7 frequency changed.")
 
-} # end if (FALSE)
 
 # Annual only ??
   tts <- getSDMX('OECD', 'BSI.NAT.EQU.TOT.DIR.CAN')   

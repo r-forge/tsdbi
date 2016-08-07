@@ -8,6 +8,11 @@ Known BUGS
    	checks (and retrievals) to sometimes fail.
 
 
+Changes in TSsdmx version 2016.8-1
+
+   o	Replaced quarterly OECD test (in inst/testWithInternet/) with B1_GE in
+   	place of PPPGDP as data seems no longer to be available for latter.
+
 Changes in TSsdmx version 2015.12-1
 
    o	Better verbose indication of provider flow and dimension differences. 
