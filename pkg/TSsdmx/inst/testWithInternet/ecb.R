@@ -11,7 +11,7 @@ z <- TSget('EXR.A.USD.EUR.SP00.A', ecb)
 z <- TSget('EXR.A.USD.EUR.SP00.A',start = 2000, end = 2012, ecb)
 
 if(1 != frequency(z)) stop("ECB monthly frequency error.")
-if(2000 != start(z))  stop("ECB monthly start error.")
+if(! all(c(2000,1) == start(z)))  stop("ECB monthly start error.")
 
 
 #### monthly ####
