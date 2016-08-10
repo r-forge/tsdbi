@@ -248,38 +248,46 @@ for this vignette. See Appendix ``A'' for more details.
 library("TSsdmx")  
 oecd <- TSconnect("sdmx", dbname="OECD")
 
-x <- TSget('QNA.CAN.PPPGDP.CARSA.Q', oecd)
+x <- TSget('QNA.CAN.B1_GE.CARSA.Q', oecd)
 
-tfplot(x, title="Canada: Nominal GDP at PPP?", 
-         subtitle="quarterly national accounts, SAAR",
-	 ylab="guess the units")
+tfplot(x, title="Canada: GDP - expenditure approach", 
+    subtitle="quarterly national accounts, national currency, current prices, SAAR",
+    ylab="CDN dollars")
 
 \end{Scode}
 
-Determining what the above series is will be left as an exercise. 
 SDMX queries are roughly like database queries with the fields separated by dots.
 They can use \code{*}, \code{|}, and \code{+} to return muliple series.
 \code{TSget} provides the ability to rename series on retrieval when
 \code{|}, and \code{+} are used, but not when \code{*} is used.
 
 \begin{Scode}{results=verbatim,fig=TRUE}
-x <- TSget('QNA.CAN+USA+MEX.PPPGDP.CARSA.Q', 
+x <- TSget('QNA.CAN+USA+MEX.B1_GE.CARSA.Q', 
          names=c("Canada", "United States", "Mexico"),   oecd)
 
-tfOnePlot(ytoypc(x), title="Nominal GDP Growth PPP?", 
-         subtitle="quarterly national accounts, national currency, SAAR",
-	 ylab="relative to USA", start=c(1975,1),
+tfOnePlot(ytoypc(x), title="Nominal GDP  - expenditure approach", 
+         subtitle="quarterly national accounts, national currency, current prices, SAAR",
+	 ylab="national currency", start=c(1975,1),
 	 legend=seriesNames(x), legend.loc="topright")
 \end{Scode}
 
 Several different connections can be defined, and data retreived from them.
+%%   names(getDimensions('EUROSTAT','ei_nama_q')) 
+%%     getCodes('EUROSTAT', 'ei_nama_q', 'FREQ')
+%%     getCodes('EUROSTAT', 'ei_nama_q', 'UNIT')
+%%     getCodes('EUROSTAT', 'ei_nama_q', 'S_ADJ')
+%%     getCodes('EUROSTAT', 'ei_nama_q', 'P_ADJ')
+%%     getCodes('EUROSTAT', 'ei_nama_q', 'INDIC')$'NA-P72'#"Imports of services"
+%%     getCodes('EUROSTAT', 'ei_nama_q', 'GEO')
+%%     getCodes('EUROSTAT', 'ei_nama_q', '')
+%%   verifyQuery('EUROSTAT',"ei_nama_q.Q.MIO-EUR.NSA.CP.NA-P72.IT")
 
 \begin{Scode}{results=verbatim,fig=FALSE}
 eurostat <- TSconnect("sdmx", dbname="EUROSTAT")
 ecb <- TSconnect("sdmx", dbname="ECB")
 abs <- TSconnect("sdmx", dbname="ABS")
 
-z <- TSget("ei_nama_q.Q.MIO-EUR.SWDA.CP.NA-P72.IT", eurostat)
+z <- TSget("ei_nama_q.Q.MIO-EUR.NSA.CP.NA-P72.IT", eurostat)
 \end{Scode}
 
 \code{TSget} allows for specifying start and end dates.
@@ -1198,11 +1206,13 @@ Next a connection to yahoo is used to get some series and write them to the
 local test database. \code{TSreplace} is used because \code{TSput} 
 will fail if the series already exisits.
 
+%% this is a problem (Aug, 2016). No longer supported for download by yahoo?
+%% x <- TSget("^ftse", yahoo)
+%% TSreplace(x, serIDs="ftse", Table="B", con=con1)
+%% TSreplace(x, serIDs="ftse", Table="B", con=con2)
+
 \begin{Scode}{results=verbatim}
 yahoo <- TSconnect("histQuote", dbname="yahoo") 
-x <- TSget("^ftse", yahoo)
-TSreplace(x, serIDs="ftse", Table="B", con=con1)
-TSreplace(x, serIDs="ftse", Table="B", con=con2)
 
 x <- TSget("^gspc", yahoo)
 TSreplace(x,  serIDs="gspc", Table="B", con=con1)
@@ -1234,9 +1244,11 @@ summary(eqrm)
 
 Since names are not identical the above indicates discrepancies, which 
 are resolves by indicating the corresponding name pairs:
+%% ids <- matrix(c("ftse","gspc","ibmClose", "ibmVol",
+%% 		"ftse","gspc","ibmC", "ibmV"),4,2)
 \begin{Scode}{results=verbatim}
-ids <- matrix(c("ftse","gspc","ibmClose", "ibmVol",
-		"ftse","gspc","ibmC", "ibmV"),4,2)
+ids <- matrix(c("gspc","ibmClose", "ibmVol",
+		"gspc","ibmC", "ibmV"),3,2)
 
 ids
 eq   <- TScompare(ids, con1, con2, na.rm=FALSE)
@@ -1374,7 +1386,7 @@ library("TSsdmx")
 
 oecd <- TSconnect("sdmx", dbname="OECD")
 
-x <- TSget('QNA.CAN|MEX|USA|.PPPGDP.CARSA.Q', oecd)
+x <- TSget('QNA.CAN|MEX|USA|.B1_GE.CARSA.Q', oecd)
 
 \end{Scode}
 

@@ -8,6 +8,13 @@ See also
 
    o	See also NEWS in the TSdbi package.
 
+Changes in TSdata version 2016.8-1
+
+   o	Adjusted some examples that used data no longer available. 
+
+   o	Removed its from Suggests as it is being archived on CRAN. 
+
+
 Changes in TSdata version 2015.4-2
 
    o	Moved tests to inst/testWithAllServers so other packages only need to

@@ -18,7 +18,8 @@ packages, please contact the package maintainer (Paul Gilbert).
 \section{TSsdmx (with various data sources)}
 
 \pkg{TSsdmx} provides an interface that is consistent with \pkg{TSdbi} for 
-using sdmx objects returned by some servers. 
+using sdmx objects returned by some servers.  \pkg{TSsdmx} is released on CRAN and there is documentation in the vignette Guide.pdf. This section of this guide
+documents some connections that are not yet correctly supported.
 
 \begin{Scode}
 require("TSsdmx")
@@ -30,14 +31,6 @@ TSdescription(z)
 z <- TSget("H3.a0e6e4ca4fd8cd3d7227e549939ec0ff", con=con)
 tfplot(z, Title="From Federal Reserve Board")
 TSdescription(z) 
-
-
-con <- TSconnect("sdmx", dbname="ECB")
-# monthly data 
-z <- TSget("122.ICP.M.U2.N.000000.4.ANR", con=con ) 
-z <- TSget("122.ICP.M.U2.N.000000.4.INX", con=con ) 
-tfplot(z)
-
 
 con <- TSconnect("sdmx", dbname="BoC") 
 z <- TSget(c("CDOR", "OIS", "SWAPPEDTOFLOAT"), con=con)
