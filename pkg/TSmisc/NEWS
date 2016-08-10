@@ -6,10 +6,13 @@ Known BUGS
 
    o	None for the moment.
 
-Changes in TSmisc version 2016.6-1
+Changes in TSmisc version 2016.7-1
 
-   o	Moved xts and its from Imports to Suggests as they should not need 
+   o	Moved xts from Imports to Suggests as it should not need 
    	to be imported.
+
+   o	Removed its from Imports as it is being archived on CRAN. (It should have 
+   	been in Suggests rather than Imports.)
 
 Changes in TSmisc version 2015.12-1
 
