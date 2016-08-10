@@ -4,8 +4,8 @@ Title:  'TSdbi' Extension to Connect with 'SDMX'
 Description: Methods to 
 	retrieve data in the Statistical Data and Metadata Exchange ('SDMX') format
 	from several database. (For example,
-	EuroStat, the European Central Bank, the Organisation for Economic 
-	Co-operation and Development, the Unesco Institute for Statistics,
+	'EuroStat', the European Central Bank, the Organisation for Economic 
+	Co-operation and Development, the 'Unesco' Institute for Statistics,
 	and the International Labor Organization.)
 	This is a wrapper for package 'RJSDMX'.
 	Comprehensive examples of all the 'TS*' packages is provided in the
