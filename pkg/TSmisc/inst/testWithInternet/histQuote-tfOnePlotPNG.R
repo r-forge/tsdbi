@@ -8,7 +8,9 @@ oanda <- TSconnect("histQuote", dbname="oanda")
 
 tmp <- tempdir()
 
-files <- paste(tmp, c("gspcsmall.png", "ftsesmall.png", "ibmsmall.png",
+#"^ftse" previously but started causing not available problems circa Aug  2016
+
+files <- paste(tmp, c("gspcsmall.png", "DJIsmall.png", "ibmsmall.png",
 "ibmVsmall.png", "EuroUSDsmall.png","EuroUSD2small.png","tyxsmall.png"),sep="/")
 
 x <- TSget(serIDs="^gspc", con=yahoo)
@@ -25,16 +27,16 @@ png(file=files[1],width=480, height=240, pointsize=12, bg = "white")
     lastObs = TRUE )
 dev.off()
 
-z <- TSget(serIDs="^ftse", con=yahoo)
+z <- TSget(serIDs="^DJI", con=yahoo)
 png(file=files[2],width=480, height=240, pointsize=12, bg = "white")
-# mv ftsesmall.png ftsesmall.png.orig ; pngcrush ftsesmall.png.orig ftsesmall.png
-#png(file="ftse.png",    width=960, height=480, pointsize=12, bg = "white")
+# mv DJIsmall.png DJIsmall.png.orig ; pngcrush DJIsmall.png.orig DJIsmall.png
+#png(file="DJI.png",    width=960, height=480, pointsize=12, bg = "white")
   tfOnePlot(z, start=as.Date("2011-09-01"),
     Title = "Running commentary, blah, blah, blah", 
-    subtitle="FTSE",
+    subtitle="DJI",
     ylab= "index",
     xlab= "2011",
-    source="Source: Yahoo (^ftse)",
+    source="Source: Yahoo (^DJI)",
     footnoteRight = paste("Extracted:", date()),
     lastObs = TRUE )
 dev.off()
