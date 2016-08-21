@@ -6,7 +6,10 @@ Known BUGS
 
    o	None for the moment.
 
-Changes in TSmisc version 2016.7-1
+Changes in TSmisc version 2016.8-1
+
+   o	Changed Yahoo examples and tests from '^ftse' to '^DJI' as availability
+   	of the former has become a problem on Yahoo.
 
    o	Moved xts from Imports to Suggests as it should not need 
    	to be imported.

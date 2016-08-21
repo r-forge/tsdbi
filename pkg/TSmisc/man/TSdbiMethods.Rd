@@ -171,7 +171,7 @@ See the package vignette for additional examples.
     
  \dontrun{
     con <- try(TSconnect("histQuote", dbname="yahoo") )
-    x <- TSget("^ftse", con)
+    x <- TSget("^gspc", con)
     tfplot(x)
 
     con <- TSconnect("getSymbol", dbname="FRED")
