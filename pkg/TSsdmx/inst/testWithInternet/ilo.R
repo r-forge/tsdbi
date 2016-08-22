@@ -38,7 +38,9 @@ if (!all(c(2012,1) == end(z))) stop("ILO test 2 end date error.")
 z <- TSget( "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB/YI.DEU+FRA+GBR+ITA.A..EMP_TEMP_NB.SEX_T.AGE_AGGREGATE_TOTAL", ilo)
 
 # was 10 circa spring 2015
-if (11 !=  tframe::nseries(z))
+# chaged to 11 
+# chaged back to 10 in Aug 2016
+if (10 !=  tframe::nseries(z))
     stop("ILO test 3 number of series changed (again).")
 if (! all(c(1969,1) == start(z)))  stop("ILO test 3 start date error.")
  
