@@ -19,8 +19,13 @@ TSmeta(z)
 
 if (! all(c(1980, 1) == start(z))) stop("eurostat test 1 start date has changed.")
 
+# Aug 2016 this started giving
+#HTTP error code : 500, message: Internal Server Error
+#SDMX meaning: Error on the provider side.
+#z <- TSget("ei_nama_q.Q.MIO-EUR.SWDA.CP.NA-P72.IT",
+#           start="1990-Q1", end="2012-Q2", eurostat)
 
-z <- TSget("ei_nama_q.Q.MIO-EUR.SWDA.CP.NA-P72.IT",
+z <- TSget("ei_nama_q.Q.MIO-EUR.NSA.CP.NA-P72.IT",
            start="1990-Q1", end="2012-Q2", eurostat)
 
 if (! all(c(1990, 1) == start(z))) stop("eurostat test 2 start date failure.")
