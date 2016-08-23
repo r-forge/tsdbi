@@ -43,7 +43,7 @@ because of all the other packages that are required.
    \link[WriteXLS]{WriteXLS-package},
    \link[DBI]{DBI-package},
    \link[RJSDMX]{RJSDMX-package},
-   \link[RPostgreSQ]{RPostgreSQL-package},
+   \link[RPostgreSQL]{RPostgreSQL-package},
    \link[RSQLite]{RSQLite-package},
    \link[RMySQL]{RMySQL-package},
    \link[RODBC]{RODBC-package}
