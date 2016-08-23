@@ -25,29 +25,29 @@ because of all the other packages that are required.
 
 \seealso{
 \code{
-   \link{TSddbi},
-   \link{TSsql},
-   \link{TSPostgreSQL},
-   \link{TSMySQL},
-   \link{TSSQLite},
-   \link{TSodbc},
-   \link{TSsdmx},
-   \link{TSmisc},
-   \link{TScompare},
-   \link{tframe},
-   \link{tframePlus},
-   \link{tfplot},
-   \link{zoo},
-   \link{xts},
-   \link{tseries},
-   \link{its},
-   \link{WriteXLS},
-   \link{DBI},
-   \link{RJSDMX},
-   \link{RPostgreSQL},
-   \link{RSQLite},
-   \link{RMySQL},
-   \link{RODBC}}
+   \link[TSdbi]{TSdbi-package},
+   \link[TSsql]{TSsql-package},
+   \link[TSPostgreSQL]{TSPostgreSQL-package},
+   \link[TSMySQL]{TSMySQL-package},
+   \link[TSSQLite]{TSSQLite-package},
+   \link[TSodbc]{TSodbc-package},
+   \link[TSsdmx]{TSsdmx-package},
+   \link[TSmisc]{TSmisc-package},
+   \link[TScompare]{TScompare-package},
+   \link[tframe]{tframe-package},
+   \link[tframePlus]{tframePlus-package},
+   \link[tfplot]{tfplot-package},
+   \link[zoo]{zoo-package},
+   \link[xts]{xts-package},
+   \link[tseries]{tseries-package},
+   \link[WriteXLS]{WriteXLS-package},
+   \link[DBI]{DBI-package},
+   \link[RJSDMX]{RJSDMX-package},
+   \link[RPostgreSQ]{RPostgreSQL-package},
+   \link[RSQLite]{RSQLite-package},
+   \link[RMySQL]{RMySQL-package},
+   \link[RODBC]{RODBC-package}
+   }
 }
 \concept{TSdbi}
 \keyword{ts}
