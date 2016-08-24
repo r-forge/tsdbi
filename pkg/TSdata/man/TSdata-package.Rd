@@ -18,7 +18,7 @@ This package generates vignettes \emph{Guide.pdf},
 \emph{GuideAppendix.pdf} and \emph{GuideDevel.pdf}. 
 The last covers work in progress and may be empty or broken.
 The package contains no functions or data, and exists only to
-generate the vignettes. These vignetes are available on CRAN, so the
+generate the vignettes. These vignettes are available on CRAN, so the
 package does not need to be installed. Installation can be difficult 
 because of all the other packages that are required.
 }
@@ -26,25 +26,23 @@ because of all the other packages that are required.
 \seealso{
 \code{
    \link[TSdbi]{TSdbi-package},
-   \link[TSsql]{TSsql-package},
-   \link[TSPostgreSQL]{TSPostgreSQL-package},
-   \link[TSMySQL]{TSMySQL-package},
-   \link[TSSQLite]{TSSQLite-package},
-   \link[TSodbc]{TSodbc-package},
-   \link[TSsdmx]{TSsdmx-package},
-   \link[TSmisc]{TSmisc-package},
-   \link[TScompare]{TScompare-package},
+   \link[TSPostgreSQL]{TSPostgreSQLConnection-class},
+   \link[TSMySQL]{TSMySQLConnection-class},
+   \link[TSSQLite]{TSSQLiteConnection-class},
+   \link[TSodbc]{TSodbcConnection-class},
+   \link[TSsdmx]{TSsdmxConnection-class},
+   \link[TSmisc]{TSmiscMethods},
+   \link[TScompare]{TScompare},
    \link[tframe]{tframe-package},
-   \link[tframePlus]{tframePlus-package},
-   \link[tfplot]{tfplot-package},
-   \link[zoo]{zoo-package},
+   \link[tfplot]{tfplot},
+   \link[zoo]{zoo},
    \link[xts]{xts-package},
-   \link[tseries]{tseries-package},
-   \link[WriteXLS]{WriteXLS-package},
+   \link[tseries]{get.hist.quote},
+   \link[WriteXLS]{WriteXLS},
    \link[DBI]{DBI-package},
    \link[RJSDMX]{RJSDMX-package},
-   \link[RPostgreSQL]{RPostgreSQL-package},
-   \link[RSQLite]{RSQLite-package},
+   \link[RPostgreSQL]{PostgreSQLConnection-class},
+   \link[RSQLite]{SQLiteConnection-class},
    \link[RMySQL]{RMySQL-package},
    \link[RODBC]{RODBC-package}
    }
