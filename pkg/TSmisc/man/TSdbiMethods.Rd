@@ -1,4 +1,5 @@
 \name{TSmiscMethods}
+\alias{TSmiscMethods}
 
 \alias{histQuote}
 \alias{TShistQuoteConnection-class}
