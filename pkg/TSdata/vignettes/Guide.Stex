@@ -291,7 +291,7 @@ Several different connections can be defined, and data retreived from them.
 %%[1] "FREQ"     "S_ADJ"    "UNIT"     "INDIC_NA" "GEO"  
 %%     getCodes('EUROSTAT', 'namq_gdp_c', 'INDIC_NA')
 %%   verifyQuery('EUROSTAT',"namq_gdp_c.Q.NSA.MIO_EUR.B1GM.DE")
-http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=namq_gdp_c&lang=en
+%% http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=namq_gdp_c&lang=en
 %%  z <- TSget("namq_gdp_c.Q.NSA.MIO_EUR.B1GM.DE", eurostat)
 %%  next is German employment
 %%   verifyQuery('EUROSTAT',"lfsq_egan.Q.THS.T.Y15-64.TOTAL.DE")
