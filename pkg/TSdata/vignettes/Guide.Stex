@@ -240,6 +240,9 @@ an interface to SDMX/REST 2.1 compliant databases. Similar to other \pkg{TS*} pa
 wrapper \pkg{TSsdmx} uses only some of the capabilities of the underlying package.  
 Only reading of databases is supported.
 
+Also, beware that data providers can change the availability and names of databases, both temporarily and permanently, and several are still in an experimental mode with respect to SDMX support. Examples below may sometimes
+result in errors at the provider.
+
 By default \pkg{RJSDMX} prints more output than \proglang{R} users will typically expect. 
 This output can be supressed by settings in a configuration file, which has been done 
 for this vignette. See Appendix ``A'' for more details.
@@ -272,6 +275,7 @@ tfOnePlot(ytoypc(x), title="Nominal GDP  - expenditure approach",
 \end{Scode}
 
 Several different connections can be defined, and data retreived from them.
+%%  some of these fail often, but not always with various provider errors
 %%   names(getDimensions('EUROSTAT','ei_nama_q')) 
 %%     getCodes('EUROSTAT', 'ei_nama_q', 'FREQ')
 %%     getCodes('EUROSTAT', 'ei_nama_q', 'UNIT')
@@ -281,13 +285,23 @@ Several different connections can be defined, and data retreived from them.
 %%     getCodes('EUROSTAT', 'ei_nama_q', 'GEO')
 %%     getCodes('EUROSTAT', 'ei_nama_q', '')
 %%   verifyQuery('EUROSTAT',"ei_nama_q.Q.MIO-EUR.NSA.CP.NA-P72.IT")
+%%  z <- TSget("ei_nama_q.Q.MIO-EUR.NSA.CP.NA-P72.IT", eurostat)
+%%
+%%   names(getDimensions('EUROSTAT','namq_gdp_c')) 
+%%[1] "FREQ"     "S_ADJ"    "UNIT"     "INDIC_NA" "GEO"  
+%%     getCodes('EUROSTAT', 'namq_gdp_c', 'INDIC_NA')
+%%   verifyQuery('EUROSTAT',"namq_gdp_c.Q.NSA.MIO_EUR.B1GM.DE")
+http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=namq_gdp_c&lang=en
+%%  z <- TSget("namq_gdp_c.Q.NSA.MIO_EUR.B1GM.DE", eurostat)
+%%  next is German employment
+%%   verifyQuery('EUROSTAT',"lfsq_egan.Q.THS.T.Y15-64.TOTAL.DE")
 
 \begin{Scode}{results=verbatim,fig=FALSE}
 eurostat <- TSconnect("sdmx", dbname="EUROSTAT")
 ecb <- TSconnect("sdmx", dbname="ECB")
 abs <- TSconnect("sdmx", dbname="ABS")
 
-z <- TSget("ei_nama_q.Q.MIO-EUR.NSA.CP.NA-P72.IT", eurostat)
+ z <- TSget("ei_nama_q.Q.MIO-EUR.NSA.CP.NA-P72.IT", eurostat)
 \end{Scode}
 
 \code{TSget} allows for specifying start and end dates.
