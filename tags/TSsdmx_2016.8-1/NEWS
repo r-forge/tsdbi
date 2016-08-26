@@ -1,0 +1,38 @@
+See also
+
+   o	See also NEWS in the TSdbi package.
+
+Known BUGS
+
+   o	Some service providors are upgrading and not yet stable, causing
+   	checks (and retrievals) to sometimes fail.
+
+
+Changes in TSsdmx version 2016.8-1
+
+   o	Replaced quarterly OECD test (in inst/testWithInternet/) with B1_GE in
+   	place of PPPGDP as data seems no longer to be available for latter.
+
+Changes in TSsdmx version 2015.12-1
+
+   o	Better verbose indication of provider flow and dimension differences. 
+
+Changes in TSsdmx version 2015.6-1
+
+   o	Syntax fix in an optional test file. 
+
+Changes in TSsdmx version 2015.2-2
+
+   o	First release. 
+
+   o	Minor spelling and acronym adjustments.
+
+Changes in TSsdmx version 2015.2-1
+
+   o	Minor adjustments for RJSDMX v1.3.
+
+   o	This package has the same name and function as an
+   	unreleased package that has been on R-forge for some time. However,
+	the underlying code is very different and is now a wrapper for 
+	package RJSDMX.
+
