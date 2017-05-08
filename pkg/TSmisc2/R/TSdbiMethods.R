@@ -104,7 +104,7 @@ setMethod("TSdates",
 
 
 setMethod("TSget",     signature(serIDs="character", con="TSQuandlConnection"),
-   definition= function(serIDs, con, TSrepresentation=getOption("TSrepresentation"),
+   definition = function(serIDs, con, TSrepresentation=getOption("TSrepresentation"),
        tf=NULL, start=tfstart(tf), end=tfend(tf), names=NULL, quote = NULL, 
        TSdescription=FALSE, TSdoc=FALSE, TSlabel=FALSE, TSsource=TRUE,
        vintage=NULL, ...)
@@ -146,24 +146,24 @@ setMethod("TSget",     signature(serIDs="character", con="TSQuandlConnection"),
   else  meta <- FALSE
   metadata   <- list()
 
-# sort="asc"  should be ignored but was important as of Nov23,2013
   #if(!is.null(con@api_key)) tok <- con@api_key else tok <- NA
   tok <- con@api_key 
 
+# sort="asc"  in next queries was important as of Nov23,2013, but removed in May 2017.
 
   for (i in seq(length(serIDs))) {
     if (is.null(start) & is.null(end))
       r <- Quandl::Quandl(paste0(con@dbname,"/",serIDs[i]), 
-              sort="asc", type=type,meta=meta, authcode = tok)
+              type=type,meta=meta, authcode = tok)
     else if (is.null(start))
       r <- Quandl::Quandl(paste0(con@dbname,"/",serIDs[i]), 
-              sort="asc", type=type,meta=meta, authcode = tok, end_date=end)
+              type=type,meta=meta, authcode = tok, end_date=end)
     else if (is.null(end))
       r <- Quandl::Quandl(paste0(con@dbname,"/",serIDs[i]), 
-              sort="asc", type=type,meta=meta, authcode = tok, start_date=start)
+              type=type,meta=meta, authcode = tok, start_date=start)
     else 
       r <- Quandl::Quandl(paste0(con@dbname,"/",serIDs[i]), 
-              sort="asc", type=type,meta=meta, authcode = tok,
+              type=type,meta=meta, authcode = tok,
     		start_date=start, end_date=end)
 
     if(0==length(r)){
@@ -193,7 +193,7 @@ setMethod("TSget",     signature(serIDs="character", con="TSQuandlConnection"),
     fr <- try( frequency(mat), silent=TRUE )  
     if ((! inherits(fr, "try-error")) && !is.null(fr)){ 
        if((TSrepresentation=="default") && (fr %in% c(1,4,12,2)))
-           r <-  as.ts(r) 
+           r <-  ts(r) #as.ts(r) failing in May 2017
        }
 
     if (! TSrepresentation  %in% "default"){
