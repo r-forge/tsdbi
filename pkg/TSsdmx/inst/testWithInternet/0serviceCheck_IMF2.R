@@ -13,11 +13,11 @@ require("RJSDMX")
   getCodes('IMF2','DS-BOP', 'FREQ')
   #names(getCodes('IMF2','DS-BOP', 'FREQ')) #[1] "W" "A" "Q" "D" "M" "B"
 
-  hasDataCodes( providor='IMF2',  flow='DS-BOP', template='A.MX.*', wild='INDICATOR')
+  #TSsdmx::hasDataCodes( providor='IMF2',  flow='DS-BOP', template='A.MX.*', wild='INDICATOR')
 
   # available, containing data, with description containing 'Current Account, Total'
-  hasDataCodes( providor='IMF2',  flow='DS-BOP', template='A.MX.*', wild='INDICATOR',
-       gp= c('Current Account', 'Total'))
+  #TSsdmx::hasDataCodes( providor='IMF2',  flow='DS-BOP', template='A.MX.*', wild='INDICATOR',
+  #     gp= c('Current Account', 'Total'))
 
 
   #  using net which is  $BCA_BP6_USD

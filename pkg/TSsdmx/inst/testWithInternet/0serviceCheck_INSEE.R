@@ -30,21 +30,27 @@ require("RJSDMX")
 
    
   z <- getSDMX('INSEE', 'CNT-2010-CSI-EMP.S1.EMPS')
-#   RETURNING TWO SERIES  ??BUG??
-  z[[1]]
-  z[[2]]
-  z[[1]] - z[[2]]
-  
+#   RETURNING TWO SERIES THIS IS A BUG AT THE PROVIDOR
+#   z[[1]]
+#   z[[2]]
+#   z[[1]] - z[[2]]
+#
+# the difference seems to be 
+# attr(z[[1]], "IDBANK") #"001689425"
+# attr(z[[2]], "IDBANK") #"001689426"
+
+if (1 == length(z))  stop("INSEE has fixed this bug. Adjust this testing.")
     
   z <- getSDMX('INSEE', 'CNT-2010-CSI-EMP.*.*')
 
+ length(z)  # 18  on 8 May 2017,  but every series is duplicated.
 
-hasData(z)
-hasDataCount(z)
-hasDataNames(z)
-hasDataDescriptions(z)
+# TSsdmx::hasData(z)
+# TSsdmx::hasDataCount(z)
+# TSsdmx::hasDataNames(z)
+# TSsdmx::hasDataDescriptions(z)
 
-  if(start(z[[1]]) !=  1979)  stop("test 1 start date changed.")
-  if(frequency(z[[1]]) !=  1) stop("test 1  frequency changed.")
+  if(start(z[[1]]) !=  "1949-Q1")  stop("test 1 start date changed.")
+  if(frequency(z[1]) !=  1) stop("test 1  frequency changed.") #BUG? should be z[[1]] but that is NULL
 
 #  COULD DO MORE TESTS, EG  DIFFERENT FREQ

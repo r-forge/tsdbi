@@ -5,6 +5,7 @@
 \alias{hasDataNames}
 \alias{hasDataDescriptions}
 
+\alias{hasDataCodes}
 
 \title{Functions to Check a Returned Time Series Data Object}
 \description{Check a time series (matrix) for returned data and metadata.}
@@ -14,7 +15,7 @@
     hasDataNames(x) 
     hasDataDescriptions(x) 
     
-    hasDataCodes(providor, flow, template, wild, gp=NULL) {
+    hasDataCodes(providor, flow, template, wild, gp=NULL)
 }
 \arguments{
     \item{x}{A time series (matrix) as returned by \code{TSget} using 

@@ -6,6 +6,13 @@ require("TSsdmx")
 
 imf2 <- TSconnect("sdmx",  dbname="IMF2")
 
+hasDataCodes( providor='IMF2',  flow='DS-BOP', template='A.MX.*', wild='INDICATOR')
+
+# available, containing data, with description containing 'Current Account, Total'
+hasDataCodes( providor='IMF2',  flow='DS-BOP', template='A.MX.*', wild='INDICATOR',
+     gp= c('Current Account', 'Total'))
+
+
 if(! verifyQuery('IMF2', 'DS-BOP.A.MX.*', verbose=FALSE))
      stop("Query 1 does not verify. Provider changed something.")
 
