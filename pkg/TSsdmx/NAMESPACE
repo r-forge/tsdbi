@@ -17,7 +17,8 @@ export("verifyQuery",
        "hasData",
        "hasDataNames",
        "hasDataCount",
-       "hasDataDescriptions"
+       "hasDataDescriptions",
+       "hasDataCodes"
 	)
 
 ## S4 Classes

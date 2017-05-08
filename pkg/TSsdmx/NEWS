@@ -8,6 +8,18 @@ Known BUGS
    	checks (and retrievals) to sometimes fail.
 
 
+Changes in TSsdmx version 2017.4-1
+
+   o	Added function hasDataCodes() to help find code specifications that 
+   	return data. (Possible codes specifications far exceed those with data.)
+
+   o	Added testing for some new providers.
+
+   o	Adjusted testing for some providers that have made changes.
+   
+   o	Re-enabled some testing which provoked bugs that have been fixed.
+
+
 Changes in TSsdmx version 2016.8-1
 
    o	Replaced quarterly OECD test (in inst/testWithInternet/) with B1_GE in
