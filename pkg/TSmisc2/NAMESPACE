@@ -2,7 +2,7 @@ import(methods)
 import(DBI)      
 import(TSdbi)
 
-importFrom("stats", "as.ts", "frequency")
+importFrom("stats", "ts", "as.ts", "frequency")
 
 import(tframe)
 import(tframePlus)
