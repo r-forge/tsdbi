@@ -4,7 +4,7 @@ require("RJSDMX")
 #  sdmxHelp()
   
   if(! 'PGI' %in% names(getFlows('IMF')))
-     stop("PGI has disappearde from IMF flows (again). Provider changed something.")
+     stop("PGI has disappeared from IMF flows (again). Provider changed something.")
 
   # IMF PGI codes were not working for some period prior to Feb 9, 2015. 
   #  but then started working again. 
@@ -30,6 +30,7 @@ require("RJSDMX")
   #    M:  
   #    Q:  
 
+if (FALSE) { # APRIL 2017   seems they are migrating to IMF2 ?
   names(getDimensions('IMF','PGI')) 
   getCodes('IMF','PGI', 'FREQ')
   
@@ -65,3 +66,4 @@ require("RJSDMX")
  
   #tts <- getSDMX('IMF', 'PGI.CA.IFS.*.Q.N_M') #fails (empty result)
 
+} # APRIL 2017

@@ -108,9 +108,11 @@ tfplot(z)
 # fetching but then failing translating date with error
 #   character string is not in a standard unambiguous format
 #
-# z <- TSget("ILM.W.U2.C.A010.Z5.Z0Z", ecb)
+# z <- TSget("ILM.W.U2.C.A010000.Z5.Z0Z", ecb)
 #
 # Frequency W. Does not allow the creation of a strictly 
 # fetching but then failing
-# z <- TSget("ILM.W.U2.C.A010.Z5.Z0Z", ecb) # zoo BUG warning re underlying regularity
+# z <- TSget("ILM.W.U2.C.A010000.Z5.Z0Z", ecb) # zoo BUG warning re underlying regularity
+#  above gives warning  BUT THIS SEEMS TO WORK without warning!!!
+#  z <- getSDMX("ECB", "ILM.W.U2.C.A010000.Z5.Z0Z")[[1]]
 

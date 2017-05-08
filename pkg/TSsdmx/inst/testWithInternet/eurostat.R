@@ -8,11 +8,13 @@ eurostat <- TSconnect("sdmx", dbname="EUROSTAT")
 # this worked in Dec 2014 but the series seems to have disappeared
 # z <- TSget("ei_nama_q.Q.MIO-EUR.NSA.CLV2000.NA-B1G.IT", eurostat)
 
-if  (FALSE) {# BUG #96  April 2016
+# Note change MIO-EUR to MIO_EUR everywhere, as of May 2017
 
-z <- TSget("ei_nama_q.Q.MIO-EUR.SWDA.CP.NA-P72.IT", eurostat)
+#z <- TSget("ei_nama_q.Q.MIO-EUR.SWDA.CP.NA-P72.IT", eurostat)
+# above not available in May 2017, replaced by next
+z <- TSget("ei_nama_q.Q.MIO_EUR.SCA.CP.NA-P71.IT", eurostat)
 
-if (seriesNames(z) != "ei_nama_q.Q.MIO-EUR.SWDA.CP.NA-P72.IT")
+if (seriesNames(z) != "ei_nama_q.Q.MIO_EUR.SCA.CP.NA-P71.IT")
     stop("seriesNames not set properly in eurostat test 1.")
     
 TSmeta(z)
@@ -28,7 +30,10 @@ if (! all(c(1980, 1) == start(z))) stop("eurostat test 1 start date has changed.
 # Aug 2016 this also gave
 #  HTTP error code : 500, message: Internal Server Error
 # for a couple of days but then worked a few days later.
-z <- TSget("ei_nama_q.Q.MIO-EUR.NSA.CP.NA-P72.IT",
+#z <- TSget("ei_nama_q.Q.MIO-EUR.NSA.CP.NA-P72.IT",
+#           start="1990-Q1", end="2012-Q2", eurostat)
+# not available May 2017, replaced by next
+z <- TSget("ei_nama_q.Q.MIO_EUR.SCA.CP.NA-P71.IT",
            start="1990-Q1", end="2012-Q2", eurostat)
 
 if (! all(c(1990, 1) == start(z))) stop("eurostat test 2 start date failure.")
@@ -39,7 +44,8 @@ if (! all(c(2012, 2) ==   end(z))) stop("eurostat test 2  end  date failure.")
 
 # at one time this had 28 series, 23 with data
 #z <-  TSget("ei_nama_q.Q.MIO-EUR.NSA.CLV2000.*.IT", eurostat) 
-z <-  TSget("ei_nama_q.Q.MIO-EUR.NSA.CP.*.IT", eurostat) 
+#z <-  TSget("ei_nama_q.Q.MIO-EUR.NSA.CP.*.IT", eurostat) 
+z <-  TSget("ei_nama_q.Q.MIO_EUR.NSA.CP.*.IT", eurostat) 
 
 if (28 != sum(hasData(z, quiet=TRUE)))    stop("eurostat hasData test 1 changed.") # previously 23
 if (28 != length(hasData(z, quiet=TRUE))) stop("eurostat hasData test 2 changed.")
@@ -50,14 +56,14 @@ hasDataNames(z)
 hasDataDescriptions(z)
 
 #  This is a useful check to know if a series has data
-if (! ("ei_nama_q.Q.MIO-EUR.NSA.CP.NA-P72.IT"
+if (! ("ei_nama_q.Q.MIO_EUR.NSA.CP.NA-P72.IT"
                  %in% hasDataNames(z))) stop("eurostat hasData test 3 changed.")
 
 ##  vector of serIDs
 
-z <-  TSget(c("ei_nama_q.Q.MIO-EUR.NSA.CP.NA-P7.IT",        
-              "ei_nama_q.Q.MIO-EUR.NSA.CP.NA-P71.IT",        
-              "ei_nama_q.Q.MIO-EUR.NSA.CP.NA-P72.IT"),
+z <-  TSget(c("ei_nama_q.Q.MIO_EUR.NSA.CP.NA-P7.IT",        
+              "ei_nama_q.Q.MIO_EUR.NSA.CP.NA-P71.IT",        
+              "ei_nama_q.Q.MIO_EUR.NSA.CP.NA-P72.IT"),
 	    start="1990-Q1", end="2012-Q2",eurostat) 
 
 if (! all(c(1990, 1) == start(z))) stop("eurostat vector test 1 start date failure.")
@@ -65,13 +71,11 @@ if (! all(c(2012, 2) ==   end(z))) stop("eurostat vector test 1  end  date failu
 if ( 4 !=  frequency(z)) stop("eurostat vector test 1  frequency  date failure.")
 
 
-z <-  TSget(c("ei_nama_q.Q.MIO-EUR.NSA.CP.NA-P7.IT",	    
-              "ei_nama_q.Q.MIO-EUR.NSA.CP.NA-P71.IT",	     
-              "ei_nama_q.Q.MIO-EUR.NSA.CP.NA-P72.IT"),
+z <-  TSget(c("ei_nama_q.Q.MIO_EUR.NSA.CP.NA-P7.IT",	    
+              "ei_nama_q.Q.MIO_EUR.NSA.CP.NA-P71.IT",	     
+              "ei_nama_q.Q.MIO_EUR.NSA.CP.NA-P72.IT"),
 	    start=c(1990,1), end=c(2012,2), eurostat) 
 
 if (! all(c(1990, 1) == start(z))) stop("eurostat vector test 1 start date failure.")
 if (! all(c(2012, 2) ==   end(z))) stop("eurostat vector test 1  end  date failure.")
 if ( 4 !=  frequency(z)) stop("eurostat vector test 1  frequency  date failure.")
-
-} # end BUG #96
