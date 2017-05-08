@@ -8,6 +8,11 @@ See also
 
    o	See also NEWS in the TSdbi package.
 
+Changes in TSdata version 2017.4-1
+
+   o	Minor vignette adjustments for provider changes to series identifiers.
+
+
 Changes in TSdata version 2016.8-2
 
    o	Changed reference from www.omegahat.org to www.omegahat.net.

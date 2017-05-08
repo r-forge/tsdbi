@@ -1,5 +1,5 @@
 Package: TSdata
-Version: 2016.8-2
+Version: 2017.4-1
 Title: 'TSdbi' Illustration
 Description: Illustrates the various 'TSdbi' packages with a vignette using time series 
 	data from several sources. The vignette also illustrates some simple time series
