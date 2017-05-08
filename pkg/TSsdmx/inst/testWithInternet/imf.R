@@ -6,6 +6,8 @@ require("TSsdmx")
 
 imf <- TSconnect("sdmx",  dbname="IMF")
 
+if (FALSE){ # APRIL 2017  seems they are migrating to IMF2 ?
+
  if(FALSE != verifyQuery('IMFx', 'PGI.CA.*.*.*.*', verbose=FALSE)) 
      stop("verifyQuery provider IMFx failed")
 
@@ -15,7 +17,7 @@ imf <- TSconnect("sdmx",  dbname="IMF")
  if(FALSE != verifyQuery('IMF', 'PGI.CAN.*.*.*.*', verbose=FALSE)) 
      stop("verifyQuery bad dimension check failed")
  
-if (FALSE){
+if (FALSE){# before APRIL 2017
   
   z <- TSget("PGI.CA.BIS.FOSLB.A.L_M", imf)  #13 BUG? this was previously not empty
    
@@ -40,4 +42,5 @@ if (FALSE){
   tts <- getSDMX('IMF', 'PGI.CA.IFS.*.Q.N_M') #fails (empty result)
   names(tts)
 
+}
 }

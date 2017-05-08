@@ -1,3 +1,4 @@
+
 # see
 #http://sdmx.org/wp-content/uploads/2013/09/SDMX_2_1-SECTION_07_WebServicesGuidelines_2013-04.pdf
 # section 5.8 regarding errors.
@@ -64,7 +65,7 @@ z <- try(getSDMX("OECD", 'G20_PRICES.CAB.CP.IXOB.M'), silent=TRUE)
 
 #>EUROSTAT  ei_nama_q : Main aggregates - quarterly
 # 	eil_nama_q  > 	>FREQ: Q
-#			>UNIT : MIO-EUR
+#			>UNIT : MIO_EUR
 #			>S_ADJ: NSA
 #			>P_ADJ: CP  (current prices)
 #			>INDIC: NA-B1GP  (GDP at market prices)
@@ -93,7 +94,14 @@ z <- try(getSDMX("OECD", 'G20_PRICES.CAB.CP.IXOB.M'), silent=TRUE)
 #  tts2 <- getSDMX('EUROSTAT', "ei_nama_q.Q.MIO-EUR.SWDA.CP.NA-P72.IT") 
 
 
-#  sdmxHelp()
+#  sdmxHelp() 
+#  eg
+#    Providers: ECB
+#    Filter flows: EXR
+#     click on Flow ID  EXR
+#     click on Select Dimension FREQ and Select Code A
+#     click on Select Dimension Currency and Select Code A
+#     click on ... to build  EXR/A.USD.EUR.SP00.A
 
 getProviders()
 #[1] "BIS"      "ILO"      "ECB"      "OECD"     "EUROSTAT"       with v1.1
@@ -108,7 +116,20 @@ getProviders()
 # [6] "WB"         "ILO"        "ECB"        "NBB"        "OECD"      
 #[11] "INEGI"      "UIS"        "IMF"  
 
-  # z <- getSDMX('EUROSTAT', 'ei_nama_q.Q.MIO-EUR.NSA.CLV2000.*.IT')[[1]]
+# May 2017  v1.7
+# [1] "ABS"              "UNDATA"           "OECD_RESTR"       "WITS"            
+# [5] "EUROSTAT"         "ISTAT"            "IMF2"             "INSEE"           
+# [9] "ISTAT_CENSUS_POP" "WB"               "IMF_SDMX_CENTRAL" "ILO"             
+#[13] "ISTAT_CENSUS_IND" "ECB"              "NBB"              "INEGI"           
+#[17] "OECD"             "UIS"              "ISTAT_CENSUS_AGR" "IMF"             
+
+#  toDo
+#  "UNDATA"  "OECD_RESTR"  "WITS"   "IMF_SDMX_CENTRAL"           
+#  "ISTAT" "ISTAT_CENSUS_POP"   "ISTAT_CENSUS_IND"    "ISTAT_CENSUS_AGR" 
+#  need to improve "IMF2"  "INSEE" 
+#  
+     
+  # z <- getSDMX('EUROSTAT', "ei_nama_q.Q.MIO_EUR.SCA.CP.NA-P71.IT") 
 
  
 ############################ "BIS" ############################
@@ -153,11 +174,6 @@ getProviders()
 # and via a RESTful API.
 # addProvider(name='SIS', 
 #     endpoint='', FALSE)
-
-
-############################ IStat ############################
-
-# http://sodi.istat.it/sodiWS/service1.asmx.
 
 
 ############################ JEDH ############################

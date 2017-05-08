@@ -7,11 +7,12 @@ require("RJSDMX")
 
   getFlows('ECB','*EXR*')
 
-  getCodes('ECB', 'EXR', 'FREQ')
   names(getDimensions('ECB','EXR')) # I think this is also in correct order
   getDimensions('ECB','EXR')
 
   getDSDIdentifier('ECB','EXR')
+
+  getCodes('ECB', 'EXR', 'FREQ')
 
 #### annual ####
   
@@ -64,25 +65,32 @@ require("RJSDMX")
 
 # "Frequency W. 
 
-  z <- getSDMX("ECB", "ILM.W.U2.C.A010.Z5.Z0Z")
-  
-  if(start(z[[1]]) != "1998-W53") stop("ECB weeky retrieval changed start date.")
+# z <- getSDMX("ECB", "ILM.W.U2.C.A010.Z5.Z0Z")   worked previous to spring 2017 
+#  but A010 seems to have disappeared.
 
+# use one of these to find possible series for testing
+# z <- getSDMX("ECB", "ILM.W.U2.C.*.Z5.Z0Z") 
+# z <- getSDMX("ECB", "ILM.W.U2.C.*.*.*") 
+#   also ILM_PUB in place of ILM may be more reliable?
+
+ z <- getSDMX("ECB", "ILM.W.U2.C.A010000.Z5.Z0Z")
+ if(start(z[[1]]) != "1998-W53") stop("ECB weeky retrieval changed start date.")
 
   # this would make sense but does not work
-  #z <- getSDMX("ECB", "ILM.W.U2.C.A010.Z5.Z0Z",start="2008-W1",end="2013-W1")[[1]] 
+  #z <- getSDMX("ECB", "ILM.W.U2.C.A010000.Z5.Z0Z",start="2008-W1",end="2013-W1")[[1]] 
 
-  # I'm not sure if these are correct
-  #z <- getSDMX("ECB", "ILM.W.U2.C.A010.Z5.Z0Z",start="2008-Q1",end="2013-Q4")[[1]] 
+ z <- getSDMX("ECB", "ILM.W.U2.C.A010000.Z5.Z0Z",start="2008-Q1",end="2013-Q4")[[1]] 
 
-start(z)  # "2008-W02"
-end(z)    # "2014-W01"
+ start(z)  # "2008-W02"
+ end(z)    # this previously gave "2014-W01" but is fixed to give "2013-W52" as of May 2017
 
   
-  #if(start(z) != "1998-W53") stop("ECB weeky retrieval changed start date.")
+ if(start(z) != "2008-W02") stop("ECB weeky retrieval Q1 start date specification not working.")
+ if(end(z)   != "2013-W52") stop("ECB weeky retrieval Q4  end  date specification not working.")
 
-  #z <- getSDMX("ECB", "ILM.W.U2.C.A010.Z5.Z0Z", start="2008", end="2013")[[1]] 
-  #if(start(z) != "1998-W53") stop("ECB weeky retrieval changed start date.")
+ z <- getSDMX("ECB", "ILM.W.U2.C.A010000.Z5.Z0Z", start="2008", end="2013")[[1]] 
+ if(start(z) != "2008-W02") stop("ECB weeky retrieval annual start specification not working.")
+ if(end(z)   != "2013-W52") stop("ECB weeky retrieval annual  end  specification not working.")
 
 # Dates in above are in form 1998-W53. These might be converted to dates with
 # require(ISOweek)
@@ -99,7 +107,7 @@ end(z)    # "2014-W01"
   if("2000-01-03" != start(z)) stop("ECB daily start specification 1 failure.")
   if("2001-12-31" != end(z))   stop("ECB daily  end  specification 1 failure.")
 
- frequency(z) # check this
+# frequency(z) # this gives 1 but freq for daily does not really make sense
 
 # select months
   z <- getSDMX('ECB', 'EXR.D.USD.EUR.SP00.A', '2000-01', '2000-12')[[1]]
@@ -157,7 +165,7 @@ sum(grepl('A21',nm))  # 0
 sum(grepl('.B', names(z)))  # 0
 sum(grepl('2250', names(z))) # 22, Feb 2015
 
-# next is ok Feb 2015
+# next is ok Feb 2015, and May 2017
 if(! any("BSI.Q.U2.N.V.M30.X.1.U2.2250.Z01.E" %in% nm ))
     stop("available series has changed")  
 

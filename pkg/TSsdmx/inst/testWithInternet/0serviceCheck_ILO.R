@@ -48,7 +48,8 @@ if ("2012" !=   end(tts[[1]]))  stop("ILO test 1 end date error.")
  
 tts <- getTimeSeries("ILO", "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB/YI.DEU+FRA+GBR+ITA.A..EMP_TEMP_NB.SEX_T.AGE_AGGREGATE_TOTAL")
 
-length(tts) # 10
+length(tts) # 10 previously, 8 in spring 2017
 
-if ("2001" != start(tts[[1]]))  stop("ILO test 3 start date changed.")
+#"2001" previously, "1991" in spring 2017
+if ("1991" != start(tts[[1]]))  stop("ILO test 3 start date changed.")
 
