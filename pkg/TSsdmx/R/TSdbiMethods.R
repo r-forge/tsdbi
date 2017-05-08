@@ -259,13 +259,16 @@ verifyQuery <- function(provider, Q, verbose=TRUE){
 #  verifyQuery('IMF', 'PGI.CAN.*.*.*.*')
 #  verifyQuery('IMF', 'PGI.CA..*.*.*')
   
-
 hasData <- function(x, quiet=FALSE){
-  nm <- seriesNames(x)
+  # list is for case when x is from RJSDMX::getSDMX()
+  L <- is.list(x)
+  nm <- if(L) names(x) else seriesNames(x)
   N <- length(nm)
   ok <- rep(NA, N)
   for (i in 1:N){
-    if(all(is.nan(x[,i]) | is.na(x[,i]))) {
+    z <- if(L) x[[i]] else x[,i]
+  N <- length(nm)
+    if(all(is.nan(z) | is.na(z))) {
        ok[i] <- FALSE
        if(!quiet) warning(nm[i], " has no data.")
        }
@@ -273,6 +276,7 @@ hasData <- function(x, quiet=FALSE){
     }
    ok
    }
+   
 
 hasDataCount <- function(x) {
    ok <- hasData(x, quiet=TRUE)
@@ -280,23 +284,64 @@ hasDataCount <- function(x) {
    invisible(ok)
    }
 
-hasDataNames <- function(x) seriesNames(x)[hasData(x, quiet=TRUE)]
+hasDataNames <- function(x) 
+   (if (is.list(x)) names(x) else seriesNames(x))[hasData(x, quiet=TRUE)]
 
 hasDataDescriptions <- function(x) {
-  nm <- seriesNames(x)
-  N <- length(nm)
-  ok <- hasData(x, quiet=TRUE)
+  # list is for case when x is from RJSDMX::getSDMX()
+  L <- is.list(x)
+    
+  nm <- if (L) names(x) else seriesNames(x)
+  nm <- nm[hasData(x, quiet=TRUE)]
 
-  #  this should get SDMX description
-  desc <- TSmeta(x)@TSdescription
-  # but this is just the flow description
-  # nm <- getFlows('EUROSTAT')
-  # #length(names(nm))  #5720
-  # nm["ei_nama_q" == names(nm)]
-  
-  r <- NULL
-  #for (i in 1:N) if(ok[i]) r <- rbind(r, paste(nm[i], ": ", desc[i], sep=""))
-  for (i in 1:N) if(ok[i]) r <- rbind(r, desc[i])
+  N <- length(nm)
+
+  #  getFlows('EUROSTAT') #This is just the flow description
+ 
+  r <- rep(NA, N)
+  if (L) {
+    if(L) stop("This does not work with list, as from getSDMX. Consider using hasDataCodes().")
+    # would need to construct code description with getCodes() for each field and
+    # then paste as appropriate for each series.
+    }
+  else   {
+    desc <- TSmeta(x)@TSdescription #  this should have SDMX description but needs work
+    for (i in 1:N)  r[i] <-  desc[i]
+    }
+
   r
   }
+
+hasDataCodes <- function(providor, flow, template, wild, gp=NULL) {
+     
+     temp <- paste(flow, template, sep=".")
+     
+     #    data  series available in provider/flow/template specification
+     d <- try(getSDMX(providor, temp))
+     if (inherits(d, "try-error")) return(NULL)
+
+     # names of series available in provider/flow/template specification
+     nm <- names(d)
+
+     #all code descriptions for dimension wild
+     desc <- getCodes(providor, flow, wild)
+     
+     # but some will not be available given other fields
+     sp <- strsplit(temp, "*", fixed=TRUE)
+     #sp <- sub('^\\.', "", sp, perl=TRUE)
+     nm <- sub(sp[1], "", nm)
+     if (2 == length(sp)) nm <- sub(sp[2], "", nm)
+     # descriptions for dimension wild that were available
+     desc <- desc[ names(desc) %in%  nm]
+  
+
+     # descriptions for wild that have data
+     good <-rep(NA, length(desc))
+     for (i in 1:length(good)) good[i] <-  TSsdmx::hasData(d[[i]])
+     desc <- desc[ good]
+     
+     if (! is.null(gp))  for (i in 1:length(gp)) desc <- desc[grepl(gp[i], desc)] 
+     
+     desc
+     }
 

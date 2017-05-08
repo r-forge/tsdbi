@@ -13,11 +13,18 @@
     hasDataCount(x) 
     hasDataNames(x) 
     hasDataDescriptions(x) 
+    
+    hasDataCodes(providor, flow, template, wild, gp=NULL) {
 }
 \arguments{
     \item{x}{A time series (matrix) as returned by \code{TSget} using 
       an \code{sdmx} connection.}
     \item{quiet}{Suppress warnings and just return the logical result.}
+    \item{providor}{An SDMX data provider.}
+    \item{flow}{A database (flow) at the provider.}
+    \item{template}{Indicates code specifications for dimension fields not examined.}
+    \item{wild}{The dimesion which is examined.}
+    \item{gp}{Optional vector of strings uses via grep to narrow result.}
 }
 
 \value{Depends.}
@@ -36,6 +43,9 @@ the number (invisibly).
 \code{hasDataNames} returns the names of series with actual data.
 
 \code{hasDataDescriptions} returns the descriptions of series with actual data.
+
+\code{hasDataCodes} returns the descriptions of series that actually return data from 
+the query constructed with providor, flow, and template.
 }
 
 \seealso{ 
@@ -47,8 +57,8 @@ the number (invisibly).
   require("TSsdmx")
   eurostat <- TSconnect("sdmx", dbname="EUROSTAT")
 
-  # 28 series, 23 with data
-  z <-  TSget("ei_nama_q.Q.MIO-EUR.NSA.CP.*.IT", eurostat) 
+  # 28 series, sometimes only 23 with data
+  z <-  TSget("ei_nama_q.Q.MIO_EUR.NSA.CP.*.IT", eurostat) 
 
   sum(hasData(z, quiet=TRUE)) 
 
@@ -56,6 +66,16 @@ the number (invisibly).
   hasDataNames(z)
 
   hasDataDescriptions(z)
+  
+  hasDataCodes( providor='INSEE', flow='CNT-2010-CSI-EMP',
+              template='*.EMP', wild='SECT-INST')
+
+  hasDataCodes( providor='IMF2',  flow='DS-BOP',
+              template='A.MX.*', wild='INDICATOR')
+
+  hasDataCodes( providor='IMF2',  flow='DS-BOP', 
+              template='A.MX.*', wild='INDICATOR', gp= c('Current Account', 'Total'))
+
   }
 }
 \keyword{ts}
