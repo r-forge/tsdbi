@@ -204,7 +204,6 @@ Statistics Canada&\url{www.statcan.gc.ca}	 & TSjson$^{4,6}$ & json \\
 Bank of Canada	 &\url{www.bank-banque-canada.ca}& TSmisc2$^4$ & Quandl \\
 Yahoo    	 &\url{quote.yahoo.com} 	 & TSmisc & getSymbol \\
 Yahoo    	 &\url{quote.yahoo.com} 	 & TSmisc & histQuote \\
-Oanda    	 &\url{www.oanda.com}		 & TSmisc & histQuote \\
 PiTrading    	 &\url{pitrading.com}		 & TSmisc & zip \\
 Quandl	  	 &\url{www.quandl.com}  	 & TSmisc2$^4$ & Quandl \\
 Bloomberg 	 &\url{www.bloomberg.com}	 & TSbbg$^4$ & bbg \\
@@ -225,7 +224,7 @@ Bloomberg 	 &\url{www.bloomberg.com}	 & TSbbg$^4$ & bbg \\
 The above URL is for the organization. The SDMX data web URL can be determined with \code{RJSDMX::sdmxHelp()} using the build command action to give the URL 
 of an sdmx query.
 
-The table is not comprehensive. In particular, Quandl, Bloomberg, Yahoo, Oanda, 
+The table is not comprehensive. In particular, Quandl, Bloomberg, Yahoo,  
 and some others, provide access to data from a large number of sources, especial market data.
 %%
 \subsection{\code{SDMX} Data}
@@ -284,8 +283,8 @@ Several different connections can be defined, and data retreived from them.
 %%     getCodes('EUROSTAT', 'ei_nama_q', 'INDIC')$'NA-P72'#"Imports of services"
 %%     getCodes('EUROSTAT', 'ei_nama_q', 'GEO')
 %%     getCodes('EUROSTAT', 'ei_nama_q', '')
-%%   verifyQuery('EUROSTAT',"ei_nama_q.Q.MIO-EUR.NSA.CP.NA-P72.IT")
-%%  z <- TSget("ei_nama_q.Q.MIO-EUR.NSA.CP.NA-P72.IT", eurostat)
+%%   verifyQuery('EUROSTAT',"ei_nama_q.Q.MIO_EUR.SCA.CP.NA-P71.IT")
+%%  z <- TSget("ei_nama_q.Q.MIO_EUR.SCA.CP.NA-P71.IT", eurostat)
 %%
 %%   names(getDimensions('EUROSTAT','namq_gdp_c')) 
 %%[1] "FREQ"     "S_ADJ"    "UNIT"     "INDIC_NA" "GEO"  
@@ -301,7 +300,7 @@ eurostat <- TSconnect("sdmx", dbname="EUROSTAT")
 ecb <- TSconnect("sdmx", dbname="ECB")
 abs <- TSconnect("sdmx", dbname="ABS")
 
- z <- TSget("ei_nama_q.Q.MIO-EUR.NSA.CP.NA-P72.IT", eurostat)
+ z <- TSget("ei_nama_q.Q.MIO_EUR.SCA.CP.NA-P71.IT", eurostat)
 \end{Scode}
 
 \code{TSget} allows for specifying start and end dates.
@@ -1050,28 +1049,29 @@ tfplot(z, title="IBM", start="2007-01-01")
 %%\end{Scode}
 
 
-Oanda has maximum of 500 days, so the start date is specified here so as to
+Oanda now requires a subscription and so disabled here (and may be removed from \pkg{tseries}).
+It previously had a maximum of 500 days, so the start date is specified here so as to
 not exceed that.
 
-\begin{Scode}{results=verbatim}
-Oanda <- TSconnect("histQuote", dbname="oanda") 
-x <- TSget("EUR/USD", start=Sys.Date() - 495, con=Oanda)
-TSreplace(x, serIDs="EUR/USD", Table="D", con=con)
-\end{Scode}
-
-Then check the saved version:
-
-\begin{Scode}{results=verbatim,fig=TRUE}
-z <- TSget(serIDs="EUR/USD",TSlabel=TRUE, 
-	       TSdescription=TRUE,  con=con)
-tfplot(z, title = TSdescription(z), ylab=TSlabel(z),
-	 start="2007-03-01")
-\end{Scode}
+%%\begin{Scode}{results=verbatim}
+%%Oanda <- TSconnect("histQuote", dbname="oanda") 
+%%x <- TSget("EUR/USD", start=Sys.Date() - 495, con=Oanda)
+%%TSreplace(x, serIDs="EUR/USD", Table="D", con=con)
+%%\end{Scode}
+%%
+%%Then check the saved version:
+%%
+%%\begin{Scode}{results=verbatim,fig=TRUE}
+%%z <- TSget(serIDs="EUR/USD",TSlabel=TRUE, 
+%%	       TSdescription=TRUE,  con=con)
+%%tfplot(z, title = TSdescription(z), ylab=TSlabel(z),
+%%	 start="2007-03-01")
+%%\end{Scode}
+%%dbDisconnect(Oanda)
 
 \begin{Scode}{results=hide}
 dbDisconnect(con)
 dbDisconnect(yahoo)
-dbDisconnect(Oanda)
 detach(package:TSPostgreSQL)
 \end{Scode}
 %%
