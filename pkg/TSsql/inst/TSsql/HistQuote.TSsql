@@ -33,18 +33,20 @@ if(require("tseries") &&  !inherits(
    tfplot(x, xlab = TSdescription(z))
    tfplot(x, Title="IBM", start="2007-01-01")
 
-   #Daily
-   # oanda has max 500 data points
-   x <- get.hist.quote(instrument="EUR/USD", provider="oanda",
-            start=Sys.Date() - 495)
-
-   if( ! TSput(x, serIDs="EUR/USD", con, Table="D")
-      ) stop("Error putting EUR/USD Daily series on test db.")
-
-   z <- TSget(serIDs="EUR/USD", con)
-   tfplot(z, Title = "EUR/USD")
-   tfplot(z, Title = "EUR/USD", start="2007-01-01")
-   tfplot(z, Title = "EUR/USD", start="2007-03-01")
-   tfplot(z, Title = "EUR/USD", start=Sys.Date()-14, end=Sys.Date(),
-      xlab = format(Sys.Date(), "%Y"))
+# oanda now (April 2017) requires a purchased subscription to extract csv files.
+# package tseries will robably be dropping support.
+#   #Daily
+#   # oanda has max 500 data points
+#   x <- get.hist.quote(instrument="EUR/USD", provider="oanda",
+#            start=Sys.Date() - 495)
+#
+#   if( ! TSput(x, serIDs="EUR/USD", con, Table="D")
+#      ) stop("Error putting EUR/USD Daily series on test db.")
+#
+#   z <- TSget(serIDs="EUR/USD", con)
+#   tfplot(z, Title = "EUR/USD")
+#   tfplot(z, Title = "EUR/USD", start="2007-01-01")
+#   tfplot(z, Title = "EUR/USD", start="2007-03-01")
+#   tfplot(z, Title = "EUR/USD", start=Sys.Date()-14, end=Sys.Date(),
+#      xlab = format(Sys.Date(), "%Y"))
    }

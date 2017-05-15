@@ -1,3 +1,8 @@
+Changes in TSsql version 2017.4-1
+
+   o	Removed use of Oanda data in test script used by other packages, since Oanda now 
+   	requires a purchased subscription to extract csv files.
+
 Changes in TSsql version 2015.7-1
 
    o	Added default package imports as now required by CRAN.
