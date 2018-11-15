@@ -2,9 +2,10 @@
 require("RJSDMX")
 
 #  sdmxHelp()
+# Oct 2018, 'IMF' is broken. Use 'IMF2'.
   
-  if(! 'PGI' %in% names(getFlows('IMF')))
-     stop("PGI has disappeared from IMF flows (again). Provider changed something.")
+  if(! 'DS-PGI' %in% names(getFlows('IMF2')))
+     stop("DS-PGI has disappeared from IMF2 flows. Provider changed something.")
 
   # IMF PGI codes were not working for some period prior to Feb 9, 2015. 
   #  but then started working again. 
@@ -30,40 +31,36 @@ require("RJSDMX")
   #    M:  
   #    Q:  
 
-if (FALSE) { # APRIL 2017   seems they are migrating to IMF2 ?
-  names(getDimensions('IMF','PGI')) 
-  getCodes('IMF','PGI', 'FREQ')
+  names(getDimensions('IMF2','DS-PGI')) 
+  # [1] "FREQ"      "REF_AREA"  "INDICATOR"
+  getCodes('IMF2','DS-PGI', 'FREQ')
+  getCodes('IMF2','DS-PGI', 'REF_AREA')
   
-  if(! TSsdmx::verifyQuery('IMF', 'PGI.CA.*.*.*.*'))
+  if(! TSsdmx::verifyQuery('IMF2', 'DS-PGI.*.CA.*.'))
      stop("Query 1 does not verify. Provider changed something.")
   
-  tts0 <- getSDMX('IMF', 'PGI.CA.*.*.*.*')   # length # 627   #774 Feb 9, 2015
+  tts0 <- getSDMX('IMF2', 'DS-PGI.*.CA.*') # length 346 Oct 2018
+  # previously on 'IMF' 'PGI' length # 627   #774 Feb 9, 2015
   nm <- names(tts0)
   length(nm) 
   
-  nm[grepl('PGI.CA.BIS.', nm )] 
+  #nm[grepl('PGI.CA.BIS.', nm )] 
   #[1] "PGI.CA.BIS_BP6.PGI.L.A" "PGI.CA.BIS_BP6.PGI.L.Q"  # Feb 9, 2015
 
-  # note that grepl uses . as any char so this gets above
-  #z <- tts0[grepl('PGI.CA.BIS.', nm )]
+  nm[grepl('.CA.BIS', nm )] 
+  #[1] "DS-PGI.Q.CA.BIS_BP6_USD" "DS-PGI.A.CA.BIS_BP6_USD" # Oct 2018
+
+  # note that grepl uses . as any char 
+  #z <- tts0[grepl('CA.BIS', nm )]
     
-  z <- getSDMX('IMF', 'PGI.CA.BIS_BP6.PGI.L.A')
+  #z <- getSDMX('IMF', 'PGI.CA.BIS_BP6.PGI.L.A')
   # start was 2005 for awhile (circa spring 2015)
+  z <- getSDMX('IMF2', 'DS-PGI.A.CA.BIS_BP6_USD')
   if(start(z[[1]]) !=  1948)  stop("test 1 start date changed (again).")
   if(frequency(z[[1]]) !=  1) stop("test 1  frequency changed.")
 
-  tts <- getSDMX('IMF', 'PGI.CA.BIS_BP6.*.L.Q')	
-  names(tts)
+  z <- getSDMX('IMF2', 'DS-PGI.Q.CA.BIS_BP6_USD')	
+  names(z)
+  if(start(z[[1]]) !=  "1950 Q1")  stop("test 2 start date changed (again).")
+  if(frequency(z[[1]]) !=  4) stop("test 2  frequency changed.")
   
-  #  at one time this was TRUE, but not Feb 9, 2015 
-  #	"PGI.CA.BIS.FOSAB.Q.L_M" %in% nm 
-
-  if( TSsdmx::verifyQuery('IMF', 'PGI.CA.BIS.*.*.*'))
-     stop("Query 2 now verifies. Provider added it again.")
-
-  if( TSsdmx::verifyQuery('IMF', 'PGI.CA.IFS.*.*.*'))
-     stop("Query 3 now verifies. Provider added it again.")
- 
-  #tts <- getSDMX('IMF', 'PGI.CA.IFS.*.Q.N_M') #fails (empty result)
-
-} # APRIL 2017

@@ -37,7 +37,7 @@ if(! all(c(2012,12) ==   end(z))) stop('monthly test 2 end date error.')
   # 'QNA.CAN.B1_GE.CARSA.Q' does have data
 
 z <- TSget('QNA.CAN.B1_GE.CARSA.Q', oecd)
-if(! all(c(1960,1) == start(z))) stop('quarterly test 1 start date is changed.')
+if(! all(c(1961,1) == start(z))) stop('quarterly test 1 start date is changed.')
 if(4 != frequency(z)) stop('quarterly test 1 frequency error.')
 
 z <- TSget('QNA.CAN.B1_GE.CARSA.Q', start=c(1990,2), end =c(2012,4), oecd)

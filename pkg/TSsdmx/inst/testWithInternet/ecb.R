@@ -81,17 +81,24 @@ if(! all(c(2014,3) ==   end(z))) stop("ECB quarterly  test 3 end error.")
 
 z <- TSget("BSI.Q.U2.N.V.*.*.*.*.*.*.*")  #has A,F,R,V Feb 2015
 
-# next is ok Feb 2015
-if(! any("BSI.Q.U2.N.V.M30.X.1.U2.2250.Z01.E" %in% seriesNames(z) ))
+# next was ok Feb 2015 Failed in Oct, 2018.
+#if(! any("BSI.Q.U2.N.V.M30.X.1.U2.2250.Z01.E" %in% seriesNames(z) ))
+#    stop("available series has changed")  
+
+# next is ok in Oct, 2018.
+if(! any("BSI.Q.U2.N.V.L2C.M.1.U2.2250.Z01.E" %in% seriesNames(z) ))
     stop("available series has changed")  
 
 
+# next was ok Feb 2015.  Failed in Oct, 2018.
+#skey <-c("BSI.Q.U2.N.V.M30.X.I.U2.2240.Z01.E",
+#         "BSI.Q.U2.N.V.M30.X.I.U2.2250.Z01.E",
+#         "BSI.Q.U2.N.V.M30.X.1.U2.2250.Z01.E")
 
-# next is ok Feb 2015
-skey <-c("BSI.Q.U2.N.V.M30.X.I.U2.2240.Z01.E",
-         "BSI.Q.U2.N.V.M30.X.I.U2.2250.Z01.E",
-         "BSI.Q.U2.N.V.M30.X.1.U2.2250.Z01.E")
-
+# next is ok in Oct, 2018.
+skey <-c("BSI.Q.U2.N.V.L2C.M.4.U2.2220.Z01.E",
+         "BSI.Q.U2.N.V.L2C.M.4.U2.2240.Z01.E",
+         "BSI.Q.U2.N.V.L2C.M.4.U2.2250.Z01.E")
 
 z <- TSget(skey[1], ecb)   
   
