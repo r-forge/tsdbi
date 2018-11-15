@@ -60,7 +60,7 @@ require("RJSDMX")
 
   #tts <-  getSDMX('OECD', 'QNA.CAN+CHE.B1_GE.CUR+CARSA.Q')
     
-  if(start(tts[[1]]) != "1960 Q1")
+  if(start(tts[[1]]) != "1961 Q1") #Oct 2018.  previously "1960 Q1"
       stop("OECD quarterly retrieval test 1 changed start date.")
 
 
@@ -77,7 +77,7 @@ require("RJSDMX")
                     "QNA.USA.B1_GE.CARSA.Q", "QNA.MEX.B1_GE.CARSA.Q")))
              stop("OECD quarterly test 2 retrieval series names changed.")
 
-  if(start(tts[[1]]) != "1960 Q1")
+  if(start(tts[[1]]) != "1961 Q1") #Oct 2018.  previously "1960 Q1"
              stop("OECD quarterly retrieval test 3 changed start date.")
 
   if(frequency(tts[[1]]) != 4)  

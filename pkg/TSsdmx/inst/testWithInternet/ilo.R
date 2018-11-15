@@ -19,7 +19,7 @@ ilo <- TSconnect("sdmx", dbname="ILO")
 z <- TSget("DF_YI_ALL_EMP_TEMP_SEX_AGE_NB/YI.MEX.A.463.EMP_TEMP_NB.SEX_F.AGE_10YRBANDS_TOTAL",
         ilo)
 
-if (! all(c(1988,1) == start(z)))  stop("ILO test 1 start date changed.")
+if (! all(c(1991,1) == start(z)))  stop("ILO test 1 start date changed.")
 
 
 z <- TSget("DF_YI_ALL_EMP_TEMP_SEX_AGE_NB/YI.MEX.A.463.EMP_TEMP_NB.SEX_F.AGE_10YRBANDS_TOTAL",
@@ -28,7 +28,11 @@ z <- TSget("DF_YI_ALL_EMP_TEMP_SEX_AGE_NB/YI.MEX.A.463.EMP_TEMP_NB.SEX_F.AGE_10Y
 if (! all(c(1995,1) == start(z)))  stop("ILO test 2 start date error.")
 
 
-#if (!all(c(2012,1) == end(z))) stop("ILO test 2 end date error.") #17 provider BUG must be done as next (see notes in 0ServiceCheck_ILO.R)
+# previously this had #17 provider BUG
+
+if (!all(c(2012,1) == end(z))) stop("ILO test 2 end date error.")
+
+#and had to be done as  next (see notes in 0ServiceCheck_ILO.R)
 
 z <- TSget("DF_YI_ALL_EMP_TEMP_SEX_AGE_NB/YI.MEX.A.463.EMP_TEMP_NB.SEX_F.AGE_10YRBANDS_TOTAL",
         start="1995-01-01", end="2012-12-31", ilo)
@@ -41,11 +45,19 @@ z <- TSget( "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB/YI.DEU+FRA+GBR+ITA.A..EMP_TEMP_NB.SEX
 # changed to 11 
 # changed back to 10 in Aug 2016
 # changed to 8 in April 2017
-if (8 !=  tframe::nseries(z))
+if (4 !=  tframe::nseries(z))
     stop("ILO test 3 number of series changed (again).")
-if (! all(c(1969,1) == start(z)))  stop("ILO test 3 start date error.")
+if (! all(c(1983,1) == start(z)))  stop("ILO test 3 start date error.")
  
 tframe::seriesNames(z)
+# new as of checking in Oct 2018 
+#  [1] "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB.YI.DEU.A.2242.EMP_TEMP_NB.SEX_T.AGE_AGGREGATE_TOTAL"
+# [2] "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB.YI.FRA.A.2260.EMP_TEMP_NB.SEX_T.AGE_AGGREGATE_TOTAL"
+# [3] "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB.YI.GBR.A.2247.EMP_TEMP_NB.SEX_T.AGE_AGGREGATE_TOTAL"
+# [4] "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB.YI.ITA.A.2238.EMP_TEMP_NB.SEX_T.AGE_AGGREGATE_TOTAL"
+
+
+# previous to Oct 2018 
 # [1] "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB.YI.DEU.A.1067.EMP_TEMP_NB.SEX_T.AGE_AGGREGATE_TOTAL"
 # [2] "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB.YI.DEU.A.1068.EMP_TEMP_NB.SEX_T.AGE_AGGREGATE_TOTAL"
 # [3] "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB.YI.DEU.A.2242.EMP_TEMP_NB.SEX_T.AGE_AGGREGATE_TOTAL"

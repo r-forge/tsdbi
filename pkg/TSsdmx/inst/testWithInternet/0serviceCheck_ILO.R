@@ -21,11 +21,10 @@ require("RJSDMX")
 
 tts <- getTimeSeries("ILO", "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB/YI.MEX.A.463.EMP_TEMP_NB.SEX_F.AGE_10YRBANDS_TOTAL")
 
-if ("1988" != start(tts[[1]]))  stop("ILO test 1 start date changed.")
+#if ("1988" != start(tts[[1]]))  stop("ILO test 1 start date changed.")
+if ("1991" != start(tts[[1]]))  stop("ILO test 1 start date changed.")
 
-
-tts <- getSDMX("ILO",
-   "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB/YI.MEX.A.463.EMP_TEMP_NB.SEX_F.AGE_10YRBANDS_TOTAL",
+tts <- getSDMX("ILO",  "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB/YI.MEX.A.463.EMP_TEMP_NB.SEX_F.AGE_10YRBANDS_TOTAL",
    start="1995-01-01", end="2012-12-31")
 #   start="1995", end="2012")
 
@@ -48,8 +47,8 @@ if ("2012" !=   end(tts[[1]]))  stop("ILO test 1 end date error.")
  
 tts <- getTimeSeries("ILO", "DF_YI_ALL_EMP_TEMP_SEX_AGE_NB/YI.DEU+FRA+GBR+ITA.A..EMP_TEMP_NB.SEX_T.AGE_AGGREGATE_TOTAL")
 
-length(tts) # 10 previously, 8 in spring 2017
+length(tts) # 10 previously, 8 in spring 2017, 4 in Oct 2018
 
-#"2001" previously, "1991" in spring 2017
-if ("1991" != start(tts[[1]]))  stop("ILO test 3 start date changed.")
+#"2001" previously, "1991" in spring 2017, 1983 in Oct 2018
+if ("1983" != start(tts[[1]]))  stop("ILO test 3 start date changed.")
 

@@ -163,10 +163,13 @@ nm
 
 sum(grepl('A21',nm))  # 0
 sum(grepl('.B', names(z)))  # 0
-sum(grepl('2250', names(z))) # 22, Feb 2015
+sum(grepl('2250', names(z))) # 22, Feb 2015. 18, Oct 2018
 
-# next is ok Feb 2015, and May 2017
-if(! any("BSI.Q.U2.N.V.M30.X.1.U2.2250.Z01.E" %in% nm ))
+# next was ok Feb 2015, and May 2017. Failed in Oct, 2018.
+#if(! any("BSI.Q.U2.N.V.M30.X.1.U2.2250.Z01.E" %in% nm ))
+#    stop("available series has changed")  
+
+# next was ok in Oct, 2018.
+if(! any("BSI.Q.U2.N.V.L2C.M.1.U2.2250.Z01.E" %in% nm ))
     stop("available series has changed")  
-
 
