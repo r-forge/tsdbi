@@ -16,7 +16,6 @@ guidesrc$
 zot$
 run$
 inst/doc/(^|.*)\.tex$
-inst/doc/(^|.*)\.R$
 inst/doc/(^|.*)\.log$
 inst/doc/(^|.*)\.stdout$
 .Rd2dvi(^|.*)

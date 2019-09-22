@@ -2,6 +2,11 @@ See also
 
    o	See also NEWS in the TSdbi package.
 
+Changes in TSOracle version 20xx.x-x
+
+   o	Fixed Rbuildignore so that files from building vignettes are 
+    	not omitted in the package build.	
+
 Changes in TSOracle version 2014.10-1
 
    o	Update class definitions to use slots= rather than representation().

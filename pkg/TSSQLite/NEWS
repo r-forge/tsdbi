@@ -3,6 +3,11 @@ See also
    o	See also NEWS in the TSdbi package.
 
 
+Changes in TSSQLite version 20xx.x-x
+
+   o	Fixed Rbuildignore so that files from building vignettes are 
+    	not omitted in the package build.	
+
 Changes in TSSQLite version 2015.4-1
 
    o	Moved tests to inst/testWithSQLiteServer and inst/testWithInternet.

@@ -1,3 +1,8 @@
+Changes in TSmisc2 version 20xx.x-x
+
+   o	Fixed Rbuildignore so that files from building vignettes are 
+    	not omitted in the package build.	
+
 Changes in TSmisc2 version 2015.1-1
 
    o	First released.  (part was called TSQuandl during development.)

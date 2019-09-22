@@ -4,6 +4,5 @@ FLAGS$
 ^Rplots(.*).pdf$
 inst/doc/Rplots(.*).pdf$
 inst/doc/(^|.*)\.tex$
-inst/doc/(^|.*)\.R$
 .Rd2dvi(^|.*)
 (^|.*)\.ps$
